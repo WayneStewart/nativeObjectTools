@@ -2,13 +2,15 @@ name: Set wombat as default branch and delete main
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions: write-all
 
 jobs:
   switch-default-branch:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      administration: write
     steps:
       - name: Change default branch to wombat
         env:
@@ -16,9 +18,16 @@ jobs:
         run: |
           gh api --method PATCH /repos/${{ github.repository }} \
             -f default_branch=wombat
+          CURRENT_DEFAULT=$(gh api /repos/${{ github.repository }} --jq '.default_branch')
+          if [ "$CURRENT_DEFAULT" != "wombat" ]; then
+            echo "ERROR: Default branch is still '$CURRENT_DEFAULT', expected 'wombat'"
+            exit 1
+          fi
+          echo "Default branch successfully changed to wombat"
 
       - name: Delete main branch
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh api --method DELETE /repos/${{ github.repository }}/git/refs/heads/main
+          echo "Main branch deleted successfully"
