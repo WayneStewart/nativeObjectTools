@@ -268,6 +268,8 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.1 Creation / Destruction
 
+*Detailed specification:* [OTr-Phase1-Spec.md](OTr-Phase1-Spec.md)
+
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
 | `OT New` | `OTr_New` | Returns Integer handle |
@@ -276,6 +278,8 @@ The table below maps every legacy OT command to its OTr replacement method, with
 | `OT Copy` | `OTr_Copy` | Deep-copies the object; returns new handle |
 
 ### 6.2 Put Values (Scalar)
+
+*Detailed specification:* [OTr-Phase2-Spec.md](OTr-Phase2-Spec.md) (common types), [OTr-Phase5-Spec.md](OTr-Phase5-Spec.md) (BLOB, Picture, Pointer, Record, Variable)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -294,6 +298,8 @@ The table below maps every legacy OT command to its OTr replacement method, with
 | `OT PutVariable` | `OTr_PutVariable` | Serialise pointer; store as Text with type metadata |
 
 ### 6.3 Get Values (Scalar)
+
+*Detailed specification:* [OTr-Phase2-Spec.md](OTr-Phase2-Spec.md) (common types), [OTr-Phase5-Spec.md](OTr-Phase5-Spec.md) (BLOB, Picture, Pointer, Record, Variable)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -315,6 +321,8 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.4 Put Values (Array Element)
 
+*Detailed specification:* [OTr-Phase4-Spec.md](OTr-Phase4-Spec.md)
+
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
 | `OT PutArray` | `OTr_PutArray` | Bulk store: convert 4D array to Collection |
@@ -330,6 +338,8 @@ The table below maps every legacy OT command to its OTr replacement method, with
 | `OT PutArrayPointer` | `OTr_PutArrayPointer` | Serialise each pointer |
 
 ### 6.5 Get Values (Array Element)
+
+*Detailed specification:* [OTr-Phase4-Spec.md](OTr-Phase4-Spec.md)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -347,6 +357,8 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.6 Array Utilities
 
+*Detailed specification:* [OTr-Phase4-Spec.md](OTr-Phase4-Spec.md)
+
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
 | `OT SizeOfArray` | `OTr_SizeOfArray` | `$collection.length` |
@@ -358,6 +370,8 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.7 Object Info
 
+*Detailed specification:* [OTr-Phase3-Spec.md](OTr-Phase3-Spec.md)
+
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
 | `OT IsObject` | `OTr_IsObject` | Check handle validity (bounds + in-use flag) |
@@ -365,6 +379,8 @@ The table below maps every legacy OT command to its OTr replacement method, with
 | `OT ObjectSize` | `OTr_ObjectSize` | Serialise to JSON, measure text length (approximate), or enumerate properties |
 
 ### 6.8 Item Info
+
+*Detailed specification:* [OTr-Phase3-Spec.md](OTr-Phase3-Spec.md)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -378,6 +394,8 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.9 Item Utilities
 
+*Detailed specification:* [OTr-Phase3-Spec.md](OTr-Phase3-Spec.md)
+
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
 | `OT CopyItem` | `OTr_CopyItem` | Copy property from one object/tag to another object/tag |
@@ -387,6 +405,8 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.10 Import / Export
 
+*Detailed specification:* [OTr-Phase6-Spec.md](OTr-Phase6-Spec.md)
+
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
 | `OT ObjectToBLOB` | `OTr_ObjectToBLOB` | Serialise object (JSON + metadata for non-JSON types) to BLOB |
@@ -394,6 +414,8 @@ The table below maps every legacy OT command to its OTr replacement method, with
 | `OT BLOBToObject` | `OTr_BLOBToObject` | Deserialise BLOB back to object; return new handle |
 
 ### 6.11 Object Utilities
+
+*Detailed specification:* [OTr-Phase1-Spec.md](OTr-Phase1-Spec.md)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -406,6 +428,8 @@ The table below maps every legacy OT command to its OTr replacement method, with
 | `OT GetHandleList` | `OTr_GetHandleList` | Return Integer array of all active (in-use) handles |
 
 ### 6.12 Simple Export (OTr additions — no legacy equivalent)
+
+*Detailed specification:* [OTr-Phase1-Spec.md](OTr-Phase1-Spec.md) (Phase 1.5)
 
 These methods have no counterpart in the legacy ObjectTools plugin. They are OTr-specific additions to support testing and object inspection.
 
@@ -421,23 +445,9 @@ These methods have no counterpart in the legacy ObjectTools plugin. They are OTr
 
 The legacy plugin defines its own type constants. OTr must map between these and native 4D type constants for backward compatibility in methods such as `OTr_ItemType`.
 
-| OT Constant | OT Value | 4D Equivalent |
-|---|---|---|
-| OT Longint | 5 (Is longint) | `Is longint` / `Is integer` |
-| OT Real | 1 (Is real) | `Is real` |
-| OT Character | 112 | `Is text` (internal, String/Text unified) |
-| OT Date | 4 (Is date) | `Is date` |
-| OT Time | 11 (Is time) | `Is time` |
-| OT Boolean | 6 (Is boolean) | `Is boolean` |
-| OT BLOB | 30 (Is BLOB) | `Is BLOB` |
-| OT Picture | 3 (Is picture) | `Is picture` |
-| OT Pointer | 23 (Is pointer) | `Is pointer` |
-| OT Object | 114 | `Is object` (embedded object) |
-| OT Record | 115 | Custom (no 4D equivalent) |
-| OT Variable | 24 | Custom (stored as pointer) |
-| OT Array (various) | Varies | `Is collection` in OTr |
+The authoritative reference for all 4D type constants, variable name suffixes, and the legacy OT → 4D mapping table is maintained in **[OTr-Types-Reference.md](OTr-Types-Reference.md)**.
 
-An `OTr__MapType` internal method should handle bidirectional mapping.
+An `OTr__MapType` internal method handles bidirectional mapping; its detailed specification is in [OTr-Phase6-Spec.md](OTr-Phase6-Spec.md).
 
 ---
 
