@@ -1,0 +1,114 @@
+# Ignore file for 4D Projects
+#
+# git version 1.8.2 or higher
+#
+# For more info see https://git-scm.com/docs/gitignore
+#
+# Assumes git preferences has been set to not be case sensitive
+# 
+# To make git ignore case, run
+# git config core.ignorecase true
+#
+# or globally
+# git config --global core.ignorecase true
+
+# User Preferences #
+####################
+**/userPreferences.*
+**/userPreferences*/*
+
+# Builds folder #
+##################
+**/Builds
+
+# Trash #
+#########
+**/Trash
+
+# Derived Data #
+################
+**/DerivedData
+
+# Logs #
+########
+**/Logs
+
+# Data Files #
+##############
+**/Data
+
+# 4D Data files 
+*.4dd
+*.4DIndx
+*.4DIndy
+
+# 4D Markdown docs
+/Documentation/Methods/*.md
+Documentation/Methods/*.md
+
+#Include *.4DIndy in Components
+!/Components/**/*.4DIndy
+
+# Logs
+**/Logs
+
+# Match Files
+*.Match
+
+# Backup #
+##########
+
+**/Backup
+*.journal
+
+# Symbols #
+###########
+*symbols.txt
+
+# 4D Go Mobile #
+################
+**/Replaced Files *
+**/Converted Files *
+
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE Stuff
+# IDEA
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Settings files
+*.4DSettings
+
+# ARM Libraries
+Libraries/*
+
+*.dylib
+Project/Sources/Methods/_Testing.4dm
+
+# OLD CODE SOURCES
+/OBJ_Module-main/
+/Fnd_Dict/
