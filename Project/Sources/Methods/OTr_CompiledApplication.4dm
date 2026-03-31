@@ -10,6 +10,7 @@
 //   $isCompiled_i : Integer : 1 when compiled, otherwise 0
 
 // Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
 #DECLARE()->$isCompiled_i : Integer

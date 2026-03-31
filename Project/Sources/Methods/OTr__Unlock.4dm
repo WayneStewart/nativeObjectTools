@@ -9,10 +9,7 @@
 // Returns: Nothing
 
 // Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-var $semaphore_t : Text
-
-$semaphore_t:="OTr_Registry"
-
-CLEAR SEMAPHORE($semaphore_t)
+CLEAR SEMAPHORE:C144(<>OTR_Semaphore_t)

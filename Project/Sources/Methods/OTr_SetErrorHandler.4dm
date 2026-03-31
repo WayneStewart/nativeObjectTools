@@ -14,6 +14,7 @@
 //   $previousHandler_t : Text : Previously configured handler method name
 
 // Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
 #DECLARE($handler_t : Text)->$previousHandler_t : Text

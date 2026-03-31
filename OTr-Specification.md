@@ -405,6 +405,16 @@ The table below maps every legacy OT command to its OTr replacement method, with
 | `OT CompiledApplication` | `OTr_CompiledApplication` | Return `Is compiled mode` result |
 | `OT GetHandleList` | `OTr_GetHandleList` | Return Integer array of all active (in-use) handles |
 
+### 6.12 Simple Export (OTr additions — no legacy equivalent)
+
+These methods have no counterpart in the legacy ObjectTools plugin. They are OTr-specific additions to support testing and object inspection.
+
+| OTr Method | Notes |
+|---|---|
+| `OTr_SaveToText` | Serialise stored object to a JSON text string; optional pretty-print flag (default: compact) |
+| `OTr_SaveToFile` | Write stored object as JSON to a file path on disk; optional pretty-print flag (default: indented) |
+| `OTr_SaveToClipboard` | Place JSON representation of stored object on the system clipboard; optional pretty-print flag (default: indented) |
+
 ---
 
 ## 7. Type Constant Mapping
@@ -462,6 +472,14 @@ In addition to the public API methods, OTr requires several internal helper meth
 - `OTr_SetErrorHandler`, `OTr_GetHandleList`
 - `OTr_IsObject`
 
+### Phase 1.5 — Simple Export
+
+No legacy ObjectTools equivalent. These methods provide a JSON view of a stored object for testing and inspection. They are implemented as part of the Phase 1 baseline because they depend only on the handle registry and are required before Phase 2 testing begins.
+
+- `OTr_SaveToText` — serialise object to JSON Text; optional `$prettyPrint_b` flag (default `False`)
+- `OTr_SaveToFile` — write JSON to a file path using UTF-8 encoding; optional `$prettyPrint_b` flag (default `True`)
+- `OTr_SaveToClipboard` — place JSON on the system clipboard; optional `$prettyPrint_b` flag (default `True`)
+
 ### Phase 2 — Scalar Put/Get (Common Types)
 - `OTr__ResolvePath` (with AutoCreateObjects support)
 - `OTr_PutLong`, `OTr_PutReal`, `OTr_PutString`, `OTr_PutText`, `OTr_PutDate`, `OTr_PutTime`, `OTr_PutBoolean`
@@ -503,7 +521,7 @@ All design questions have been resolved. This section records each decision and 
 
 **10.3 — `OTr_GetObject` return type.** **Decision:** Copy the embedded object into a new registry slot and return the new handle (Integer). Matches legacy `OT GetObject` semantics exactly. The caller is responsible for calling `OTr_Clear` on the returned handle.
 
-**10.4 — Lock reentrancy.** **Decision:** Simple, non-reentrant locking. A single `Semaphore` / `CLEAR SEMAPHORE` pair with no lock counter. Public `OTr_` methods acquire the lock and call only `OTr__` internal methods (which do not lock). Public methods must never call other public methods.
+**10.4 — Lock reentrancy.** **Decision:** Simple, non-reentrant locking. A single `Semaphore` / `CLEAR SEMAPHORE` pair with no lock counter. The core rule is: **never call a lock-acquiring method while the lock is already held** — doing so will deadlock. In practice this means public `OTr_` methods acquire the lock, delegate only to `OTr__` internal helpers (which do not lock), then release the lock before doing any further work. A public method *may* call another public method provided the lock has been fully released first — the safe pattern is: acquire → snapshot with `OB Copy` → release → then call other methods freely. Mutation methods (those that write to the registry) should never call other public methods from within a locked section.
 
 **10.5 — Import/Export format.** **Decision:** JSON-based format with bundled binaries. `OTr_ObjectToBLOB` serialises the object to JSON (wrapper sub-objects are preserved), then appends referenced BLOBs and Pictures from the parallel arrays with an index table. Not compatible with the legacy OT binary format (reverse-engineering the proprietary format is impractical).
 

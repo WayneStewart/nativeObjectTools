@@ -13,6 +13,7 @@
 //   $result_i : Integer : 1 for success
 
 // Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
 #DECLARE($serial_t : Text)->$result_i : Integer

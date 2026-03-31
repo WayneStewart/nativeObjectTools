@@ -13,6 +13,7 @@
 //   $copyHandle_i : Integer : New handle with copied object, or 0 on failure
 
 // Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
 #DECLARE($handle_i : Integer)->$copyHandle_i : Integer

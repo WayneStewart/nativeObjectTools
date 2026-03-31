@@ -15,6 +15,7 @@
 //   $handled_b : Boolean : True if a custom handler was called
 
 // Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
 #DECLARE($message_t : Text; $source_t : Text)->$handled_b : Boolean

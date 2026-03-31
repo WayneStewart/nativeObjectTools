@@ -10,6 +10,7 @@
 //   $version_t : Text : OTr version text
 
 // Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
 #DECLARE()->$version_t : Text
