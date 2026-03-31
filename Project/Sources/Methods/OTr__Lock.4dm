@@ -9,14 +9,12 @@
 // Returns: Nothing
 
 // Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-var $semaphore_t : Text
-
-$semaphore_t:="OTr_Registry"
 
 OTr__Init
 
-While (Semaphore($semaphore_t; 10))
-	IDLE
-End while
+While (Semaphore:C143(<>OTR_Semaphore_t; 10))
+	IDLE:C311
+End while 

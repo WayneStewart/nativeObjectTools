@@ -108,7 +108,14 @@ Each element is described below in the order it must appear.
 
 **Returns block** — a `// Returns:` heading with the return variable, type, and description. If the method returns nothing, write `// Returns: Nothing`.
 
-**Created-by line** — `// Created by <Name>, YYYY-MM-DD`. If the original author is unknown, use the name found in the legacy header and leave the date as-is.
+**Created-by line** — For methods in this project use the following two-line form:
+
+```
+// Created by Wayne Stewart, YYYY-MM-DD
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
+```
+
+The second line acknowledges the three contributors whose prior work (Fnd_Dict, OBJ_Module, and the Constants/FCS utilities) informs this codebase. Include it on every new OTr method. If the original author was someone else, use their name on the first line and adjust the second line accordingly.
 
 **Modification notes** — placed between the Created-by line and the closing separator. Each note follows the format `// <Name>, YYYY-MM-DD - <short description>`. Long descriptions may be wrapped and indented. See Section 5 for full rules.
 
@@ -260,13 +267,51 @@ End if
 
 ---
 
-## 8. Compatibility Note (4D v20 LTS)
+## 8. OTr Project Conventions
 
-For 4D 20 LTS compatibility, keep `Compiler_xxx` method declarations for `#DECLARE` methods; do not remove or comment out those entries, even when modernising.
+### 8.1 Semaphore Pattern
+
+The registry lock uses a **process-local semaphore** (name prefixed with `$`) so it does not block unrelated processes. The semaphore name is stored in the interprocess variable `<>OTR_Semaphore_t`, which is initialised in `OTr__Init` to `"$OTr_Registry"`.
+
+```4d
+// Lock — OTr__Lock
+While (Semaphore(<>OTR_Semaphore_t; 10))
+    IDLE
+End while
+
+// Unlock — OTr__Unlock
+CLEAR SEMAPHORE(<>OTR_Semaphore_t)
+```
+
+Do **not** use a plain local variable (`$semaphore_t`) for the semaphore name; always read it from `<>OTR_Semaphore_t` so the value is consistent across all methods. See https://doc.4d.com/4Dv19/4D/19.8/Semaphore.301-7112726.en.html for the `$`-prefix local semaphore convention.
+
+### 8.2 Constants Utility Methods
+
+A set of helper methods (`Constants_NewFile`, `Constants_NewGroup`, `Constants_AddLong`, `Constants_AddReal`, `Constants_AddString`, `Constants_SaveFile`) is available to generate 4D `.xlf` constant files from code. These were written by Cannon Smith (Synergy Farm Solutions). If a module needs named constants, create a `<Module>_Constants` caller method and drive it through those helpers. See `Constants__Readme.4dm` for usage examples.
+
+### 8.3 Documentation Utility Methods
+
+Two routines generate markdown documentation from method headers:
+- `Fnd_FCS_WriteDocumentation` — parses Foundation-style headers and writes `.md` files to the `Documentation/Methods/` folder.
+- `Fnd_FCS_ParseParameterLine` — helper used by the above.
+
+Run `__WriteDocumentation` to regenerate docs for all OTr methods after adding or changing headers. The output folder `Documentation/Methods/` is tracked in Git.
 
 ---
 
-## 9. Quick Checklist
+## 9. Compatibility Note (4D v20 LTS)
+
+For 4D 20 LTS compatibility, keep `Compiler_xxx` method declarations for `#DECLARE` methods; do not remove or comment out those entries, even when modernising.
+
+For 4D v19 compatibility in shared project methods:
+
+- Do not use typed array local declarations such as `var $items_ai : Array Integer`.
+- Use classic array initialisation commands instead (for example: `ARRAY LONGINT($items_ai; 0)`).
+- Do not use `return` statements in project methods; structure control flow with `If`, `Case of`, and final result assignment.
+
+---
+
+## 10. Quick Checklist
 
 Before committing a new or refactored method, verify:
 
@@ -277,5 +322,9 @@ Before committing a new or refactored method, verify:
 - [ ] Created-by line present with date in YYYY-MM-DD format
 - [ ] Modification note added if this is a change to an existing method
 - [ ] All local variables declared with `var` and type suffixes
+- [ ] Array locals use classic `ARRAY ...` initialisation (no `var ... : Array ...`)
+- [ ] No `return` statements used in project methods (4D v19-safe flow)
+- [ ] Semaphore name read from `<>OTR_Semaphore_t`, not a local variable
+- [ ] Created-by block uses two-line format with contributor acknowledgement
 - [ ] `#DECLARE` used (no numbered parameters)
 - [ ] Lines kept within 80 characters where practical

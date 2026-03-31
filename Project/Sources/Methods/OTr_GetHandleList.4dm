@@ -12,22 +12,23 @@
 // Returns: Nothing
 
 // Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
 #DECLARE($handles_ptr : Pointer)
 
 var $index_i : Integer
 
-ARRAY LONGINT($handleList_ai; 0)
+ARRAY LONGINT:C221($handleList_ai; 0)
 
 OTr__Lock
 
-For ($index_i; 1; Size of array(<>OTR_InUse_ab))
+For ($index_i; 1; Size of array:C274(<>OTR_InUse_ab))
 	If (<>OTR_InUse_ab{$index_i})
-		APPEND TO ARRAY($handleList_ai; $index_i)
-	End if
-End for
+		APPEND TO ARRAY:C911($handleList_ai; $index_i)
+	End if 
+End for 
 
 OTr__Unlock
 
-COPY ARRAY($handleList_ai; $handles_ptr->)
+COPY ARRAY:C226($handleList_ai; $handles_ptr->)

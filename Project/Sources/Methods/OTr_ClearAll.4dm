@@ -9,6 +9,7 @@
 // Returns: Nothing
 
 // Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
 OTr__Lock

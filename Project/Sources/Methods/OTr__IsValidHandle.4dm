@@ -14,18 +14,22 @@
 //   $isValid_b : Boolean : True when the handle is currently in use
 
 // Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
 #DECLARE($handle_i : Integer)->$isValid_b : Boolean
 
-$isValid_b:=False
 
-If ($handle_i<=0)
-	return
-End if
+$isValid_b:=False:C215
 
-If ($handle_i>Size of array(<>OTR_InUse_ab))
-	return
-End if
+Case of 
+	: ($handle_i<=0)
+		
+	: ($handle_i>Size of array:C274(<>OTR_InUse_ab))
+		
+	Else 
+		$isValid_b:=<>OTR_InUse_ab{$handle_i}
+		
+		
+End case 
 
-$isValid_b:=<>OTR_InUse_ab{$handle_i}

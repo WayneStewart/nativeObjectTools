@@ -10,6 +10,7 @@
 //   $handle_i : Integer : Allocated handle
 
 // Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
 #DECLARE()->$handle_i : Integer
