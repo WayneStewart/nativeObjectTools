@@ -2,6 +2,9 @@ name: Set wombat as default branch and delete main
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   switch-default-branch:
