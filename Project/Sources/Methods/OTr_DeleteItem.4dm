@@ -24,8 +24,6 @@ var $parent_o : Object
 var $leafKey_t : Text
 var $nativeType_i : Integer
 var $textVal_t : Text
-var $blobIdx_i : Integer
-var $picIdx_i : Integer
 var $embedded_o : Object
 
 OTr__Lock
@@ -43,25 +41,7 @@ If (OTr__IsValidHandle($handle_i))
 					
 				: ($nativeType_i=Is text:K8:3)
 					$textVal_t:=OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3)
-					If (Substring:C12($textVal_t; 1; 5)="blob:")
-						$blobIdx_i:=Num:C11(Substring:C12($textVal_t; 6))
-						If (($blobIdx_i>0)\
-							 & ($blobIdx_i<=Size of array:C274(<>OTR_Blobs_ablob))\
-							 & (<>OTR_BlobInUse_ab{$blobIdx_i}))
-							CLEAR VARIABLE:C89(<>OTR_Blobs_ablob{$blobIdx_i})
-							<>OTR_BlobInUse_ab{$blobIdx_i}:=False:C215
-						End if 
-					Else 
-						If (Substring:C12($textVal_t; 1; 4)="pic:")
-							$picIdx_i:=Num:C11(Substring:C12($textVal_t; 5))
-							If (($picIdx_i>0)\
-								 & ($picIdx_i<=\
-								Size of array:C274(<>OTR_Pictures_apic))\
-								 & (<>OTR_PicInUse_ab{$picIdx_i}))
-								<>OTR_PicInUse_ab{$picIdx_i}:=False:C215
-							End if 
-						End if 
-					End if 
+					OTr__ReleaseBinaryRef($textVal_t)
 					
 				: ($nativeType_i=Is object:K8:27)
 					$embedded_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)

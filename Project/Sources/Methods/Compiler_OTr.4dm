@@ -23,10 +23,15 @@ If (Not:C34(<>OTR_Initialised_b))
 	C_BOOLEAN:C305(<>OTR_Initialised_b)
 	C_LONGINT:C283(<>OTR_Options_i)
 	
-	ARRAY BOOLEAN:C223(<>OTR_BlobInUse_ab; 0)
-	ARRAY BLOB:C1222(<>OTR_Blobs_ablob; 0)
+	// The objects
 	ARRAY BOOLEAN:C223(<>OTR_InUse_ab; 0)
 	ARRAY OBJECT:C1221(<>OTR_Objects_ao; 0)
+	
+	// Storage of BLOBS
+	ARRAY BOOLEAN:C223(<>OTR_BlobInUse_ab; 0)
+	ARRAY BLOB:C1222(<>OTR_Blobs_ablob; 0)
+	
+	// Storage of Pictures
 	ARRAY BOOLEAN:C223(<>OTR_PicInUse_ab; 0)
 	ARRAY PICTURE:C279(<>OTR_Pictures_apic; 0)
 	
@@ -176,6 +181,8 @@ If (False:C215)
 	
 	C_OBJECT:C1216(OTr__ReleaseObjBinaries; $1)
 	
+	C_TEXT:C284(OTr__ReleaseBinaryRef; $1)
+	
 	C_LONGINT:C283(OTr_Register; $0)
 	C_TEXT:C284(OTr_Register; $1)
 	
@@ -194,5 +201,63 @@ If (False:C215)
 	
 	C_OBJECT:C1216(OTr__EqualObjects; $1; $2)
 	C_BOOLEAN:C305(OTr__EqualObjects; $0)
+	
+	C_LONGINT:C283(OTr_PutArray; $1)
+	C_TEXT:C284(OTr_PutArray; $2)
+	C_POINTER:C301(OTr_PutArray; $3)
+	
+	
+	C_TIME:C306(OTr_uTimeToText; $1)
+	C_TEXT:C284(OTr_uTimeToText; $0)
+	
+	C_TEXT:C284(OTr_uTextToTime; $1)
+	C_TIME:C306(OTr_uTextToTime; $0)
+	
+	C_DATE:C307(OTr_uDateToText; $1)
+	C_TEXT:C284(OTr_uDateToText; $0)
+	
+	C_TEXT:C284(OTr_uTextToDate; $1)
+	C_DATE:C307(OTr_uTextToDate; $0)
+	
+	C_POINTER:C301(OTr_uPointerToText; $1)
+	C_TEXT:C284(OTr_uPointerToText; $0)
+	
+	C_TEXT:C284(OTr_uTextToPointer; $1)
+	C_POINTER:C301(OTr_uTextToPointer; $0)
+	
+	C_LONGINT:C283(OTr_SizeOfArray; $0; $1)
+	C_TEXT:C284(OTr_SizeOfArray; $2)
+	
+	C_LONGINT:C283(OTr_ResizeArray; $1; $3)
+	C_TEXT:C284(OTr_ResizeArray; $2)
+	
+	C_OBJECT:C1216(OTr__ArrayFromObject; $1)
+	C_POINTER:C301(OTr__ArrayFromObject; $2)
+	
+	C_LONGINT:C283(OTr__ArrayType; $0)
+	C_OBJECT:C1216(OTr__ArrayType; $1)
+	
+	C_LONGINT:C283(OTr_ArrayType; $0; $1)
+	C_TEXT:C284(OTr_ArrayType; $2)
+	
+	C_LONGINT:C283(OTr_GetArray; $1)
+	C_TEXT:C284(OTr_GetArray; $2)
+	C_POINTER:C301(OTr_GetArray; $3)
+	
+	C_BLOB:C604(OTr_uBlobToText; $1)
+	C_TEXT:C284(OTr_uBlobToText; $0)
+	
+	C_TEXT:C284(OTr_uTextToBlob; $1)
+	C_BLOB:C604(OTr_uTextToBlob; $0)
+	
+	C_PICTURE:C286(OTr_uPictureToText; $1)
+	C_TEXT:C284(OTr_uPictureToText; $0)
+	
+	C_TEXT:C284(OTr_uTextToPicture; $1)
+	C_PICTURE:C286(OTr_uTextToPicture; $0)
+	
+	C_TEXT:C284(OTr_FindInArray; $2; $3)
+	C_LONGINT:C283(OTr_FindInArray; $1; $0; $4)
+	
 	
 End if 
