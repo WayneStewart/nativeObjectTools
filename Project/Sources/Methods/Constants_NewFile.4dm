@@ -8,7 +8,7 @@
 
 #DECLARE($fileName_t : Text)
 
-Compiler_Constants()  // Make certain all variable declared before we start work
+Compiler_Helpers  // Make certain all variable declared before we start work
 
 If ($fileName_t#"@.xlf")  //Should end in ".xlf"
 	ALERT:C41(Current method name:C684+"\nThe file name should end in \".xlf\"")
