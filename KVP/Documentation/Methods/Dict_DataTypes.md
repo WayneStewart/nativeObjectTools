@@ -1,0 +1,1 @@
+﻿Dict_DataTypes (dict ID; ->array)    Fills an array with the data types stored in a dictionary.    Parameters:     $1 : Longint : Dictionary ID    $2 : Pointer : Array to receive data types

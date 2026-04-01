@@ -1,0 +1,1 @@
+﻿Dict_SetReal (dict ID; key; Real value)    Assigns a value to a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text    : Key name    $3 : Real    : Value to store

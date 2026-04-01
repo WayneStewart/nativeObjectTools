@@ -1,0 +1,1 @@
+﻿KVP_Boolean (Key{; Boolean value}) --> Boolean     Assigns a Boolean value to a key-value pair.  It will also return the Boolean value    Parameters:     $1 : Text : Key name    $2 : Boolean : Value to store (optional)    Returns:     $0 : Boolean : Value stored

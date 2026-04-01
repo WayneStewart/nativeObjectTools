@@ -1,0 +1,1 @@
+﻿Dict_SetArrayBoolean (dict ID; Key name; Where; Value)    Sets the array element specified by Where.  This element MUST exist.    Parameters:    $1 : Longint : Dictionary ID    $2 : Text    : Key name    $3 : Longint : Element to replace    $4 : Boolean : New value to store

@@ -1,0 +1,1 @@
+﻿Dict_DeleteAllPictures (Dictionary ID)    PRIVATE METHOD    Parameters:     $1 : Longint : Dictionary ID    This method will delete all the pictures   contained within a dictionary.

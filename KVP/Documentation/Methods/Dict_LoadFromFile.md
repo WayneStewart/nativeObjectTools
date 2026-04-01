@@ -1,0 +1,1 @@
+﻿Dict_LoadFromFile (path) --> Longint    Loads a dictionary from a file.    Parameters:     $1 : Text : File path    Returns:     $0 : Longint : Dictionary ID

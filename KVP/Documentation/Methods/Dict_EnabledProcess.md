@@ -1,0 +1,1 @@
+﻿Dict_EnabledProcess (Process Number) -> Boolean    PRIVATE METHOD    This method will return false if the process is  one that might contain an APD.  It will return true  even if an APD has not yet been created.    Parameters:     $1 : Longint : Dictionary ID    Returns:     $0 : Boolean : APD Process

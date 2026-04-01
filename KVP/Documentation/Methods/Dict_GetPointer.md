@@ -1,0 +1,1 @@
+﻿Dict_GetPointer (dict ID; key) --> Pointer    Returns the pointer from a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    Returns:     $0 : Pointer : The key's value

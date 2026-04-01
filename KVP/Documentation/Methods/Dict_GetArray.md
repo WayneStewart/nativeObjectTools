@@ -1,0 +1,1 @@
+﻿Dict_GetArray (dict ID; key name; ->values)    Returns an array of values from a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text    : Key name    $3 : Pointer : Text array to receive values

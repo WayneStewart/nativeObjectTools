@@ -1,0 +1,1 @@
+﻿Dict_SetLongint (dict ID; key; Longint value)    Assigns a value to a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text    : Key name    $3 : Longint : Value to store

@@ -1,0 +1,1 @@
+﻿Private Method    This allows this component to set a variable  in the host database.    It relies on the existence in the host database   of a method called KVP_Host_SetVariable.  This  component will create it automatically.

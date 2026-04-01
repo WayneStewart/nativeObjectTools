@@ -1,0 +1,1 @@
+﻿Dict_HasKey (dict ID; key) --> Boolean    Checks whether a dictionary contains a given key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    Returns:     $0 : Boolean : True if the key exists

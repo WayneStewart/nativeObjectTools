@@ -1,0 +1,1 @@
+﻿KVP_SetArray (dict name; key; ->array)    Stores an array of values inside a dictionary.    Access: Shared    Parameters:     $1 : Text    : Dictionary Name    $2 : Text    : Key    $3 : Pointer : Array
