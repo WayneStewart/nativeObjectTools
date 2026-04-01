@@ -1,0 +1,1 @@
+﻿Dict_ErrorDetails (Error Text) --> Text     PRIVATE METHOD    Used to set Error Text that will be passed  to host database.  Not called by host database.    Parameters:     $1 : Text : Error Description    Returns:     $0 : Text : Error Description

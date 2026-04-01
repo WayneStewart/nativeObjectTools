@@ -1,0 +1,1 @@
+﻿KVP_Long (Key {; Longint value}) --> Longint    Assigns a Longint value to a key-value pair.  It will also return the Longint value    Parameters:     $1 : Text : Key name    $2 : Longint : Value to store (optional)    Returns:     $0 : Longint : Value stored

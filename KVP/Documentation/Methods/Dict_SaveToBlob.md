@@ -1,0 +1,1 @@
+﻿Dict_SaveToBlob (dict ID; ->blob)    Saves a dictionary as a blob.    Parameters:     $1 : Longint : Dictionary ID    $2 : Pointer : Blob to store dictionary

@@ -1,0 +1,1 @@
+﻿Dict_LoadFromText (text) --> Longint    Loads a dictionary from a text variable.    Parameters:     $1 : Text : Text variable    Returns:     $0 : Longint : Dictionary ID

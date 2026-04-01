@@ -1,0 +1,1 @@
+﻿Dict_ErrorText (Error Number) --> Text     Pass an Error Number to get a more detailed  description of the error that has occurred    Parameters:     $1 : Longint : Error number    Returns:     $0 : Text : Error Description

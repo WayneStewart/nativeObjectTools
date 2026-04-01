@@ -1,0 +1,1 @@
+﻿Dict_DisplayUsage    Call this method to open a dialog which will display   the dictionaries usage in a new process.    You can close the dialog by calling Dict_CloseDialog(True).    The dialog should be closed in your On Quit method   otherwise the database will not quit.

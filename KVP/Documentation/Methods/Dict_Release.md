@@ -1,0 +1,1 @@
+﻿Dict_Release (dict ID)    Decrements the retain count of a dictionary and   deletes it when the retain count reaches 0.    Parameters:     $1 : Longint : Dictionary ID

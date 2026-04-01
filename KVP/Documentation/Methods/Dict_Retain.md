@@ -1,0 +1,1 @@
+﻿Dict_Retain (dict ID)    Increments the retain count for a dictionary.    Parameters:     $1 : Longint : Dictionary ID

@@ -1,0 +1,1 @@
+﻿This method launches a process that will   execute every 2.5 seconds.  It will clear  Automatic Process Dictionaries.

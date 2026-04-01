@@ -1,0 +1,1 @@
+﻿Dict_GetLongint (dict ID; key) --> Longint    Returns the value from a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    Returns:     $0 : Longint : The key's value

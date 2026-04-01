@@ -1,0 +1,1 @@
+﻿KVP_Release (dict name)    Decrements the retain count of a dictionary and   deletes it when the retain count reaches 0.    Parameters:     $1 : Text : Dictionary Name    NB. This is functionally identical to Dict_Release except it is   based on dictionary names rather than ID numbers.

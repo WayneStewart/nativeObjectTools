@@ -1,0 +1,1 @@
+﻿Dict_GetPicture (dict ID; key) --> Picture    Returns the picture from a dictionary given a key.    Parameters:     $1 : Picture : Dictionary ID    $2 : Text : Key name    Returns:     $0 : Picture : The key's value

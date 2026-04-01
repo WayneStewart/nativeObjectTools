@@ -1,0 +1,1 @@
+﻿Dict_SetValue (dict ID; key; value as text; Data Type)    Assigns a value to a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text    : Key name    $3 : Text    : Value to store    $4 : Longint : Value Type
