@@ -14,13 +14,13 @@
 
 OTr__Lock
 
-ARRAY OBJECT(<>OTR_Objects_ao; 0)
-ARRAY BOOLEAN(<>OTR_InUse_ab; 0)
+ARRAY OBJECT:C1221(<>OTR_Objects_ao; 0)
+ARRAY BOOLEAN:C223(<>OTR_InUse_ab; 0)
 
-ARRAY BLOB(<>OTR_Blobs_ax; 0)
-ARRAY BOOLEAN(<>OTR_BlobInUse_ab; 0)
+ARRAY BLOB:C1222(<>OTR_Blobs_ablob; 0)
+ARRAY BOOLEAN:C223(<>OTR_BlobInUse_ab; 0)
 
-ARRAY PICTURE(<>OTR_Pictures_ap; 0)
-ARRAY BOOLEAN(<>OTR_PicInUse_ab; 0)
+ARRAY PICTURE:C279(<>OTR_Pictures_apic; 0)
+ARRAY BOOLEAN:C223(<>OTR_PicInUse_ab; 0)
 
 OTr__Unlock

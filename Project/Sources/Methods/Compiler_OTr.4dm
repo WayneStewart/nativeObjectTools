@@ -2,7 +2,7 @@
 // ----------------------------------------------------
 // Project Method: Compiler_OTr
 
-// Declares all variables and parameters for the 
+// Declares all variables and parameters for the
 // Object Tools Replacement component
 
 // Access: Private
@@ -24,11 +24,11 @@ If (Not:C34(<>OTR_Initialised_b))
 	C_LONGINT:C283(<>OTR_Options_i)
 	
 	ARRAY BOOLEAN:C223(<>OTR_BlobInUse_ab; 0)
-	ARRAY BLOB:C1222(<>OTR_Blobs_ax; 0)
+	ARRAY BLOB:C1222(<>OTR_Blobs_ablob; 0)
 	ARRAY BOOLEAN:C223(<>OTR_InUse_ab; 0)
 	ARRAY OBJECT:C1221(<>OTR_Objects_ao; 0)
 	ARRAY BOOLEAN:C223(<>OTR_PicInUse_ab; 0)
-	ARRAY PICTURE:C279(<>OTR_Pictures_ap; 0)
+	ARRAY PICTURE:C279(<>OTR_Pictures_apic; 0)
 	
 End if 
 
@@ -130,10 +130,69 @@ If (False:C215)
 	C_LONGINT:C283(OTr_IsObject; $0)
 	C_LONGINT:C283(OTr_IsObject; $1)
 	
+	C_LONGINT:C283(OTr_ItemCount; $0; $1)
+	C_TEXT:C284(OTr_ItemCount; $2)
+	
+	C_LONGINT:C283(OTr_ObjectSize; $0; $1)
+	
+	C_LONGINT:C283(OTr_ItemExists; $0; $1)
+	C_TEXT:C284(OTr_ItemExists; $2)
+	
+	C_LONGINT:C283(OTr_ItemType; $0; $1)
+	C_TEXT:C284(OTr_ItemType; $2)
+	
+	C_LONGINT:C283(OTr_IsEmbedded; $0; $1)
+	C_TEXT:C284(OTr_IsEmbedded; $2)
+	
+	C_TEXT:C284(OTr_GetAllNamedProperties; $2)
+	C_LONGINT:C283(OTr_GetAllNamedProperties; $1)
+	C_POINTER:C301(OTr_GetAllNamedProperties; $3; $4; $5; $6)
+	
+	C_LONGINT:C283(OTr_GetAllProperties; $1)
+	C_POINTER:C301(OTr_GetAllProperties; $2; $3; $4; $5)
+	
+	C_LONGINT:C283(OTr_GetItemProperties; $1; $2)
+	C_POINTER:C301(OTr_GetItemProperties; $3; $4; $5; $6)
+	
+	C_LONGINT:C283(OTr_GetNamedProperties; $1)
+	C_TEXT:C284(OTr_GetNamedProperties; $2)
+	C_POINTER:C301(OTr_GetNamedProperties; $3; $4; $5; $6)
+	
+	C_LONGINT:C283(OTr_CompareItems; $0; $1; $3)
+	C_TEXT:C284(OTr_CompareItems; $2; $4)
+	
+	C_LONGINT:C283(OTr_CopyItem; $1; $3)
+	C_TEXT:C284(OTr_CopyItem; $2; $4)
+	
+	C_LONGINT:C283(OTr_RenameItem; $1)
+	C_TEXT:C284(OTr_RenameItem; $2; $3)
+	
+	C_LONGINT:C283(OTr_DeleteItem; $1)
+	C_TEXT:C284(OTr_DeleteItem; $2)
+	
+	C_LONGINT:C283(OTr__MapType; $0)
+	C_OBJECT:C1216(OTr__MapType; $1)
+	C_TEXT:C284(OTr__MapType; $2)
+	
+	C_OBJECT:C1216(OTr__ReleaseObjBinaries; $1)
+	
 	C_LONGINT:C283(OTr_Register; $0)
 	C_TEXT:C284(OTr_Register; $1)
 	
 	C_LONGINT:C283(OTr_New; $0)
 	
 	C_POINTER:C301(OTr_GetHandleList; $1)
+	
+	C_BOOLEAN:C305(OTr__EqualBLOBs; $0)
+	C_BLOB:C604(OTr__EqualBLOBs; $1; $2)
+	
+	C_BOOLEAN:C305(Otr__EqualStrings; $0)
+	C_TEXT:C284(Otr__EqualStrings; $1; $2)
+	
+	C_BOOLEAN:C305(OTr__EqualPictures; $0)
+	C_PICTURE:C286(OTr__EqualPictures; $1; $2)
+	
+	C_OBJECT:C1216(OTr__EqualObjects; $1; $2)
+	C_BOOLEAN:C305(OTr__EqualObjects; $0)
+	
 End if 
