@@ -31,9 +31,9 @@ var $parentObj_o : Object
 var $parentLeaf_t : Text
 var $nativeType_i : Integer
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i))
+If (OTr_zIsValidHandle($handle_i))
 
 	// Split $tag_t into parent path and leaf name
 	$dotPos_i:=0
@@ -55,7 +55,7 @@ If (OTr__IsValidHandle($handle_i))
 		var $resolvedParent_o : Object
 		var $resolvedParentLeaf_t : Text
 
-		If (OTr__ResolvePath(<>OTR_Objects_ao{$handle_i}; \
+		If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; \
 			$parentPath_t; False; ->$resolvedParent_o; \
 			->$resolvedParentLeaf_t))
 			If (OB Is defined($resolvedParent_o; $resolvedParentLeaf_t))
@@ -70,14 +70,14 @@ If (OTr__IsValidHandle($handle_i))
 	End if
 
 	If ($parentObj_o=Null)
-		OTr__Error("Cannot resolve parent for: "+$tag_t; Current method name)
+		OTr_zError("Cannot resolve parent for: "+$tag_t; Current method name)
 
 	Else
 
 		If (OB Is defined($parentObj_o; $leafKey_t))
 
 			If (OB Is defined($parentObj_o; $newTag_t))
-				OTr__Error("Target name already exists: "+$newTag_t; \
+				OTr_zError("Target name already exists: "+$newTag_t; \
 					Current method name)
 
 			Else
@@ -119,13 +119,13 @@ If (OTr__IsValidHandle($handle_i))
 			End if
 
 		Else
-			OTr__Error("Item not found: "+$tag_t; Current method name)
+			OTr_zError("Item not found: "+$tag_t; Current method name)
 		End if
 
 	End if
 
 Else
-	OTr__Error("Invalid handle"; Current method name)
+	OTr_zError("Invalid handle"; Current method name)
 End if
 
-OTr__Unlock
+OTr_zUnlock

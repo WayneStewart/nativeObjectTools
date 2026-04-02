@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: OTr__ReleaseBinaryRef ($ref_t : Text)
+// Project Method: OTr_zReleaseBinaryRef ($ref_t : Text)
 
 // Releases a BLOB or Picture parallel array slot
 // referenced by a stored text value. If $ref_t begins

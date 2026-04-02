@@ -57,13 +57,13 @@ $startFrom_i:=Choose:C955(Count parameters:C259=4; $startFrom_i; 1)
 
 $result_i:=-1
 
-If (OTr__IsValidHandle($handle_i))
-	If (OTr__ResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_zIsValidHandle($handle_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
-			$type_i:=OTr__ArrayType($arrayObj_o)
+			$type_i:=OTr_zArrayType($arrayObj_o)
 			If ($type_i=-1)
-				OTr__Error("Tag does not reference an array"; Current method name:C684)
+				OTr_zError("Tag does not reference an array"; Current method name:C684)
 			Else 
 				// Assign working pointer to the appropriate typed array
 				Case of 
@@ -86,12 +86,12 @@ If (OTr__IsValidHandle($handle_i))
 						$workPtr:=->$Work_ah
 						
 					Else 
-						OTr__Error("Array type not supported for Find in array"; \
+						OTr_zError("Array type not supported for Find in array"; \
 							Current method name:C684)
 				End case 
 				
 				If (OK=1)
-					OTr__ArrayFromObject($arrayObj_o; $workPtr)
+					OTr_zArrayFromObject($arrayObj_o; $workPtr)
 					
 					// Search using native Find in array with type conversion
 					Case of 
@@ -125,5 +125,5 @@ If (OTr__IsValidHandle($handle_i))
 		End if 
 	End if 
 Else 
-	OTr__Error("Invalid handle"; Current method name:C684)
+	OTr_zError("Invalid handle"; Current method name:C684)
 End if 

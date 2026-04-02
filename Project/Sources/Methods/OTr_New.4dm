@@ -17,7 +17,7 @@
 
 var $slot_i : Integer
 
-OTr__Lock
+OTr_zLock
 
 $slot_i:=Find in array(<>OTR_InUse_ab; False)
 If ($slot_i=-1)
@@ -32,6 +32,6 @@ Else
 	<>OTR_Objects_ao{$slot_i}:=New object
 End if
 
-OTr__Unlock
+OTr_zUnlock
 
 $handle_i:=$slot_i

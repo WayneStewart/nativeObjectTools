@@ -19,7 +19,7 @@
 
 // Wayne Stewart, 2026-04-02 - Restructured to resolve handle/path
 //   once; now calls OTr_ArrayType directly on the retrieved object
-//   instead of going through OTr__ArrayType a second time.
+//   instead of going through OTr_zArrayType a second time.
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
@@ -32,22 +32,22 @@ var $arrayObj_o : Object
 var $leafKey_t : Text
 var $storedType_i : Integer
 
-If (OTr__IsValidHandle($handle_i))
-	If (OTr__ResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_zIsValidHandle($handle_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
-			$storedType_i:=OTr__ArrayType($arrayObj_o)
+			$storedType_i:=OTr_zArrayType($arrayObj_o)
 			If ($storedType_i=-1)
-				OTr__Error("Tag does not reference an array"; Current method name:C684)
+				OTr_zError("Tag does not reference an array"; Current method name:C684)
 			Else 
 				If ($storedType_i#Type:C295($arrayPtr->))
-					OTr__Error("Array type mismatch"; Current method name:C684)
+					OTr_zError("Array type mismatch"; Current method name:C684)
 				Else 
-					OTr__ArrayFromObject($arrayObj_o; $arrayPtr)
+					OTr_zArrayFromObject($arrayObj_o; $arrayPtr)
 				End if 
 			End if 
 		End if 
 	End if 
 Else 
-	OTr__Error("Invalid handle"; Current method name:C684)
+	OTr_zError("Invalid handle"; Current method name:C684)
 End if 

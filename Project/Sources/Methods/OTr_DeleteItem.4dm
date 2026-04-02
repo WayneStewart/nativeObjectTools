@@ -26,11 +26,11 @@ var $nativeType_i : Integer
 var $textVal_t : Text
 var $embedded_o : Object
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i))
+If (OTr_zIsValidHandle($handle_i))
 	
-	If (OTr__ResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; \
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; \
 		->$parent_o; ->$leafKey_t))
 		
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
@@ -41,26 +41,26 @@ If (OTr__IsValidHandle($handle_i))
 					
 				: ($nativeType_i=Is text:K8:3)
 					$textVal_t:=OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3)
-					OTr__ReleaseBinaryRef($textVal_t)
+					OTr_zReleaseBinaryRef($textVal_t)
 					
 				: ($nativeType_i=Is object:K8:27)
 					$embedded_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
-					OTr__ReleaseObjBinaries($embedded_o)
+					OTr_zReleaseObjBinaries($embedded_o)
 					
 			End case 
 			
 			OB REMOVE:C1226($parent_o; $leafKey_t)
 			
 		Else 
-			OTr__Error("Item not found: "+$tag_t; Current method name:C684)
+			OTr_zError("Item not found: "+$tag_t; Current method name:C684)
 		End if 
 		
 	Else 
-		OTr__Error("Invalid path: "+$tag_t; Current method name:C684)
+		OTr_zError("Invalid path: "+$tag_t; Current method name:C684)
 	End if 
 	
 Else 
-	OTr__Error("Invalid handle"; Current method name:C684)
+	OTr_zError("Invalid handle"; Current method name:C684)
 End if 
 
-OTr__Unlock
+OTr_zUnlock

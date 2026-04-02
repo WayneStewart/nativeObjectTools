@@ -19,9 +19,9 @@
 
 var $size_i : Integer
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i))
+If (OTr_zIsValidHandle($handle_i))
 	<>OTR_Objects_ao{$handle_i}:=Null
 	<>OTR_InUse_ab{$handle_i}:=False
 
@@ -32,7 +32,7 @@ If (OTr__IsValidHandle($handle_i))
 		$size_i:=$size_i-1
 	End while
 Else
-	OTr__Error("Invalid handle"; Current method name)
+	OTr_zError("Invalid handle"; Current method name)
 End if
 
-OTr__Unlock
+OTr_zUnlock

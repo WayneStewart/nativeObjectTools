@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr__MapType ($parent_o : Object; $key_t : Text) \
+// Project Method: OTr_zMapType ($parent_o : Object; $key_t : Text) \
 //   --> $otType_i : Integer
 
 // Returns the OT type constant for a given property on an object.

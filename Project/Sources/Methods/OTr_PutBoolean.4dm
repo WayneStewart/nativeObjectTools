@@ -23,15 +23,15 @@
 var $parent_o : Object
 var $leafKey_t : Text
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i))
-	If (OTr__ResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; True; \
+If (OTr_zIsValidHandle($handle_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; True; \
 		->$parent_o; ->$leafKey_t))
 		OB SET($parent_o; $leafKey_t; $value_b)
 	End if
 Else
-	OTr__Error("Invalid handle"; Current method name)
+	OTr_zError("Invalid handle"; Current method name)
 End if
 
-OTr__Unlock
+OTr_zUnlock

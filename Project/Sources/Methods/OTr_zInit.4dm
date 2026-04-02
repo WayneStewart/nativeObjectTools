@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr__Init
+// Project Method: OTr_zInit
 
 // Initialises the OTr registry arrays and default module state.
 

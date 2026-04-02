@@ -27,10 +27,10 @@ var $embedded_o : Object
 
 $newHandle_i:=0
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i))
-	If (OTr__ResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False; \
+If (OTr_zIsValidHandle($handle_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False; \
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
 			$embedded_o:=OB Get($parent_o; $leafKey_t; Is object)
@@ -48,7 +48,7 @@ If (OTr__IsValidHandle($handle_i))
 		End if
 	End if
 Else
-	OTr__Error("Invalid handle"; Current method name)
+	OTr_zError("Invalid handle"; Current method name)
 End if
 
-OTr__Unlock
+OTr_zUnlock

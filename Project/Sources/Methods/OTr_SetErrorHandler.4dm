@@ -19,9 +19,9 @@
 
 #DECLARE($handler_t : Text)->$previousHandler_t : Text
 
-OTr__Lock
+OTr_zLock
 
 $previousHandler_t:=<>OTR_ErrorHandler_t
 <>OTR_ErrorHandler_t:=$handler_t
 
-OTr__Unlock
+OTr_zUnlock

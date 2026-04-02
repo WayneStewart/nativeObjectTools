@@ -18,12 +18,12 @@
 
 #DECLARE($handle_i : Integer)->$isObject_i : Integer
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i))
+If (OTr_zIsValidHandle($handle_i))
 	$isObject_i:=1
 Else
 	$isObject_i:=0
 End if
 
-OTr__Unlock
+OTr_zUnlock

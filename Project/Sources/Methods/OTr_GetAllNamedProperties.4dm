@@ -58,28 +58,28 @@ $needTypes_b:=(Count parameters:C259>=4)
 $needItemSizes_b:=(Count parameters:C259>=5)
 $needDataSizes_b:=(Count parameters:C259>=6)
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i))
+If (OTr_zIsValidHandle($handle_i))
 	
 	// Determine the target object
 	If ($tag_t="")
 		$target_o:=<>OTR_Objects_ao{$handle_i}
 	Else 
-		If (OTr__ResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; \
+		If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; \
 			->$parent_o; ->$leafKey_t))
 			If (OB Is defined:C1231($parent_o; $leafKey_t))
 				$target_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
 				If ($target_o=Null:C1517)
-					OTr__Error(\
+					OTr_zError(\
 						"Tag does not reference an embedded object"; \
 						Current method name:C684)
 				End if 
 			Else 
-				OTr__Error("Item not found: "+$tag_t; Current method name:C684)
+				OTr_zError("Item not found: "+$tag_t; Current method name:C684)
 			End if 
 		Else 
-			OTr__Error("Invalid path: "+$tag_t; Current method name:C684)
+			OTr_zError("Invalid path: "+$tag_t; Current method name:C684)
 		End if 
 	End if 
 	
@@ -107,7 +107,7 @@ If (OTr__IsValidHandle($handle_i))
 				
 				If ($needTypes_b)
 					APPEND TO ARRAY:C911($outTypes_ptr->; \
-						OTr__MapType($target_o; $thisKey_t))
+						OTr_zMapType($target_o; $thisKey_t))
 				End if 
 				
 				If ($needItemSizes_b | $needDataSizes_b)
@@ -186,8 +186,8 @@ If (OTr__IsValidHandle($handle_i))
 	End if 
 	
 Else 
-	OTr__Error("Invalid handle"; Current method name:C684)
+	OTr_zError("Invalid handle"; Current method name:C684)
 	ARRAY TEXT:C222($outNames_ptr->; 0)
 End if 
 
-OTr__Unlock
+OTr_zUnlock

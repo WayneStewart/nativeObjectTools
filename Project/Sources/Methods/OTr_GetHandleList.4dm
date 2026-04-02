@@ -21,7 +21,7 @@ var $index_i : Integer
 
 ARRAY LONGINT:C221($handleList_ai; 0)
 
-OTr__Lock
+OTr_zLock
 
 For ($index_i; 1; Size of array:C274(<>OTR_InUse_ab))
 	If (<>OTR_InUse_ab{$index_i})
@@ -29,6 +29,6 @@ For ($index_i; 1; Size of array:C274(<>OTR_InUse_ab))
 	End if 
 End for 
 
-OTr__Unlock
+OTr_zUnlock
 
 COPY ARRAY:C226($handleList_ai; $handles_ptr->)

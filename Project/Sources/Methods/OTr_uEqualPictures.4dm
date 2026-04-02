@@ -1,7 +1,7 @@
 //%attributes = {"invisible":true}
 
 // ----------------------------------------------------
-// Project Method: OTr__EqualPictures ($picture_01_pic : Picture; \
+// Project Method: OTr_uEqualPictures ($picture_01_pic : Picture; \
 //   $picture_02_pic : Picture) --> $isEqual_b : Boolean
 
 // Compares two Picture values for equality.
