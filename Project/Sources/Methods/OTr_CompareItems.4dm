@@ -50,21 +50,21 @@ var $cmpBool_b : Boolean
 
 $result_i:=-1
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($srcHandle_i)\
- & OTr__IsValidHandle($cmpHandle_i))
+If (OTr_zIsValidHandle($srcHandle_i)\
+ & OTr_zIsValidHandle($cmpHandle_i))
 	
-	If (OTr__ResolvePath(<>OTR_Objects_ao{$srcHandle_i}; $srcTag_t; \
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$srcHandle_i}; $srcTag_t; \
 		False:C215; ->$srcParent_o; ->$srcLeafKey_t)\
-		 & OTr__ResolvePath(<>OTR_Objects_ao{$cmpHandle_i}; $cmpTag_t; \
+		 & OTr_zResolvePath(<>OTR_Objects_ao{$cmpHandle_i}; $cmpTag_t; \
 		False:C215; ->$cmpParent_o; ->$cmpLeafKey_t))
 		
 		If (OB Is defined:C1231($srcParent_o; $srcLeafKey_t)\
 			 & OB Is defined:C1231($cmpParent_o; $cmpLeafKey_t))
 			
-			$srcType_i:=OTr__MapType($srcParent_o; $srcLeafKey_t)
-			$cmpType_i:=OTr__MapType($cmpParent_o; $cmpLeafKey_t)
+			$srcType_i:=OTr_zMapType($srcParent_o; $srcLeafKey_t)
+			$cmpType_i:=OTr_zMapType($cmpParent_o; $cmpLeafKey_t)
 			
 			If ($srcType_i=$cmpType_i)
 				
@@ -112,7 +112,7 @@ If (OTr__IsValidHandle($srcHandle_i)\
 								Size of array:C274(<>OTR_Blobs_ablob))\
 								 & ($cmpBlobIdx_i<=\
 								Size of array:C274(<>OTR_Blobs_ablob)))
-								If (OTr__EqualBLOBs(<>OTR_Blobs_ablob{$srcBlobIdx_i}; <>OTR_Blobs_ablob{$cmpBlobIdx_i}))
+								If (OTr_uEqualBLOBs(<>OTR_Blobs_ablob{$srcBlobIdx_i}; <>OTR_Blobs_ablob{$cmpBlobIdx_i}))
 									$result_i:=1
 								End if 
 							End if 
@@ -127,20 +127,20 @@ If (OTr__IsValidHandle($srcHandle_i)\
 									Size of array:C274(<>OTR_Pictures_apic))\
 									 & ($cmpPicIdx_i<=\
 									Size of array:C274(<>OTR_Pictures_apic)))
-									If (OTr__EqualPictures(<>OTR_Pictures_apic{$srcPicIdx_i}; <>OTR_Pictures_apic{$cmpPicIdx_i}))
+									If (OTr_uEqualPictures(<>OTR_Pictures_apic{$srcPicIdx_i}; <>OTR_Pictures_apic{$cmpPicIdx_i}))
 										$result_i:=1
 									End if 
 								End if 
 							Else 
 								// All other text types: helper-based string comparison
-								If (Otr__EqualStrings($srcText_t; $cmpText_t))
+								If (OTr_uEqualStrings($srcText_t; $cmpText_t))
 									$result_i:=1
 								End if 
 							End if 
 						End if 
 						
 					: ($nativeSrcType_i=Is object:K8:27)
-						If (OTr__EqualObjects(OB Get:C1224(\
+						If (OTr_uEqualObjects(OB Get:C1224(\
 							$srcParent_o; $srcLeafKey_t; Is object:K8:27); \
 							OB Get:C1224(\
 							$cmpParent_o; $cmpLeafKey_t; Is object:K8:27)))
@@ -158,19 +158,19 @@ If (OTr__IsValidHandle($srcHandle_i)\
 				End case 
 				
 			Else 
-				OTr__Error("Type mismatch"; Current method name:C684)
+				OTr_zError("Type mismatch"; Current method name:C684)
 			End if 
 			
 		Else 
-			OTr__Error("Item not found"; Current method name:C684)
+			OTr_zError("Item not found"; Current method name:C684)
 		End if 
 		
 	Else 
-		OTr__Error("Invalid path"; Current method name:C684)
+		OTr_zError("Invalid path"; Current method name:C684)
 	End if 
 	
 Else 
-	OTr__Error("Invalid handle"; Current method name:C684)
+	OTr_zError("Invalid handle"; Current method name:C684)
 End if 
 
-OTr__Unlock
+OTr_zUnlock

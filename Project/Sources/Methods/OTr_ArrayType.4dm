@@ -29,11 +29,11 @@ var $leafKey_t : Text
 
 $arrayType_i:=-1
 
-If (OTr__IsValidHandle($handle_i))
-	If (OTr__ResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_zIsValidHandle($handle_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
-			$arrayType_i:=OTr__ArrayType($arrayObj_o)
+			$arrayType_i:=OTr_zArrayType($arrayObj_o)
 		End if 
 	End if 
 End if 

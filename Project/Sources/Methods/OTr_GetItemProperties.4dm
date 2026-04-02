@@ -58,9 +58,9 @@ $needType_b:=(Count parameters:C259>=4)
 $needItemSize_b:=(Count parameters:C259>=5)
 $needDataSize_b:=(Count parameters:C259>=6)
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i))
+If (OTr_zIsValidHandle($handle_i))
 	
 	$allKeys_c:=OB Keys:C1719(<>OTR_Objects_ao{$handle_i})
 	
@@ -125,7 +125,7 @@ If (OTr__IsValidHandle($handle_i))
 			$itemSize_i:=$dataSize_i+Length:C16($keys_at{$index_i})
 			
 			If ($needType_b)
-				$outType_ptr->:=OTr__MapType(\
+				$outType_ptr->:=OTr_zMapType(\
 					<>OTR_Objects_ao{$handle_i}; $keys_at{$index_i})
 			End if 
 			If ($needItemSize_b)
@@ -138,12 +138,12 @@ If (OTr__IsValidHandle($handle_i))
 		End if 
 		
 	Else 
-		OTr__Error("Index out of range: "+String:C10($index_i); \
+		OTr_zError("Index out of range: "+String:C10($index_i); \
 			Current method name:C684)
 	End if 
 	
 Else 
-	OTr__Error("Invalid handle"; Current method name:C684)
+	OTr_zError("Invalid handle"; Current method name:C684)
 End if 
 
-OTr__Unlock
+OTr_zUnlock

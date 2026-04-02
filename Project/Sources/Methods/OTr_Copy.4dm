@@ -23,9 +23,9 @@ var $source_o : Object
 
 $copyHandle_i:=0
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i))
+If (OTr_zIsValidHandle($handle_i))
 	$slot_i:=Find in array(<>OTR_InUse_ab; False)
 	If ($slot_i=-1)
 		$slot_i:=Size of array(<>OTR_InUse_ab)+1
@@ -39,7 +39,7 @@ If (OTr__IsValidHandle($handle_i))
 
 	$copyHandle_i:=$slot_i
 Else
-	OTr__Error("Invalid handle"; Current method name)
+	OTr_zError("Invalid handle"; Current method name)
 End if
 
-OTr__Unlock
+OTr_zUnlock

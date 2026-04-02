@@ -28,12 +28,12 @@ var $anObj_o; $parent_o; $arrayObject_o : Object
 var $leafKey_t : Text
 var $type_i; $index_i; $count_i; $currentItem_i : Integer
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i))
+If (OTr_zIsValidHandle($handle_i))
 	$anObj_o:=<>OTR_Objects_ao{$handle_i}  // Make the code easier to read
 	
-	If (OTr__ResolvePath($anObj_o; $tag_t; True:C214; ->$parent_o; ->$leafKey_t))
+	If (OTr_zResolvePath($anObj_o; $tag_t; True:C214; ->$parent_o; ->$leafKey_t))
 		$type_i:=Type:C295($array_ptr->)
 		$count_i:=Size of array:C274($array_ptr->)
 		$currentItem_i:=$array_ptr->
@@ -76,10 +76,10 @@ If (OTr__IsValidHandle($handle_i))
 	End if 
 	
 Else 
-	OTr__Error("Invalid handle"; Current method name:C684)
+	OTr_zError("Invalid handle"; Current method name:C684)
 End if 
 
-OTr__Unlock
+OTr_zUnlock
 
 
 

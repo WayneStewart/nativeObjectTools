@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":true,"preemptive":"capable","lang":"en"}
 // ----------------------------------------------------
-// Project Method: OTr__EqualObjects (Object #1; Object #2) --> Boolean
+// Project Method: OTr_uEqualObjects (Object #1; Object #2) --> Boolean
 
 //  Compares two objects. If they are the same
 //    (ie. they have exactly the same elements and values),
@@ -58,7 +58,7 @@ If ($FirstPropertyCount_i=$SecondPropertyCount_i)  //They won't be equal if they
 					
 				: ($FirstType_ai{$x}=Is object:K8:27)
 					//compare the two objects
-					$IsEqual_b:=OTr__EqualObjects(\
+					$IsEqual_b:=OTr_uEqualObjects(\
 						OB Get:C1224($First_o; $FirstProperty_at{$x}; Is object:K8:27); \
 						OB Get:C1224($Second_o; $FirstProperty_at{$x}; Is object:K8:27))
 					
@@ -81,7 +81,7 @@ If ($FirstPropertyCount_i=$SecondPropertyCount_i)  //They won't be equal if they
 					If ($FirstItemCount_i=$SecondItemCount_i)
 						For ($y; 1; $FirstItemCount_i; 1)
 							If ((OB Is defined:C1231($First_ao{$y})) & (OB Is defined:C1231($Second_ao{$y})))  //If they are both objects
-								$IsEqual_b:=OTr__EqualObjects($First_ao{$y}; $Second_ao{$y})
+								$IsEqual_b:=OTr_uEqualObjects($First_ao{$y}; $Second_ao{$y})
 							Else   //Compare text
 								$IsEqual_b:=($First_at{$y}=$Second_at{$y})
 							End if 

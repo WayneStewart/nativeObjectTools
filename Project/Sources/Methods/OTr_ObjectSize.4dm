@@ -30,11 +30,11 @@ var $thisObject_o : Object
 $size_i:=0
 $theseKeys_c:=New collection:C1472  // Initialise it
 
-// OTr__Lock // Unnecessary to lock for Read Only access
+// OTr_zLock // Unnecessary to lock for Read Only access
 
-OTr__Init
+OTr_zInit
 
-If (OTr__IsValidHandle($handle_i))
+If (OTr_zIsValidHandle($handle_i))
 	$thisObject_o:=<>OTR_Objects_ao{$handle_i}  // This is not a copy, just making it easier to work with
 	$size_i:=Length:C16(JSON Stringify:C1217(<>OTR_Objects_ao{$handle_i}))  // Get the basic text length
 	
@@ -78,10 +78,10 @@ If (OTr__IsValidHandle($handle_i))
 	
 	
 Else 
-	OTr__Error("Invalid handle"; Current method name:C684)
+	OTr_zError("Invalid handle"; Current method name:C684)
 End if 
 
-// OTr__Unlock // Unnecessary to lock for Read Only access
+// OTr_zUnlock // Unnecessary to lock for Read Only access
 
 
 

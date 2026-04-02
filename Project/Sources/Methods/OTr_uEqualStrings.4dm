@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: Otr__EqualStrings ($stringOne_t : Text; \
+// Project Method: OTr_uEqualStrings ($stringOne_t : Text; \
 //   $stringTwo_t : Text) --> $isEqual_b : Boolean
 
 // Compares two text values for equality.

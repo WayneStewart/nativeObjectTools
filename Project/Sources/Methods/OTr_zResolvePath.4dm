@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr__ResolvePath ($root_o : Object; $tag_t : Text; \
+// Project Method: OTr_zResolvePath ($root_o : Object; $tag_t : Text; \
 //   $createIntermediates_b : Boolean; $leafObject_ptr : Pointer; \
 //   $leafKey_ptr : Pointer) --> $resolved_b : Boolean
 

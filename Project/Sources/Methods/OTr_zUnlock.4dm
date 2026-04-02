@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr__Unlock
+// Project Method: OTr_zUnlock
 
 // Releases the OTr registry semaphore.
 

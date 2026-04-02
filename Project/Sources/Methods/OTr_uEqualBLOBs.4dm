@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: OTr__EqualBLOBs ($blobOne_blob : Blob; \
+// Project Method: OTr_uEqualBLOBs ($blobOne_blob : Blob; \
 //   $blobTwo_blob : Blob) --> $isEqual_b : Boolean
 
 // Compares two BLOB values for equality.

@@ -36,17 +36,17 @@ var $picIdx_i : Integer
 var $newBlobIdx_i : Integer
 var $newPicIdx_i : Integer
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($srcHandle_i)\
- & OTr__IsValidHandle($destHandle_i))
+If (OTr_zIsValidHandle($srcHandle_i)\
+ & OTr_zIsValidHandle($destHandle_i))
 	
-	If (OTr__ResolvePath(<>OTR_Objects_ao{$srcHandle_i}; $srcTag_t; \
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$srcHandle_i}; $srcTag_t; \
 		False:C215; ->$srcParent_o; ->$srcLeafKey_t))
 		
 		If (OB Is defined:C1231($srcParent_o; $srcLeafKey_t))
 			
-			If (OTr__ResolvePath(<>OTR_Objects_ao{$destHandle_i}; \
+			If (OTr_zResolvePath(<>OTR_Objects_ao{$destHandle_i}; \
 				$destTag_t; True:C214; ->$destParent_o; ->$destLeafKey_t))
 				
 				$nativeType_i:=OB Get type:C1230($srcParent_o; $srcLeafKey_t)
@@ -132,21 +132,21 @@ If (OTr__IsValidHandle($srcHandle_i)\
 				End case 
 				
 			Else 
-				OTr__Error("Cannot resolve destination: "+$destTag_t; \
+				OTr_zError("Cannot resolve destination: "+$destTag_t; \
 					Current method name:C684)
 			End if 
 			
 		Else 
-			OTr__Error("Source item not found: "+$srcTag_t; \
+			OTr_zError("Source item not found: "+$srcTag_t; \
 				Current method name:C684)
 		End if 
 		
 	Else 
-		OTr__Error("Invalid source path: "+$srcTag_t; Current method name:C684)
+		OTr_zError("Invalid source path: "+$srcTag_t; Current method name:C684)
 	End if 
 	
 Else 
-	OTr__Error("Invalid handle"; Current method name:C684)
+	OTr_zError("Invalid handle"; Current method name:C684)
 End if 
 
-OTr__Unlock
+OTr_zUnlock

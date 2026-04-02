@@ -28,23 +28,23 @@ var $leafKey_t : Text
 
 $otType_i:=0
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i))
+If (OTr_zIsValidHandle($handle_i))
 
-	If (OTr__ResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False; \
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False; \
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			$otType_i:=OTr__MapType($parent_o; $leafKey_t)
+			$otType_i:=OTr_zMapType($parent_o; $leafKey_t)
 		Else
-			OTr__Error("Item not found: "+$tag_t; Current method name)
+			OTr_zError("Item not found: "+$tag_t; Current method name)
 		End if
 	Else
-		OTr__Error("Invalid path: "+$tag_t; Current method name)
+		OTr_zError("Invalid path: "+$tag_t; Current method name)
 	End if
 
 Else
-	OTr__Error("Invalid handle"; Current method name)
+	OTr_zError("Invalid handle"; Current method name)
 End if
 
-OTr__Unlock
+OTr_zUnlock

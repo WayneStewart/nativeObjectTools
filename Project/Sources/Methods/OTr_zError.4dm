@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr__Error ($message_t : Text; $source_t : Text) --> \
+// Project Method: OTr_zError ($message_t : Text; $source_t : Text) --> \
 //   $handled_b : Boolean
 
 // Sends an OTr error to the configured handler when available.

@@ -1,12 +1,12 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: OTr__ArrayType ($arrayObj_o : Object) --> Integer
+// Project Method: OTr_zArrayType ($arrayObj_o : Object) --> Integer
 
 // Returns the stored arrayType value from an OTr
 // array object. Returns -1 if the object is null
 // or does not contain an arrayType property.
 
-// This is the primitive used by OTr__ArrayType and
+// This is the primitive used by OTr_zArrayType and
 // any method that has already resolved its array object
 // and does not need to go through a handle/tag lookup.
 

@@ -24,16 +24,16 @@ var $parent_o : Object
 var $leafKey_t : Text
 var $copy_o : Object
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i) & OTr__IsValidHandle($sourceHandle_i))
-	If (OTr__ResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; True; \
+If (OTr_zIsValidHandle($handle_i) & OTr_zIsValidHandle($sourceHandle_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; True; \
 		->$parent_o; ->$leafKey_t))
 		$copy_o:=OB Copy(<>OTR_Objects_ao{$sourceHandle_i})
 		OB SET($parent_o; $leafKey_t; $copy_o)
 	End if
 Else
-	OTr__Error("Invalid handle"; Current method name)
+	OTr_zError("Invalid handle"; Current method name)
 End if
 
-OTr__Unlock
+OTr_zUnlock

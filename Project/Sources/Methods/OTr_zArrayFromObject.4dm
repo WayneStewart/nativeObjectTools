@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: OTr__ArrayFromObject ($arrayObj_o : Object; $arrayPtr : Pointer)
+// Project Method: OTr_zArrayFromObject ($arrayObj_o : Object; $arrayPtr : Pointer)
 
 // Populates a 4D array from an OTr array object.
 // The target array must already be declared with the

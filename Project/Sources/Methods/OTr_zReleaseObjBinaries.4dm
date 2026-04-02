@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr__ReleaseObjBinaries ($obj_o : Object)
+// Project Method: OTr_zReleaseObjBinaries ($obj_o : Object)
 
 // Walks an object's properties, releasing any BLOB and Picture parallel
 // array slots referenced by blob:N and pic:N values. Recurses into
@@ -66,7 +66,7 @@ If ($obj_o#Null:C1517)
 				
 			: ($nativeType_i=Is object:K8:27)
 				$nested_o:=OB Get:C1224($obj_o; $thisKey_t; Is object:K8:27)
-				OTr__ReleaseObjBinaries($nested_o)
+				OTr_zReleaseObjBinaries($nested_o)
 				
 		End case 
 		

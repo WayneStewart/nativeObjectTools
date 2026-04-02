@@ -33,14 +33,14 @@ End if
 $json_t:=""
 $valid_b:=False
 
-OTr__Lock
+OTr_zLock
 
-If (OTr__IsValidHandle($handle_i))
+If (OTr_zIsValidHandle($handle_i))
 	$snapshot_o:=OB Copy(<>OTR_Objects_ao{$handle_i})
 	$valid_b:=True
 End if
 
-OTr__Unlock
+OTr_zUnlock
 
 If ($valid_b)
 	If ($prettyPrint_b)

@@ -17,8 +17,8 @@
 
 #DECLARE($options_i : Integer)
 
-OTr__Lock
+OTr_zLock
 
 <>OTR_Options_i:=$options_i
 
-OTr__Unlock
+OTr_zUnlock

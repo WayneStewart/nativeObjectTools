@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr__IsValidHandle ($handle_i : Integer) --> \
+// Project Method: OTr_zIsValidHandle ($handle_i : Integer) --> \
 //   $isValid_b : Boolean
 
 // Validates that a handle index is in range and currently allocated.

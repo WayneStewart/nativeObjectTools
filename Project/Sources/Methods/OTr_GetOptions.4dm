@@ -15,6 +15,6 @@
 
 #DECLARE()->$options_i : Integer
 
-OTr__Init
+OTr_zInit
 
 $options_i:=<>OTR_Options_i

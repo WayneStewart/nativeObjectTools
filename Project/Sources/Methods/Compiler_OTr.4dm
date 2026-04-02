@@ -42,10 +42,10 @@ If (False:C215)
 	C_TEXT:C284(OTr_SetErrorHandler; $0)
 	C_TEXT:C284(OTr_SetErrorHandler; $1)
 	
-	C_BOOLEAN:C305(OTr__ResolvePath; $0; $3)
-	C_OBJECT:C1216(OTr__ResolvePath; $1)
-	C_TEXT:C284(OTr__ResolvePath; $2)
-	C_POINTER:C301(OTr__ResolvePath; $4; $5)
+	C_BOOLEAN:C305(OTr_zResolvePath; $0; $3)
+	C_OBJECT:C1216(OTr_zResolvePath; $1)
+	C_TEXT:C284(OTr_zResolvePath; $2)
+	C_POINTER:C301(OTr_zResolvePath; $4; $5)
 	
 	C_LONGINT:C283(OTr_PutLong; $1; $3)
 	C_TEXT:C284(OTr_PutLong; $2)
@@ -122,13 +122,13 @@ If (False:C215)
 	
 	C_LONGINT:C283(OTr_GetOptions; $0)
 	
-	C_BOOLEAN:C305(OTr__IsValidHandle; $0)
-	C_LONGINT:C283(OTr__IsValidHandle; $1)
+	C_BOOLEAN:C305(OTr_zIsValidHandle; $0)
+	C_LONGINT:C283(OTr_zIsValidHandle; $1)
 	
 	C_LONGINT:C283(OTr_Clear; $1)
 	
-	C_BOOLEAN:C305(OTr__Error; $0)
-	C_TEXT:C284(OTr__Error; $1; $2)
+	C_BOOLEAN:C305(OTr_zError; $0)
+	C_TEXT:C284(OTr_zError; $1; $2)
 	
 	C_TEXT:C284(OTr_GetVersion; $0)
 	
@@ -175,13 +175,13 @@ If (False:C215)
 	C_LONGINT:C283(OTr_DeleteItem; $1)
 	C_TEXT:C284(OTr_DeleteItem; $2)
 	
-	C_LONGINT:C283(OTr__MapType; $0)
-	C_OBJECT:C1216(OTr__MapType; $1)
-	C_TEXT:C284(OTr__MapType; $2)
+	C_LONGINT:C283(OTr_zMapType; $0)
+	C_OBJECT:C1216(OTr_zMapType; $1)
+	C_TEXT:C284(OTr_zMapType; $2)
 	
-	C_OBJECT:C1216(OTr__ReleaseObjBinaries; $1)
+	C_OBJECT:C1216(OTr_zReleaseObjBinaries; $1)
 	
-	C_TEXT:C284(OTr__ReleaseBinaryRef; $1)
+	C_TEXT:C284(OTr_zReleaseBinaryRef; $1)
 	
 	C_LONGINT:C283(OTr_Register; $0)
 	C_TEXT:C284(OTr_Register; $1)
@@ -190,21 +190,95 @@ If (False:C215)
 	
 	C_POINTER:C301(OTr_GetHandleList; $1)
 	
-	C_BOOLEAN:C305(OTr__EqualBLOBs; $0)
-	C_BLOB:C604(OTr__EqualBLOBs; $1; $2)
+	C_BOOLEAN:C305(OTr_uEqualBLOBs; $0)
+	C_BLOB:C604(OTr_uEqualBLOBs; $1; $2)
 	
-	C_BOOLEAN:C305(Otr__EqualStrings; $0)
-	C_TEXT:C284(Otr__EqualStrings; $1; $2)
+	C_BOOLEAN:C305(OTr_uEqualStrings; $0)
+	C_TEXT:C284(OTr_uEqualStrings; $1; $2)
 	
-	C_BOOLEAN:C305(OTr__EqualPictures; $0)
-	C_PICTURE:C286(OTr__EqualPictures; $1; $2)
+	C_BOOLEAN:C305(OTr_uEqualPictures; $0)
+	C_PICTURE:C286(OTr_uEqualPictures; $1; $2)
 	
-	C_OBJECT:C1216(OTr__EqualObjects; $1; $2)
-	C_BOOLEAN:C305(OTr__EqualObjects; $0)
+	C_OBJECT:C1216(OTr_uEqualObjects; $1; $2)
+	C_BOOLEAN:C305(OTr_uEqualObjects; $0)
 	
 	C_LONGINT:C283(OTr_PutArray; $1)
 	C_TEXT:C284(OTr_PutArray; $2)
 	C_POINTER:C301(OTr_PutArray; $3)
+	
+	C_LONGINT:C283(OTr_PutArrayLong; $1; $3; $4)
+	C_TEXT:C284(OTr_PutArrayLong; $2)
+	
+	C_LONGINT:C283(OTr_GetArrayLong; $0; $1; $3)
+	C_TEXT:C284(OTr_GetArrayLong; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayReal; $1; $3)
+	C_TEXT:C284(OTr_PutArrayReal; $2)
+	C_REAL:C285(OTr_PutArrayReal; $4)
+	
+	C_REAL:C285(OTr_GetArrayReal; $0)
+	C_LONGINT:C283(OTr_GetArrayReal; $1; $3)
+	C_TEXT:C284(OTr_GetArrayReal; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayString; $1; $3)
+	C_TEXT:C284(OTr_PutArrayString; $2; $4)
+	
+	C_TEXT:C284(OTr_GetArrayString; $0; $2)
+	C_LONGINT:C283(OTr_GetArrayString; $1; $3)
+	
+	C_LONGINT:C283(OTr_PutArrayText; $1; $3)
+	C_TEXT:C284(OTr_PutArrayText; $2; $4)
+	
+	C_TEXT:C284(OTr_GetArrayText; $0; $2)
+	C_LONGINT:C283(OTr_GetArrayText; $1; $3)
+	
+	C_LONGINT:C283(OTr_PutArrayDate; $1; $3)
+	C_TEXT:C284(OTr_PutArrayDate; $2)
+	C_DATE:C307(OTr_PutArrayDate; $4)
+	
+	C_DATE:C307(OTr_GetArrayDate; $0)
+	C_LONGINT:C283(OTr_GetArrayDate; $1; $3)
+	C_TEXT:C284(OTr_GetArrayDate; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayTime; $1; $3)
+	C_TEXT:C284(OTr_PutArrayTime; $2)
+	C_TIME:C306(OTr_PutArrayTime; $4)
+	
+	C_TIME:C306(OTr_GetArrayTime; $0)
+	C_LONGINT:C283(OTr_GetArrayTime; $1; $3)
+	C_TEXT:C284(OTr_GetArrayTime; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayBoolean; $1; $3)
+	C_TEXT:C284(OTr_PutArrayBoolean; $2)
+	C_BOOLEAN:C305(OTr_PutArrayBoolean; $4)
+	
+	C_BOOLEAN:C305(OTr_GetArrayBoolean; $0)
+	C_LONGINT:C283(OTr_GetArrayBoolean; $1; $3)
+	C_TEXT:C284(OTr_GetArrayBoolean; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayBLOB; $1; $3)
+	C_TEXT:C284(OTr_PutArrayBLOB; $2)
+	C_BLOB:C604(OTr_PutArrayBLOB; $4)
+	
+	C_BLOB:C604(OTr_GetArrayBLOB; $0)
+	C_LONGINT:C283(OTr_GetArrayBLOB; $1; $3)
+	C_TEXT:C284(OTr_GetArrayBLOB; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayPicture; $1; $3)
+	C_TEXT:C284(OTr_PutArrayPicture; $2)
+	C_PICTURE:C286(OTr_PutArrayPicture; $4)
+	
+	C_PICTURE:C286(OTr_GetArrayPicture; $0)
+	C_LONGINT:C283(OTr_GetArrayPicture; $1; $3)
+	C_TEXT:C284(OTr_GetArrayPicture; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayPointer; $1; $3)
+	C_TEXT:C284(OTr_PutArrayPointer; $2)
+	C_POINTER:C301(OTr_PutArrayPointer; $4)
+	
+	C_POINTER:C301(OTr_GetArrayPointer; $0)
+	C_LONGINT:C283(OTr_GetArrayPointer; $1; $3)
+	C_TEXT:C284(OTr_GetArrayPointer; $2)
 	
 	
 	C_TIME:C306(OTr_uTimeToText; $1)
@@ -231,11 +305,17 @@ If (False:C215)
 	C_LONGINT:C283(OTr_ResizeArray; $1; $3)
 	C_TEXT:C284(OTr_ResizeArray; $2)
 	
-	C_OBJECT:C1216(OTr__ArrayFromObject; $1)
-	C_POINTER:C301(OTr__ArrayFromObject; $2)
+	C_LONGINT:C283(OTr_DeleteElement; $1; $3; $4)
+	C_TEXT:C284(OTr_DeleteElement; $2)
 	
-	C_LONGINT:C283(OTr__ArrayType; $0)
-	C_OBJECT:C1216(OTr__ArrayType; $1)
+	C_LONGINT:C283(OTr_InsertElement; $1; $3; $4)
+	C_TEXT:C284(OTr_InsertElement; $2)
+	
+	C_OBJECT:C1216(OTr_zArrayFromObject; $1)
+	C_POINTER:C301(OTr_zArrayFromObject; $2)
+	
+	C_LONGINT:C283(OTr_zArrayType; $0)
+	C_OBJECT:C1216(OTr_zArrayType; $1)
 	
 	C_LONGINT:C283(OTr_ArrayType; $0; $1)
 	C_TEXT:C284(OTr_ArrayType; $2)
@@ -259,5 +339,9 @@ If (False:C215)
 	C_TEXT:C284(OTr_FindInArray; $2; $3)
 	C_LONGINT:C283(OTr_FindInArray; $1; $0; $4)
 	
+	C_LONGINT:C283(OTr_uNewValueForEmbeddedType; $1)
+	C_VARIANT:C1683(OTr_uNewValueForEmbeddedType; $0)
+	
+	C_LONGINT:C283(OTr_zSetOK; $1)
 	
 End if 

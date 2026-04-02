@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr__Lock
+// Project Method: OTr_zLock
 
 // Acquires the OTr registry semaphore.
 
@@ -13,7 +13,7 @@
 // ----------------------------------------------------
 
 
-OTr__Init
+OTr_zInit
 
 While (Semaphore:C143(<>OTR_Semaphore_t; 10))
 	IDLE:C311
