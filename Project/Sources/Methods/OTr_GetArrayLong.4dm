@@ -33,31 +33,31 @@ var $arrayType_i : Integer
 $value_i:=0
 
 If (OTr_zIsValidHandle($handle_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False; \
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; \
 		->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			$arrayObj_o:=OB Get($parent_o; $leafKey_t)
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
+			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
 			$arrayType_i:=OTr_zArrayType($arrayObj_o)
 			If (($arrayType_i=LongInt array:K8:19) | ($arrayType_i=Integer array:K8:18))
 				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
-					If (OB Is defined($arrayObj_o; String($index_i)))
-						$value_i:=Num(OB Get($arrayObj_o; String($index_i)))
-						OTr_zSetOK(1)
-					Else
-						OTr_zSetOK(0)
-					End if
-				Else
-					OTr_zSetOK(0)
-				End if
-			Else
-				OTr_zError("Tag does not reference a LongInt or Integer array"; Current method name)
-				OTr_zSetOK(0)
-			End if
-		Else
-			OTr_zSetOK(0)
-		End if
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name)
-	OTr_zSetOK(0)
-End if
+					If (OB Is defined:C1231($arrayObj_o; String:C10($index_i)))
+						$value_i:=Num:C11(OB Get:C1224($arrayObj_o; String:C10($index_i)))
+						OTr_zSetOK  // (1)
+					Else 
+						OTr_zSetOK  // (0)
+					End if 
+				Else 
+					OTr_zSetOK  // (0)
+				End if 
+			Else 
+				OTr_zError("Tag does not reference a LongInt or Integer array"; Current method name:C684)
+				OTr_zSetOK  // (0)
+			End if 
+		Else 
+			OTr_zSetOK  // (0)
+		End if 
+	End if 
+Else 
+	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_zSetOK  // (0)
+End if 

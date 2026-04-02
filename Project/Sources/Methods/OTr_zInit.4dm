@@ -12,18 +12,30 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
+
+If (Storage:C1525.OTr=Null:C1517)
+	
+	var $fullpath : Object
+	var $name : Text
+	If (Application type:C494#4D Remote mode:K5:5)
+		$fullpath:=Path to object:C1547(Structure file:C489(*))
+		$name:=$fullpath.name
+	End if 
+	Use (Storage:C1525)
+		Storage:C1525.OTr:=New shared object:C1526("structureName"; $name)
+	End use 
+End if 
+
+
+
+
 C_BOOLEAN:C305(<>OTR_Initialised_b)
+
+Compiler_OTr
 
 
 If (Not:C34(<>OTR_Initialised_b))
-	ARRAY OBJECT:C1221(<>OTR_Objects_ao; 0)
-	ARRAY BOOLEAN:C223(<>OTR_InUse_ab; 0)
 	
-	ARRAY BLOB:C1222(<>OTR_Blobs_ablob; 0)
-	ARRAY BOOLEAN:C223(<>OTR_BlobInUse_ab; 0)
-	
-	ARRAY PICTURE:C279(<>OTR_Pictures_apic; 0)
-	ARRAY BOOLEAN:C223(<>OTR_PicInUse_ab; 0)
 	
 	<>OTR_Options_i:=4  // AutoCreateObjects on by default.
 	<>OTR_ErrorHandler_t:=""

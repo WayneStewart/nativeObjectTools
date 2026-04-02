@@ -32,31 +32,31 @@ var $arrayType_i : Integer
 OTr_zLock
 
 If (OTr_zIsValidHandle($handle_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False; \
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; \
 		->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			$arrayObj_o:=OB Get($parent_o; $leafKey_t)
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
+			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
 			$arrayType_i:=OTr_zArrayType($arrayObj_o)
 			If ($arrayType_i=Time array:K8:29)
 				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
-					$arrayObj_o[String($index_i)]:=OTr_uTimeToText($value_h)
-					OTr_zSetOK(1)
-				Else
-					OTr_zError("Index out of range"; Current method name)
-					OTr_zSetOK(0)
-				End if
-			Else
-				OTr_zError("Tag does not reference a Time array"; Current method name)
-				OTr_zSetOK(0)
-			End if
-		Else
-			OTr_zError("Tag not found"; Current method name)
-			OTr_zSetOK(0)
-		End if
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name)
-	OTr_zSetOK(0)
-End if
+					$arrayObj_o[String:C10($index_i)]:=OTr_uTimeToText($value_h)
+					OTr_zSetOK  // (1)
+				Else 
+					OTr_zError("Index out of range"; Current method name:C684)
+					OTr_zSetOK  // (0)
+				End if 
+			Else 
+				OTr_zError("Tag does not reference a Time array"; Current method name:C684)
+				OTr_zSetOK  // (0)
+			End if 
+		Else 
+			OTr_zError("Tag not found"; Current method name:C684)
+			OTr_zSetOK  // (0)
+		End if 
+	End if 
+Else 
+	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_zSetOK  // (0)
+End if 
 
 OTr_zUnlock

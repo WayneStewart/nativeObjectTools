@@ -22,10 +22,11 @@
 
 var $handler_t : Text
 
-$handled_b:=False
+$handled_b:=False:C215
 
 $handler_t:=<>OTR_ErrorHandler_t
 If ($handler_t#"")
-	EXECUTE METHOD($handler_t)
-	$handled_b:=True
-End if
+	EXECUTE METHOD:C1007($handler_t)
+	$handled_b:=True:C214
+End if 
+
