@@ -96,28 +96,28 @@ If (OTr_zIsValidHandle($handle_i))
 					// Search using native Find in array with type conversion
 					Case of 
 						: (($type_i=Text array:K8:16) | ($type_i=String array:K8:15))
-							$result_i:=Find in array:C230($Work_at; $value_t)
+							$result_i:=Find in array:C230($Work_at; $value_t; $startFrom_i)
 							
 						: ($type_i=LongInt array:K8:19)
-							$result_i:=Find in array:C230($Work_ai; Num:C11($value_t))
+							$result_i:=Find in array:C230($Work_ai; Num:C11($value_t); $startFrom_i)
 							
 						: ($type_i=Integer array:K8:18)
-							$result_i:=Find in array:C230($Work_ai; Num:C11($value_t))
+							$result_i:=Find in array:C230($Work_ai; Num:C11($value_t); $startFrom_i)
 							
 						: ($type_i=Real array:K8:17)
-							$result_i:=Find in array:C230($Work_ar; Num:C11($value_t))
+							$result_i:=Find in array:C230($Work_ar; Num:C11($value_t); $startFrom_i)
 							
 						: ($type_i=Boolean array:K8:21)
 							$searchBool_b:=(($value_t="true") | ($value_t="1"))
-							$result_i:=Find in array:C230($Work_ab; $searchBool_b)
+							$result_i:=Find in array:C230($Work_ab; $searchBool_b; $startFrom_i)
 							
 						: ($type_i=Date array:K8:20)
 							$searchDate_d:=OTr_uTextToDate($value_t)
-							$result_i:=Find in array:C230($Work_ad; $searchDate_d)
+							$result_i:=Find in array:C230($Work_ad; $searchDate_d; $startFrom_i)
 							
 						: ($type_i=Time array:K8:29)
 							$search_h:=OTr_uTextToTime($value_t)
-							$result_i:=Find in array:C230($Work_ah; $search_h)
+							$result_i:=Find in array:C230($Work_ah; $search_h; $startFrom_i)
 							
 					End case 
 				End if 

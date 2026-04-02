@@ -35,6 +35,8 @@ If (Not:C34(<>OTR_Initialised_b))
 	ARRAY BOOLEAN:C223(<>OTR_PicInUse_ab; 0)
 	ARRAY PICTURE:C279(<>OTR_Pictures_apic; 0)
 	
+	Compiler_OTrSortInterprocess  // These are the arrays used in the sorting routines
+	
 End if 
 
 
@@ -280,6 +282,18 @@ If (False:C215)
 	C_LONGINT:C283(OTr_GetArrayPointer; $1; $3)
 	C_TEXT:C284(OTr_GetArrayPointer; $2)
 	
+	C_LONGINT:C283(OTr_SortArrays; $1)
+	C_TEXT:C284(OTr_SortArrays; $2; $3; $4; $5; $6; $7; $8; $9; $10; $11; $12; $13; $14; $15)
+	
+	C_BOOLEAN:C305(OTr_zSortValidatePair; $0)
+	C_OBJECT:C1216(OTr_zSortValidatePair; $1)
+	
+	C_POINTER:C301(OTr_zSortSlotPointer; $0)
+	C_LONGINT:C283(OTr_zSortSlotPointer; $1; $2)
+	
+	C_LONGINT:C283(OTr_zSortFillSlot; $1; $3)
+	C_OBJECT:C1216(OTr_zSortFillSlot; $2)
+	
 	
 	C_TIME:C306(OTr_uTimeToText; $1)
 	C_TEXT:C284(OTr_uTimeToText; $0)
@@ -342,6 +356,6 @@ If (False:C215)
 	C_LONGINT:C283(OTr_uNewValueForEmbeddedType; $1)
 	C_VARIANT:C1683(OTr_uNewValueForEmbeddedType; $0)
 	
-	C_LONGINT:C283(OTr_zSetOK; $1)
+	C_LONGINT:C283(OTr_zSetOK; $1; $0)
 	
 End if 
