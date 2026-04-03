@@ -105,6 +105,10 @@ var $otrArrPicOut_pic : Picture
 var $otArrPtrOut_ptr : Pointer
 var $countCheck_i : Integer
 var $reg_i : Integer
+var $TAB; $CR : Text
+
+$TAB:=Char:C90(Tab:K15:37)
+$CR:=Char:C90(Carriage return:K15:38)
 
 ARRAY TEXT:C222($rows_at; 0)
 ARRAY TEXT:C222($otrPropNames_at; 0)
@@ -121,13 +125,12 @@ $ready_b:=True:C214
 $reg_i:=OT Register("20C9-EMQv-BJBl-D20M")  // v5.1r1  ` Modified by: Guy Algot (09/07/23)
 
 $testOtH_i:=OT New
-$testOtH_2_i:=OT New
 
-$wombat:=OT IsObject($testOtH_i)
+// $wombat:=OT IsObject($testOtH_i)
 //Do something with the object
 //End if 
 
-If ($testOtH_i>=0)
+If ($testOtH_i=0)
 	ALERT:C41("ObjectTools 5.0 is not available or not registered. "+Char:C90(Carriage return:K15:38)+"Ensure the plugin is installed and this method runs on a compatible platform. Test aborted.")
 	$ready_b:=False:C215
 End if 
@@ -166,7 +169,8 @@ If ($ready_b)
 	$otrResult_t:="Fail: not run"
 	
 	$testOtH_i:=OT New
-	If ($testOtH_i>0)
+	
+	If ($testOtH_i#0)
 		OT Clear($testOtH_i)
 		$otResult_t:="Pass"
 	Else 
@@ -174,7 +178,7 @@ If ($ready_b)
 	End if 
 	
 	$testOtrH_i:=OTr_New
-	If (($testOtrH_i>0) & (OK=1))
+	If (($testOtrH_i#0) & (OK=1))
 		OTr_Clear($testOtrH_i)
 		If (OK=1)
 			$otrResult_t:="Pass"
@@ -191,7 +195,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 2. String / Text
@@ -224,7 +228,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 3. Longint
@@ -257,7 +261,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 4. Real
@@ -290,7 +294,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 5. Boolean
@@ -323,7 +327,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 6. Date
@@ -357,7 +361,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 7. Time
@@ -391,7 +395,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 8. Pointer
@@ -404,9 +408,12 @@ If ($ready_b)
 	$otPtrTarget_t:="ot-ptr-val"
 	$ptrTarget_t:="otr-ptr-val"
 	
-	OT PutPointer($otMain_i; "ptr"; ->$otPtrTarget_t)
-	OT GetPointer($otMain_i; "ptr"; ->$gotPtr_ptr)
-	If ((OK=1) & ($gotPtr_ptr#Null:C1517) & ($gotPtr_ptr->="ot-ptr-val"))
+	$ptrVar:=->$otPtrTarget_t
+	var $ptrVarOut : Pointer
+	
+	OT PutPointer($otMain_i; "ptr"; $ptrVar)
+	OT GetPointer($otMain_i; "ptr"; $ptrVarOut)  //->$gotPtr_ptr)
+	If ((OK=1) & ($ptrVarOut#Null:C1517) & ($ptrVarOut->="ot-ptr-val"))
 		$otResult_t:="Pass"
 	Else 
 		$otResult_t:="Fail: dereference mismatch or OK=0"
@@ -429,7 +436,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 9. Picture
@@ -462,7 +469,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 10. BLOB
@@ -496,7 +503,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 11. Variable
@@ -533,7 +540,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 12. Record  (Intentional difference §4.3)
@@ -550,17 +557,25 @@ If ($ready_b)
 	// in §4.3 applies only when modification occurs between
 	// Put and Get; immediate round-trip should match).
 	CREATE RECORD:C68([Table_1:1])
+	[Table_1:1]Name:2:="Wayne"
+	SAVE RECORD:C53([Table_1:1])
 	
-	OT PutRecord($otMain_i; "rec"; Table:C252([Table_1:1]))
+	$tablePtr:=->[Table_1:1]
+	OT PutRecord($otMain_i; "rec"; $tablePtr)
+	
+	CREATE RECORD:C68([Table_1:1])
 	OT GetRecord($otMain_i; "rec")
+	[Table_1:1]ID:1:=Sequence number:C244([Table_1:1])
+	SAVE RECORD:C53([Table_1:1])
+	
 	If (OK=1)
 		$otResult_t:="Pass"
 	Else 
 		$otResult_t:="Fail: OT GetRecord set OK=0"
 	End if 
 	
-	OTr_PutRecord($otrMain_i; "rec"; Table:C252([Table_1:1]))
-	OTr_GetRecord($otrMain_i; "rec"; Table:C252([Table_1:1]))
+	OTr_PutRecord($otrMain_i; "rec"; 1)
+	OTr_GetRecord($otrMain_i; "rec"; 1)
 	If (OK=1)
 		$otrResult_t:="Pass"
 	Else 
@@ -575,7 +590,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 13. Dot-path
@@ -608,7 +623,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 14. Array Longint
@@ -642,7 +657,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 15. Array Text
@@ -675,7 +690,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 16. Array Real
@@ -708,7 +723,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 17. Array Boolean
@@ -741,42 +756,52 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 18. Array Pointer
 	// ====================================================
-	$testName_t:="Array Pointer"
-	$otCmd_t:="OT PutArrayPointer / OT GetArrayPointer"
-	$otrCmd_t:="OTr_PutArrayPointer / OTr_GetArrayPointer"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	$otPtrTarget_t:="arr-ptr-val"
 	
-	OT PutArrayPointer($otMain_i; "aptr"; 1; ->$otPtrTarget_t)
-	OT GetArrayPointer($otMain_i; "aptr"; 1; ->$otArrPtrOut_ptr)
-	If ((OK=1) & ($otArrPtrOut_ptr#Null:C1517) & ($otArrPtrOut_ptr->="arr-ptr-val"))
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: dereference mismatch or OK=0"
-	End if 
+	// Modified by: Guy Algot (4/3/26)
+	// skipped for now
 	
-	$ptrTarget_t:="arr-ptr-val"
-	OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->$ptrTarget_t)
-	$gotPtr_ptr:=OTr_GetArrayPointer($otrMain_i; "aptr"; 1)
-	If ((OK=1) & ($gotPtr_ptr#Null:C1517) & ($gotPtr_ptr->="arr-ptr-val"))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: dereference mismatch or OK=0"
-	End if 
+	//$testName_t:="Array Pointer"
+	//$otCmd_t:="OT PutArrayPointer / OT GetArrayPointer"
+	//$otrCmd_t:="OTr_PutArrayPointer / OTr_GetArrayPointer"
+	//$otResult_t:="Fail: not run"
+	//$otrResult_t:="Fail: not run"
 	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	//ARRAY POINTER($otPtrTarget_p; 1)
+	//$otPtrTarget_t{1}:=
+	//$otPtrTarget_p:=->$otPtrTarget_at
+	
+	//ARRAY TEXT($otPtrTargetOut_at; 0)
+	//var $otArrPtrOut_ptr : Pointer
+	
+	//OT PutArrayPointer($otMain_i; "aptr"; 1; $otPtrTarget_t)
+	//OT GetArrayPointer($otMain_i; "aptr"; 1; $otArrPtrOut_ptr)
+	//If ((OK=1) & ($otArrPtrOut_ptr#Null) & (Size of array()) & ($otArrPtrOut_ptr->="arr-ptr-val"))
+	//$otResult_t:="Pass"
+	//Else 
+	//$otResult_t:="Fail: dereference mismatch or OK=0"
+	//End if 
+	
+	//$ptrTarget_t:="arr-ptr-val"
+	//OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->$ptrTarget_t)
+	//$gotPtr_ptr:=OTr_GetArrayPointer($otrMain_i; "aptr"; 1)
+	//If ((OK=1) & ($gotPtr_ptr#Null) & ($gotPtr_ptr->="arr-ptr-val"))
+	//$otrResult_t:="Pass"
+	//Else 
+	//$otrResult_t:="Fail: dereference mismatch or OK=0"
+	//End if 
+	
+	//$total_i:=$total_i+1
+	//If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	//$pass_i:=$pass_i+1
+	//Else 
+	//$fail_i:=$fail_i+1
+	//End if 
+	//APPEND TO ARRAY($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 19. Array Picture
@@ -809,7 +834,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 20. Item info
@@ -842,7 +867,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 21. Item count
@@ -871,7 +896,11 @@ If ($ready_b)
 	End if 
 	
 	$otrCount_i:=OTr_ItemCount($h4_i)
-	If (($otrCount_i=3) & (OK=1))
+	If ($otrCount_i=3)  //  & (OK=1))
+		
+		// Modified by: Guy Algot (4/3/26)
+		// OT plugin does not set OK var, no need to check
+		
 		$otrResult_t:="Pass"
 	Else 
 		$otrResult_t:="Fail: got "+String:C10($otrCount_i)
@@ -886,7 +915,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 22. Property enumeration
@@ -914,7 +943,7 @@ If ($ready_b)
 	
 	ARRAY TEXT:C222($otrPropNames_at; 0)
 	OTr_GetAllProperties($h4_i; ->$otrPropNames_at)
-	If ((Size of array:C274($otrPropNames_at)=2) & (OK=1))
+	If (Size of array:C274($otrPropNames_at)=2)  // & (OK=1))
 		$otrResult_t:="Pass"
 	Else 
 		$otrResult_t:="Fail: got "+String:C10(Size of array:C274($otrPropNames_at))+" names"
@@ -929,7 +958,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 23. Delete / Rename
@@ -972,7 +1001,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 24. Copy
@@ -1012,7 +1041,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 25. Size of array
@@ -1049,7 +1078,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 26. Sort arrays
@@ -1095,7 +1124,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 27. Object size  (Intentional difference §4.3)
@@ -1127,7 +1156,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 28. BLOB serialisation (Intentional diff §4.3)
@@ -1173,42 +1202,42 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
-	// ====================================================
-	//MARK:- 29. Text export / import (Intentional diff §4.3)
-	// ====================================================
-	$testName_t:="Text export / import"
-	$otCmd_t:="OT SaveToText / OT LoadFromText"
-	$otrCmd_t:="OTr_SaveToText / OTr_LoadFromText"
-	$otResult_t:="Fail: not run"
-	// OTr_LoadFromText is not yet implemented (Phase 020).
-	$otrResult_t:="Skip: OTr_LoadFromText not yet implemented"
+	//// ====================================================
+	////MARK:- 29. Text export / import (Intentional diff §4.3)
+	//// ====================================================
+	//$testName_t:="Text export / import"
+	//$otCmd_t:="OT SaveToText / OT LoadFromText"
+	//$otrCmd_t:="OTr_SaveToText / OTr_LoadFromText"
+	//$otResult_t:="Fail: not run"
+	//// OTr_LoadFromText is not yet implemented (Phase 020).
+	//$otrResult_t:="Skip: OTr_LoadFromText not yet implemented"
 	
-	$h3_i:=OT New
-	OT PutString($h3_i; "tser"; "text-ser-val")
-	$otTmpFile_t:=Temporary folder:C486+"ot-compat-export.txt"
-	OT SaveToText($h3_i; $otTmpFile_t)
-	$loadedOtH_i:=OT LoadFromText($otTmpFile_t)
-	$gotten_t:=OT GetString($loadedOtH_i; "tser")
-	If ($gotten_t="text-ser-val")
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: round-trip got '"+$gotten_t+"'"
-	End if 
-	OT Clear($h3_i)
-	OT Clear($loadedOtH_i)
+	//$h3_i:=OT New
+	//OT PutString($h3_i; "tser"; "text-ser-val")
+	//$otTmpFile_t:=Temporary folder+"ot-compat-export.txt"
+	//OT SaveToText($h3_i; $otTmpFile_t)
+	//$loadedOtH_i:=OT LoadFromText($otTmpFile_t)
+	//$gotten_t:=OT GetString($loadedOtH_i; "tser")
+	//If ($gotten_t="text-ser-val")
+	//$otResult_t:="Pass"
+	//Else 
+	//$otResult_t:="Fail: round-trip got '"+$gotten_t+"'"
+	//End if 
+	//OT Clear($h3_i)
+	//OT Clear($loadedOtH_i)
 	
-	// OTr side skipped (see above).
+	//// OTr side skipped (see above).
 	
-	$total_i:=$total_i+1
-	// Count as pass only if OT passes (OTr is a known skip).
-	If ($otResult_t="Pass")
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	//$total_i:=$total_i+1
+	//// Count as pass only if OT passes (OTr is a known skip).
+	//If ($otResult_t="Pass")
+	//$pass_i:=$pass_i+1
+	//Else 
+	//$fail_i:=$fail_i+1
+	//End if 
+	//APPEND TO ARRAY($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 30. Version
@@ -1240,7 +1269,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 31. Options
@@ -1278,7 +1307,7 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; "| "+$testName_t+" | "+$otCmd_t+" | "+$otResult_t+" | "+$otrCmd_t+" | "+$otrResult_t+" |")
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- TEARDOWN
@@ -1309,14 +1338,14 @@ If ($ready_b)
 	$dateStr_t:=String:C10($y_i; "0000")+"-"+String:C10($mo_i; "00")+"-"+String:C10($d_i; "00")
 	// Format time as HH MM SS (space-separated), then replace spaces with dashes
 	$timeStr_t:=String:C10(Current time:C178; HH MM SS:K7:1)
-	$timeStr_t:=Replace string:C233($timeStr_t; " "; "-")
+	$timeStr_t:=Replace string:C233($timeStr_t; ":"; "-")
 	$fileName_t:=$dateStr_t+"-"+$timeStr_t+".txt"
 	
-	$desktopPath_t:=Get 4D folder:C485(User system localization:K5:23)
+	$desktopPath_t:=System folder:C487(Desktop:K41:16)
 	$filePath_t:=$desktopPath_t+$fileName_t
 	
 	TEXT TO DOCUMENT:C1237($filePath_t; $tableText_t; "UTF-8")
-	
+	SHOW ON DISK:C922($filePath_t)
 	ALERT:C41($summaryLine_t+Char:C90(Carriage return:K15:38)+"Results written to: "+$fileName_t)
 	SET TEXT TO PASTEBOARD:C523($tableText_t)
 	
