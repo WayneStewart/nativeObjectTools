@@ -271,15 +271,15 @@ End if
 
 ### 8.1 Semaphore Pattern
 
-The registry lock uses a **process-local semaphore** (name prefixed with `$`) so it does not block unrelated processes. The semaphore name is stored in the interprocess variable `<>OTR_Semaphore_t`, which is initialised in `OTr__Init` to `"$OTr_Registry"`.
+The registry lock uses a **process-local semaphore** (name prefixed with `$`) so it does not block unrelated processes. The semaphore name is stored in the interprocess variable `<>OTR_Semaphore_t`, which is initialised in `OTr_zInit` to `"$OTr_Registry"`.
 
 ```4d
-// Lock — OTr__Lock
+// Lock — OTr_zLock
 While (Semaphore(<>OTR_Semaphore_t; 10))
     IDLE
 End while
 
-// Unlock — OTr__Unlock
+// Unlock — OTr_zUnlock
 CLEAR SEMAPHORE(<>OTR_Semaphore_t)
 ```
 

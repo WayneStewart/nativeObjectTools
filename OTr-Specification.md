@@ -25,7 +25,7 @@ The primary motivation is to eliminate the dependency on a third-party binary pl
 | Parameter style | Named parameters via `#DECLARE` only; no numbered parameters or legacy declarations |
 | Compatibility goal | Callers should be able to migrate from `OT` to `OTr` with minimal refactoring — ideally a near-mechanical find-and-replace of command names |
 | Method visibility | **All** OTr methods must be marked `"invisible":true` in their `%attributes` line |
-| Method sharing | Only public API methods (those matching the ObjectTools command set) are `"shared":true`. All internal/private methods (`OTr__` prefix) and test methods (`Test_OTr_` prefix) are `"shared":false` |
+| Method sharing | Only public API methods (those matching the ObjectTools command set) are `"shared":true`. All internal infrastructure methods (`OTr_z` prefix), utility methods (`OTr_u` prefix), and test methods (`Test_OTr_` prefix) are `"shared":false` |
 | Unit tests | A comprehensive test suite is **required**, covering every public API method |
 
 ---
@@ -85,7 +85,7 @@ Semaphore("OTr_Registry")
 CLEAR SEMAPHORE("OTr_Registry")
 ```
 
-The `Fnd_Dict` library in this codebase provides a proven pattern for this, including a reentrant lock count via `Fnd_Dict_LockInternalState`. OTr should implement an equivalent `OTr__Lock` / `OTr__Unlock` internal method pair (or a single `OTr__LockRegistry` method accepting a Boolean parameter).
+The `Fnd_Dict` library in this codebase provides a proven pattern for this, including a reentrant lock count via `Fnd_Dict_LockInternalState`. OTr should implement an equivalent `OTr_zLock` / `OTr_zUnlock` internal method pair (or a single `OTr_zLockRegistry` method accepting a Boolean parameter).
 
 **Design decision required:** Whether reentrancy (nested locking from the same process) is needed for OTr. If an OTr method internally calls another OTr method that also acquires the lock, reentrancy is essential. The `Fnd_Dict` pattern (lock count + semaphore) handles this cleanly.
 
@@ -93,7 +93,7 @@ The `Fnd_Dict` library in this codebase provides a proven pattern for this, incl
 
 The legacy ObjectTools API identifies items by text "tags". Tags support dot-separated paths for nested access (e.g., `"address.city"` navigates into an embedded object named `address` and accesses its `city` property).
 
-In OTr, tags map directly to 4D Object property paths. The `OTr__ResolvePath` internal method parses the dot-separated key path, navigates (or creates) intermediate sub-objects, and returns the leaf object together with the final property name. This is modelled on the `OBJP_GetSubObject` method in Cannon Smith's OBJ_Module library (see §13), which provides a proven implementation of this pattern in native 4D.
+In OTr, tags map directly to 4D Object property paths. The `OTr_zResolvePath` internal method parses the dot-separated key path, navigates (or creates) intermediate sub-objects, and returns the leaf object together with the final property name. This is modelled on the `OBJP_GetSubObject` method in Cannon Smith's OBJ_Module library (see §13), which provides a proven implementation of this pattern in native 4D.
 
 The legacy `AutoCreateObjects` option (bit 2, on by default) automatically creates intermediate embedded objects along a dotted path. OTr must replicate this behaviour: when setting `"address.city"`, if the `address` property does not yet exist, it is created as an empty object before `city` is set within it. The OBJ_Module's `OBJP_GetSubObject` method demonstrates this auto-creation pattern.
 
@@ -209,7 +209,7 @@ Every OTr method file must begin with a `%attributes` line that sets visibility 
 
 **All methods are invisible.** This prevents them from appearing in 4D's method explorer unless the developer explicitly chooses to show invisible methods. The attribute is `"invisible":true`.
 
-**Only public API methods are shared.** Methods that correspond directly to an ObjectTools command (i.e., those listed in §6) are callable from any context and must be `"shared":true`. Internal helper methods (`OTr__` prefix) and test methods (`Test_OTr_` prefix) are `"shared":false`.
+**Only public API methods are shared.** Methods that correspond directly to an ObjectTools command (i.e., those listed in §6) are callable from any context and must be `"shared":true`. Internal infrastructure methods (`OTr_z` prefix), utility methods (`OTr_u` prefix), and test methods (`Test_OTr_` prefix) are `"shared":false`.
 
 Examples:
 
@@ -229,14 +229,15 @@ The classification by method prefix:
 | Prefix | Visibility | Shared | Example |
 |---|---|---|---|
 | `OTr_` | Invisible | **Yes** | `OTr_New`, `OTr_PutLong`, `OTr_GetText` |
-| `OTr__` | Invisible | No | `OTr__Init`, `OTr__Lock`, `OTr__ResolvePath` |
+| `OTr_z` | Invisible | No | `OTr_zInit`, `OTr_zLock`, `OTr_zResolvePath` |
+| `OTr_u` | Invisible | No | `OTr_uDateToText`, `OTr_uMapType`, `OTr_uSerialisePointer` |
 | `Test_OTr_` | Invisible | No | `Test_OTr_Creation`, `Test_OTr_PutGet` |
 
 ---
 
 ## 4. Initialisation
 
-An `OTr__Init` method (private, called lazily by `OTr_New` and other entry points) must:
+An `OTr_zInit` method (private, called lazily by `OTr_New` and other entry points) must:
 
 1. Check whether the module has been initialised (via an interprocess Boolean flag, e.g., `<>OTR_Initialized_b`).
 2. If not: declare and size all interprocess arrays to zero, set default options (AutoCreateObjects on), and set the flag:
@@ -268,7 +269,7 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.1 Creation / Destruction
 
-*Detailed specification:* [OTr-Phase1-Spec.md](OTr-Phase1-Spec.md)
+*Detailed specification:* [OTr-Phase-001-Spec.md](OTr-Phase-001-Spec.md)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -279,7 +280,7 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.2 Put Values (Scalar)
 
-*Detailed specification:* [OTr-Phase2-Spec.md](OTr-Phase2-Spec.md) (common types), [OTr-Phase5-Spec.md](OTr-Phase5-Spec.md) (BLOB, Picture, Pointer, Record, Variable)
+*Detailed specification:* [OTr-Phase-002-Spec.md](OTr-Phase-002-Spec.md) (common types), [OTr-Phase-005-Spec.md](OTr-Phase-005-Spec.md) (BLOB, Picture, Pointer, Record, Variable)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -299,7 +300,7 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.3 Get Values (Scalar)
 
-*Detailed specification:* [OTr-Phase2-Spec.md](OTr-Phase2-Spec.md) (common types), [OTr-Phase5-Spec.md](OTr-Phase5-Spec.md) (BLOB, Picture, Pointer, Record, Variable)
+*Detailed specification:* [OTr-Phase-002-Spec.md](OTr-Phase-002-Spec.md) (common types), [OTr-Phase-005-Spec.md](OTr-Phase-005-Spec.md) (BLOB, Picture, Pointer, Record, Variable)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -321,7 +322,7 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.4 Put Values (Array Element)
 
-*Detailed specification:* [OTr-Phase4-Spec.md](OTr-Phase4-Spec.md)
+*Detailed specification:* [OTr-Phase-004-Spec.md](OTr-Phase-004-Spec.md)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -339,7 +340,7 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.5 Get Values (Array Element)
 
-*Detailed specification:* [OTr-Phase4-Spec.md](OTr-Phase4-Spec.md)
+*Detailed specification:* [OTr-Phase-004-Spec.md](OTr-Phase-004-Spec.md)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -357,7 +358,7 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.6 Array Utilities
 
-*Detailed specification:* [OTr-Phase4-Spec.md](OTr-Phase4-Spec.md)
+*Detailed specification:* [OTr-Phase-004-Spec.md](OTr-Phase-004-Spec.md)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -370,7 +371,7 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.7 Object Info
 
-*Detailed specification:* [OTr-Phase3-Spec.md](OTr-Phase3-Spec.md)
+*Detailed specification:* [OTr-Phase-003-Spec.md](OTr-Phase-003-Spec.md)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -380,7 +381,7 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.8 Item Info
 
-*Detailed specification:* [OTr-Phase3-Spec.md](OTr-Phase3-Spec.md)
+*Detailed specification:* [OTr-Phase-003-Spec.md](OTr-Phase-003-Spec.md)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -394,7 +395,7 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.9 Item Utilities
 
-*Detailed specification:* [OTr-Phase3-Spec.md](OTr-Phase3-Spec.md)
+*Detailed specification:* [OTr-Phase-003-Spec.md](OTr-Phase-003-Spec.md)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -405,7 +406,7 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.10 Import / Export
 
-*Detailed specification:* [OTr-Phase6-Spec.md](OTr-Phase6-Spec.md)
+*Detailed specification:* [OTr-Phase-006-Spec.md](OTr-Phase-006-Spec.md)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -415,7 +416,7 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 ### 6.11 Object Utilities
 
-*Detailed specification:* [OTr-Phase1-Spec.md](OTr-Phase1-Spec.md)
+*Detailed specification:* [OTr-Phase-001-Spec.md](OTr-Phase-001-Spec.md)
 
 | Legacy Command | OTr Method | Notes |
 |---|---|---|
@@ -427,17 +428,20 @@ The table below maps every legacy OT command to its OTr replacement method, with
 | `OT CompiledApplication` | `OTr_CompiledApplication` | Return `Is compiled mode` result |
 | `OT GetHandleList` | `OTr_GetHandleList` | Return Integer array of all active (in-use) handles |
 
-### 6.12 Simple Export (OTr additions — no legacy equivalent)
+### 6.12 Simple Export/Import (OTr additions — no legacy equivalent)
 
-*Detailed specification:* [OTr-Phase1-Spec.md](OTr-Phase1-Spec.md) (Phase 1.5)
+*Detailed specification:* [OTr-Phase-001-Spec.md](OTr-Phase-001-Spec.md) (Phase 1.5)
 
-These methods have no counterpart in the legacy ObjectTools plugin. They are OTr-specific additions to support testing and object inspection.
+These methods have no counterpart in the legacy ObjectTools plugin. They are OTr-specific additions to support testing, object inspection, and data transfer. All Save methods call `OTr_uExpandBinaries` (Phase 5) before serialisation, replacing runtime `blob:N`/`pic:N` references with self-contained Base64 strings. All Load methods call `OTr_uCollapseBinaries` after parsing, restoring Base64 strings to parallel array slots.
 
 | OTr Method | Notes |
 |---|---|
-| `OTr_SaveToText` | Serialise stored object to a JSON text string; optional pretty-print flag (default: compact) |
-| `OTr_SaveToFile` | Write stored object as JSON to a file path on disk; optional pretty-print flag (default: indented) |
-| `OTr_SaveToClipboard` | Place JSON representation of stored object on the system clipboard; optional pretty-print flag (default: indented) |
+| `OTr_SaveToText` | Serialise stored object to a self-contained JSON text string; optional pretty-print flag (default: compact) |
+| `OTr_SaveToFile` | Write stored object as self-contained JSON to a file path on disk; optional pretty-print flag (default: indented) |
+| `OTr_SaveToClipboard` | Place self-contained JSON representation of stored object on the system clipboard; optional pretty-print flag (default: indented) |
+| `OTr_LoadFromText` | Parse a JSON text string (previously saved by `OTr_SaveToText`) into a new OTr object; returns the new handle |
+| `OTr_LoadFromFile` | Read a JSON file (previously saved by `OTr_SaveToFile`) and load it into a new OTr object; returns the new handle |
+| `OTr_LoadFromClipboard` | Parse JSON from the clipboard (previously saved by `OTr_SaveToClipboard`) into a new OTr object; returns the new handle |
 
 ---
 
@@ -447,51 +451,76 @@ The legacy plugin defines its own type constants. OTr must map between these and
 
 The authoritative reference for all 4D type constants, variable name suffixes, and the legacy OT → 4D mapping table is maintained in **[OTr-Types-Reference.md](OTr-Types-Reference.md)**.
 
-An `OTr__MapType` internal method handles bidirectional mapping; its detailed specification is in [OTr-Phase6-Spec.md](OTr-Phase6-Spec.md).
+An `OTr_uMapType` internal method handles bidirectional mapping; its detailed specification is in [OTr-Phase-006-Spec.md](OTr-Phase-006-Spec.md).
 
 ---
 
 ## 8. Internal (Private) Methods
 
-In addition to the public API methods, OTr requires several internal helper methods. These are prefixed with `OTr__` (double underscore) to distinguish them from the public API. All internal methods are marked `"invisible":true,"shared":false` in their `%attributes` line (see §3A):
+In addition to the public API methods, OTr requires two classes of internal helper methods, both marked `"invisible":true,"shared":false` in their `%attributes` line (see §3A).
+
+### 8.1 Private Infrastructure Methods (`OTr_z` prefix)
+
+These methods manage the registry, locking, path resolution, and error handling. They form the structural backbone of the module and are not concerned with type conversion.
 
 | Method | Purpose |
 |---|---|
-| `OTr__Init` | Lazy initialisation of interprocess arrays and default options |
-| `OTr__Lock` | Acquire semaphore (with optional reentrancy support) |
-| `OTr__Unlock` | Release semaphore |
-| `OTr__IsValidHandle` | Bounds check + in-use check; returns Boolean |
-| `OTr__GetObject` | Given a handle, return a pointer to the object in the array (or the object itself) |
-| `OTr__ResolvePath` | Given a dotted tag, navigate/create intermediate objects; return the leaf object and final key |
-| `OTr__ParsePrefix` | Parse a prefixed string (e.g., `"blob:33"`) and return the prefix and index/value |
-| `OTr__Error` | Invoke the error handler (if set) or raise an error |
-| `OTr__ArrayToCollection` | Convert a 4D array (via Pointer) to a Collection |
-| `OTr__CollectionToArray` | Convert a Collection to a 4D array (via Pointer) |
-| `OTr__SerialisePointer` | `RESOLVE POINTER` → Text representation |
-| `OTr__DeserialisePointer` | Text representation → Pointer via `Get pointer` |
+| `OTr_zInit` | Lazy initialisation of interprocess arrays and default options |
+| `OTr_zLock` | Acquire semaphore (with optional reentrancy support) |
+| `OTr_zUnlock` | Release semaphore |
+| `OTr_zIsValidHandle` | Bounds check + in-use check; returns Boolean |
+| `OTr_zGetObject` | Given a handle, return a pointer to the object in the array (or the object itself) |
+| `OTr_zResolvePath` | Given a dotted tag, navigate/create intermediate objects; return the leaf object and final key |
+| `OTr_zParsePrefix` | Parse a prefixed string (e.g., `"blob:33"`) and return the prefix and index/value |
+| `OTr_zError` | Invoke the error handler (if set) or raise an error |
+| `OTr_zArrayToCollection` | Convert a 4D array (via Pointer) to a Collection |
+| `OTr_zCollectionToArray` | Convert a Collection to a 4D array (via Pointer) |
+
+### 8.2 Utility Methods (`OTr_u` prefix)
+
+These methods perform type conversion, serialisation, and comparison operations. They are stateless helpers — they do not access the registry or acquire locks — and may be called freely from both public and private methods.
+
+| Method | Purpose |
+|---|---|
+| `OTr_uDateToText` | Convert a 4D Date to `YYYY-MM-DD` text |
+| `OTr_uTextToDate` | Parse `YYYY-MM-DD` text back to a 4D Date |
+| `OTr_uTimeToText` | Convert a 4D Time to `HH:MM:SS` text |
+| `OTr_uTextToTime` | Parse `HH:MM:SS` text back to a 4D Time |
+| `OTr_uPointerToText` | Serialise a Pointer via `RESOLVE POINTER` to `variableName;tableNum;fieldNum` text |
+| `OTr_uTextToPointer` | Deserialise `variableName;tableNum;fieldNum` text back to a Pointer |
+| `OTr_uSerialisePointer` | Serialise a Pointer with `ptr:` prefix for scalar storage |
+| `OTr_uDeserialisePointer` | Deserialise a `ptr:` prefixed text back to a Pointer |
+| `OTr_uMapType` | Bidirectional mapping between 4D type constants and OT legacy type constants |
+| `OTr_uEqualBLOBs` | Compare two BLOBs byte-for-byte; returns Boolean |
+| `OTr_uEqualPictures` | Compare two Pictures byte-for-byte; returns Boolean |
+| `OTr_uExpandBinaries` | Walk an object snapshot and replace `blob:N`/`pic:N` references with self-contained Base64 strings for JSON export |
+| `OTr_uCollapseBinaries` | Walk a parsed JSON object and replace Base64 strings with `blob:N`/`pic:N` parallel array references for JSON import |
 
 ---
 
 ## 9. Implementation Phases
 
 ### Phase 1 — Core Infrastructure
-- `OTr__Init`, `OTr__Lock`, `OTr__Unlock`, `OTr__IsValidHandle`, `OTr__GetObject`, `OTr__Error`
+- `OTr_zInit`, `OTr_zLock`, `OTr_zUnlock`, `OTr_zIsValidHandle`, `OTr_zGetObject`, `OTr_zError`
 - `OTr_New`, `OTr_Clear`, `OTr_ClearAll`, `OTr_Copy`
 - `OTr_GetOptions`, `OTr_SetOptions`
 - `OTr_GetVersion`, `OTr_Register`, `OTr_CompiledApplication`
 - `OTr_SetErrorHandler`, `OTr_GetHandleList`
 - `OTr_IsObject`
 
-### Phase 1.5 — Simple Export
+### Phase 1.5 — Simple Export/Import
 
-No legacy ObjectTools equivalent. These methods provide a JSON view of a stored object for testing and inspection. They are implemented as part of the Phase 1 baseline because they depend only on the handle registry and are required before Phase 2 testing begins.
+No legacy ObjectTools equivalent. These methods provide a self-contained JSON representation of a stored object for testing, inspection, and data transfer. The Save methods are implemented as part of the Phase 1 baseline (they depend only on the handle registry) but are **updated in Phase 5** to call `OTr_uExpandBinaries` before serialisation. The Load methods are similarly dependent on Phase 5 (`OTr_uCollapseBinaries`) and must therefore be implemented no earlier than Phase 5.
 
-- `OTr_SaveToText` — serialise object to JSON Text; optional `$prettyPrint_b` flag (default `False`)
-- `OTr_SaveToFile` — write JSON to a file path using UTF-8 encoding; optional `$prettyPrint_b` flag (default `True`)
-- `OTr_SaveToClipboard` — place JSON on the system clipboard; optional `$prettyPrint_b` flag (default `True`)
+- `OTr_SaveToText` — serialise object to self-contained JSON Text; optional `$prettyPrint_b` flag (default `False`); calls `OTr_uExpandBinaries` within the lock before `JSON Stringify`
+- `OTr_SaveToFile` — write self-contained JSON to a file path using UTF-8 encoding; optional `$prettyPrint_b` flag (default `True`); same expansion pattern
+- `OTr_SaveToClipboard` — place self-contained JSON on the system clipboard; optional `$prettyPrint_b` flag (default `True`); same expansion pattern
+- `OTr_LoadFromText` — parse JSON Text into a new OTr object; calls `OTr_uCollapseBinaries` within the lock after `JSON Parse`; returns new handle
+- `OTr_LoadFromFile` — read UTF-8 JSON file and delegate to `OTr_LoadFromText`; returns new handle
+- `OTr_LoadFromClipboard` — read JSON from clipboard and delegate to `OTr_LoadFromText`; returns new handle
 
 ### Phase 2 — Scalar Put/Get (Common Types)
-- `OTr__ResolvePath` (with AutoCreateObjects support)
+- `OTr_zResolvePath` (with AutoCreateObjects support)
 - `OTr_PutLong`, `OTr_PutReal`, `OTr_PutString`, `OTr_PutText`, `OTr_PutDate`, `OTr_PutTime`, `OTr_PutBoolean`
 - `OTr_GetLong`, `OTr_GetReal`, `OTr_GetString`, `OTr_GetText`, `OTr_GetDate`, `OTr_GetTime`, `OTr_GetBoolean`
 - `OTr_PutObject`, `OTr_GetObject`
@@ -502,22 +531,25 @@ No legacy ObjectTools equivalent. These methods provide a JSON view of a stored 
 - `OTr_CopyItem`, `OTr_CompareItems`, `OTr_RenameItem`, `OTr_DeleteItem`
 
 ### Phase 4 — Array Operations
-- `OTr__ArrayToCollection`, `OTr__CollectionToArray`
+- `OTr_zArrayToCollection`, `OTr_zCollectionToArray`
+- `OTr_uDateToText`, `OTr_uTextToDate`, `OTr_uTimeToText`, `OTr_uTextToTime`
+- `OTr_uPointerToText`, `OTr_uTextToPointer`, `OTr_uBlobToText`, `OTr_uTextToBlob`, `OTr_uPictureToText`, `OTr_uTextToPicture`
 - `OTr_PutArray`, `OTr_GetArray`
 - All `OTr_PutArray*` and `OTr_GetArray*` element methods
 - `OTr_SizeOfArray`, `OTr_ResizeArray`, `OTr_InsertElement`, `OTr_DeleteElement`
 - `OTr_FindInArray`, `OTr_SortArrays`
 
 ### Phase 5 — Complex Types
-- `OTr__SerialisePointer`, `OTr__DeserialisePointer`
+- `OTr_uSerialisePointer`, `OTr_uDeserialisePointer`
+- `OTr_uExpandBinaries`, `OTr_uCollapseBinaries`
 - `OTr_PutPointer`, `OTr_GetPointer`
 - `OTr_PutBLOB`, `OTr_GetBLOB`, `OTr_GetNewBLOB`, `OTr_PutPicture`, `OTr_GetPicture`
 - `OTr_PutRecord`, `OTr_GetRecord`, `OTr_GetRecordTable`
 - `OTr_PutVariable`, `OTr_GetVariable`
 
 ### Phase 6 — Import/Export
+- `OTr_uMapType` (finalised for serialisation format), `OTr_uEqualBLOBs`, `OTr_uEqualPictures`
 - `OTr_ObjectToBLOB`, `OTr_ObjectToNewBLOB`, `OTr_BLOBToObject`
-- `OTr__MapType` (finalised for serialisation format)
 
 ---
 
@@ -531,7 +563,7 @@ All design questions have been resolved. This section records each decision and 
 
 **10.3 — `OTr_GetObject` return type.** **Decision:** Copy the embedded object into a new registry slot and return the new handle (Integer). Matches legacy `OT GetObject` semantics exactly. The caller is responsible for calling `OTr_Clear` on the returned handle.
 
-**10.4 — Lock reentrancy.** **Decision:** Simple, non-reentrant locking. A single `Semaphore` / `CLEAR SEMAPHORE` pair with no lock counter. The core rule is: **never call a lock-acquiring method while the lock is already held** — doing so will deadlock. In practice this means public `OTr_` methods acquire the lock, delegate only to `OTr__` internal helpers (which do not lock), then release the lock before doing any further work. A public method *may* call another public method provided the lock has been fully released first — the safe pattern is: acquire → snapshot with `OB Copy` → release → then call other methods freely. Mutation methods (those that write to the registry) should never call other public methods from within a locked section.
+**10.4 — Lock reentrancy.** **Decision:** Simple, non-reentrant locking. A single `Semaphore` / `CLEAR SEMAPHORE` pair with no lock counter. The core rule is: **never call a lock-acquiring method while the lock is already held** — doing so will deadlock. In practice this means public `OTr_` methods acquire the lock, delegate only to `OTr_z` internal helpers (which do not lock), then release the lock before doing any further work. A public method *may* call another public method provided the lock has been fully released first — the safe pattern is: acquire → snapshot with `OB Copy` → release → then call other methods freely. Mutation methods (those that write to the registry) should never call other public methods from within a locked section.
 
 **10.5 — Import/Export format.** **Decision:** JSON-based format with bundled binaries. `OTr_ObjectToBLOB` serialises the object to JSON (wrapper sub-objects are preserved), then appends referenced BLOBs and Pictures from the parallel arrays with an index table. Not compatible with the legacy OT binary format (reverse-engineering the proprietary format is impractical).
 
@@ -541,7 +573,7 @@ All design questions have been resolved. This section records each decision and 
 
 **10.8 — Time storage.** **Decision:** Store as plain formatted text string `"HH:MM:SS"`. Consistent with Date storage (§10.10). The typed getter `OTr_GetTime` parses the string back to a Time value.
 
-**10.9 — Bracket notation `[x]`.** **Decision:** Not implemented. OTr is a drop-in replacement for the legacy ObjectTools API — no extensions. `OTr__ResolvePath` handles dot-separated paths only.
+**10.9 — Bracket notation `[x]`.** **Decision:** Not implemented. OTr is a drop-in replacement for the legacy ObjectTools API — no extensions. `OTr_zResolvePath` handles dot-separated paths only.
 
 **10.10 — Date storage format.** **Decision:** Store as plain formatted text string `"YYYY-MM-DD"`. Consistent with OBJ_Module's approach and with Time storage (§10.8). The typed getter `OTr_GetDate` parses the string back to a Date value.
 

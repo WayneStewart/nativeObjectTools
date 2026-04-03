@@ -67,16 +67,16 @@ $tag_t; False:C215; ->$parent_o; ->$leafKey_t))
 			Else 
 				OTr_zError("Invalid direction code: "+$dir_t; \
 					Current method name:C684)
-				OTr_zSetOK  // (0)
+				OTr_zSetOK(0)
 			End if 
 		Else 
 			OTr_zError("Array not sortable: "+$tag_t; \
 				Current method name:C684)
-			OTr_zSetOK  // (0)
+			OTr_zSetOK(0)
 		End if 
 	Else 
 		OTr_zError("Tag not found: "+$tag_t; \
 			Current method name:C684)
-		OTr_zSetOK  // (0)
+		OTr_zSetOK(0)
 	End if 
 End if 

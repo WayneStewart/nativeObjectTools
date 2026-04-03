@@ -42,22 +42,22 @@ If (OTr_zIsValidHandle($handle_i))
 				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
 					If (OB Is defined:C1231($arrayObj_o; String:C10($index_i)))
 						$value_i:=Num:C11(OB Get:C1224($arrayObj_o; String:C10($index_i)))
-						OTr_zSetOK  // (1)
+						OTr_zSetOK(1)
 					Else 
-						OTr_zSetOK  // (0)
+						OTr_zSetOK(0)
 					End if 
 				Else 
-					OTr_zSetOK  // (0)
+					OTr_zSetOK(0)
 				End if 
 			Else 
 				OTr_zError("Tag does not reference a LongInt or Integer array"; Current method name:C684)
-				OTr_zSetOK  // (0)
+				OTr_zSetOK(0)
 			End if 
 		Else 
-			OTr_zSetOK  // (0)
+			OTr_zSetOK(0)
 		End if 
 	End if 
 Else 
 	OTr_zError("Invalid handle"; Current method name:C684)
-	OTr_zSetOK  // (0)
+	OTr_zSetOK(0)
 End if 

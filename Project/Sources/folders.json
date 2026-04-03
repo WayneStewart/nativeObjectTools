@@ -1,15 +1,168 @@
 {
-	"Default Classes": {},
-	"Default Folder": {
+	"(Default Classes)": {},
+	"(Default Folder)": {
 		"groups": [
-			"Default Classes",
-			"Default Forms",
-			"Default Project Methods",
-			"Default Tables"
+			"(Default Classes)",
+			"(Default Forms)",
+			"(Default Project Methods)",
+			"(Default Tables)"
 		]
 	},
-	"Default Forms": {},
-	"Default Project Methods": {},
-	"Default Tables": {},
-	"trash": {}
+	"(Default Forms)": {},
+	"(Default Project Methods)": {},
+	"(Default Tables)": {},
+	"Constants": {
+		"methods": [
+			"_DEL_OTr_CreateConstants",
+			"Constants__Readme",
+			"Constants_AddLong",
+			"Constants_AddReal",
+			"Constants_AddString",
+			"Constants_NewFile",
+			"Constants_NewGroup",
+			"Constants_SaveFile"
+		]
+	},
+	"Miscellaneous": {
+		"methods": [
+			"__WriteDocumentation",
+			"Compiler_Helpers",
+			"Dict_CheckHostMethods",
+			"Fnd_FCS_ParseParameterLine",
+			"Fnd_FCS_WriteDocumentation"
+		]
+	},
+	"OT API Methods": {
+		"methods": [
+			"OTr_ArrayType",
+			"OTr_Clear",
+			"OTr_ClearAll",
+			"OTr_CompareItems",
+			"OTr_CompiledApplication",
+			"OTr_Copy",
+			"OTr_CopyItem",
+			"OTr_DeleteElement",
+			"OTr_DeleteItem",
+			"OTr_FindInArray",
+			"OTr_GetAllNamedProperties",
+			"OTr_GetAllProperties",
+			"OTr_GetArray",
+			"OTr_GetArrayBLOB",
+			"OTr_GetArrayBoolean",
+			"OTr_GetArrayDate",
+			"OTr_GetArrayLong",
+			"OTr_GetArrayPicture",
+			"OTr_GetArrayPointer",
+			"OTr_GetArrayReal",
+			"OTr_GetArrayString",
+			"OTr_GetArrayText",
+			"OTr_GetArrayTime",
+			"OTr_GetBoolean",
+			"OTr_GetDate",
+			"OTr_GetHandleList",
+			"OTr_GetItemProperties",
+			"OTr_GetLong",
+			"OTr_GetNamedProperties",
+			"OTr_GetObject",
+			"OTr_GetOptions",
+			"OTr_GetReal",
+			"OTr_GetString",
+			"OTr_GetText",
+			"OTr_GetTime",
+			"OTr_GetVersion",
+			"OTr_InsertElement",
+			"OTr_IsEmbedded",
+			"OTr_IsObject",
+			"OTr_ItemCount",
+			"OTr_ItemExists",
+			"OTr_ItemType",
+			"OTr_New",
+			"OTr_ObjectSize",
+			"OTr_PutArray",
+			"OTr_PutArrayBLOB",
+			"OTr_PutArrayBoolean",
+			"OTr_PutArrayDate",
+			"OTr_PutArrayLong",
+			"OTr_PutArrayPicture",
+			"OTr_PutArrayPointer",
+			"OTr_PutArrayReal",
+			"OTr_PutArrayString",
+			"OTr_PutArrayText",
+			"OTr_PutArrayTime",
+			"OTr_PutBoolean",
+			"OTr_PutDate",
+			"OTr_PutLong",
+			"OTr_PutObject",
+			"OTr_PutReal",
+			"OTr_PutString",
+			"OTr_PutText",
+			"OTr_PutTime",
+			"OTr_Register",
+			"OTr_RenameItem",
+			"OTr_ResizeArray",
+			"OTr_SaveToClipboard",
+			"OTr_SaveToFile",
+			"OTr_SaveToText",
+			"OTr_SetErrorHandler",
+			"OTr_SetOptions",
+			"OTr_SizeOfArray",
+			"OTr_SortArrays"
+		]
+	},
+	"OT Private Methods": {
+		"methods": [
+			"Compiler_OTr",
+			"Compiler_OTrSortInterprocess",
+			"Compiler_OTrSortProcess",
+			"OTr_zArrayFromObject",
+			"OTr_zArrayType",
+			"OTr_zError",
+			"OTr_zInit",
+			"OTr_zIsValidHandle",
+			"OTr_zLock",
+			"OTr_zMapType",
+			"OTr_zReleaseBinaryRef",
+			"OTr_zReleaseObjBinaries",
+			"OTr_zResolvePath",
+			"OTr_zSetOK",
+			"OTr_zSortFillSlot",
+			"OTr_zSortSlotPointer",
+			"OTr_zSortValidatePair",
+			"OTr_zUnlock"
+		]
+	},
+	"OT Utility Methods": {
+		"methods": [
+			"OTr_uBlobToText",
+			"OTr_uDateToText",
+			"OTr_uEqualBLOBs",
+			"OTr_uEqualObjects",
+			"OTr_uEqualPictures",
+			"OTr_uEqualStrings",
+			"OTr_uNewValueForEmbeddedType",
+			"OTr_uPictureToText",
+			"OTr_uPointerToText",
+			"OTr_uTextToBlob",
+			"OTr_uTextToDate",
+			"OTr_uTextToPicture",
+			"OTr_uTextToPointer",
+			"OTr_uTextToTime",
+			"OTr_uTimeToText"
+		]
+	},
+	"Test Methods": {
+		"methods": [
+			"____Test_InsertDelete",
+			"____Test_Phase_1",
+			"____Test_Phase_1_5",
+			"____Test_Phase_2",
+			"____Test_Phase_3",
+			"____Test_Phase_4_Arrays"
+		]
+	},
+	"trash": {
+		"groups": [
+			"(Default Folder)"
+		]
+	}
 }

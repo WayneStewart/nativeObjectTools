@@ -58,11 +58,13 @@ If (OTr_zIsValidHandle($handle_i))
 				End if 
 				
 				$arrayObj_o.numElements:=$size_i
+				OTr_zSetOK(1)
 			End if 
 		End if 
 	End if 
 Else 
 	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_zSetOK(0)
 End if 
 
 OTr_zUnlock

@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: ____Test_Phase_5_Arrays
+// Project Method: ____Test_Phase_4_Arrays
 
 // Comprehensive unit tests for all array operations:
 //   OTr_PutArray / OTr_GetArray
@@ -129,7 +129,7 @@ End if
 
 $total_i:=$total_i+1
 OTr_ResizeArray($h_i; "longs"; 8)
-If ((OTr_SizeOfArray($h_i; "longs")=8) & (OTr_zSetOK=1))
+If ((OTr_SizeOfArray($h_i; "longs")=8) & (OK=1))
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
@@ -142,7 +142,7 @@ End if
 
 $total_i:=$total_i+1
 OTr_ResizeArray($h_i; "longs"; 3)
-If ((OTr_SizeOfArray($h_i; "longs")=3) & (OTr_zSetOK=1))
+If ((OTr_SizeOfArray($h_i; "longs")=3) & (OK=1))
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
@@ -155,7 +155,7 @@ End if
 
 $total_i:=$total_i+1
 OTr_ResizeArray(9999; "longs"; 5)
-If (OTr_zSetOK=0)
+If (OK=0)
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
@@ -175,7 +175,7 @@ OTr_PutArray($h_i; "longs"; ->$longArr_ai)
 
 $total_i:=$total_i+1
 OTr_PutArrayLong($h_i; "longs"; 2; 999)
-If ((OTr_GetArrayLong($h_i; "longs"; 2)=999) & (OTr_zSetOK=1))
+If ((OTr_GetArrayLong($h_i; "longs"; 2)=999) & (OK=1))
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
@@ -194,7 +194,7 @@ End if
 // Out of range
 $total_i:=$total_i+1
 OTr_PutArrayLong($h_i; "longs"; 99; 1)
-If (OTr_zSetOK=0)
+If (OK=0)
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
@@ -204,7 +204,7 @@ End if
 // Type mismatch
 $total_i:=$total_i+1
 OTr_PutArrayLong($h_i; "words"; 1; 1)
-If (OTr_zSetOK=0)
+If (OK=0)
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
@@ -503,7 +503,7 @@ End if
 // Invalid handle
 $total_i:=$total_i+1
 OTr_FindInArray(9999; "pets"; "cat")
-If (OTr_zSetOK=0)
+If (OK=0)
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
@@ -513,7 +513,7 @@ End if
 // Missing tag
 $total_i:=$total_i+1
 OTr_FindInArray($h_i; "no_such_tag"; "x")
-If (OTr_zSetOK=0)
+If (OK=0)
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
@@ -628,7 +628,7 @@ End if
 // Nonexistent tag — OTr_zSortValidatePair reports "Tag not found"
 $total_i:=$total_i+1
 OTr_SortArrays($h_i; "no_such_array"; ">")
-If (OTr_zSetOK=0)
+If (OK=0)
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
@@ -638,7 +638,7 @@ End if
 // Invalid direction
 $total_i:=$total_i+1
 OTr_SortArrays($h_i; "sort_nums"; "X")
-If (OTr_zSetOK=0)
+If (OK=0)
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
@@ -648,7 +648,7 @@ End if
 // Invalid handle
 $total_i:=$total_i+1
 OTr_SortArrays(9999; "sort_nums"; ">")
-If (OTr_zSetOK=0)
+If (OK=0)
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
@@ -658,7 +658,7 @@ End if
 // All-slave (no key)
 $total_i:=$total_i+1
 OTr_SortArrays($h_i; "sort_nums"; "*")
-If (OTr_zSetOK=0)
+If (OK=0)
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
@@ -673,7 +673,7 @@ $longArr_ai{2}:=2
 $longArr_ai{3}:=3
 OTr_PutArray($h_i; "short_arr"; ->$longArr_ai)
 OTr_SortArrays($h_i; "sort_nums"; ">"; "short_arr"; "*")
-If (OTr_zSetOK=0)
+If (OK=0)
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1
