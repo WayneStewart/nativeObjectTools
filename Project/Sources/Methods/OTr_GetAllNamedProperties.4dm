@@ -45,7 +45,6 @@ var $needDataSizes_b : Boolean
 var $nativeType_i : Integer
 var $dataSize_i : Integer
 var $itemSize_i : Integer
-var $blobIdx_i : Integer
 var $valText_t : Text
 var $valObj_o : Object
 var $valCol_c : Collection
@@ -138,21 +137,17 @@ If (OTr_zIsValidHandle($handle_i))
 							$dataSize_i:=Length:C16(JSON Stringify:C1217($valCol_c))
 							
 						: ($nativeType_i=Is text:K8:3)
-							$valText_t:=OB Get:C1224(\
-								$target_o; $thisKey_t; Is text:K8:3)
-							If (Substring:C12($valText_t; 1; 5)="blob:")
-								$blobIdx_i:=Num:C11(Substring:C12($valText_t; 6))
-								If (($blobIdx_i>0)\
-									 & ($blobIdx_i<=\
-									Size of array:C274(<>OTR_Blobs_ablob))\
-									 & (<>OTR_BlobInUse_ab{$blobIdx_i}))
-									$dataSize_i:=BLOB size:C605(\
-										<>OTR_Blobs_ablob{$blobIdx_i})
-								End if 
-							Else 
-								$dataSize_i:=Length:C16($valText_t)
-							End if 
-							
+							$dataSize_i:=Length:C16(OB Get:C1224(
+								$target_o; $thisKey_t; Is text:K8:3))
+
+						: ($nativeType_i=Is BLOB:K8:12)
+							$dataSize_i:=BLOB size:C605(OB Get:C1224(
+								$target_o; $thisKey_t; Is BLOB:K8:12))
+
+						: ($nativeType_i=Is picture:K8:10)
+							$dataSize_i:=Picture size:C356(OB Get:C1224(
+								$target_o; $thisKey_t; Is picture:K8:10))
+
 					End case 
 					
 					$itemSize_i:=$dataSize_i+Length:C16($thisKey_t)

@@ -2,7 +2,7 @@
 // ----------------------------------------------------
 // Project Method: OTr_ClearAll
 
-// Clears all OTr handles and backing storage arrays.
+// Clears all OTr handles.
 
 // Access: Shared
 
@@ -16,11 +16,5 @@ OTr_zLock
 
 ARRAY OBJECT:C1221(<>OTR_Objects_ao; 0)
 ARRAY BOOLEAN:C223(<>OTR_InUse_ab; 0)
-
-ARRAY BLOB:C1222(<>OTR_Blobs_ablob; 0)
-ARRAY BOOLEAN:C223(<>OTR_BlobInUse_ab; 0)
-
-ARRAY PICTURE:C279(<>OTR_Pictures_apic; 0)
-ARRAY BOOLEAN:C223(<>OTR_PicInUse_ab; 0)
 
 OTr_zUnlock

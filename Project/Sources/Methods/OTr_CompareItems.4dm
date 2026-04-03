@@ -39,10 +39,6 @@ var $cmpLeafKey_t : Text
 var $srcType_i : Integer
 var $cmpType_i : Integer
 var $nativeSrcType_i : Integer
-var $srcBlobIdx_i : Integer
-var $cmpBlobIdx_i : Integer
-var $srcPicIdx_i : Integer
-var $cmpPicIdx_i : Integer
 var $srcText_t : Text
 var $cmpText_t : Text
 var $srcBool_b : Boolean
@@ -101,47 +97,20 @@ If (OTr_zIsValidHandle($srcHandle_i)\
 							$srcParent_o; $srcLeafKey_t; Is text:K8:3)
 						$cmpText_t:=OB Get:C1224(\
 							$cmpParent_o; $cmpLeafKey_t; Is text:K8:3)
-						
-						// BLOB items: compare actual binary content
-						If (Substring:C12($srcText_t; 1; 5)="blob:")
-							$srcBlobIdx_i:=Num:C11(Substring:C12($srcText_t; 6))
-							$cmpBlobIdx_i:=Num:C11(Substring:C12($cmpText_t; 6))
-							If (($srcBlobIdx_i>0)\
-								 & ($cmpBlobIdx_i>0)\
-								 & ($srcBlobIdx_i<=\
-								Size of array:C274(<>OTR_Blobs_ablob))\
-								 & ($cmpBlobIdx_i<=\
-								Size of array:C274(<>OTR_Blobs_ablob)))
-								If (OTr_uEqualBLOBs(<>OTR_Blobs_ablob{$srcBlobIdx_i}; <>OTR_Blobs_ablob{$cmpBlobIdx_i}))
-									$result_i:=1
-								End if 
-							End if 
-						Else 
-							// Picture items: compare actual picture content
-							If (Substring:C12($srcText_t; 1; 4)="pic:")
-								$srcPicIdx_i:=Num:C11(Substring:C12($srcText_t; 5))
-								$cmpPicIdx_i:=Num:C11(Substring:C12($cmpText_t; 5))
-								If (($srcPicIdx_i>0)\
-									 & ($cmpPicIdx_i>0)\
-									 & ($srcPicIdx_i<=\
-									Size of array:C274(<>OTR_Pictures_apic))\
-									 & ($cmpPicIdx_i<=\
-									Size of array:C274(<>OTR_Pictures_apic)))
-									If (OTr_uEqualPictures(<>OTR_Pictures_apic{$srcPicIdx_i}; <>OTR_Pictures_apic{$cmpPicIdx_i}))
-										$result_i:=1
-									End if 
-								End if 
-							Else 
-								// All other text types: helper-based string comparison
-								If (OTr_uEqualStrings($srcText_t; $cmpText_t))
-									$result_i:=1
-								End if 
-							End if 
-						End if 
-						
-					: ($nativeSrcType_i=Is object:K8:27)
-						If (OTr_uEqualObjects(OB Get:C1224(\
-							$srcParent_o; $srcLeafKey_t; Is object:K8:27); \
+					If (OTr_uEqualStrings($srcText_t; $cmpText_t))
+						$result_i:=1
+					End if 
+
+				: ($nativeSrcType_i=Is BLOB:K8:12)
+					If (OTr_uEqualBLOBs(OB Get:C1224($srcParent_o; $srcLeafKey_t; Is BLOB:K8:12); \
+						OB Get:C1224($cmpParent_o; $cmpLeafKey_t; Is BLOB:K8:12)))
+						$result_i:=1
+					End if 
+
+				: ($nativeSrcType_i=Is picture:K8:10)
+					If (OTr_uEqualPictures(OB Get:C1224($srcParent_o; $srcLeafKey_t; Is picture:K8:10); \
+						OB Get:C1224($cmpParent_o; $cmpLeafKey_t; Is picture:K8:10)))
+						$result_i:=1
 							OB Get:C1224(\
 							$cmpParent_o; $cmpLeafKey_t; Is object:K8:27)))
 							$result_i:=1

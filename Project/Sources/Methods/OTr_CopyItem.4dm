@@ -5,8 +5,7 @@
 
 // Copies the item at $srcTag_t to $destTag_t. The destination need not
 // exist; it will be created. Source and destination handles may be the
-// same. Embedded objects are deep-copied via OB Copy. BLOBs and
-// Pictures allocate a new slot in the parallel array.
+// same. Embedded objects are deep-copied via OB Copy.
 
 // Access: Shared
 
@@ -31,10 +30,6 @@ var $destParent_o : Object
 var $destLeafKey_t : Text
 var $nativeType_i : Integer
 var $textVal_t : Text
-var $blobIdx_i : Integer
-var $picIdx_i : Integer
-var $newBlobIdx_i : Integer
-var $newPicIdx_i : Integer
 
 OTr_zLock
 
@@ -75,60 +70,16 @@ If (OTr_zIsValidHandle($srcHandle_i)\
 							OB Get:C1224($srcParent_o; $srcLeafKey_t; Is collection:K8:32))
 						
 					: ($nativeType_i=Is text:K8:3)
-						$textVal_t:=OB Get:C1224(\
-							$srcParent_o; $srcLeafKey_t; Is text:K8:3)
-						
-						If (Substring:C12($textVal_t; 1; 5)="blob:")
-							$blobIdx_i:=Num:C11(Substring:C12($textVal_t; 6))
-							If (($blobIdx_i>0)\
-								 & ($blobIdx_i<=Size of array:C274(<>OTR_Blobs_ablob))\
-								 & (<>OTR_BlobInUse_ab{$blobIdx_i}))
-								$newBlobIdx_i:=Find in array:C230(\
-									<>OTR_BlobInUse_ab; False:C215)
-								If ($newBlobIdx_i=-1)
-									$newBlobIdx_i:=\
-										Size of array:C274(<>OTR_Blobs_ablob)+1
-									INSERT IN ARRAY:C227(<>OTR_Blobs_ablob; \
-										$newBlobIdx_i)
-									INSERT IN ARRAY:C227(<>OTR_BlobInUse_ab; \
-										$newBlobIdx_i)
-								End if 
-								<>OTR_Blobs_ablob{$newBlobIdx_i}:=\
-									<>OTR_Blobs_ablob{$blobIdx_i}
-								<>OTR_BlobInUse_ab{$newBlobIdx_i}:=True:C214
-								OB SET:C1220($destParent_o; $destLeafKey_t; \
-									"blob:"+String:C10($newBlobIdx_i))
-							End if 
-							
-						Else 
-							If (Substring:C12($textVal_t; 1; 4)="pic:")
-								$picIdx_i:=Num:C11(Substring:C12($textVal_t; 5))
-								If (($picIdx_i>0)\
-									 & ($picIdx_i<=\
-									Size of array:C274(<>OTR_Pictures_apic))\
-									 & (<>OTR_PicInUse_ab{$picIdx_i}))
-									$newPicIdx_i:=Find in array:C230(\
-										<>OTR_PicInUse_ab; False:C215)
-									If ($newPicIdx_i=-1)
-										$newPicIdx_i:=\
-											Size of array:C274(<>OTR_Pictures_apic)+1
-										INSERT IN ARRAY:C227(<>OTR_Pictures_apic; \
-											$newPicIdx_i)
-										INSERT IN ARRAY:C227(<>OTR_PicInUse_ab; \
-											$newPicIdx_i)
-									End if 
-									<>OTR_Pictures_apic{$newPicIdx_i}:=\
-										<>OTR_Pictures_apic{$picIdx_i}
-									<>OTR_PicInUse_ab{$newPicIdx_i}:=True:C214
-									OB SET:C1220($destParent_o; $destLeafKey_t; \
-										"pic:"+String:C10($newPicIdx_i))
-								End if 
-							Else 
-								// Plain text (including encoded types)
-								OB SET:C1220($destParent_o; $destLeafKey_t; $textVal_t)
-							End if 
-						End if 
-						
+							OB SET:C1220($destParent_o; $destLeafKey_t; \
+								OB Get:C1224($srcParent_o; $srcLeafKey_t; Is text:K8:3))
+
+						: ($nativeType_i=Is BLOB:K8:12)
+							OB SET:C1220($destParent_o; $destLeafKey_t; \
+								OB Get:C1224($srcParent_o; $srcLeafKey_t; Is BLOB:K8:12))
+
+						: ($nativeType_i=Is picture:K8:10)
+							OB SET:C1220($destParent_o; $destLeafKey_t; \
+								OB Get:C1224($srcParent_o; $srcLeafKey_t; Is picture:K8:10))
 				End case 
 				
 			Else 
