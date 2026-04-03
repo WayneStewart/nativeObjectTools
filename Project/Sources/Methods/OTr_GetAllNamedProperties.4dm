@@ -137,16 +137,13 @@ If (OTr_zIsValidHandle($handle_i))
 							$dataSize_i:=Length:C16(JSON Stringify:C1217($valCol_c))
 							
 						: ($nativeType_i=Is text:K8:3)
-							$dataSize_i:=Length:C16(OB Get:C1224(
-								$target_o; $thisKey_t; Is text:K8:3))
+							$dataSize_i:=Length:C16(OB Get:C1224($target_o; $thisKey_t; Is text:K8:3))
 
 						: ($nativeType_i=Is BLOB:K8:12)
-							$dataSize_i:=BLOB size:C605(OB Get:C1224(
-								$target_o; $thisKey_t; Is BLOB:K8:12))
+							$dataSize_i:=BLOB size:C605(OB Get:C1224($target_o; $thisKey_t; Is BLOB:K8:12))
 
 						: ($nativeType_i=Is picture:K8:10)
-							$dataSize_i:=Picture size:C356(OB Get:C1224(
-								$target_o; $thisKey_t; Is picture:K8:10))
+							$dataSize_i:=Picture size:C356(OB Get:C1224($target_o; $thisKey_t; Is picture:K8:10))
 
 					End case 
 					

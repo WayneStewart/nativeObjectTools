@@ -92,7 +92,8 @@ If (OTr_zIsValidHandle($handle_i))
 				: ($nativeType_i=Is picture:K8:10)
 					$dataSize_i:=Picture size:C356(OB Get:C1224($parent_o; $leafKey_t; Is picture:K8:10))
 
-				
+				End case 
+
 				$itemSize_i:=$dataSize_i+Length:C16($leafKey_t)
 				
 				If ($needItemSize_b)

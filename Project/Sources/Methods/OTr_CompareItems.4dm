@@ -111,10 +111,12 @@ If (OTr_zIsValidHandle($srcHandle_i)\
 					If (OTr_uEqualPictures(OB Get:C1224($srcParent_o; $srcLeafKey_t; Is picture:K8:10); \
 						OB Get:C1224($cmpParent_o; $cmpLeafKey_t; Is picture:K8:10)))
 						$result_i:=1
-							OB Get:C1224(\
-							$cmpParent_o; $cmpLeafKey_t; Is object:K8:27)))
-							$result_i:=1
-						End if 
+					End if 
+
+				: ($nativeSrcType_i=Is object:K8:27)
+					If (OTr_uEqualObjects(OB Get:C1224($srcParent_o; $srcLeafKey_t; Is object:K8:27); OB Get:C1224($cmpParent_o; $cmpLeafKey_t; Is object:K8:27)))
+						$result_i:=1
+					End if 
 						
 					: ($nativeSrcType_i=Is collection:K8:32)
 						If (JSON Stringify:C1217(OB Get:C1224(\
