@@ -22,7 +22,8 @@
 
 #DECLARE($theBlob_x : Blob)->$blobRef_t : Text
 
-If (BLOB SIZE($theBlob_x) > 0)
-        var $b64_t : Text
-        BASE64 ENCODE($theBlob_x; $b64_t; *)
-        $blobRef_t := "blob:"+$b64_t
+If (BLOB size:C605($theBlob_x)>0)
+	BASE64 ENCODE:C895($theBlob_x)
+	$blobRef_t:=Convert to text:C1012($theBlob_x; "US-ASCII")
+End if 
+
