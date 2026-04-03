@@ -4,10 +4,7 @@
 //   $tag_t : Text; $index_i : Integer; $value_pic : Picture)
 
 // Sets a single element of a Picture array item.
-// The Picture is stored via OTr_uPictureToText which
-// allocates a slot in <>OTR_Pictures_apic and returns
-// a "pic:N" reference text. If the element already holds
-// a picture reference, the old slot is released first.
+// Pictures are stored natively in the object via OB SET.
 
 // Access: Shared
 

@@ -3,10 +3,7 @@
 // Project Method: OTr_PutPicture (inObject; inTag; inValue)
 
 // Stores a Picture value at the specified tag path.
-// The Picture is stored via OTr_uPictureToText, which
-// allocates a slot in <>OTR_Pictures_apic and returns
-// a "pic:N" reference string. Any existing binary
-// reference at the tag is released before allocation.
+// Pictures are stored natively in the object via OB SET.
 
 // **ORIGINAL DOCUMENTATION**
 // 

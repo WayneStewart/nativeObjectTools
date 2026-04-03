@@ -3,10 +3,8 @@
 // Project Method: OTr_PutBLOB (inObject; inTag; inValue)
 
 // Stores a BLOB value at the specified tag path.
-// The BLOB is stored via OTr_uBlobToText, which allocates
-// a slot in <>OTR_Blobs_ablob and returns a "blob:N"
-// reference string. Any existing binary reference at
-// the tag is released before allocation.
+// On v19R2+, the BLOB is stored natively in the object.
+// On earlier versions, it is Base64-encoded via OTr_uBlobToText.
 
 // **ORIGINAL DOCUMENTATION**
 // 

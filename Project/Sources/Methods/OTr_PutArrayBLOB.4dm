@@ -4,11 +4,8 @@
 //   $tag_t : Text; $index_i : Integer; $value_blob : Blob)
 
 // Sets a single element of a Blob array item.
-// The BLOB is stored via OTr_uBlobToText which allocates
-// a slot in the parallel <>OTR_Blobs_ablob array and
-// returns a "blob:N" reference text. If the element
-// already holds a blob reference, the old slot is
-// released before the new one is allocated.
+// On v19R2+, the BLOB is stored natively in the object.
+// On earlier versions, it is Base64-encoded via OTr_uBlobToText.
 
 // Access: Shared
 
