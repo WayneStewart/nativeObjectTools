@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_SizeOfArray ($handle_i : Integer; $tag_t : Text) --> Integer
+// Project Method: OTr_SizeOfArray (inObject; inTag) --> Longint
 
 // Returns the number of elements in an array item.
 // Does not count element 0. Returns 0 if the handle
@@ -10,17 +10,18 @@
 // Access: Shared
 
 // Parameters:
-//   $handle_i : Integer : OTr handle
-//   $tag_t    : Text    : Tag path to the array item
+//   $inObject_i : Integer : OTr inObject
+//   $inTag_t    : Text    : Tag path to the array item (inTag)
 
 // Returns:
-//   $size_i : Integer : Number of elements, or 0
+//   $size_i : Integer : Number of elements (not counting element 0), or 0
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text)->$size_i : Integer
+#DECLARE($inObject_i : Integer; $inTag_t : Text)->$size_i : Integer
 
 var $parent_o : Object
 var $arrayObj_o : Object
@@ -28,8 +29,8 @@ var $leafKey_t : Text
 
 $size_i:=0
 
-If (OTr_zIsValidHandle($handle_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_zIsValidHandle($inObject_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
 			If (OB Is defined:C1231($arrayObj_o; "numElements"))

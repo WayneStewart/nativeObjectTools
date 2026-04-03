@@ -1,29 +1,30 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_Clear ($handle_i : Integer)
+// Project Method: OTr_Clear (ioObject)
 
 // Releases an OTr handle and clears its stored object.
 
 // Access: Shared
 
 // Parameters:
-//   $handle_i : Integer : Handle to release
+//   $ioObject_i : Integer : OTr handle to clear (ioObject)
 
 // Returns: Nothing
 
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer)
+#DECLARE($ioObject_i : Integer)
 
 var $size_i : Integer
 
 OTr_zLock
 
-If (OTr_zIsValidHandle($handle_i))
-	<>OTR_Objects_ao{$handle_i}:=Null
-	<>OTR_InUse_ab{$handle_i}:=False
+If (OTr_zIsValidHandle($ioObject_i))
+	<>OTR_Objects_ao{$ioObject_i}:=Null
+	<>OTR_InUse_ab{$ioObject_i}:=False
 
 	$size_i:=Size of array(<>OTR_InUse_ab)
 	While (($size_i>0) & (<>OTR_InUse_ab{$size_i}=False))

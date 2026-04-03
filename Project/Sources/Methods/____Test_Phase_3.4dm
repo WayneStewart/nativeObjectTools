@@ -185,8 +185,14 @@ End if
 //MARK:- done
 OTr_ClearAll
 
+var $result_t : Text
+
 If ($failed_i=0)
-	ALERT:C41(Current method name:C684+" - all tests passed ("+String:C10($passed_i)+"/"+String:C10($total_i)+").")
+	$result_t:=(Current method name:C684+" - all tests passed ("+String:C10($passed_i)+"/"+String:C10($total_i)+").")
 Else 
-	ALERT:C41(Current method name:C684+" - FAILED ("+String:C10($failed_i)+"/"+String:C10($total_i)+")."+Char:C90(Carriage return:K15:38)+$failures_t)
+	$result_t:=(Current method name:C684+" - FAILED ("+String:C10($failed_i)+"/"+String:C10($total_i)+")."+Char:C90(Carriage return:K15:38)+$failures_t)
 End if 
+
+ALERT:C41($result_t)
+
+SET TEXT TO PASTEBOARD:C523($result_t)

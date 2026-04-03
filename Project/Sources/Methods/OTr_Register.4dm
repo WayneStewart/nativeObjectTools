@@ -1,21 +1,22 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_Register ($serial_t : Text) --> $result_i : Integer
+// Project Method: OTr_Register (inSerialNum) --> Longint
 
 // Compatibility no-op for OT Register; always succeeds.
 
 // Access: Shared
 
 // Parameters:
-//   $serial_t : Text : Legacy registration string (ignored)
+//   $inSerialNum_t : Text : Registration serial number string (inSerialNum)
 
 // Returns:
 //   $result_i : Integer : 1 for success
 
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($serial_t : Text)->$result_i : Integer
+#DECLARE($inSerialNum_t : Text)->$result_i : Integer
 
 $result_i:=1

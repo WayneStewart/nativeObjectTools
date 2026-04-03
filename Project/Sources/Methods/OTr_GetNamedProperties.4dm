@@ -1,19 +1,15 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_GetNamedProperties ($handle_i : Integer; \
-//   $tag_t : Text; $outType_ptr : Pointer \
-//   {; $outItemSize_ptr : Pointer \
-//   {; $outDataSize_ptr : Pointer \
-//   {; $outIndex_ptr : Pointer}}})
+// Project Method: OTr_GetNamedProperties (inObject; inTag; outType {; outItemSize {; outDataSize {; outIndex}}})
 
-// Returns properties of the item identified by $tag_t. $outIndex_ptr
+// Returns properties of the item identified by $inTag_t. $outIndex_ptr
 // is always set to 0 (reserved for backwards compatibility).
 
 // Access: Shared
 
 // Parameters:
-//   $handle_i        : Integer : A handle to an object
-//   $tag_t           : Text    : An item tag
+//   $inObject_i        : Integer : OTr inObject
+//   $inTag_t           : Text    : Tag of the item to query (inTag)
 //   $outType_ptr     : Pointer : Receives OT type constant (Longint)
 //   $outItemSize_ptr : Pointer : Receives item size including tag
 //                                (Longint) (optional)
@@ -25,9 +21,10 @@
 
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text; $outType_ptr : Pointer; \
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $outType_ptr : Pointer; \
 $outItemSize_ptr : Pointer; $outDataSize_ptr : Pointer; \
 $outIndex_ptr : Pointer)
 
@@ -49,9 +46,9 @@ $needIndex_b:=(Count parameters:C259>=6)
 
 OTr_zLock
 
-If (OTr_zIsValidHandle($handle_i))
+If (OTr_zIsValidHandle($inObject_i))
 	
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; \
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			
@@ -110,10 +107,10 @@ If (OTr_zIsValidHandle($handle_i))
 			End if 
 			
 		Else 
-			OTr_zError("Item not found: "+$tag_t; Current method name:C684)
+			OTr_zError("Item not found: "+$inTag_t; Current method name:C684)
 		End if 
 	Else 
-		OTr_zError("Invalid path: "+$tag_t; Current method name:C684)
+		OTr_zError("Invalid path: "+$inTag_t; Current method name:C684)
 	End if 
 	
 Else 

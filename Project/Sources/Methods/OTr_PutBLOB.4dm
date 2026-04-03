@@ -41,6 +41,7 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-03 - Removed release call; branches on
 //     Storage.OTr.nativeBlobInObject for native or base64 storage.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_blob : Blob)

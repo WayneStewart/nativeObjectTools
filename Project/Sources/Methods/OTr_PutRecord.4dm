@@ -47,6 +47,7 @@
 
 // Created by Wayne Stewart, 2026-04-03
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inTable_i : Integer)

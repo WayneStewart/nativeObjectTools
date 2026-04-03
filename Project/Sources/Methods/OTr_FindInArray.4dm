@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_FindInArray (handle ; tag; value{; startFrom}) --> Integer
+// Project Method: OTr_FindInArray (inObject; inTag; inValue {; inStart}) --> Longint
 
 // Searches an array stored in an OTr object for a
 // value matching inValue. The value is passed as text
@@ -22,19 +22,20 @@
 // Access: Shared
 
 // Parameters:
-//   $handle_i : Integer : OTr handle
-//   $tag_t    : Text    : Tag path to the array item
-//   $value_t  : Text    : Value to search for (as text)
-//   $startFrom_i : Integer : Where to start from, optional defaults to 1
+//   $inObject_i : Integer : OTr handle
+//   $inTag_t    : Text    : Tag path to the array item
+//   $inValue_t  : Text    : Value to search for (as text)
+//   $inStart_i      : Integer : Starting index, 1-based; default 1 (inStart)
 
 // Returns:
 //   $result_i : Integer : 1-based index of match, or -1
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text; $value_t : Text; $startFrom_i : Integer)->$result_i : Integer
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_t : Text; $inStart_i : Integer)->$result_i : Integer
 
 var $parent_o : Object
 var $arrayObj_o : Object
@@ -53,12 +54,12 @@ ARRAY BOOLEAN:C223($Work_ab; 0)
 ARRAY DATE:C224($Work_ad; 0)
 ARRAY TIME:C1223($Work_ah; 0)
 
-$startFrom_i:=Choose:C955(Count parameters:C259=4; $startFrom_i; 1)
+$inStart_i:=Choose:C955(Count parameters:C259=4; $inStart_i; 1)
 
 $result_i:=-1
 
-If (OTr_zIsValidHandle($handle_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_zIsValidHandle($inObject_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
 			$type_i:=OTr_zArrayType($arrayObj_o)
@@ -97,28 +98,28 @@ If (OTr_zIsValidHandle($handle_i))
 					// Search using native Find in array with type conversion
 					Case of 
 						: (($type_i=Text array:K8:16) | ($type_i=String array:K8:15))
-							$result_i:=Find in array:C230($Work_at; $value_t; $startFrom_i)
+							$result_i:=Find in array:C230($Work_at; $inValue_t; $inStart_i)
 							
 						: ($type_i=LongInt array:K8:19)
-							$result_i:=Find in array:C230($Work_ai; Num:C11($value_t); $startFrom_i)
+							$result_i:=Find in array:C230($Work_ai; Num:C11($inValue_t); $inStart_i)
 							
 						: ($type_i=Integer array:K8:18)
-							$result_i:=Find in array:C230($Work_ai; Num:C11($value_t); $startFrom_i)
+							$result_i:=Find in array:C230($Work_ai; Num:C11($inValue_t); $inStart_i)
 							
 						: ($type_i=Real array:K8:17)
-							$result_i:=Find in array:C230($Work_ar; Num:C11($value_t); $startFrom_i)
+							$result_i:=Find in array:C230($Work_ar; Num:C11($inValue_t); $inStart_i)
 							
 						: ($type_i=Boolean array:K8:21)
-							$searchBool_b:=(($value_t="true") | ($value_t="1"))
-							$result_i:=Find in array:C230($Work_ab; $searchBool_b; $startFrom_i)
+							$searchBool_b:=(($inValue_t="true") | ($inValue_t="1"))
+							$result_i:=Find in array:C230($Work_ab; $searchBool_b; $inStart_i)
 							
 						: ($type_i=Date array:K8:20)
-							$searchDate_d:=OTr_uTextToDate($value_t)
-							$result_i:=Find in array:C230($Work_ad; $searchDate_d; $startFrom_i)
+							$searchDate_d:=OTr_uTextToDate($inValue_t)
+							$result_i:=Find in array:C230($Work_ad; $searchDate_d; $inStart_i)
 							
 						: ($type_i=Time array:K8:29)
-							$search_h:=OTr_uTextToTime($value_t)
-							$result_i:=Find in array:C230($Work_ah; $search_h; $startFrom_i)
+							$search_h:=OTr_uTextToTime($inValue_t)
+							$result_i:=Find in array:C230($Work_ah; $search_h; $inStart_i)
 							
 					End case 
 					OTr_zSetOK(Num($result_i>=0))

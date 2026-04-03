@@ -1,34 +1,34 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_PutBoolean ($handle_i : Integer; $tag_t : Text; \
-//   $value_b : Boolean)
+// Project Method: OTr_PutBoolean (inObject; inTag; inValue)
 
 // Stores a Boolean value at the specified tag path.
 
 // Access: Shared
 
 // Parameters:
-//   $handle_i : Integer : OTr handle
-//   $tag_t    : Text    : Tag path
-//   $value_b  : Boolean : Value to store
+//   $inObject_i : Integer : OTr inObject
+//   $inTag_t    : Text    : Tag path (inTag)
+//   $inValue_b  : Boolean : Value to store (inValue)
 
 // Returns: Nothing
 
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text; $value_b : Boolean)
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_b : Boolean)
 
 var $parent_o : Object
 var $leafKey_t : Text
 
 OTr_zLock
 
-If (OTr_zIsValidHandle($handle_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; True; \
+If (OTr_zIsValidHandle($inObject_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; \
 		->$parent_o; ->$leafKey_t))
-		OB SET($parent_o; $leafKey_t; $value_b)
+		OB SET($parent_o; $leafKey_t; $inValue_b)
 	End if
 Else
 	OTr_zError("Invalid handle"; Current method name)

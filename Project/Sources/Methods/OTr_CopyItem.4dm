@@ -1,28 +1,28 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_CopyItem ($srcHandle_i : Integer; \
-//   $srcTag_t : Text; $destHandle_i : Integer; $destTag_t : Text)
+// Project Method: OTr_CopyItem (inSourceObject; inSourceTag; inDestObject; inDestTag)
 
-// Copies the item at $srcTag_t to $destTag_t. The destination need not
+// Copies the item at $inSourceTag_t to $inDestTag_t. The destination need not
 // exist; it will be created. Source and destination handles may be the
 // same. Embedded objects are deep-copied via OB Copy.
 
 // Access: Shared
 
 // Parameters:
-//   $srcHandle_i  : Integer : A handle to the source object
-//   $srcTag_t     : Text    : Source item tag
-//   $destHandle_i : Integer : A handle to the destination object
-//   $destTag_t    : Text    : Destination item tag
+//   $inSourceObject_i  : Integer : OTr inSourceObject
+//   $inSourceTag_t     : Text    : Source item tag (inSourceTag)
+//   $inDestObject_i    : Integer : OTr inDestObject
+//   $inDestTag_t       : Text    : Destination item tag (inDestTag)
 
 // Returns: Nothing
 
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($srcHandle_i : Integer; $srcTag_t : Text; \
-$destHandle_i : Integer; $destTag_t : Text)
+#DECLARE($inSourceObject_i : Integer; $inSourceTag_t : Text; \
+$inDestObject_i : Integer; $inDestTag_t : Text)
 
 var $srcParent_o : Object
 var $srcLeafKey_t : Text
@@ -33,16 +33,16 @@ var $textVal_t : Text
 
 OTr_zLock
 
-If (OTr_zIsValidHandle($srcHandle_i)\
- & OTr_zIsValidHandle($destHandle_i))
+If (OTr_zIsValidHandle($inSourceObject_i)\
+ & OTr_zIsValidHandle($inDestObject_i))
 	
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$srcHandle_i}; $srcTag_t; \
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inSourceObject_i}; $inSourceTag_t; \
 		False:C215; ->$srcParent_o; ->$srcLeafKey_t))
 		
 		If (OB Is defined:C1231($srcParent_o; $srcLeafKey_t))
 			
-			If (OTr_zResolvePath(<>OTR_Objects_ao{$destHandle_i}; \
-				$destTag_t; True:C214; ->$destParent_o; ->$destLeafKey_t))
+			If (OTr_zResolvePath(<>OTR_Objects_ao{$inDestObject_i}; \
+				$inDestTag_t; True:C214; ->$destParent_o; ->$destLeafKey_t))
 				
 				$nativeType_i:=OB Get type:C1230($srcParent_o; $srcLeafKey_t)
 				
@@ -83,17 +83,17 @@ If (OTr_zIsValidHandle($srcHandle_i)\
 				End case 
 				
 			Else 
-				OTr_zError("Cannot resolve destination: "+$destTag_t; \
+				OTr_zError("Cannot resolve destination: "+$inDestTag_t; \
 					Current method name:C684)
 			End if 
 			
 		Else 
-			OTr_zError("Source item not found: "+$srcTag_t; \
+			OTr_zError("Source item not found: "+$inSourceTag_t; \
 				Current method name:C684)
 		End if 
 		
 	Else 
-		OTr_zError("Invalid source path: "+$srcTag_t; Current method name:C684)
+		OTr_zError("Invalid source path: "+$inSourceTag_t; Current method name:C684)
 	End if 
 	
 Else 

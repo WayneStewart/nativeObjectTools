@@ -1,16 +1,17 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_New () --> $handle_i : Integer
+// Project Method: OTr_New () --> Longint
 
 // Allocates and returns a new OTr object handle.
 
 // Access: Shared
 
 // Returns:
-//   $handle_i : Integer : Allocated handle
+//   $handle_i : Integer : New OTr object handle
 
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
 #DECLARE()->$handle_i : Integer

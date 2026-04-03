@@ -1,7 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_GetObject ($handle_i : Integer; $tag_t : Text) \
-//   --> $newHandle_i : Integer
+// Project Method: OTr_GetObject (inObject; inTag) --> Longint
 
 // Retrieves an embedded object by tag path, copies it to a new OTr
 // handle, and returns that handle.
@@ -9,17 +8,18 @@
 // Access: Shared
 
 // Parameters:
-//   $handle_i : Integer : Source OTr handle
-//   $tag_t    : Text    : Tag path to embedded object
+//   $inObject_i : Integer : OTr inObject
+//   $inTag_t    : Text    : Tag path to embedded object (inTag)
 
 // Returns:
-//   $newHandle_i : Integer : New handle containing copied object, or 0
+//   $newHandle_i : Integer : New handle containing a copy of the embedded object, or 0
 
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text)->$newHandle_i : Integer
+#DECLARE($inObject_i : Integer; $inTag_t : Text)->$newHandle_i : Integer
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -29,8 +29,8 @@ $newHandle_i:=0
 
 OTr_zLock
 
-If (OTr_zIsValidHandle($handle_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False; \
+If (OTr_zIsValidHandle($inObject_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; \
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
 			$embedded_o:=OB Get($parent_o; $leafKey_t; Is object)

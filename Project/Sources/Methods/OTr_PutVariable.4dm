@@ -1,9 +1,9 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_PutVariable (inObject; inTag; varPtr)
+// Project Method: OTr_PutVariable (inObject; inTag; inVarPointer)
 
 // Stores the contents of the variable pointed to by
-// $varPtr at the tag path in the object. Every 4D
+// $inVarPointer_ptr at the tag path in the object. Every 4D
 // variable type except 2D arrays can be stored,
 // including arrays and Booleans.
 //
@@ -44,15 +44,16 @@
 // Parameters:
 //   $inObject_i : Integer : OTr inObject
 //   $inTag_t    : Text    : Tag path (inTag)
-//   $varPtr     : Pointer : Pointer to variable to store
+//   $inVarPointer_ptr     : Pointer : Pointer to variable to store
 
 // Returns: Nothing
 
 // Created by Wayne Stewart, 2026-04-03
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($inObject_i : Integer; $inTag_t : Text; $varPtr : Pointer)
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $inVarPointer_ptr : Pointer)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -71,41 +72,41 @@ $OK_i:=1  // Assume everything will work
 
 If (OTr_zIsValidHandle($inObject_i))
 	
-	$type_i:=Type:C295($varPtr->)
+	$type_i:=Type:C295($inVarPointer_ptr->)
 	
 	Case of 
 			
 		: ($type_i=Real array:K8:17) | ($type_i=Integer array:K8:18) | ($type_i=LongInt array:K8:19) | ($type_i=Date array:K8:20) | ($type_i=Boolean array:K8:21) | ($type_i=Blob array:K8:30) | ($type_i=String array:K8:15) | ($type_i=Is null:K8:31) | ($type_i=Is collection:K8:32) | ($type_i=Is variant:K8:33)
 			OTr_zUnlock
 			$unlocked_b:=True:C214
-			OTr_PutArray($inObject_i; $inTag_t; $varPtr)
+			OTr_PutArray($inObject_i; $inTag_t; $inVarPointer_ptr)
 			
 		: ($type_i=Is longint:K8:6) | ($type_i=Is integer:K8:5)
-			$stored_t:="var:longint:"+String:C10($varPtr->)
+			$stored_t:="var:longint:"+String:C10($inVarPointer_ptr->)
 			
 		: ($type_i=Is real:K8:4)
-			$stored_t:="var:real:"+String:C10($varPtr->)
+			$stored_t:="var:real:"+String:C10($inVarPointer_ptr->)
 			
 		: ($type_i=Is text:K8:3) | ($type_i=Is string var:K8:2)
-			$stored_t:="var:text:"+String:C10($varPtr->)
+			$stored_t:="var:text:"+String:C10($inVarPointer_ptr->)
 			
 		: ($type_i=Is boolean:K8:9)
-			$stored_t:="var:boolean:"+Choose:C955($varPtr->; "true"; "false")
+			$stored_t:="var:boolean:"+Choose:C955($inVarPointer_ptr->; "true"; "false")
 			
 		: ($type_i=Is date:K8:7)
-			$stored_t:="var:date:"+OTr_uDateToText($varPtr->)
+			$stored_t:="var:date:"+OTr_uDateToText($inVarPointer_ptr->)
 			
 		: ($type_i=Is time:K8:8)
-			$stored_t:="var:time:"+OTr_uTimeToText($varPtr->)
+			$stored_t:="var:time:"+OTr_uTimeToText($inVarPointer_ptr->)
 			
 		: ($type_i=Pointer array:K8:23)
-			$stored_t:="var:pointer:"+OTr_uPointerToText($varPtr->)
+			$stored_t:="var:pointer:"+OTr_uPointerToText($inVarPointer_ptr->)
 			
 		: ($type_i=Is BLOB:K8:12)
-			$stored_t:="var:blob:"+OTr_uBlobToText($varPtr->)
+			$stored_t:="var:blob:"+OTr_uBlobToText($inVarPointer_ptr->)
 			
 		: ($type_i=Is picture:K8:10)
-			PICTURE TO BLOB($varPtr->; $picBlob_blob; ".png")
+			PICTURE TO BLOB($inVarPointer_ptr->; $picBlob_blob; ".png")
 			BASE64 ENCODE($picBlob_blob; $picData_t; *)
 			$stored_t:="var:picture:"+$picData_t
 			

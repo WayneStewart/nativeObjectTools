@@ -1,9 +1,9 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_GetVariable (inObject; inTag; varPtr)
+// Project Method: OTr_GetVariable (inObject; inTag; outVarPointer)
 
 // Retrieves a value stored at the tag path and writes
-// it into the variable pointed to by $varPtr. Scalar
+// it into the variable pointed to by $outVarPointer_ptr. Scalar
 // variable values are stored as "var:typeName:value".
 // Array variable values are stored as sub-objects;
 // retrieval is delegated to OTr_GetArray.
@@ -35,15 +35,17 @@
 // Parameters:
 //   $inObject_i : Integer : OTr inObject
 //   $inTag_t    : Text    : Tag path (inTag)
-//   $varPtr     : Pointer : Pointer to variable to receive the value
+//   $outVarPointer_ptr     : Pointer : Pointer to variable to receive the value
 
 // Returns: Nothing
 
 // Created by Wayne Stewart, 2026-04-03
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-04 - Fixed: BLOB TO PICTURE missing ".png" codec in Picture case.
 // ----------------------------------------------------
 
-#DECLARE($inObject_i : Integer; $inTag_t : Text; $varPtr : Pointer)
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $outVarPointer_ptr : Pointer)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -77,32 +79,32 @@ If (OTr_zIsValidHandle($inObject_i))
 				Case of 
 						
 					: ($typeName_t="longint")
-						$varPtr->:=Num:C11($serialised_t)
+						$outVarPointer_ptr->:=Num:C11($serialised_t)
 						
 					: ($typeName_t="real")
-						$varPtr->:=Num:C11($serialised_t)
+						$outVarPointer_ptr->:=Num:C11($serialised_t)
 						
 					: ($typeName_t="text")
-						$varPtr->:=$serialised_t
+						$outVarPointer_ptr->:=$serialised_t
 						
 					: ($typeName_t="boolean")
-						$varPtr->:=($serialised_t="true")
+						$outVarPointer_ptr->:=($serialised_t="true")
 						
 					: ($typeName_t="date")
-						$varPtr->:=OTr_uTextToDate($serialised_t)
+						$outVarPointer_ptr->:=OTr_uTextToDate($serialised_t)
 						
 					: ($typeName_t="time")
-						$varPtr->:=OTr_uTextToTime($serialised_t)
+						$outVarPointer_ptr->:=OTr_uTextToTime($serialised_t)
 						
 					: ($typeName_t="pointer")
-						$varPtr->:=OTr_uTextToPointer($serialised_t)
+						$outVarPointer_ptr->:=OTr_uTextToPointer($serialised_t)
 						
 					: ($typeName_t="blob")
-						$varPtr->:=OTr_uTextToBlob($serialised_t)
+						$outVarPointer_ptr->:=OTr_uTextToBlob($serialised_t)
 						
 					: ($typeName_t="picture")
 							BASE64 DECODE($serialised_t; $picBlob_blob)
-							BLOB TO PICTURE($picBlob_blob; $varPtr->)
+								BLOB TO PICTURE:C682($picBlob_blob; $outVarPointer_ptr->; ".png")
 					Else 
 						OTr_zError("Unknown variable type in stored value"; Current method name:C684)
 						OTr_zSetOK(0)
@@ -113,7 +115,7 @@ If (OTr_zIsValidHandle($inObject_i))
 				// Array variable — stored as a sub-object; delegate to OTr_GetArray
 				OTr_zUnlock
 				$unlocked_b:=True
-				OTr_GetArray($inObject_i; $inTag_t; $varPtr)
+				OTr_GetArray($inObject_i; $inTag_t; $outVarPointer_ptr)
 				
 			End if 
 			

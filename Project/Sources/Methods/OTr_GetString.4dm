@@ -1,37 +1,37 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_GetString ($handle_i : Integer; $tag_t : Text) \
-//   --> $value_t : Text
+// Project Method: OTr_GetString (inObject; inTag) --> Text
 
 // Retrieves a String/Text value from the specified tag path.
 
 // Access: Shared
 
 // Parameters:
-//   $handle_i : Integer : OTr handle
-//   $tag_t    : Text    : Tag path
+//   $inObject_i : Integer : OTr inObject
+//   $inTag_t    : Text    : Tag path (inTag)
 
 // Returns:
-//   $value_t : Text : Stored value, or empty text when missing/invalid
+//   $result_t : Text : Stored value, or empty text on missing/invalid
 
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text)->$value_t : Text
+#DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_t : Text
 
 var $parent_o : Object
 var $leafKey_t : Text
 
-$value_t:=""
+$result_t:=""
 
 OTr_zLock
 
-If (OTr_zIsValidHandle($handle_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False; \
+If (OTr_zIsValidHandle($inObject_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; \
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			$value_t:=OB Get($parent_o; $leafKey_t)
+			$result_t:=OB Get($parent_o; $leafKey_t)
 		End if
 	End if
 End if

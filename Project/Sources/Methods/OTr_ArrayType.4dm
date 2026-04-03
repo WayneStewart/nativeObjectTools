@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_ArrayType ($handle_i : Integer; $tag_t : Text) --> Integer
+// Project Method: OTr_ArrayType (inObject; inTag) --> Longint
 
 // Returns the stored arrayType value from an OTr
 // array object. Used to verify type compatibility
@@ -11,17 +11,18 @@
 // Access: Shared
 
 // Parameters:
-//   $handle_i : Integer : OTr handle
-//   $tag_t    : Text    : Tag path to the array item
+//   $inObject_i : Integer : OTr inObject
+//   $inTag_t    : Text    : Tag path to the array item (inTag)
 
 // Returns:
-//   $arrayType_i : Integer : Stored arrayType, or -1
+//   $arrayType_i : Integer : Stored array type constant, or -1
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text)->$arrayType_i : Integer
+#DECLARE($inObject_i : Integer; $inTag_t : Text)->$arrayType_i : Integer
 
 var $parent_o : Object
 var $arrayObj_o : Object
@@ -29,8 +30,8 @@ var $leafKey_t : Text
 
 $arrayType_i:=-1
 
-If (OTr_zIsValidHandle($handle_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_zIsValidHandle($inObject_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
 			$arrayType_i:=OTr_zArrayType($arrayObj_o)
