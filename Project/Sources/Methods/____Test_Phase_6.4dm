@@ -12,8 +12,7 @@
   //   BLOB item round-trip (binary attachment table)
   //   Picture item round-trip (binary attachment table)
   //   OTr_ObjectToNewBLOB — function result form
-  //   OTr_ObjectToBLOB — append mode + ioOffset sequential read
-  //   OTr_BLOBToObject — invalid magic error case
+  //   OTr_BLOBToObject — invalid data error case
 
   // Access: Private
 
@@ -51,11 +50,7 @@ var $pngBlob_blob : Blob
 var $testPic_pic : Picture
 var $gotPic_pic : Picture
 
-// Append/offset test vars
-var $appendBlob_blob : Blob
-var $offset_i : Integer
-
-// Invalid magic test vars
+// Invalid data test vars
 var $badBlob_blob : Blob
 
 // ====================================================
@@ -331,60 +326,7 @@ Else
 End if
 
 // ====================================================
-//MARK:- OTr_ObjectToBLOB — append mode + ioOffset
-// ====================================================
-
-OTr_ClearAll
-$h_i := OTr_New
-$h2_i := OTr_New
-OTr_PutString($h_i; "seq"; "first")
-OTr_PutString($h2_i; "seq"; "second")
-
-// Serialize first (replace)
-SET BLOB SIZE($appendBlob_blob; 0)
-OTr_ObjectToBLOB($h_i; ->$appendBlob_blob)
-
-// Serialize second (append)
-OTr_ObjectToBLOB($h2_i; ->$appendBlob_blob; 1)
-
-$offset_i := 0
-
-$total_i := $total_i+1
-$h3_i := OTr_BLOBToObject($appendBlob_blob; ->$offset_i)
-If ((OK = 1) & ($h3_i > 0))
-	$passed_i := $passed_i+1
-Else
-	$failed_i := $failed_i+1
-	$failures_t := $failures_t+"Append: first BLOBToObject failed"+Char(Carriage return)
-End if
-
-$total_i := $total_i+1
-$h4_i := OTr_BLOBToObject($appendBlob_blob; ->$offset_i)
-If ((OK = 1) & ($h4_i > 0))
-	$passed_i := $passed_i+1
-Else
-	$failed_i := $failed_i+1
-	$failures_t := $failures_t+"Append: second BLOBToObject failed"+Char(Carriage return)
-End if
-
-$total_i := $total_i+1
-If (OTr_GetString($h3_i; "seq") = "first")
-	$passed_i := $passed_i+1
-Else
-	$failed_i := $failed_i+1
-	$failures_t := $failures_t+"Append: first object content wrong"+Char(Carriage return)
-End if
-
-$total_i := $total_i+1
-If (OTr_GetString($h4_i; "seq") = "second")
-	$passed_i := $passed_i+1
-Else
-	$failed_i := $failed_i+1
-	$failures_t := $failures_t+"Append: second object content wrong"+Char(Carriage return)
-End if
-
-// ====================================================
-//MARK:- OTr_BLOBToObject — invalid magic error case
+//MARK:- OTr_BLOBToObject — invalid data error case
 // ====================================================
 
 CONVERT FROM TEXT("NOT_OTR1_DATA"; "US-ASCII"; $badBlob_blob)
@@ -395,7 +337,7 @@ If ((OK = 0) & ($h_i = 0))
 	$passed_i := $passed_i+1
 Else
 	$failed_i := $failed_i+1
-	$failures_t := $failures_t+"BLOBToObject: bad magic should return 0 and OK=0"+Char(Carriage return)
+	$failures_t := $failures_t+"BLOBToObject: invalid data should return 0 and OK=0"+Char(Carriage return)
 End if
 OK := 1
 

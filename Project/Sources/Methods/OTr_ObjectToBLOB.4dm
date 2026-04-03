@@ -2,9 +2,9 @@
   // ----------------------------------------------------
   // Project Method: OTr_ObjectToBLOB (inObject; ioBLOB {; append})
 
-  // Serialises an OTr object into a BLOB using the OTR1 binary
-  // format. Binary data (BLOBs and Pictures stored as parallel-array
-  // references) is embedded in the BLOB as a binary attachment table.
+  // Serialises an OTr object into a BLOB using VARIABLE TO BLOB
+  // with GZIP compression. The object's contents (including natively
+  // stored BLOBs and Pictures) are fully self-contained.
   // 
   // Because 4D passes BLOBs by value, *ioBLOB* must be passed as a
   // Pointer to a BLOB variable: OTr_ObjectToBLOB($h; ->$myBlob).
@@ -44,50 +44,48 @@
   // Based on work by himself, Rob Laveaux, and Cannon Smith.
   // Wayne Stewart, 2026-04-03 - Changed $ioBLOB param from Blob to Pointer
   //       because 4D passes BLOBs by value; callers must pass ->$blobVar.
+  // Wayne Stewart, 2026-04-03 - Rewritten: VARIABLE TO BLOB + GZIP compression;
+  //       dropped OTR1 envelope and parallel-array expansion.
   // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $ioBLOB_ptr : Pointer; $append_i : Integer)
 
-var $snapshot_o : Object
-var $expanded_o : Object
-var $varBlob_blob : Blob
-var $workBlob_blob : Blob
+var $obj_o : Object
+var $serialised_blob : Blob
 var $doAppend_i : Integer
 
 $doAppend_i := Choose(Count parameters < 3; 0; $append_i)
 
-OTr_zLock
-
-If (OTr_zIsValidHandle($inObject_i))
-
-	//MARK:- Snapshot and expand binaries (inside lock)
-	$snapshot_o := OB Copy(<>OTR_Objects_ao{$inObject_i})
-	$expanded_o := OTr_uExpandBinaries($snapshot_o)
-
-	OTr_zUnlock
-
-	//MARK:- Serialise self-contained expanded object
-	VARIABLE TO BLOB($expanded_o; $varBlob_blob)
-
-	//MARK:- Build OTR1 BLOB: magic(4) + varBlobLen(4) + varBlobData
-	CONVERT FROM TEXT("OTR1"; "US-ASCII"; $workBlob_blob)
-	LONGINT TO BLOB(BLOB SIZE($varBlob_blob); $workBlob_blob; Native byte ordering)
-	COPY BLOB($varBlob_blob; $workBlob_blob; 0; BLOB SIZE($workBlob_blob); BLOB SIZE($varBlob_blob))
-
-	//MARK:- Write result to caller via pointer
-	If ($doAppend_i = 0)
-		SET BLOB SIZE($ioBLOB_ptr->; 0)
-		COPY BLOB($workBlob_blob; $ioBLOB_ptr->; 0; 0; BLOB SIZE($workBlob_blob))
-	Else
-		COPY BLOB($workBlob_blob; $ioBLOB_ptr->; 0; BLOB SIZE($ioBLOB_ptr->); BLOB SIZE($workBlob_blob))
-	End if
-
-	OTr_zSetOK(1)
+If ($ioBLOB_ptr = Null)
+	OTr_zError("ioBLOB pointer is Nil"; Current method name)
+	OTr_zSetOK(0)
 
 Else
-	OTr_zError("Invalid inObject"; Current method name)
-	SET BLOB SIZE($ioBLOB_ptr->; 0)
-	OTr_zSetOK(0)
-	OTr_zUnlock
+
+	OTr_zLock
+
+	If (OTr_zIsValidHandle($inObject_i))
+		$obj_o := OB Copy(<>OTR_Objects_ao{$inObject_i})
+		OTr_zUnlock
+
+		VARIABLE TO BLOB($obj_o; $serialised_blob)
+		COMPRESS BLOB($serialised_blob; GZIP best compression mode)
+
+		If ($doAppend_i = 0)
+			SET BLOB SIZE($ioBLOB_ptr->; 0)
+			COPY BLOB($serialised_blob; $ioBLOB_ptr->; 0; 0; BLOB SIZE($serialised_blob))
+		Else
+			COPY BLOB($serialised_blob; $ioBLOB_ptr->; 0; BLOB SIZE($ioBLOB_ptr->); BLOB SIZE($serialised_blob))
+		End if
+
+		OTr_zSetOK(1)
+
+	Else
+		OTr_zError("Invalid inObject"; Current method name)
+		SET BLOB SIZE($ioBLOB_ptr->; 0)
+		OTr_zSetOK(0)
+		OTr_zUnlock
+
+	End if
 
 End if
