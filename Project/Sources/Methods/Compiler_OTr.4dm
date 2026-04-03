@@ -394,7 +394,6 @@ If (False:C215)
 	C_BLOB:C604(OTr_ObjectToNewBLOB; $0)
 
 	C_BLOB:C604(OTr_BLOBToObject; $1)
-	C_POINTER:C301(OTr_BLOBToObject; $2)
 	C_LONGINT:C283(OTr_BLOBToObject; $0)
 
 End if 
