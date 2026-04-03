@@ -1,33 +1,28 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: OTr_uTextToBlob ($blobRef_t : Text) --> Blob
+// Project Method: OTr_uTextToBlob ($encoded_t : Text) --> Blob
 
-// Retrieves a BLOB from the OTr parallel blob array
-// using a reference string in "blob:N" format.
-// Returns an empty BLOB if the reference is invalid
-// or the slot is not in use.
+// Decodes a base64-encoded Text string back to a BLOB.
+// Used only when Storage.OTr.nativeBlobInObject is False
+// (v19 or v19R1). Returns an empty BLOB if the input
+// text is empty.
 
 // Access: Private
 
 // Parameters:
-//   $blobRef_t : Text : Reference string "blob:N"
+//   $encoded_t : Text : Base64-encoded text
 
 // Returns:
-//   $theBlob_x : Blob : The stored BLOB, or empty
+//   $theBlob_x : Blob : Decoded BLOB, or empty BLOB on failure
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-03 - Rewritten: pure base64 decoder;
+//     no parallel array slot management.
 // ----------------------------------------------------
 
-#DECLARE($blobRef_t : Text)->$theBlob_x : Blob
+#DECLARE($encoded_t : Text)->$theBlob_x : Blob
 
-var $slot_i : Integer
-
-If (Substring:C12($blobRef_t; 1; 5)="blob:")
-	$slot_i:=Num:C11(Substring:C12($blobRef_t; 6))
-	If (($slot_i>0) & ($slot_i<=Size of array:C274(<>OTR_Blobs_ablob)))
-		If (<>OTR_BlobInUse_ab{$slot_i})
-			$theBlob_x:=<>OTR_Blobs_ablob{$slot_i}
-		End if
-	End if
+If (Length($encoded_t) > 0)
+	BASE64 DECODE($encoded_t; $theBlob_x)
 End if

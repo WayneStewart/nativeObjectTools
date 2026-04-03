@@ -34,8 +34,7 @@
 var $parent_o : Object
 var $arrayObj_o : Object
 var $leafKey_t : Text
-var $n_i; $i_i; $arrayType_i; $count_i; $last_i : Integer
-var $storedVal_t : Text
+var $n_i; $i_i; $count_i; $last_i : Integer
 
 $count_i:=Choose(Count parameters:C259<4; 1; $howMany_i)
 
@@ -52,15 +51,6 @@ If (OTr_zIsValidHandle($handle_i))
 					// Clamp count so we don't exceed the array end
 					$last_i:=Choose($where_i+$count_i-1>$n_i; $n_i; $where_i+$count_i-1)
 					$count_i:=$last_i-$where_i+1
-					$arrayType_i:=OTr_zArrayType($arrayObj_o)
-					
-					// Release binary slots for all deleted elements
-					If (($arrayType_i=Blob array:K8:30) | ($arrayType_i=Picture array:K8:22))
-						For ($i_i; $where_i; $last_i)
-							$storedVal_t:=OB Get:C1224($arrayObj_o; String:C10($i_i); Is text:K8:3)
-							OTr_zReleaseBinaryRef($storedVal_t)
-						End for
-					End if
 					
 					// Shift elements above the deleted range down by count
 					For ($i_i; $where_i; $n_i-$count_i)

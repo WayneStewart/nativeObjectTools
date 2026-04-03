@@ -20,6 +20,8 @@
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-03 - Removed proxy string; Picture now
+//     retrieved natively from collection element.
 // ----------------------------------------------------
 
 #DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer)->$value_pic : Picture
@@ -38,7 +40,7 @@ If (OTr_zIsValidHandle($handle_i))
 			If ($arrayType_i=Picture array:K8:22)
 				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
 					If (OB Is defined:C1231($arrayObj_o; String:C10($index_i)))
-						$value_pic:=OTr_uTextToPicture($arrayObj_o[String:C10($index_i)])
+						$value_pic:=$arrayObj_o[String:C10($index_i)]
 						OTr_zSetOK  // (1)
 					Else 
 						OTr_zSetOK  // (0)

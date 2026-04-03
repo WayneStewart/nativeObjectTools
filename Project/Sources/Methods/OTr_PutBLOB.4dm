@@ -40,6 +40,8 @@
 
 // Created by Wayne Stewart, 2026-04-03
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-03 - Removed release call; branches on
+//     Storage.OTr.nativeBlobInObject for native or base64 storage.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_blob : Blob)
@@ -51,10 +53,11 @@ OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; ->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			OTr_zReleaseBinaryRef(OB Get($parent_o; $leafKey_t; Is text))
+		If (Storage.OTr.nativeBlobInObject)
+			OB SET($parent_o; $leafKey_t; $inValue_blob)
+		Else
+			OB SET($parent_o; $leafKey_t; OTr_uBlobToText($inValue_blob))
 		End if
-		OB SET($parent_o; $leafKey_t; OTr_uBlobToText($inValue_blob))
 	End if
 Else
 	OTr_zError("Invalid handle"; Current method name)

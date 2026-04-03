@@ -21,6 +21,8 @@
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-03 - Removed proxy string/release call;
+//     Picture now stored natively in collection element.
 // ----------------------------------------------------
 
 #DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer; $value_pic : Picture)
@@ -29,7 +31,6 @@ var $parent_o : Object
 var $arrayObj_o : Object
 var $leafKey_t : Text
 var $arrayType_i : Integer
-var $existingRef_t : Text
 
 OTr_zLock
 
@@ -41,10 +42,7 @@ If (OTr_zIsValidHandle($handle_i))
 			$arrayType_i:=OTr_zArrayType($arrayObj_o)
 			If ($arrayType_i=Picture array:K8:22)
 				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
-					// Release any existing picture slot before allocating a new one
-					$existingRef_t:=$arrayObj_o[String:C10($index_i)]
-					OTr_zReleaseBinaryRef($existingRef_t)
-					$arrayObj_o[String:C10($index_i)]:=OTr_uPictureToText($value_pic)
+						$arrayObj_o[String:C10($index_i)]:=$value_pic
 					OTr_zSetOK  // (1)
 				Else 
 					OTr_zError("Index out of range"; Current method name:C684)

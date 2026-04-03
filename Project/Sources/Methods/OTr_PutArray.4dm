@@ -61,7 +61,7 @@ If (OTr_zIsValidHandle($handle_i))
 					$arrayObject_o[String:C10($index_i)]:=OTr_uBlobToText($array_ptr->{$index_i})
 					
 				: ($type_i=Picture array:K8:22)
-					$arrayObject_o[String:C10($index_i)]:=OTr_uPictureToText($array_ptr->{$index_i})
+					$arrayObject_o[String:C10($index_i)]:=$array_ptr->{$index_i}
 					
 					// Others to be implemented
 					

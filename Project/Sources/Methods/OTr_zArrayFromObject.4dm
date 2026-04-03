@@ -60,10 +60,10 @@ For ($index_i; 0; $count_i)
 			$arrayPtr->{$index_i}:=OTr_uTextToPointer($arrayObj_o[String:C10($index_i)])
 			
 		: ($type_i=Picture array:K8:22)
-			$arrayPtr->{$index_i}:=OTr_uTextToBlob($arrayObj_o[String:C10($index_i)])
-			
+			$arrayPtr->{$index_i}:=$arrayObj_o[String:C10($index_i)]
+
 		: ($type_i=Array 2D:K8:24)
-			$arrayPtr->{$index_i}:=OTr_uTextToPicture($arrayObj_o[String:C10($index_i)])
-			
+			// Retired: was OTr_uTextToPicture — picture arrays now stored natively
+
 	End case 
 End for 

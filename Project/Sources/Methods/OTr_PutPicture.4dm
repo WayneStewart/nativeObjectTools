@@ -38,6 +38,8 @@
 
 // Created by Wayne Stewart, 2026-04-03
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-03 - Removed proxy string/release call;
+//     Picture now stored natively via OB SET.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_pic : Picture)
@@ -49,10 +51,7 @@ OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; ->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			OTr_zReleaseBinaryRef(OB Get($parent_o; $leafKey_t; Is text))
-		End if
-		OB SET($parent_o; $leafKey_t; OTr_uPictureToText($inValue_pic))
+		OB SET($parent_o; $leafKey_t; $inValue_pic)
 	End if
 Else
 	OTr_zError("Invalid handle"; Current method name)

@@ -27,14 +27,6 @@ If (Not:C34(<>OTR_Initialised_b))
 	ARRAY BOOLEAN:C223(<>OTR_InUse_ab; 0)
 	ARRAY OBJECT:C1221(<>OTR_Objects_ao; 0)
 	
-	// Storage of BLOBS
-	ARRAY BOOLEAN:C223(<>OTR_BlobInUse_ab; 0)
-	ARRAY BLOB:C1222(<>OTR_Blobs_ablob; 0)
-	
-	// Storage of Pictures
-	ARRAY BOOLEAN:C223(<>OTR_PicInUse_ab; 0)
-	ARRAY PICTURE:C279(<>OTR_Pictures_apic; 0)
-	
 	Compiler_OTrSortInterprocess  // These are the arrays used in the sorting routines
 	
 End if 
@@ -181,10 +173,7 @@ If (False:C215)
 	C_OBJECT:C1216(OTr_zMapType; $1)
 	C_TEXT:C284(OTr_zMapType; $2)
 	
-	C_OBJECT:C1216(OTr_zReleaseObjBinaries; $1)
-	
-	C_TEXT:C284(OTr_zReleaseBinaryRef; $1)
-	
+
 	C_LONGINT:C283(OTr_Register; $0)
 	C_TEXT:C284(OTr_Register; $1)
 	
@@ -370,16 +359,6 @@ If (False:C215)
 	
 	C_TEXT:C284(OTr_uTextToBlob; $1)
 	C_BLOB:C604(OTr_uTextToBlob; $0)
-	
-	C_PICTURE:C286(OTr_uPictureToText; $1)
-	C_TEXT:C284(OTr_uPictureToText; $0)
-	
-	C_TEXT:C284(OTr_uTextToPicture; $1)
-	C_PICTURE:C286(OTr_uTextToPicture; $0)
-	
-	C_OBJECT:C1216(OTr_uExpandBinaries; $1; $0)
-	
-	C_OBJECT:C1216(OTr_uCollapseBinaries; $1; $0)
 	
 	C_TEXT:C284(OTr_FindInArray; $2; $3)
 	C_LONGINT:C283(OTr_FindInArray; $1; $0; $4)

@@ -62,15 +62,8 @@ var $boolVarOut_b : Boolean
 var $dateVarOut_d : Date
 var $timeVarOut_h : Time
 
-// Expand/Collapse test vars
-var $rawObj_o : Object
-var $expandedObj_o : Object
-var $collapsedObj_o : Object
-var $blobRef_t : Text
-var $roundTripBlob_blob : Blob
-var $expandVal_t : Text
-var $collapseVal_t : Text
-var $h2_i : Integer
+// Expand/Collapse tests removed — OTr_uExpandBinaries/OTr_uCollapseBinaries
+// retired in Phase 6; binary data now stored natively in 4D Objects.
 
 // ====================================================
 // SETUP
@@ -502,7 +495,6 @@ Else
 	$failures_t:=$failures_t+"PutVariable Picture store"+Char:C90(Carriage return:K15:38)
 End if 
 
-$gotPic_pic:=OTr_uTextToPicture("")
 OTr_GetVariable($h_i; "vpic"; ->$gotPic_pic)
 
 $total_i:=$total_i+1
@@ -575,126 +567,6 @@ Else
 	$failed_i:=$failed_i+1
 	$failures_t:=$failures_t+"GetVariable invalid handle should set OK=0"+Char:C90(Carriage return:K15:38)
 End if 
-OK:=1
-
-// ====================================================
-//MARK:- OTr_uExpandBinaries — b64blob expansion
-//
-// Store a BLOB directly (not via variable), copy the
-// live object, expand it, and verify that the value
-// for that tag now starts with "b64blob:".
-// Must be called within the registry lock.
-// ====================================================
-
-CONVERT FROM TEXT:C1011("expand-collapse-test"; "UTF-8"; $testBlob_blob)
-OTr_PutBLOB($h_i; "expblob"; $testBlob_blob)
-
-OTr_zLock
-$rawObj_o:=OB Copy:C1225(<>OTR_Objects_ao{$h_i})
-$expandedObj_o:=OTr_uExpandBinaries($rawObj_o)
-OTr_zUnlock
-
-$expandVal_t:=OB Get:C1224($expandedObj_o; "expblob"; Is text:K8:3)
-
-$total_i:=$total_i+1
-If (Substring:C12($expandVal_t; 1; 8)="b64blob:")
-	$passed_i:=$passed_i+1
-Else 
-	$failed_i:=$failed_i+1
-	$failures_t:=$failures_t+"uExpandBinaries — blob: should become b64blob:"+Char:C90(Carriage return:K15:38)
-End if 
-
-// Original object not modified
-$total_i:=$total_i+1
-If (Substring:C12(OB Get:C1224($rawObj_o; "expblob"; Is text:K8:3); 1; 5)="blob:")
-	$passed_i:=$passed_i+1
-Else 
-	$failed_i:=$failed_i+1
-	$failures_t:=$failures_t+"uExpandBinaries — original object modified"+Char:C90(Carriage return:K15:38)
-End if 
-
-// ====================================================
-//MARK:- OTr_uCollapseBinaries — round-trip BLOB equality
-//
-// Collapse the already-expanded object. Retrieve the
-// newly allocated blob ref and compare with the original
-// BLOB via OTr_uEqualBLOBs.
-// ====================================================
-
-OTr_zLock
-$collapsedObj_o:=OTr_uCollapseBinaries($expandedObj_o)
-$blobRef_t:=OB Get:C1224($collapsedObj_o; "expblob"; Is text:K8:3)
-$roundTripBlob_blob:=OTr_uTextToBlob($blobRef_t)
-OTr_zUnlock
-
-$total_i:=$total_i+1
-If (Substring:C12($blobRef_t; 1; 5)="blob:")
-	$passed_i:=$passed_i+1
-Else 
-	$failed_i:=$failed_i+1
-	$failures_t:=$failures_t+"uCollapseBinaries — b64blob: should become blob:"+Char:C90(Carriage return:K15:38)
-End if 
-
-$total_i:=$total_i+1
-If (OTr_uEqualBLOBs($testBlob_blob; $roundTripBlob_blob))
-	$passed_i:=$passed_i+1
-Else 
-	$failed_i:=$failed_i+1
-	$failures_t:=$failures_t+"uCollapseBinaries — expand/collapse round-trip BLOB mismatch"+Char:C90(Carriage return:K15:38)
-End if 
-
-// ====================================================
-//MARK:- OTr_uExpandBinaries — var:blob: expansion
-//
-// BLOB stored via PutVariable embeds as "var:blob:blob:N".
-// Expand should produce "var:blob:b64blob:<data>".
-// ====================================================
-
-CONVERT FROM TEXT:C1011("var-blob-expand-test"; "UTF-8"; $testBlob_blob)
-OTr_PutVariable($h_i; "vblobexp"; ->$testBlob_blob)
-
-OTr_zLock
-$rawObj_o:=OB Copy:C1225(<>OTR_Objects_ao{$h_i})
-$expandedObj_o:=OTr_uExpandBinaries($rawObj_o)
-OTr_zUnlock
-
-$expandVal_t:=OB Get:C1224($expandedObj_o; "vblobexp"; Is text:K8:3)
-
-$total_i:=$total_i+1
-If (Substring:C12($expandVal_t; 1; 17)="var:blob:b64blob:")
-	$passed_i:=$passed_i+1
-Else 
-	$failed_i:=$failed_i+1
-	$failures_t:=$failures_t+"uExpandBinaries — var:blob:blob:N should become var:blob:b64blob:"+Char:C90(Carriage return:K15:38)
-End if 
-
-// ====================================================
-//MARK:- OTr_uExpandBinaries — nested sub-object recursion
-//
-// Put a nested object containing a PutBLOB value,
-// then expand and verify the nested property is also
-// expanded.
-// ====================================================
-
-$h2_i:=OTr_New
-CONVERT FROM TEXT:C1011("nested-blob"; "UTF-8"; $testBlob_blob)
-OTr_PutBLOB($h2_i; "inner"; $testBlob_blob)
-
-OTr_zLock
-$rawObj_o:=OB Copy:C1225(<>OTR_Objects_ao{$h2_i})
-$expandedObj_o:=OTr_uExpandBinaries($rawObj_o)
-OTr_zUnlock
-
-$expandVal_t:=OB Get:C1224($expandedObj_o; "inner"; Is text:K8:3)
-
-$total_i:=$total_i+1
-If (Substring:C12($expandVal_t; 1; 8)="b64blob:")
-	$passed_i:=$passed_i+1
-Else 
-	$failed_i:=$failed_i+1
-	$failures_t:=$failures_t+"uExpandBinaries on separate handle"+Char:C90(Carriage return:K15:38)
-End if 
-
 // ====================================================
 //MARK:- SUMMARY
 // ====================================================

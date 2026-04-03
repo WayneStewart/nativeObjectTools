@@ -2,35 +2,27 @@
 // ----------------------------------------------------
 // Project Method: OTr_uBlobToText ($theBlob_x : Blob) --> Text
 
-// Stores a BLOB in the OTr parallel blob array and
-// returns a reference string "blob:N" for storage
-// in an OTr object. Reuses released slots in
-// <>OTR_Blobs_ablob before appending a new one.
+// Base64-encodes a BLOB to a Text string for inline storage
+// in an OTr Object property. Used only when
+// Storage.OTr.nativeBlobInObject is False (v19 or v19R1).
+// Returns empty text if the BLOB is empty.
 
 // Access: Private
 
 // Parameters:
-//   $theBlob_x : Blob : The BLOB to store
+//   $theBlob_x : Blob : The BLOB to encode
 
 // Returns:
-//   $blobRef_t : Text : Reference string "blob:N"
+//   $blobRef_t : Text : Base64-encoded representation
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-03 - Rewritten: pure base64 encoder;
+//     no parallel array slot management.
 // ----------------------------------------------------
 
 #DECLARE($theBlob_x : Blob)->$blobRef_t : Text
 
-var $slot_i : Integer
-
-$slot_i:=Find in array:C230(<>OTR_BlobInUse_ab; False:C215)
-If ($slot_i=-1)
-	$slot_i:=Size of array:C274(<>OTR_Blobs_ablob)+1
-	INSERT IN ARRAY:C227(<>OTR_Blobs_ablob; $slot_i; 1)
-	INSERT IN ARRAY:C227(<>OTR_BlobInUse_ab; $slot_i; 1)
+If (BLOB SIZE($theBlob_x) > 0)
+	BASE64 ENCODE($theBlob_x; $blobRef_t; *)
 End if
-
-<>OTR_Blobs_ablob{$slot_i}:=$theBlob_x
-<>OTR_BlobInUse_ab{$slot_i}:=True:C214
-
-$blobRef_t:="blob:"+String:C10($slot_i)
