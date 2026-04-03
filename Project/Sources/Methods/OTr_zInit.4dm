@@ -17,12 +17,16 @@ If (Storage:C1525.OTr=Null:C1517)
 	
 	var $fullpath : Object
 	var $name : Text
+	var $ApplicationVersion_i : Integer
+	
 	If (Application type:C494#4D Remote mode:K5:5)
 		$fullpath:=Path to object:C1547(Structure file:C489(*))
 		$name:=$fullpath.name
 	End if 
+	
+	$ApplicationVersion_i:=Num:C11(Application version:C493)
 	Use (Storage:C1525)
-		Storage:C1525.OTr:=New shared object:C1526("structureName"; $name)
+		Storage:C1525.OTr:=New shared object:C1526("structureName"; $name; "nativeBlobInObject"; ($ApplicationVersion_i>=1920))
 	End use 
 End if 
 

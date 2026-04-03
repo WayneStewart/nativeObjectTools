@@ -254,8 +254,7 @@ If (False:C215)
 	C_TEXT:C284(OTr_PutArrayBoolean; $2)
 	C_BOOLEAN:C305(OTr_PutArrayBoolean; $4)
 	
-	C_BOOLEAN:C305(OTr_GetArrayBoolean; $0)
-	C_LONGINT:C283(OTr_GetArrayBoolean; $1; $3)
+	C_LONGINT:C283(OTr_GetArrayBoolean; $0; $1; $3)
 	C_TEXT:C284(OTr_GetArrayBoolean; $2)
 	
 	C_LONGINT:C283(OTr_PutArrayBLOB; $1; $3)
@@ -406,5 +405,17 @@ If (False:C215)
 	C_LONGINT:C283(OTr_GetVariable; $1)
 	C_TEXT:C284(OTr_GetVariable; $2)
 	C_POINTER:C301(OTr_GetVariable; $3)
-	
+
+	C_LONGINT:C283(OTr_uMapType; $1; $2; $0)
+
+	C_LONGINT:C283(OTr_ObjectToBLOB; $1; $3)
+	C_POINTER:C301(OTr_ObjectToBLOB; $2)
+
+	C_LONGINT:C283(OTr_ObjectToNewBLOB; $1)
+	C_BLOB:C604(OTr_ObjectToNewBLOB; $0)
+
+	C_BLOB:C604(OTr_BLOBToObject; $1)
+	C_POINTER:C301(OTr_BLOBToObject; $2)
+	C_LONGINT:C283(OTr_BLOBToObject; $0)
+
 End if 
