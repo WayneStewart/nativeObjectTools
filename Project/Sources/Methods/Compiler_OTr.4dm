@@ -266,6 +266,18 @@ If (False:C215)
 	C_LONGINT:C283(OTr_GetArrayBLOB; $1; $3)
 	C_TEXT:C284(OTr_GetArrayBLOB; $2)
 	
+	C_LONGINT:C283(OTr_PutBLOB; $1)
+	C_TEXT:C284(OTr_PutBLOB; $2)
+	C_BLOB:C604(OTr_PutBLOB; $3)
+	
+	C_LONGINT:C283(OTr_GetBLOB; $1)
+	C_TEXT:C284(OTr_GetBLOB; $2)
+	C_BLOB:C604(OTr_GetBLOB; $3)
+	
+	C_BLOB:C604(OTr_GetNewBLOB; $0)
+	C_LONGINT:C283(OTr_GetNewBLOB; $1)
+	C_TEXT:C284(OTr_GetNewBLOB; $2)
+	
 	C_LONGINT:C283(OTr_PutArrayPicture; $1; $3)
 	C_TEXT:C284(OTr_PutArrayPicture; $2)
 	C_PICTURE:C286(OTr_PutArrayPicture; $4)
@@ -274,6 +286,14 @@ If (False:C215)
 	C_LONGINT:C283(OTr_GetArrayPicture; $1; $3)
 	C_TEXT:C284(OTr_GetArrayPicture; $2)
 	
+	C_LONGINT:C283(OTr_PutPicture; $1)
+	C_TEXT:C284(OTr_PutPicture; $2)
+	C_PICTURE:C286(OTr_PutPicture; $3)  // $inValue_pic
+	
+	C_PICTURE:C286(OTr_GetPicture; $0)  // $result_pic
+	C_LONGINT:C283(OTr_GetPicture; $1)
+	C_TEXT:C284(OTr_GetPicture; $2)
+	
 	C_LONGINT:C283(OTr_PutArrayPointer; $1; $3)
 	C_TEXT:C284(OTr_PutArrayPointer; $2)
 	C_POINTER:C301(OTr_PutArrayPointer; $4)
@@ -281,6 +301,14 @@ If (False:C215)
 	C_POINTER:C301(OTr_GetArrayPointer; $0)
 	C_LONGINT:C283(OTr_GetArrayPointer; $1; $3)
 	C_TEXT:C284(OTr_GetArrayPointer; $2)
+	
+	C_LONGINT:C283(OTr_PutPointer; $1)
+	C_TEXT:C284(OTr_PutPointer; $2)
+	C_POINTER:C301(OTr_PutPointer; $3)
+	
+	C_LONGINT:C283(OTr_GetPointer; $1)
+	C_TEXT:C284(OTr_GetPointer; $2)
+	C_POINTER:C301(OTr_GetPointer; $3)
 	
 	C_LONGINT:C283(OTr_SortArrays; $1)
 	C_TEXT:C284(OTr_SortArrays; $2; $3; $4; $5; $6; $7; $8; $9; $10; $11; $12; $13; $14; $15)
@@ -350,6 +378,10 @@ If (False:C215)
 	C_TEXT:C284(OTr_uTextToPicture; $1)
 	C_PICTURE:C286(OTr_uTextToPicture; $0)
 	
+	C_OBJECT:C1216(OTr_uExpandBinaries; $1; $0)
+	
+	C_OBJECT:C1216(OTr_uCollapseBinaries; $1; $0)
+	
 	C_TEXT:C284(OTr_FindInArray; $2; $3)
 	C_LONGINT:C283(OTr_FindInArray; $1; $0; $4)
 	
@@ -357,5 +389,22 @@ If (False:C215)
 	C_VARIANT:C1683(OTr_uNewValueForEmbeddedType; $0)
 	
 	C_LONGINT:C283(OTr_zSetOK; $1; $0)
+	
+	C_LONGINT:C283(OTr_PutRecord; $1; $3)
+	C_TEXT:C284(OTr_PutRecord; $2)
+	
+	C_LONGINT:C283(OTr_GetRecord; $1; $3)
+	C_TEXT:C284(OTr_GetRecord; $2)
+	
+	C_LONGINT:C283(OTr_GetRecordTable; $0; $1)
+	C_TEXT:C284(OTr_GetRecordTable; $2)
+	
+	C_LONGINT:C283(OTr_PutVariable; $1)
+	C_TEXT:C284(OTr_PutVariable; $2)
+	C_POINTER:C301(OTr_PutVariable; $3)
+	
+	C_LONGINT:C283(OTr_GetVariable; $1)
+	C_TEXT:C284(OTr_GetVariable; $2)
+	C_POINTER:C301(OTr_GetVariable; $3)
 	
 End if 

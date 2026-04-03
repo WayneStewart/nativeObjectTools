@@ -1,7 +1,7 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutArrayPointer ($handle_i : Integer; \
-//   $tag_t : Text; $index_i : Integer; $value_p : Pointer)
+//   $tag_t : Text; $index_i : Integer; $value_ptr : Pointer)
 
 // Sets a single element of a Pointer array item.
 // Pointers are serialised via OTr_uPointerToText for storage.
@@ -14,7 +14,7 @@
 //   $handle_i : Integer : OTr handle
 //   $tag_t    : Text    : Tag path to the array item
 //   $index_i  : Integer : Element index (0 = default element)
-//   $value_p  : Pointer : Value to store
+//   $value_ptr : Pointer : Value to store
 
 // Returns: Nothing
 
@@ -22,7 +22,7 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer; $value_p : Pointer)
+#DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer; $value_ptr : Pointer)
 
 var $parent_o : Object
 var $arrayObj_o : Object
@@ -39,7 +39,7 @@ If (OTr_zIsValidHandle($handle_i))
 			$arrayType_i:=OTr_zArrayType($arrayObj_o)
 			If ($arrayType_i=Pointer array:K8:23)
 				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
-					$arrayObj_o[String:C10($index_i)]:=OTr_uPointerToText($value_p)
+					$arrayObj_o[String:C10($index_i)]:=OTr_uPointerToText($value_ptr)
 					OTr_zSetOK  // (1)
 				Else 
 					OTr_zError("Index out of range"; Current method name:C684)

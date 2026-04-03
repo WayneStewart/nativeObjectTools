@@ -230,7 +230,7 @@ The classification by method prefix:
 |---|---|---|---|
 | `OTr_` | Invisible | **Yes** | `OTr_New`, `OTr_PutLong`, `OTr_GetText` |
 | `OTr_z` | Invisible | No | `OTr_zInit`, `OTr_zLock`, `OTr_zResolvePath` |
-| `OTr_u` | Invisible | No | `OTr_uDateToText`, `OTr_uMapType`, `OTr_uSerialisePointer` |
+| `OTr_u` | Invisible | No | `OTr_uDateToText`, `OTr_uMapType`, `OTr_uPointerToText` |
 | `Test_OTr_` | Invisible | No | `Test_OTr_Creation`, `Test_OTr_PutGet` |
 
 ---
@@ -486,10 +486,8 @@ These methods perform type conversion, serialisation, and comparison operations.
 | `OTr_uTextToDate` | Parse `YYYY-MM-DD` text back to a 4D Date |
 | `OTr_uTimeToText` | Convert a 4D Time to `HH:MM:SS` text |
 | `OTr_uTextToTime` | Parse `HH:MM:SS` text back to a 4D Time |
-| `OTr_uPointerToText` | Serialise a Pointer via `RESOLVE POINTER` to `variableName;tableNum;fieldNum` text |
-| `OTr_uTextToPointer` | Deserialise `variableName;tableNum;fieldNum` text back to a Pointer |
-| `OTr_uSerialisePointer` | Serialise a Pointer with `ptr:` prefix for scalar storage |
-| `OTr_uDeserialisePointer` | Deserialise a `ptr:` prefixed text back to a Pointer |
+| `OTr_uPointerToText` | Serialise a Pointer via `RESOLVE POINTER` to `variableName;tableNum;fieldNum` text; used for both scalar storage (with `ptr:` prefix) and array element storage |
+| `OTr_uTextToPointer` | Deserialise `variableName;tableNum;fieldNum` text back to a Pointer; inverse of `OTr_uPointerToText` |
 | `OTr_uMapType` | Bidirectional mapping between 4D type constants and OT legacy type constants |
 | `OTr_uEqualBLOBs` | Compare two BLOBs byte-for-byte; returns Boolean |
 | `OTr_uEqualPictures` | Compare two Pictures byte-for-byte; returns Boolean |
@@ -540,7 +538,6 @@ No legacy ObjectTools equivalent. These methods provide a self-contained JSON re
 - `OTr_FindInArray`, `OTr_SortArrays`
 
 ### Phase 5 — Complex Types
-- `OTr_uSerialisePointer`, `OTr_uDeserialisePointer`
 - `OTr_uExpandBinaries`, `OTr_uCollapseBinaries`
 - `OTr_PutPointer`, `OTr_GetPointer`
 - `OTr_PutBLOB`, `OTr_GetBLOB`, `OTr_GetNewBLOB`, `OTr_PutPicture`, `OTr_GetPicture`

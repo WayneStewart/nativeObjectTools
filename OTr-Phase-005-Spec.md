@@ -81,7 +81,7 @@ Every new method created in this phase must be added to the appropriate group in
 `OTr_PutPointer`, `OTr_GetPointer`, `OTr_PutBLOB`, `OTr_GetBLOB`, `OTr_GetNewBLOB`, `OTr_PutPicture`, `OTr_GetPicture`, `OTr_PutRecord`, `OTr_GetRecord`, `OTr_GetRecordTable`, `OTr_PutVariable`, `OTr_GetVariable`
 
 **`OT Utility Methods`** (`OTr_u*`, `"shared":false`):
-`OTr_uExpandBinaries`, `OTr_uCollapseBinaries`, `OTr_uSerialisePointer`, `OTr_uDeserialisePointer`
+`OTr_uExpandBinaries`, `OTr_uCollapseBinaries`
 
 **`Test Methods`**:
 `____Test_Phase_5`

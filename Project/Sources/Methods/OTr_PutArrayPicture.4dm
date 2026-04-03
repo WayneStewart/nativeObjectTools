@@ -1,7 +1,7 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutArrayPicture ($handle_i : Integer; \
-//   $tag_t : Text; $index_i : Integer; $value_g : Picture)
+//   $tag_t : Text; $index_i : Integer; $value_pic : Picture)
 
 // Sets a single element of a Picture array item.
 // The Picture is stored via OTr_uPictureToText which
@@ -15,7 +15,7 @@
 //   $handle_i : Integer : OTr handle
 //   $tag_t    : Text    : Tag path to the array item
 //   $index_i  : Integer : Element index (0 = default element)
-//   $value_g  : Picture : Value to store
+//   $value_pic : Picture : Value to store
 
 // Returns: Nothing
 
@@ -23,7 +23,7 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer; $value_g : Picture)
+#DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer; $value_pic : Picture)
 
 var $parent_o : Object
 var $arrayObj_o : Object
@@ -44,7 +44,7 @@ If (OTr_zIsValidHandle($handle_i))
 					// Release any existing picture slot before allocating a new one
 					$existingRef_t:=$arrayObj_o[String:C10($index_i)]
 					OTr_zReleaseBinaryRef($existingRef_t)
-					$arrayObj_o[String:C10($index_i)]:=OTr_uPictureToText($value_g)
+					$arrayObj_o[String:C10($index_i)]:=OTr_uPictureToText($value_pic)
 					OTr_zSetOK  // (1)
 				Else 
 					OTr_zError("Index out of range"; Current method name:C684)

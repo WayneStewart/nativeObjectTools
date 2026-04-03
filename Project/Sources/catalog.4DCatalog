@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE base SYSTEM "http://www.4d.com/dtd/2007/base.dtd" >
-<base name="nativeObjectTools" uuid="FE40017BE1BADF4CB1ACBF385A476B58" collation_locale="en-au">
+<base name="nativeObjectTools" uuid="FE40017BE1BADF4CB1ACBF385A476B58" collation_locale="en">
 	<schema name="DEFAULT_SCHEMA"/>
-	<base_extra>
+	<table name="Table_1" uuid="95ADF9CAC34347798DE537CDB1557AF0" id="1">
+		<field name="ID" uuid="CB65148FA25B48C6A168D97285F7D9EF" type="4" unique="true" autosequence="true" not_null="true" id="1"/>
+		<primary_key field_name="ID" field_uuid="CB65148FA25B48C6A168D97285F7D9EF"/>
+		<table_extra>
+			<editor_table_info fields_ordering="1" displayable_fields_count="6">
+				<color red="255" green="255" blue="255" alpha="0"/>
+				<coordinates left="61.3203125" top="54.4140625" width="120" height="167.33203125"/>
+			</editor_table_info>
+		</table_extra>
+	</table>
+	<index kind="regular" unique_keys="true" uuid="31F929077F314F8EA9B7068C19FA7836" type="7">
+		<field_ref uuid="CB65148FA25B48C6A168D97285F7D9EF" name="ID">
+			<table_ref uuid="95ADF9CAC34347798DE537CDB1557AF0" name="Table_1"/>
+		</field_ref>
+	</index>
+	<base_extra __stringCompHash="icu:68.1.0" __keywordBuildingHash="icu:68.1.0">
 		<journal_file journal_file_enabled="true"/>
 	</base_extra>
 </base>

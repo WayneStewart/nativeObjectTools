@@ -1,7 +1,7 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutArrayBLOB ($handle_i : Integer; \
-//   $tag_t : Text; $index_i : Integer; $value_x : Blob)
+//   $tag_t : Text; $index_i : Integer; $value_blob : Blob)
 
 // Sets a single element of a Blob array item.
 // The BLOB is stored via OTr_uBlobToText which allocates
@@ -16,7 +16,7 @@
 //   $handle_i : Integer : OTr handle
 //   $tag_t    : Text    : Tag path to the array item
 //   $index_i  : Integer : Element index (0 = default element)
-//   $value_x  : Blob    : Value to store
+//   $value_blob : Blob    : Value to store
 
 // Returns: Nothing
 
@@ -24,7 +24,7 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer; $value_x : Blob)
+#DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer; $value_blob : Blob)
 
 var $parent_o : Object
 var $arrayObj_o : Object
@@ -45,7 +45,7 @@ If (OTr_zIsValidHandle($handle_i))
 					// Release any existing blob slot before allocating a new one
 					$existingRef_t:=$arrayObj_o[String:C10($index_i)]
 					OTr_zReleaseBinaryRef($existingRef_t)
-					$arrayObj_o[String:C10($index_i)]:=OTr_uBlobToText($value_x)
+					$arrayObj_o[String:C10($index_i)]:=OTr_uBlobToText($value_blob)
 					OTr_zSetOK  // (1)
 				Else 
 					OTr_zError("Index out of range"; Current method name:C684)

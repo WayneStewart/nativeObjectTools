@@ -162,6 +162,8 @@ The description column in the `Parameters:` block should echo the OT semantic na
 ### Rules
 
 - The `Project Method:` line uses **OT-style names** (no `$`, no suffix) — these match the OT manual exactly and are what callers see in the docs.
+- The `Project Method:` line **must never be broken across multiple lines** with a backslash continuation. Even for methods with many parameters, keep the entire signature on a single line.
+- **Every section in the header must be separated by a blank comment line** (`//` alone, or an empty line). `Fnd_FCS_WriteDocumentation` uses two consecutive blank lines as the section-exit sentinel when parsing the `Parameters:` and `Returns:` blocks; omitting blank lines between sections will cause the parser to merge them incorrectly.
 - The `Parameters:` block and `#DECLARE` line use **declared names** (with `$` and type suffix).
 - The `**ORIGINAL DOCUMENTATION**` section is included for every method with an OT counterpart; omitted for OTr-specific methods (`OTr_SaveToText`, `OTr_LoadFromText`, etc.).
 - The `%attributes` line is always the first line of the file.
@@ -374,13 +376,28 @@ These methods have no legacy equivalent. Their headers omit the `**ORIGINAL DOCU
 
 **After:**
 ```4d
-// Project Method: OTr_GetArrayLong (inObject; inTag; inIndex) → Longint
+//%attributes = {"invisible":true,"shared":true}
+// ----------------------------------------------------
+// Project Method: OTr_GetArrayLong (inObject; inTag; inIndex) --> Longint
+
+// Returns the Longint value stored at the specified index of a Longint array property.
+
+// **ORIGINAL DOCUMENTATION**
+//
+// *OT GetArrayLong* returns the value at inIndex in the Longint array stored at inTag.
+
+// Access: Shared
+
 // Parameters:
 //   $inObject_i : Integer : OTr inObject
-//   $inTag_t    : Text    : Tag path to the array item (inTag)
+//   $inTag_t    : Text    : Tag path to the array (inTag)
 //   $inIndex_i  : Integer : Element index, 1-based (inIndex)
+
 // Returns:
 //   $result_i : Integer : Element value, or 0 on any failure
+
+// Created by Wayne Stewart, 2026-04-03
+// ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_i : Integer
 ```
@@ -400,14 +417,30 @@ These methods have no legacy equivalent. Their headers omit the `**ORIGINAL DOCU
 
 **After:**
 ```4d
-// Project Method: OTr_GetAllProperties (inObject; outNames {; outTypes \
-//   {; outItemSizes {; outDataSizes}}})
+//%attributes = {"invisible":true,"shared":true}
+// ----------------------------------------------------
+// Project Method: OTr_GetAllProperties (inObject; outNames {; outTypes {; outItemSizes {; outDataSizes}}})
+
+// Retrieves the names, and optionally the types and sizes, of all properties in the specified OTr object.
+
+// **ORIGINAL DOCUMENTATION**
+//
+// *OT GetAllProperties* fills the arrays pointed to by outNames (and optionally outTypes,
+//   outItemSizes, outDataSizes) with information about every property in inObject.
+
+// Access: Shared
+
 // Parameters:
 //   $inObject_i        : Integer : OTr inObject
-//   $outNames_ptr      : Pointer : Receives item names — Text array (outNames)
+//   $outNames_ptr      : Pointer : Receives property names — Text array (outNames)
 //   $outTypes_ptr      : Pointer : Receives OT type constants — Longint array (outTypes) (optional)
 //   $outItemSizes_ptr  : Pointer : Receives item sizes — Longint array (outItemSizes) (optional)
 //   $outDataSizes_ptr  : Pointer : Receives data sizes — Longint array (outDataSizes) (optional)
+
+// Returns: Nothing
+
+// Created by Wayne Stewart, 2026-04-03
+// ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $outNames_ptr : Pointer ...)
 ```
