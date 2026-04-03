@@ -1,7 +1,7 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetArrayPicture ($handle_i : Integer; \
-//   $tag_t : Text; $index_i : Integer) -> $value_g : Picture
+//   $tag_t : Text; $index_i : Integer) -> $value_pic : Picture
 
 // Retrieves a single element from a Picture array item.
 // The stored "pic:N" reference is decoded via
@@ -16,13 +16,13 @@
 //   $index_i  : Integer : Element index (0 = default element)
 
 // Returns:
-//   $value_g : Picture : Element value, or empty Picture on any failure
+//   $value_pic : Picture : Element value, or empty Picture on any failure
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer)->$value_g : Picture
+#DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer)->$value_pic : Picture
 
 var $parent_o : Object
 var $arrayObj_o : Object
@@ -38,7 +38,7 @@ If (OTr_zIsValidHandle($handle_i))
 			If ($arrayType_i=Picture array:K8:22)
 				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
 					If (OB Is defined:C1231($arrayObj_o; String:C10($index_i)))
-						$value_g:=OTr_uTextToPicture($arrayObj_o[String:C10($index_i)])
+						$value_pic:=OTr_uTextToPicture($arrayObj_o[String:C10($index_i)])
 						OTr_zSetOK  // (1)
 					Else 
 						OTr_zSetOK  // (0)

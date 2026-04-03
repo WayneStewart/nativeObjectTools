@@ -41,8 +41,6 @@
 | `OTr_GetVariable` | Scalar Get |
 | `OTr_uExpandBinaries` | Utility |
 | `OTr_uCollapseBinaries` | Utility |
-| `OTr_uSerialisePointer` | Utility |
-| `OTr_uDeserialisePointer` | Utility |
 
 ### Phase 6 — Import/Export
 
@@ -113,7 +111,48 @@
 
 ---
 
-## 6. Publishing
+## 6. Incompatibilities with ObjectTools 5.0
+
+This section catalogues all known API differences between OTr and ObjectTools 5.0. Callers migrating from the legacy plugin must audit each item below.
+
+### 6.1 Methods That Cannot Be Implemented
+
+These methods exist in ObjectTools 5.0 but have no equivalent implementation in OTr. The fundamental constraint is that a native 4D component method operates within a separate compiler namespace from the host database. Unlike a plugin, a component method **cannot write back to the caller's BLOB or Picture variable** passed as an output parameter.
+
+| OT Method | OTr Equivalent | Reason |
+|---|---|---|
+| `OT GetBLOB(inObject; inTag; outBLOB)` | *(none)* | `outBLOB` is a BLOB output parameter; a component cannot materialise data into the caller's variable |
+| `OT GetArrayBLOB(inObject; inTag; inIndex; outValue)` | *(none)* | Same BLOB output-parameter constraint |
+| `OT GetArrayPicture(inObject; inTag; inIndex; outValue)` | *(none)* | Same Picture output-parameter constraint |
+
+**Recommended migration path:** Replace calls to these methods with `OTr_GetNewBLOB` (Phase 5) and `OTr_GetPicture` (Phase 5), which return their values as function results rather than output parameters.
+
+### 6.2 Methods Implemented with a Changed API
+
+These methods are implemented in OTr, but their calling signature differs from the ObjectTools 5.0 counterpart. Callers must be updated.
+
+| OT Method | OTr Method | Change | Notes |
+|---|---|---|---|
+| `OT ObjectToBLOB(inObject; ioBLOB)` | `OTr_ObjectToBLOB` | `ioBLOB` cannot be an in/out BLOB parameter in a component; the OTr method uses a function result instead | See Phase 6 spec for the revised signature |
+| `OT BLOBToObject(inBLOB; ioOffset)` | `OTr_BLOBToObject` | `ioOffset` in/out semantics may require a pointer (`->`) workaround; the approach is to be finalised in Phase 6 | Provisional |
+| `OT GetBLOB(inObject; inTag; outBLOB)` | `OTr_GetNewBLOB(inObject; inTag)` | Returns BLOB as function result rather than writing to an output parameter | Replaces `OT GetBLOB` entirely; see §6.1 |
+
+### 6.3 Methods Implemented with Different Behaviour
+
+These methods are implemented in OTr with the same or similar API, but their runtime behaviour or output differs from the ObjectTools 5.0 equivalent. Callers should review each case.
+
+| OTr Method | OT Counterpart | Difference |
+|---|---|---|
+| `OTr_PutRecord` / `OTr_GetRecord` | `OT PutRecord` / `OT GetRecord` | OTr stores a **snapshot** of the record fields at the time `OTr_PutRecord` is called, serialised as a sub-object (`{ "__tableNum": N, "FieldName": value, ... }`). Pictures and BLOBs are stored as inline Base64 strings. `OTr_GetRecord` restores the snapshot into the current record without any database I/O; modifications to the record after `OTr_PutRecord` do not affect the stored snapshot. The legacy plugin stored a live reference to the record. |
+| `OTr_ObjectToBLOB` / `OTr_ObjectToNewBLOB` / `OTr_BLOBToObject` | `OT ObjectToBLOB` / `OT ObjectToNewBLOB` / `OT BLOBToObject` | OTr uses its own binary serialisation format (`OTR1` magic bytes). Legacy OT BLOBs are **not** compatible; `OTr_BLOBToObject` will return an error and set `OK` to zero when presented with a legacy BLOB. Re-serialisation via `OTr_SaveToText` → `OTr_LoadFromText` is the recommended migration path. |
+| `OTr_ObjectSize` | `OT ObjectSize` | OTr calculates size as the byte length of the JSON serialisation (`JSON Stringify`) of the object, which is an approximation. The legacy plugin reported the in-memory size of its internal structure. The two values will rarely agree. `OTr_ObjectSize` should be used for comparison and rough estimation only, not for precise memory accounting. |
+| `OTr_SaveToText` / `OTr_SaveToFile` / `OTr_SaveToClipboard` | `OT SaveToText` / `OT SaveToFile` / `OT SaveToClipboard` | When the object contains BLOBs or Pictures, OTr expands `blob:N` / `pic:N` references to inline Base64 strings before serialising (`OTr_uExpandBinaries`). The resulting text representation is larger and differs structurally from the legacy format. Round-tripping through `OTr_LoadFromText` / `OTr_LoadFromFile` / `OTr_LoadFromClipboard` is safe; loading legacy OT text exports is not supported. |
+| `OTr_GetBoolean` | `OT GetBoolean` | Returns an Integer (`0` or `1`) rather than a native 4D Boolean. This matches the legacy plugin's behaviour but may surprise callers expecting a Boolean expression. |
+| `OTr_PutObject` / `OTr_GetObject` | `OT PutObject` / `OT GetObject` | OTr always **deep-copies** the object at storage and retrieval time. The legacy plugin used reference semantics for sub-objects in some configurations. Callers that relied on shared-reference mutation will need to use explicit `OTr_PutObject` calls to commit changes. |
+
+---
+
+## 7. Publishing
 
 - [ ] All phases implemented and tested
 - [ ] All TODOs above resolved

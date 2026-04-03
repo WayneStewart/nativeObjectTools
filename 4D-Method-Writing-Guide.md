@@ -28,7 +28,7 @@ All local variables must be declared with `var` and must carry a type-indicator 
 | Suffix | Type | Example |
 |--------|------|---------|
 | `_t` | Text | `$name_t` |
-| `_i` | Integer | `$count_i` |
+| `_i` | Integer / Longint | `$count_i` |
 | `_r` | Real | `$price_r` |
 | `_b` | Boolean | `$isValid_b` |
 | `_d` | Date | `$today_d` |
@@ -37,14 +37,26 @@ All local variables must be declared with `var` and must carry a type-indicator 
 | `_c` | Collection | `$items_c` |
 | `_pic` | Picture | `$myPicture_pic` |
 | `_ptr` | Pointer | `$thePointer_ptr` |
-| `_x` | Blob | `$myBlob_x` |
+| `_blob` | BLOB | `$myBlob_blob` |
+| `_v` | Variant | `$theData_v` |
 | `_e` | Entity (typed) | `$customer_e` |
 | `_es` | Entity Selection | `$selection_es` |
 | `_file` | 4D.File | `$config_file` |
 | `_folder` | 4D.Folder | `$resources_folder` |
 | `_sig` | 4D.Signal | `$done_sig` |
 | `_func` | 4D.Function | `$callback_func` |
-| `_v` | Variant | `$theData_v` |
+| `_at` | Text array | `$names_at` |
+| `_ai` | Integer / Longint array | `$counts_ai` |
+| `_ar` | Real array | `$prices_ar` |
+| `_ab` | Boolean array | `$flags_ab` |
+| `_ad` | Date array | `$dates_ad` |
+| `_ah` | Time array | `$times_ah` |
+| `_ablob` | BLOB array | `$blobs_ablob` |
+| `_aptr` | Pointer array | `$pointers_aptr` |
+| `_apic` | Picture array | `$pictures_apic` |
+| `_ao` | Object array | `$objects_ao` |
+
+The authoritative type constant and suffix reference is **[OTr-Types-Reference.md](OTr-Types-Reference.md)**. In the event of any discrepancy, that document takes precedence.
 
 When the suffix would produce a tautological name (e.g. `$pic_pic`), prefix the variable with a pronoun or article: `$myPicture_pic`, `$thePointer_ptr`.
 
@@ -87,7 +99,9 @@ Each element is described below in the order it must appear.
 
 **Opening separator** — a line of dashes: `// ----------------------------------------------------`. This marks the visual top of the header block.
 
-**Method signature line** — begins with `// Project Method:` followed by the method name and a parenthesised summary of parameters and return type. Optional parameters are enclosed in curly braces. The return arrow is `-->` (not `->`, which is reserved for the `#DECLARE` line).
+**Method signature line** — begins with `// Project Method:` followed by the method name and a parenthesised summary of parameters and return type. Optional parameters are enclosed in curly braces. The return arrow is `-->` (not `->`, which is reserved for the `#DECLARE` line). **The `Project Method:` line must never be broken across multiple lines** — keep the entire signature on a single line regardless of its length. Backslash continuations are not permitted.
+
+**Section separators** — every distinct section of the header (description, `**ORIGINAL DOCUMENTATION**`, `Access:`, `Parameters:`, `Returns:`, `Created by`) must be preceded and followed by a blank line. `Fnd_FCS_WriteDocumentation` uses two consecutive blank lines as the exit sentinel when parsing the `Parameters:` and `Returns:` blocks; omitting these separators causes adjacent sections to be merged into a single paragraph in the generated `.md` documentation.
 
 ```
 // Project Method: Fnd_Date_DateToString ($date_d : Date {; $relativeTo_d : Date {; $format_t : Text}}) --> $result_t : Text
@@ -150,6 +164,39 @@ Omit the `-->` from the signature line and write `// Returns: Nothing`:
   ...
   // Returns: Nothing
 ```
+
+### 3.5 OTr Public Methods — Additional Header Requirements
+
+Public OTr methods (those matching the ObjectTools API) have two additional header requirements defined in **[OTr-Phase-007-Spec.md](OTr-Phase-007-Spec.md)**:
+
+**1. OT-style names in the `Project Method:` line.** The signature line uses the legacy ObjectTools parameter names (without `$` or type suffix), matching the OT manual exactly:
+
+```
+// Project Method: OTr_PutString (inObject; inTag; inValue)
+```
+
+The `#DECLARE` line and `Parameters:` block use the full declared names, formed by appending the OTr type suffix to the OT semantic name:
+
+```
+//   $inObject_i : Integer : OTr inObject
+//   $inTag_t    : Text    : Tag path (inTag)
+//   $inValue_t  : Text    : Value to store (inValue)
+
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_t : Text)
+```
+
+**2. `**ORIGINAL DOCUMENTATION**` block.** Every public OTr method that has a legacy OT counterpart must include this block between the description and the `// Access:` line, reproducing the relevant text from the *ObjectTools 5 Reference* manual:
+
+```
+// **ORIGINAL DOCUMENTATION**
+//
+// *OT PutString* puts *inValue* into *inObject*.
+//
+// If *inObject* is not a valid object handle, an error is generated and OK is set to zero.
+// ...
+```
+
+OTr-specific methods with no OT counterpart (`OTr_SaveToText`, `OTr_LoadFromText`, etc.) omit this block entirely. See `OTr_PutString.4dm` for the reference implementation.
 
 ---
 
@@ -321,10 +368,13 @@ Before committing a new or refactored method, verify:
 - [ ] Return value documented (or `Returns: Nothing`)
 - [ ] Created-by line present with date in YYYY-MM-DD format
 - [ ] Modification note added if this is a change to an existing method
-- [ ] All local variables declared with `var` and type suffixes
+- [ ] All local variables declared with `var` and type suffixes (see §2 and `OTr-Types-Reference.md`)
 - [ ] Array locals use classic `ARRAY ...` initialisation (no `var ... : Array ...`)
 - [ ] No `return` statements used in project methods (4D v19-safe flow)
 - [ ] Semaphore name read from `<>OTR_Semaphore_t`, not a local variable
 - [ ] Created-by block uses two-line format with contributor acknowledgement
 - [ ] `#DECLARE` used (no numbered parameters)
 - [ ] Lines kept within 80 characters where practical
+- [ ] *(OTr public methods)* `Project Method:` line uses OT-style parameter names (see §3.5)
+- [ ] *(OTr public methods with OT counterpart)* `**ORIGINAL DOCUMENTATION**` block present (see §3.5)
+- [ ] *(New methods)* Entry added to correct group in `Project/Sources/folders.json`
