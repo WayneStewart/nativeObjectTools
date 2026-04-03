@@ -11,7 +11,7 @@
 
 Phase 3 implements the **Object Info**, **Item Info**, and **Item Utility** routines from the legacy ObjectTools 5.0 plugin. These commands provide introspection and manipulation capabilities for items stored within OTr objects.
 
-Phase 3 depends upon the infrastructure established in Phase 1 (handle registry, locking, error handling) and the scalar put/get and path-resolution mechanisms from Phase 2 (`OTr__ResolvePath`).
+Phase 3 depends upon the infrastructure established in Phase 1 (handle registry, locking, error handling) and the scalar put/get and path-resolution mechanisms from Phase 2 (`OTr_zResolvePath`).
 
 ### Commands in This Phase
 
@@ -115,7 +115,7 @@ Otherwise an error is generated, `OK` is set to zero, and zero is returned.
 
 #### OTr Implementation Notes
 
-Use `OB Keys` to obtain a text array of property names, then return `Size of array` on that array. When `$tag_t` is provided, use `OTr__ResolvePath` to navigate to the embedded object first. Properties beginning with `__otr_` (internal metadata) must be excluded from the count if any are present at the top level.
+Use `OB Keys` to obtain a text array of property names, then return `Size of array` on that array. When `$tag_t` is provided, use `OTr_zResolvePath` to navigate to the embedded object first. Properties beginning with `__otr_` (internal metadata) must be excluded from the count if any are present at the top level.
 
 #### See Also
 
@@ -180,7 +180,7 @@ If an item with the given tag exists, 1 is returned. Otherwise zero is returned.
 
 #### OTr Implementation Notes
 
-Use `OTr__ResolvePath` to navigate the dot-separated path. If the path resolves successfully and the final property exists (checked via `OB Is defined`), return 1. If any intermediate object along the path does not exist, return 0 without generating an error (unlike `OTr__ResolvePath` in auto-create mode, this must be a read-only traversal). The `AutoCreateObjects` option must **not** apply here — this is a query, not a mutation.
+Use `OTr_zResolvePath` to navigate the dot-separated path. If the path resolves successfully and the final property exists (checked via `OB Is defined`), return 1. If any intermediate object along the path does not exist, return 0 without generating an error (unlike `OTr_zResolvePath` in auto-create mode, this must be a read-only traversal). The `AutoCreateObjects` option must **not** apply here — this is a query, not a mutation.
 
 #### See Also
 
@@ -219,7 +219,7 @@ Type resolution must follow the algorithm described in §3.6 of the parent speci
 3. For unprefixed Text, attempt date pattern matching (`YYYY-MM-DD`) → OT Date (4), then time pattern matching (`HH:MM:SS`) → OT Time (11).
 4. Fall back to OT Character (112) if no pattern matches.
 
-The return value must be an OT type constant (not a native 4D type constant) for backward compatibility. Use `OTr__MapType` or inline logic to perform this mapping.
+The return value must be an OT type constant (not a native 4D type constant) for backward compatibility. Use `OTr_uMapType` or inline logic to perform this mapping.
 
 #### See Also
 
@@ -253,7 +253,7 @@ If an item with the given tag exists and has any other type, zero is returned.
 
 #### OTr Implementation Notes
 
-Navigate to the property via `OTr__ResolvePath` (read-only), then check `OB Get type` = `Is object`. Return 1 if true, 0 otherwise.
+Navigate to the property via `OTr_zResolvePath` (read-only), then check `OB Get type` = `Is object`. Return 1 if true, 0 otherwise.
 
 #### See Also
 
@@ -396,7 +396,7 @@ If `$handle_i` is not a valid object handle or if no item in object has the give
 
 #### OTr Implementation Notes
 
-Navigate to the property via `OTr__ResolvePath` (read-only). Determine the OT type using the standard type resolution algorithm. For sizes, compute as per the `OTr_GetAllNamedProperties` approach. `$outIndex` should always be set to zero as per the legacy behaviour.
+Navigate to the property via `OTr_zResolvePath` (read-only). Determine the OT type using the standard type resolution algorithm. For sizes, compute as per the `OTr_GetAllNamedProperties` approach. `$outIndex` should always be set to zero as per the legacy behaviour.
 
 #### See Also
 
@@ -473,7 +473,7 @@ If either object handle is not valid, or if the source item does not exist, or i
 
 #### OTr Implementation Notes
 
-Read the source property value and write it to the destination property. For embedded objects (Object type), perform a deep copy using `OB Copy` to ensure independence. For BLOB and Picture references (`blob:N`, `pic:N`), allocate a new slot in the parallel array, copy the binary data, and store the new reference string in the destination. For all other types, a simple property copy suffices. Use `OTr__ResolvePath` on both source and destination paths.
+Read the source property value and write it to the destination property. For embedded objects (Object type), perform a deep copy using `OB Copy` to ensure independence. For BLOB and Picture references (`blob:N`, `pic:N`), allocate a new slot in the parallel array, copy the binary data, and store the new reference string in the destination. For all other types, a simple property copy suffices. Use `OTr_zResolvePath` on both source and destination paths.
 
 #### See Also
 
@@ -509,7 +509,7 @@ If the object handle is invalid, or if the item does not exist, or if an existin
 
 #### OTr Implementation Notes
 
-Use `OTr__ResolvePath` to navigate to the parent object containing the leaf property. Read the property value under the old leaf name, write it under `$newTag_t` on the same parent object, then remove the old property via `OB REMOVE`. If the value is a BLOB or Picture reference, no new parallel array slot is needed — the reference string is simply copied to the new property name.
+Use `OTr_zResolvePath` to navigate to the parent object containing the leaf property. Read the property value under the old leaf name, write it under `$newTag_t` on the same parent object, then remove the old property via `OB REMOVE`. If the value is a BLOB or Picture reference, no new parallel array slot is needed — the reference string is simply copied to the new property name.
 
 #### See Also
 
@@ -540,7 +540,7 @@ If `$handle_i` is not a valid object handle or `$tag_t` refers to an item that d
 
 #### OTr Implementation Notes
 
-Use `OTr__ResolvePath` to navigate to the parent object, then remove the leaf property via `OB REMOVE`. Before removal, check whether the property value is a BLOB or Picture reference (`blob:N`, `pic:N`) and release the corresponding slot in the parallel array. If the property is an embedded object, recursively scan its properties for any `blob:` or `pic:` references and release those slots as well. This mirrors the cleanup logic described in §3.7 of the parent specification for `OTr_Clear`.
+Use `OTr_zResolvePath` to navigate to the parent object, then remove the leaf property via `OB REMOVE`. Before removal, check whether the property value is a BLOB or Picture reference (`blob:N`, `pic:N`) and release the corresponding slot in the parallel array. If the property is an embedded object, recursively scan its properties for any `blob:` or `pic:` references and release those slots as well. This mirrors the cleanup logic described in §3.7 of the parent specification for `OTr_Clear`.
 
 #### See Also
 

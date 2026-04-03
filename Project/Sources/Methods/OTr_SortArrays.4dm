@@ -64,7 +64,7 @@ $continue_b:=True:C214
 If ($pairCount_i<1)
 	OTr_zError("At least one tag/direction pair required"; \
 		Current method name:C684)
-	OTr_zSetOK  // (0)
+	OTr_zSetOK(0)
 	$continue_b:=False:C215
 End if 
 
@@ -104,7 +104,7 @@ End if
 If ($continue_b)
 	If (Not:C34(OTr_zIsValidHandle($handle_i)))
 		OTr_zError("Invalid handle"; Current method name:C684)
-		OTr_zSetOK  // (0)
+		OTr_zSetOK(0)
 		$continue_b:=False:C215
 	End if 
 End if 
@@ -132,7 +132,7 @@ If ($continue_b)
 					If ($params_o.numElements#$n_i)
 						OTr_zError("Array size mismatch: "+\
 							$tags_at{$slot_i}; Current method name:C684)
-						OTr_zSetOK  // (0)
+						OTr_zSetOK(0)
 						$continue_b:=False:C215
 					End if 
 				End if 
@@ -154,7 +154,7 @@ If ($continue_b)
 	If ($keyCount_i=0)
 		OTr_zError("No sort keys specified; all pairs are slaves"; \
 			Current method name:C684)
-		OTr_zSetOK  // (0)
+		OTr_zSetOK(0)
 		$continue_b:=False:C215
 	End if 
 End if 
@@ -222,6 +222,6 @@ If ($continue_b)
 				$temp_o[String:C10(<>OTR_SortIdx_ai{$j_i})]
 		End for 
 	End for 
-	OTr_zSetOK  // (1)
+	OTr_zSetOK(1)
 	OTr_zUnlock
 End if 

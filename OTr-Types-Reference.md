@@ -57,7 +57,7 @@ The **Suffix** column gives the variable name suffix convention used in OTr meth
 
 ## Legacy OT Type Constants
 
-The legacy ObjectTools plugin defined its own type constants. The table below maps each OT constant to its native 4D equivalent, for reference when migrating existing code or implementing `OTr__MapType`.
+The legacy ObjectTools plugin defined its own type constants. The table below maps each OT constant to its native 4D equivalent, for reference when migrating existing code or implementing `OTr_uMapType`.
 
 See §7 of the parent specification for the full bidirectional mapping table.
 

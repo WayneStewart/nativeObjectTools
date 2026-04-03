@@ -42,23 +42,23 @@ If (OTr_zIsValidHandle($handle_i))
 			If (($arrayType_i=LongInt array:K8:19) | ($arrayType_i=Integer array:K8:18))
 				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
 					$arrayObj_o[String:C10($index_i)]:=$value_i
-					OTr_zSetOK  // (1)
+					OTr_zSetOK(1)
 				Else 
 					OTr_zError("Index out of range"; Current method name:C684)
-					OTr_zSetOK  // (0)
+					OTr_zSetOK(0)
 				End if 
 			Else 
 				OTr_zError("Tag does not reference a LongInt or Integer array"; Current method name:C684)
-				OTr_zSetOK  // (0)
+				OTr_zSetOK(0)
 			End if 
 		Else 
 			OTr_zError("Tag not found"; Current method name:C684)
-			OTr_zSetOK  // (0)
+			OTr_zSetOK(0)
 		End if 
 	End if 
 Else 
 	OTr_zError("Invalid handle"; Current method name:C684)
-	OTr_zSetOK  // (0)
+	OTr_zSetOK(0)
 End if 
 
 OTr_zUnlock

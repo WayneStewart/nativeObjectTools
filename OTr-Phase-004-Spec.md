@@ -11,7 +11,7 @@
 
 Phase 4 implements the **Array Put/Get** and **Array Utility** routines from the legacy ObjectTools 5.0 plugin. These commands provide the ability to store and manipulate typed 4D arrays within OTr objects.
 
-Phase 4 depends upon the infrastructure established in Phase 1 (handle registry, locking, error handling) and the path-resolution mechanism from Phase 2 (`OTr__ResolvePath`).
+Phase 4 depends upon the infrastructure established in Phase 1 (handle registry, locking, error handling) and the path-resolution mechanism from Phase 2 (`OTr_zResolvePath`).
 
 ### Array Storage Model
 
@@ -71,7 +71,7 @@ For the authoritative reference of 4D type constants and their mapping to legacy
 
 ## Utility Methods (`OTr_u*`)
 
-The following methods are private helpers used by the array put/get routines and by the scalar Phase 2 and Phase 5 methods. They are marked `"invisible":true` and are **not** `"shared"`. The `OTr_u` prefix (single underscore, lowercase `u`) distinguishes them from the public API (`OTr_`) and internal infrastructure methods (`OTr__`).
+The following methods are private helpers used by the array put/get routines and by the scalar Phase 2 and Phase 5 methods. They are marked `"invisible":true` and are **not** `"shared"`. The `OTr_u` prefix (single underscore, lowercase `u`) distinguishes them from the public API (`OTr_`) and internal infrastructure methods (`OTr_z`).
 
 ---
 
@@ -367,14 +367,14 @@ If `$handle_i` is not a valid object handle, an error is generated and `OK` is s
 
 The array is serialised as a 4D Object with `arrayType`, `numElements`, `currentItem`, and string-keyed element properties `"0"` through `"n"` (see "Array Storage Model" above). If an array item already exists at the given tag, it is replaced entirely.
 
-Dotted tag paths are supported via `OTr__ResolvePath` with `AutoCreateObjects` enabled: `OTr_PutArray($h_i; "All.Days"; ->$days_at)` will create the embedded object `"All"` if it does not already exist.
+Dotted tag paths are supported via `OTr_zResolvePath` with `AutoCreateObjects` enabled: `OTr_PutArray($h_i; "All.Days"; ->$days_at)` will create the embedded object `"All"` if it does not already exist.
 
 String and Text arrays are interchangeable — both are stored with `arrayType` = `Text array` (18).
 
 #### OTr Implementation Notes
 
 1. Validate the handle; acquire the lock.
-2. Call `OTr__ResolvePath($anObj_o; $tag_t; True; ->$parent_o; ->$leafKey_t)` to resolve the parent object and leaf key.
+2. Call `OTr_zResolvePath($anObj_o; $tag_t; True; ->$parent_o; ->$leafKey_t)` to resolve the parent object and leaf key.
 3. Determine the array type via `Type($array_ptr->)` and size via `Size of array($array_ptr->)`.
 4. Capture the current element index via `$array_ptr->` (the array itself evaluates to its current element index in 4D).
 5. Create a new `$arrayObject_o` via `New object("arrayType"; $type_i; "numElements"; $count_i; "currentItem"; $currentItem_i)`.
@@ -417,7 +417,7 @@ String and Text arrays are interchangeable.
 #### OTr Implementation Notes
 
 1. Validate the handle; acquire the lock.
-2. Navigate to the property via `OTr__ResolvePath` (read-only, `AutoCreate` = `False`).
+2. Navigate to the property via `OTr_zResolvePath` (read-only, `AutoCreate` = `False`).
 3. Retrieve the stored Object via `OB Get` and verify it has an `arrayType` property.
 4. Resize the target array to `numElements` via `ARRAY [TYPE]($array_ptr->; $numElements)`.
 5. Restore the current element index: `$array_ptr->:=$currentItem_i`.
@@ -458,7 +458,7 @@ If `$handle_i` is not a valid object handle, the tag does not exist, or the tag 
 
 #### OTr Implementation Notes
 
-Navigate to the property via `OTr__ResolvePath`. Return `OB Get($arrayObject_o; "numElements")`.
+Navigate to the property via `OTr_zResolvePath`. Return `OB Get($arrayObject_o; "numElements")`.
 
 #### See Also
 
@@ -578,7 +578,7 @@ OTr_FindInArray ($handle_i : Integer; $tag_t : Text; $value_t : Text {; $start_i
 | $tag_t | Text | → | Tag of the array item |
 | $value_t | Text | → | Value to search for (as Text) |
 | {$start_i} | Integer | → | 1-based index at which to begin (default 1) |
-| Function result | Integer | ← | 1-based index of the found element, or 0 if not found |
+| Function result | Integer | ← | 1-based index of the found element, or -1 if not found |
 
 #### Discussion
 
@@ -593,11 +593,11 @@ OTr_FindInArray ($handle_i : Integer; $tag_t : Text; $value_t : Text {; $start_i
 | `Text array` / `String array` (18/21) | Direct text comparison; `@` wildcard supported |
 | `Time array` (32) | `OTr_uTextToTime($value_t)` |
 
-The search proceeds from `$start_i` (default 1) through `numElements`. The first matching element's 1-based index is returned. If no match is found, 0 is returned.
+The search proceeds from `$start_i` (default 1) through `numElements`. The first matching element's 1-based index is returned. If no match is found, -1 is returned.
 
 For Text/String arrays, comparison is case-insensitive and diacritical-insensitive, and the `@` wildcard character is supported.
 
-If `$handle_i` is not a valid object handle, the tag does not exist, or the tag does not reference an array item, an error is generated, `OK` is set to zero, and 0 is returned.
+If `$handle_i` is not a valid object handle, the tag does not exist, or the tag does not reference an array item, an error is generated, `OK` is set to zero, and -1 is returned.
 
 #### OTr Implementation Notes
 

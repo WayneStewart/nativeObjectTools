@@ -64,6 +64,7 @@ If (OTr_zIsValidHandle($handle_i))
 			$type_i:=OTr_zArrayType($arrayObj_o)
 			If ($type_i=-1)
 				OTr_zError("Tag does not reference an array"; Current method name:C684)
+				OTr_zSetOK(0)
 			Else 
 				// Assign working pointer to the appropriate typed array
 				Case of 
@@ -90,7 +91,7 @@ If (OTr_zIsValidHandle($handle_i))
 							Current method name:C684)
 				End case 
 				
-				If (OK=1)
+				If ($workPtr#Null)
 					OTr_zArrayFromObject($arrayObj_o; $workPtr)
 					
 					// Search using native Find in array with type conversion
@@ -120,10 +121,14 @@ If (OTr_zIsValidHandle($handle_i))
 							$result_i:=Find in array:C230($Work_ah; $search_h; $startFrom_i)
 							
 					End case 
+					OTr_zSetOK(Num($result_i>=0))
 				End if 
 			End if 
+		Else 
+			OTr_zSetOK(0)
 		End if 
 	End if 
 Else 
 	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_zSetOK(0)
 End if 

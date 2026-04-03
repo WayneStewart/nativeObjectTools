@@ -9,7 +9,7 @@
 
 ## Overview
 
-Phase 6 implements the **Import/Export Routines** from the legacy ObjectTools 5.0 plugin. These commands provide the ability to serialise an entire OTr object to a BLOB for persistent storage (in database fields or disk files) and to reconstitute an object from such a BLOB. Phase 6 also finalises the `OTr__MapType` internal helper used throughout the serialisation and deserialisation pipeline.
+Phase 6 implements the **Import/Export Routines** from the legacy ObjectTools 5.0 plugin. These commands provide the ability to serialise an entire OTr object to a BLOB for persistent storage (in database fields or disk files) and to reconstitute an object from such a BLOB. Phase 6 also finalises the `OTr_uMapType` internal helper used throughout the serialisation and deserialisation pipeline.
 
 Phase 6 depends upon all preceding phases: the handle registry and locking from Phase 1, scalar storage from Phase 2, introspection from Phase 3, array/Collection support from Phase 4, and the complex type serialisation mechanisms from Phase 5 (BLOB/Picture parallel arrays, Pointer serialisation, Record references, and Variable storage).
 
@@ -44,24 +44,55 @@ This format allows `OTr_BLOBToObject` to reconstruct both the object's property 
 
 > **Note:** OTr's serialisation format is **not** compatible with the legacy ObjectTools binary format. BLOBs created by `OT ObjectToBLOB` cannot be read by `OTr_BLOBToObject`, and vice versa. Migration from legacy to OTr format requires loading via the legacy plugin and re-storing via OTr.
 
+### folders.json Registration
+
+Every new method created in this phase must be added to the appropriate group in `Project/Sources/folders.json`. The groups and their new members are:
+
+**`OT API Methods`** (public, `"shared":true`):
+`OTr_BLOBToObject`, `OTr_ObjectToBLOB`, `OTr_ObjectToNewBLOB`
+
+**`OT Utility Methods`** (`OTr_u*`, `"shared":false`):
+`OTr_uCollapseBinaries`, `OTr_uExpandBinaries`, `OTr_uMapType`
+
+> **Note:** `OTr_uCollapseBinaries`, `OTr_uExpandBinaries` are introduced in Phase 5 and should already be registered by the time Phase 6 is implemented. Add `OTr_uMapType` only.
+
+**`Test Methods`**:
+`____Test_Phase_6`
+
+Entries within each group must be inserted in alphabetical order, consistent with the existing pattern.
+
+---
+
+### Naming Convention and Header Block Standard
+
+All methods implemented in this phase must conform to the standard defined in **[OTr-Phase-007-Spec.md](OTr-Phase-007-Spec.md)**:
+
+- **Parameter names** in `#DECLARE` and the `Parameters:` comment block use the OT semantic name as the base (`inObject`, `ioBLOB`, `inBLOB`, `ioOffset`, etc.) with the OTr type suffix appended (`$inObject_i`, `$ioBLOB_blob`, `$inBLOB_blob`, `$ioOffset_i`, etc.). The authoritative suffix table is in **[OTr-Types-Reference.md](OTr-Types-Reference.md)**.
+- **The `Project Method:` comment line** uses OT-style names without `$` or suffix, matching the OT manual exactly.
+- **The `**ORIGINAL DOCUMENTATION**` block** is included in every method header that has an OT counterpart.
+
+The `OTr_PutString.4dm` method is the reference implementation for the correct header format.
+
+---
+
 ### Commands in This Phase
 
-**Internal Helpers:**
-`OTr__MapType`
+**Utility Helpers:**
+`OTr_uMapType`, `OTr_uEqualBLOBs`, `OTr_uEqualPictures`
 
 **Import/Export Routines:**
 `OTr_ObjectToBLOB`, `OTr_ObjectToNewBLOB`, `OTr_BLOBToObject`
 
 ---
 
-## Internal Helper Methods
+## Utility Methods (`OTr_u*`)
 
 ---
 
-### OTr__MapType
+### OTr_uMapType
 
 ```
-OTr__MapType ($nativeType_l : Integer {; $direction_l : Integer}) → Integer
+OTr_uMapType ($nativeType_l : Integer {; $direction_l : Integer}) → Integer
 ```
 
 | Parameter | Type | | Description |
@@ -72,7 +103,7 @@ OTr__MapType ($nativeType_l : Integer {; $direction_l : Integer}) → Integer
 
 #### Discussion
 
-`OTr__MapType` provides bidirectional mapping between native 4D type constants and legacy OT type constants. This method is used throughout OTr wherever type resolution is required — by `OTr_ItemType`, `OTr_GetAllNamedProperties`, `OTr_GetItemProperties`, `OTr_GetNamedProperties`, and the serialisation/deserialisation routines.
+`OTr_uMapType` provides bidirectional mapping between native 4D type constants and legacy OT type constants. This method is used throughout OTr wherever type resolution is required — by `OTr_ItemType`, `OTr_GetAllNamedProperties`, `OTr_GetItemProperties`, `OTr_GetNamedProperties`, and the serialisation/deserialisation routines.
 
 **4D → OT mapping (direction 0, default):**
 
@@ -96,7 +127,7 @@ If the input type has no known mapping, zero is returned.
 
 #### OTr Implementation Notes
 
-Implement as a `Case of` / series of `If` branches. The method must handle the special cases: `Is text` can represent several OT types (Character, Date, Time, BLOB, Picture, Pointer, Record, Variable) depending on the stored value's prefix — `OTr__MapType` handles only the *structural* type mapping, not the prefix-based disambiguation (which is the responsibility of `OTr_ItemType`'s resolution algorithm, described in §3.6 of the parent specification).
+Implement as a `Case of` / series of `If` branches. The method must handle the special cases: `Is text` can represent several OT types (Character, Date, Time, BLOB, Picture, Pointer, Record, Variable) depending on the stored value's prefix — `OTr_uMapType` handles only the *structural* type mapping, not the prefix-based disambiguation (which is the responsibility of `OTr_ItemType`'s resolution algorithm, described in §3.6 of the parent specification).
 
 This method is finalised in Phase 6 because the full type mapping table is not exercised until the serialisation format needs to encode and decode all supported types.
 
@@ -234,7 +265,7 @@ If the bytes at the given offset do not describe an object stored with `OTr_Obje
 
 | OTr Method | Legacy Command | Category |
 |---|---|---|
-| `OTr__MapType` | *(internal)* | Internal Helper |
+| `OTr_uMapType` | *(utility)* | Utility Method |
 | `OTr_ObjectToBLOB` | `OT ObjectToBLOB` (v1) | Import/Export |
 | `OTr_ObjectToNewBLOB` | `OT ObjectToNewBLOB` (v1.5) | Import/Export |
 | `OTr_BLOBToObject` | `OT BLOBToObject` (v1) | Import/Export |
