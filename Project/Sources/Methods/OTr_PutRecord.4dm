@@ -68,55 +68,55 @@ OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
 	
-	If (Not(Is table number valid($inTable_i)))
-		OTr_zError("Invalid table number"; Current method name)
+	If (Not:C34(Is table number valid:C999($inTable_i)))
+		OTr_zError("Invalid table number"; Current method name:C684)
 		OTr_zSetOK(0)
 		
 	Else 
 		
-		$tablePtr_ptr:=Table($inTable_i)
+		$tablePtr_ptr:=Table:C252($inTable_i)
 		
-		$recordNum_i:=Record number($tablePtr_ptr->)
+		$recordNum_i:=Record number:C243($tablePtr_ptr->)
 		
 		If ($recordNum_i<0)
-			OTr_zError("No current record"; Current method name)
+			OTr_zError("No current record"; Current method name:C684)
 			OTr_zSetOK(0)
 			
 		Else 
 			
-			$snapshot_o:=New object
+			$snapshot_o:=New object:C1471
 			$snapshot_o.__tableNum:=$inTable_i
 			
-			$lastField_i:=Get last field number($tablePtr_ptr->)
+			$lastField_i:=Get last field number:C255($tablePtr_ptr)
 			
 			For ($x_i; 1; $lastField_i)
 				
-				If (Is field number valid($tablePtr_ptr; $x_i))
+				If (Is field number valid:C1000($tablePtr_ptr; $x_i))
 					
-					$fieldPtr_ptr:=Field($inTable_i; $x_i)
-					$fieldName_t:=Field name($fieldPtr_ptr)
-					$fieldType_i:=Type($fieldPtr_ptr->)
+					$fieldPtr_ptr:=Field:C253($inTable_i; $x_i)
+					$fieldName_t:=Field name:C257($fieldPtr_ptr)
+					$fieldType_i:=Type:C295($fieldPtr_ptr->)
 					
 					Case of 
 							
-						: ($fieldType_i=Is date)
-							OB SET($snapshot_o; $fieldName_t; OTr_uDateToText($fieldPtr_ptr->))
+						: ($fieldType_i=Is date:K8:7)
+							OB SET:C1220($snapshot_o; $fieldName_t; OTr_uDateToText($fieldPtr_ptr->))
 							
-						: ($fieldType_i=Is time)
-							OB SET($snapshot_o; $fieldName_t; OTr_uTimeToText($fieldPtr_ptr->))
+						: ($fieldType_i=Is time:K8:8)
+							OB SET:C1220($snapshot_o; $fieldName_t; OTr_uTimeToText($fieldPtr_ptr->))
 							
-						: ($fieldType_i=Is picture)
-							PICTURE TO BLOB($fieldPtr_ptr->; $tempBlob_blob; ".png")
-							BASE64 ENCODE($tempBlob_blob)
-							OB SET($snapshot_o; $fieldName_t; Convert to text($tempBlob_blob; "US-ASCII"))
+						: ($fieldType_i=Is picture:K8:10)
+							PICTURE TO BLOB:C692($fieldPtr_ptr->; $tempBlob_blob; ".png")
+							BASE64 ENCODE:C895($tempBlob_blob)
+							OB SET:C1220($snapshot_o; $fieldName_t; Convert to text:C1012($tempBlob_blob; "US-ASCII"))
 							
-						: ($fieldType_i=Is BLOB)
+						: ($fieldType_i=Is BLOB:K8:12)
 							$tempBlob_blob:=$fieldPtr_ptr->
-							BASE64 ENCODE($tempBlob_blob)
-							OB SET($snapshot_o; $fieldName_t; Convert to text($tempBlob_blob; "US-ASCII"))
+							BASE64 ENCODE:C895($tempBlob_blob)
+							OB SET:C1220($snapshot_o; $fieldName_t; Convert to text:C1012($tempBlob_blob; "US-ASCII"))
 							
 						Else 
-							OB SET($snapshot_o; $fieldName_t; $fieldPtr_ptr->)
+							OB SET:C1220($snapshot_o; $fieldName_t; $fieldPtr_ptr->)
 							
 					End case 
 					
@@ -124,8 +124,8 @@ If (OTr_zIsValidHandle($inObject_i))
 				
 			End for 
 			
-			If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; ->$parent_o; ->$leafKey_t))
-				OB SET($parent_o; $leafKey_t; $snapshot_o)
+			If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; ->$parent_o; ->$leafKey_t))
+				OB SET:C1220($parent_o; $leafKey_t; $snapshot_o)
 			End if 
 			
 		End if 
@@ -133,7 +133,7 @@ If (OTr_zIsValidHandle($inObject_i))
 	End if 
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name)
+	OTr_zError("Invalid handle"; Current method name:C684)
 	OTr_zSetOK(0)
 End if 
 

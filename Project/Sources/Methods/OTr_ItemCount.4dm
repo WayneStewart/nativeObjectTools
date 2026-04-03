@@ -30,54 +30,55 @@ var $keys_c : Collection
 var $useTag_b : Boolean
 var $thisKey_t : Text
 
-$keys_c:=New collection
+$keys_c:=New collection:C1472
 
 $count_i:=0
 
 OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
-
-	$useTag_b:=(Count parameters>=2) & ($inTag_t#"")
-
+	
+	$inTag_t:=Choose:C955(Count parameters:C259=2; $inTag_t; "")
+	$useTag_b:=($inTag_t#"")
+	
 	If ($useTag_b)
-
-		If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; \
+		
+		If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
 			->$parent_o; ->$leafKey_t))
-			If (OB Is defined($parent_o; $leafKey_t))
-				$target_o:=OB Get($parent_o; $leafKey_t; Is object)
-				If ($target_o#Null)
-					$keys_c:=OB Keys($target_o)
+			If (OB Is defined:C1231($parent_o; $leafKey_t))
+				$target_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
+				If ($target_o#Null:C1517)
+					$keys_c:=OB Keys:C1719($target_o)
 					For each ($thisKey_t; $keys_c)
-						If (Substring($thisKey_t; 1; 7)#"__otr_")
+						If (Substring:C12($thisKey_t; 1; 7)#"__otr_")
 							$count_i:=$count_i+1
-						End if
-					End for each
-				Else
-					OTr_zError( \
+						End if 
+					End for each 
+				Else 
+					OTr_zError(\
 						"Tag does not reference an embedded object"; \
-						Current method name)
-				End if
-			Else
-				OTr_zError("Item not found: "+$inTag_t; Current method name)
-			End if
-		Else
-			OTr_zError("Invalid path: "+$inTag_t; Current method name)
-		End if
-
-	Else
-
-		$keys_c:=OB Keys(<>OTR_Objects_ao{$inObject_i})
+						Current method name:C684)
+				End if 
+			Else 
+				OTr_zError("Item not found: "+$inTag_t; Current method name:C684)
+			End if 
+		Else 
+			OTr_zError("Invalid path: "+$inTag_t; Current method name:C684)
+		End if 
+		
+	Else 
+		
+		$keys_c:=OB Keys:C1719(<>OTR_Objects_ao{$inObject_i})
 		For each ($thisKey_t; $keys_c)
-			If (Substring($thisKey_t; 1; 7)#"__otr_")
+			If (Substring:C12($thisKey_t; 1; 7)#"__otr_")
 				$count_i:=$count_i+1
-			End if
-		End for each
-
-	End if
-
-Else
-	OTr_zError("Invalid handle"; Current method name)
-End if
+			End if 
+		End for each 
+		
+	End if 
+	
+Else 
+	OTr_zError("Invalid handle"; Current method name:C684)
+End if 
 
 OTr_zUnlock

@@ -4,9 +4,10 @@
 	<schema name="DEFAULT_SCHEMA"/>
 	<table name="Table_1" uuid="95ADF9CAC34347798DE537CDB1557AF0" id="1">
 		<field name="ID" uuid="CB65148FA25B48C6A168D97285F7D9EF" type="4" unique="true" autosequence="true" not_null="true" id="1"/>
+		<field name="Name" uuid="0BD85CE468E44F6CB966C9DBA30E8E04" type="10" limiting_length="255" never_null="true" id="2"/>
 		<primary_key field_name="ID" field_uuid="CB65148FA25B48C6A168D97285F7D9EF"/>
 		<table_extra>
-			<editor_table_info fields_ordering="1" displayable_fields_count="6">
+			<editor_table_info displayable_fields_count="6">
 				<color red="255" green="255" blue="255" alpha="0"/>
 				<coordinates left="61.3203125" top="54.4140625" width="120" height="167.33203125"/>
 			</editor_table_info>
