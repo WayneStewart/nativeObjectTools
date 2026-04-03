@@ -1,0 +1,1 @@
+<!--OTr_BLOBToObject (inBLOB) -> Longint Does not require any parameters -->## OTr\_BLOBToObjectOTr\_BLOBToObject (inBLOB) --> LongintDeserialises an OTr object from a BLOB previousl| Parameters || --- || Does not require any parameters |

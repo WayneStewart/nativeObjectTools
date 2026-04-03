@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
   // ----------------------------------------------------
-  // Project Method: OTr_BLOBToObject (inBLOB) --> $handle_i : Integer
+  // Project Method: OTr_BLOBToObject (inBLOB) --> Longint
 
   // Deserialises an OTr object from a BLOB previously created by
   // OTr_ObjectToBLOB or OTr_ObjectToNewBLOB. Returns a new handle.
@@ -23,12 +23,13 @@
   //   $inBLOB_blob : Blob : A BLOB containing a serialised OTr object
 
   // Returns:
-  //   $handle_i : Integer : New handle, or 0 on error
+  //   $handle_i : Integer : New OTr handle, or 0 on error
 
   // Created by Wayne Stewart, 2026-04-03
   // Based on work by himself, Rob Laveaux, and Cannon Smith.
   // Wayne Stewart, 2026-04-03 - Simplified: dropped ioOffset parameter and
   //       OTR1 envelope. Now uses EXPAND BLOB + BLOB TO VARIABLE.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
   // ----------------------------------------------------
 
 #DECLARE($inBLOB_blob : Blob)->$handle_i : Integer

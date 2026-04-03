@@ -1,7 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_PutArrayBLOB ($handle_i : Integer; \
-//   $tag_t : Text; $index_i : Integer; $value_blob : Blob)
+// Project Method: OTr_PutArrayBLOB (inObject; inTag; inIndex; inValue)
 
 // Sets a single element of a Blob array item.
 // The BLOB is stored as inline base64 text with a "blob:"
@@ -10,10 +9,10 @@
 // Access: Shared
 
 // Parameters:
-//   $handle_i : Integer : OTr handle
-//   $tag_t    : Text    : Tag path to the array item
-//   $index_i  : Integer : Element index (0 = default element)
-//   $value_blob : Blob    : Value to store
+//   $inObject_i : Integer : OTr inObject
+//   $inTag_t    : Text    : Tag path to the array item (inTag)
+//   $inIndex_i  : Integer : Element index, 1-based; 0 = default element (inIndex)
+//   $inValue_blob : Blob    : Value to store
 
 // Returns: Nothing
 
@@ -21,9 +20,10 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-03 - Removed release call; branches on
 //     Storage.OTr.nativeBlobInObject for native or base64 storage.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer; $value_blob : Blob)
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_blob : Blob)
 
 var $parent_o : Object
 var $arrayObj_o : Object
@@ -32,15 +32,15 @@ var $arrayType_i : Integer
 
 OTr_zLock
 
-If (OTr_zIsValidHandle($handle_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; \
+If (OTr_zIsValidHandle($inObject_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
 			$arrayType_i:=OTr_zArrayType($arrayObj_o)
 			If ($arrayType_i=Blob array:K8:30)
-				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
-						$arrayObj_o[String:C10($index_i)]:=OTr_uBlobToText($value_blob)
+				If (($inIndex_i>=0) & ($inIndex_i<=$arrayObj_o.numElements))
+						$arrayObj_o[String:C10($inIndex_i)]:=OTr_uBlobToText($inValue_blob)
 					OTr_zSetOK  // (1)
 				Else 
 					OTr_zError("Index out of range"; Current method name:C684)

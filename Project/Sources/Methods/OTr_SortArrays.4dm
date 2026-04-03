@@ -1,14 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_SortArrays
-//   ($handle_i : Integer;
-//    $tag1_t  : Text; $dir1_t  : Text;
-//    $tag2_t  : Text; $dir2_t  : Text;  // optional
-//    $tag3_t  : Text; $dir3_t  : Text;  // optional
-//    $tag4_t  : Text; $dir4_t  : Text;  // optional
-//    $tag5_t  : Text; $dir5_t  : Text;  // optional
-//    $tag6_t  : Text; $dir6_t  : Text;  // optional
-//    $tag7_t  : Text; $dir7_t  : Text)  // optional
+// Project Method: OTr_SortArrays (inObject; inTag1; inDirection1 {; inTag2; inDirection2 {; inTag3; inDirection3 {; inTag4; inDirection4 {; inTag5; inDirection5 {; inTag6; inDirection6 {; inTag7; inDirection7}}}}}})
 //
 // Sorts one or more OTr arrays within the same OTr
 // object via MULTI SORT ARRAY. Direction codes:
@@ -30,9 +22,9 @@
 // Access: Public
 //
 // Parameters:
-//   $handle_i          : Integer : Object handle
-//   $tag1_t .. $tag7_t : Text    : Array tag name
-//   $dir1_t .. $dir7_t : Text    : Direction code
+//   $inObject_i               : Integer : OTr inObject
+//   $inTag1_t .. $inTag7_t    : Text    : Array tag name (inTag1..inTag7)
+//   $inDirection1_t .. $inDirection7_t : Text    : Sort direction (inDirection1..inDirection7)
 //                          ">"  ascending key
 //                          "<"  descending key
 //                          "*"  slave (follows keys)
@@ -42,9 +34,10 @@
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon
 // Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag1_t : Text; $dir1_t : Text; $tag2_t : Text; $dir2_t : Text; $tag3_t : Text; $dir3_t : Text; $tag4_t : Text; $dir4_t : Text; $tag5_t : Text; $dir5_t : Text; $tag6_t : Text; $dir6_t : Text; $tag7_t : Text; $dir7_t : Text)
+#DECLARE($inObject_i : Integer; $inTag1_t : Text; $inDirection1_t : Text; $inTag2_t : Text; $inDirection2_t : Text; $inTag3_t : Text; $inDirection3_t : Text; $inTag4_t : Text; $inDirection4_t : Text; $inTag5_t : Text; $inDirection5_t : Text; $inTag6_t : Text; $inDirection6_t : Text; $inTag7_t : Text; $inDirection7_t : Text)
 
 var $pairCount_i; $keyCount_i; $ptrIdx_i : Integer
 var $n_i; $j_i; $slot_i : Integer
@@ -70,31 +63,31 @@ End if
 
 // Populate tag/dir arrays from named parameters
 If ($continue_b)
-	$tags_at{1}:=$tag1_t
-	$dirs_at{1}:=$dir1_t
+	$tags_at{1}:=$inTag1_t
+	$dirs_at{1}:=$inDirection1_t
 	If ($pairCount_i>=2)
-		$tags_at{2}:=$tag2_t
-		$dirs_at{2}:=$dir2_t
+		$tags_at{2}:=$inTag2_t
+		$dirs_at{2}:=$inDirection2_t
 	End if 
 	If ($pairCount_i>=3)
-		$tags_at{3}:=$tag3_t
-		$dirs_at{3}:=$dir3_t
+		$tags_at{3}:=$inTag3_t
+		$dirs_at{3}:=$inDirection3_t
 	End if 
 	If ($pairCount_i>=4)
-		$tags_at{4}:=$tag4_t
-		$dirs_at{4}:=$dir4_t
+		$tags_at{4}:=$inTag4_t
+		$dirs_at{4}:=$inDirection4_t
 	End if 
 	If ($pairCount_i>=5)
-		$tags_at{5}:=$tag5_t
-		$dirs_at{5}:=$dir5_t
+		$tags_at{5}:=$inTag5_t
+		$dirs_at{5}:=$inDirection5_t
 	End if 
 	If ($pairCount_i>=6)
-		$tags_at{6}:=$tag6_t
-		$dirs_at{6}:=$dir6_t
+		$tags_at{6}:=$inTag6_t
+		$dirs_at{6}:=$inDirection6_t
 	End if 
 	If ($pairCount_i>=7)
-		$tags_at{7}:=$tag7_t
-		$dirs_at{7}:=$dir7_t
+		$tags_at{7}:=$inTag7_t
+		$dirs_at{7}:=$inDirection7_t
 	End if 
 End if 
 
@@ -102,7 +95,7 @@ End if
 // Phase 2 — Validate handle (no lock needed)
 // ------------------------------------------------
 If ($continue_b)
-	If (Not:C34(OTr_zIsValidHandle($handle_i)))
+	If (Not:C34(OTr_zIsValidHandle($inObject_i)))
 		OTr_zError("Invalid handle"; Current method name:C684)
 		OTr_zSetOK(0)
 		$continue_b:=False:C215
@@ -117,7 +110,7 @@ End if
 // ------------------------------------------------
 If ($continue_b)
 	$arrayObjStore_o:=New object:C1471
-	$params_o:=New object:C1471("handle"; $handle_i)
+	$params_o:=New object:C1471("handle"; $inObject_i)
 	For ($slot_i; 1; $pairCount_i)
 		If ($continue_b)
 			$params_o.tag:=$tags_at{$slot_i}

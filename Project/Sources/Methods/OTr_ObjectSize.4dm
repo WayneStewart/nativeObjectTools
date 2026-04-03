@@ -1,7 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_ObjectSize ($handle_i : Integer) \
-//   --> $size_i : Integer
+// Project Method: OTr_ObjectSize (inObject) --> Longint
 
 // Returns an approximation of the total size of an OTr object in bytes.
 // The object is serialised to JSON and the character length is returned.
@@ -11,16 +10,17 @@
 // Access: Shared
 
 // Parameters:
-//   $handle_i : Integer : A handle to an object
+//   $inObject_i : Integer : OTr inObject
 
 // Returns:
 //   $size_i : Integer : Approximate size in bytes, or 0 on error
 
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer)->$size_i : Integer
+#DECLARE($inObject_i : Integer)->$size_i : Integer
 
 var $pictureIndex_i; $externalSize_i : Integer
 var $storedValueText_t; $thisKey_t : Text
@@ -35,9 +35,9 @@ $theseKeys_c:=New collection:C1472  // Initialise it
 
 OTr_zInit
 
-If (OTr_zIsValidHandle($handle_i))
-	$thisObject_o:=<>OTR_Objects_ao{$handle_i}  // This is not a copy, just making it easier to work with
-	$size_i:=Length:C16(JSON Stringify:C1217(<>OTR_Objects_ao{$handle_i}))  // Get the basic text length
+If (OTr_zIsValidHandle($inObject_i))
+	$thisObject_o:=<>OTR_Objects_ao{$inObject_i}  // This is not a copy, just making it easier to work with
+	$size_i:=Length:C16(JSON Stringify:C1217(<>OTR_Objects_ao{$inObject_i}))  // Get the basic text length
 	
 	// Get the keys, so we can check for 'external' storage
 	$theseKeys_c:=OB Keys:C1719($thisObject_o)

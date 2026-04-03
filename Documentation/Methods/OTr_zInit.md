@@ -1,0 +1,1 @@
+<!--OTr_zInit Does not require any parameters -->## OTr\_zInitOTr\_zInitInitialises the OTr registry arrays and default module state.Attributes: Private, Invisible, Preemptive indifferent| Parameters || --- || Does not require any parameters |

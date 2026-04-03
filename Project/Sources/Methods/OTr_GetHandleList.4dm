@@ -1,21 +1,22 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_GetHandleList ($handles_ptr : Pointer)
+// Project Method: OTr_GetHandleList (outHandles)
 
 // Fills a Longint array with currently allocated OTr handles.
 
 // Access: Shared
 
 // Parameters:
-//   $handles_ptr : Pointer : Pointer to Longint array destination
+//   $outHandles_ptr : Pointer : Pointer to Longint array to receive active handles (outHandles)
 
 // Returns: Nothing
 
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handles_ptr : Pointer)
+#DECLARE($outHandles_ptr : Pointer)
 
 var $index_i : Integer
 
@@ -31,4 +32,4 @@ End for
 
 OTr_zUnlock
 
-COPY ARRAY:C226($handleList_ai; $handles_ptr->)
+COPY ARRAY:C226($handleList_ai; $outHandles_ptr->)

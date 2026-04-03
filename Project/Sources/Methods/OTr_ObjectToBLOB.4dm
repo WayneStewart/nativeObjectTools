@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
   // ----------------------------------------------------
-  // Project Method: OTr_ObjectToBLOB (inObject; ioBLOB {; append})
+  // Project Method: OTr_ObjectToBLOB (inObject; ioBLOB {; inAppend})
 
   // Serialises an OTr object into a BLOB using VARIABLE TO BLOB
   // with GZIP compression. The object's contents (including natively
@@ -35,8 +35,7 @@
   // Parameters:
   //   $inObject_i : Integer : OTr inObject (handle)
   //   $ioBLOB_ptr : Pointer : Pointer to the BLOB variable to receive the data
-  //   $append_i   : Integer : 0 = replace (default), non-zero = append
-  //                           (optional)
+  //   $inAppend_i   : Integer : 0 = replace (default), non-zero = append (inAppend) (optional)
 
   // Returns: Nothing
 
@@ -46,15 +45,16 @@
   //       because 4D passes BLOBs by value; callers must pass ->$blobVar.
   // Wayne Stewart, 2026-04-03 - Rewritten: VARIABLE TO BLOB + GZIP compression;
   //       dropped OTR1 envelope and parallel-array expansion.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
   // ----------------------------------------------------
 
-#DECLARE($inObject_i : Integer; $ioBLOB_ptr : Pointer; $append_i : Integer)
+#DECLARE($inObject_i : Integer; $ioBLOB_ptr : Pointer; $inAppend_i : Integer)
 
 var $obj_o : Object
 var $serialised_blob : Blob
 var $doAppend_i : Integer
 
-$doAppend_i := Choose(Count parameters < 3; 0; $append_i)
+$doAppend_i := Choose(Count parameters < 3; 0; $inAppend_i)
 
 If ($ioBLOB_ptr = Null)
 	OTr_zError("ioBLOB pointer is Nil"; Current method name)

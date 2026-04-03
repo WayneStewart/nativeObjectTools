@@ -1,24 +1,25 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_SetOptions ($options_i : Integer)
+// Project Method: OTr_SetOptions (inOptions)
 
 // Sets the current OTr options bit field.
 
 // Access: Shared
 
 // Parameters:
-//   $options_i : Integer : New options bit field
+//   $inOptions_i : Integer : New OTr options bit field (inOptions)
 
 // Returns: Nothing
 
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($options_i : Integer)
+#DECLARE($inOptions_i : Integer)
 
 OTr_zLock
 
-<>OTR_Options_i:=$options_i
+<>OTR_Options_i:=$inOptions_i
 
 OTr_zUnlock

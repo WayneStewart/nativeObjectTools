@@ -1,10 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_GetAllNamedProperties ($handle_i : Integer; \
-//   $tag_t : Text; $outNames_ptr : Pointer \
-//   {; $outTypes_ptr : Pointer \
-//   {; $outItemSizes_ptr : Pointer \
-//   {; $outDataSizes_ptr : Pointer}}})
+// Project Method: OTr_GetAllNamedProperties (inObject; inTag; outNames {; outTypes {; outItemSizes {; outDataSizes}}})
 
 // Returns information about all items in the object (or embedded object).
 // $outNames_ptr must point to a Text array; the optional pointer params
@@ -14,8 +10,8 @@
 // Access: Shared
 
 // Parameters:
-//   $handle_i       : Integer : A handle to an object
-//   $tag_t          : Text    : Tag of an embedded object (empty for root)
+//   $inObject_i       : Integer : OTr inObject
+//   $inTag_t          : Text    : Tag of an embedded object; empty for root (inTag)
 //   $outNames_ptr   : Pointer : Receives item names (Text array)
 //   $outTypes_ptr   : Pointer : Receives OT type constants (Longint array)
 //                               (optional)
@@ -29,9 +25,10 @@
 // Wayne Stewart, 2026-04-01 - Updated OB Keys usage for collection return.
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text; $outNames_ptr : Pointer; \
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $outNames_ptr : Pointer; \
 $outTypes_ptr : Pointer; $outItemSizes_ptr : Pointer; \
 $outDataSizes_ptr : Pointer)
 
@@ -59,13 +56,13 @@ $needDataSizes_b:=(Count parameters:C259>=6)
 
 OTr_zLock
 
-If (OTr_zIsValidHandle($handle_i))
+If (OTr_zIsValidHandle($inObject_i))
 	
 	// Determine the target object
-	If ($tag_t="")
-		$target_o:=<>OTR_Objects_ao{$handle_i}
+	If ($inTag_t="")
+		$target_o:=<>OTR_Objects_ao{$inObject_i}
 	Else 
-		If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False:C215; \
+		If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
 			->$parent_o; ->$leafKey_t))
 			If (OB Is defined:C1231($parent_o; $leafKey_t))
 				$target_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
@@ -75,10 +72,10 @@ If (OTr_zIsValidHandle($handle_i))
 						Current method name:C684)
 				End if 
 			Else 
-				OTr_zError("Item not found: "+$tag_t; Current method name:C684)
+				OTr_zError("Item not found: "+$inTag_t; Current method name:C684)
 			End if 
 		Else 
-			OTr_zError("Invalid path: "+$tag_t; Current method name:C684)
+			OTr_zError("Invalid path: "+$inTag_t; Current method name:C684)
 		End if 
 	End if 
 	

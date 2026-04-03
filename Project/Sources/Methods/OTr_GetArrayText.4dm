@@ -1,7 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_GetArrayText ($handle_i : Integer; \
-//   $tag_t : Text; $index_i : Integer) -> $value_t : Text
+// Project Method: OTr_GetArrayText (inObject; inTag; inIndex) --> Text
 
 // Retrieves a single element from a Text or String array item.
 // Alias for OTr_GetArrayString — Text and String arrays
@@ -10,17 +9,18 @@
 // Access: Shared
 
 // Parameters:
-//   $handle_i : Integer : OTr handle
-//   $tag_t    : Text    : Tag path to the array item
-//   $index_i  : Integer : Element index (0 = default element)
+//   $inObject_i : Integer : OTr inObject
+//   $inTag_t    : Text    : Tag path to the array item (inTag)
+//   $inIndex_i  : Integer : Element index, 1-based; 0 = default element (inIndex)
 
 // Returns:
-//   $value_t : Text : Element value, or "" on any failure
+//   $result_t : Text : Element value, or "" on any failure
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer)->$value_t : Text
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_t : Text
 
-$value_t:=OTr_GetArrayString($handle_i; $tag_t; $index_i)
+$result_t:=OTr_GetArrayString($inObject_i; $inTag_t; $inIndex_i)

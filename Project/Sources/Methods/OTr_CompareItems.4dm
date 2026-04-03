@@ -1,8 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_CompareItems ($srcHandle_i : Integer; \
-//   $srcTag_t : Text; $cmpHandle_i : Integer; \
-//   $cmpTag_t : Text) --> $result_i : Integer
+// Project Method: OTr_CompareItems (inSourceObject; inSourceTag; inCompareObject; inCompareTag) --> Longint
 
 // Compares two items for equality. Both handles may be the same object.
 // Returns 1 if items are identical, 0 if not, -1 on error.
@@ -14,10 +12,10 @@
 // Access: Shared
 
 // Parameters:
-//   $srcHandle_i : Integer : A handle to the source object
-//   $srcTag_t    : Text    : Source item tag
-//   $cmpHandle_i : Integer : A handle to the comparison object
-//   $cmpTag_t    : Text    : Comparison item tag
+//   $inSourceObject_i  : Integer : OTr inSourceObject
+//   $inSourceTag_t     : Text    : Source item tag (inSourceTag)
+//   $inCompareObject_i : Integer : OTr inCompareObject
+//   $inCompareTag_t    : Text    : Comparison item tag (inCompareTag)
 
 // Returns:
 //   $result_i : Integer : 1 if identical, 0 if not, -1 on error
@@ -27,10 +25,11 @@
 // Wayne Stewart, 2026-04-01 - Reworked boolean comparison for 4D compiler.
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($srcHandle_i : Integer; $srcTag_t : Text; \
-$cmpHandle_i : Integer; $cmpTag_t : Text)->$result_i : Integer
+#DECLARE($inSourceObject_i : Integer; $inSourceTag_t : Text; \
+$inCompareObject_i : Integer; $inCompareTag_t : Text)->$result_i : Integer
 
 var $srcParent_o : Object
 var $srcLeafKey_t : Text
@@ -48,12 +47,12 @@ $result_i:=-1
 
 OTr_zLock
 
-If (OTr_zIsValidHandle($srcHandle_i)\
- & OTr_zIsValidHandle($cmpHandle_i))
+If (OTr_zIsValidHandle($inSourceObject_i)\
+ & OTr_zIsValidHandle($inCompareObject_i))
 	
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$srcHandle_i}; $srcTag_t; \
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inSourceObject_i}; $inSourceTag_t; \
 		False:C215; ->$srcParent_o; ->$srcLeafKey_t)\
-		 & OTr_zResolvePath(<>OTR_Objects_ao{$cmpHandle_i}; $cmpTag_t; \
+		 & OTr_zResolvePath(<>OTR_Objects_ao{$inCompareObject_i}; $inCompareTag_t; \
 		False:C215; ->$cmpParent_o; ->$cmpLeafKey_t))
 		
 		If (OB Is defined:C1231($srcParent_o; $srcLeafKey_t)\

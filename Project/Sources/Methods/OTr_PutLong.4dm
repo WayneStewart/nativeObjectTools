@@ -1,34 +1,34 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_PutLong ($handle_i : Integer; $tag_t : Text; \
-//   $value_i : Integer)
+// Project Method: OTr_PutLong (inObject; inTag; inValue)
 
 // Stores an Integer value at the specified tag path.
 
 // Access: Shared
 
 // Parameters:
-//   $handle_i : Integer : OTr handle
-//   $tag_t    : Text    : Tag path
-//   $value_i  : Integer : Value to store
+//   $inObject_i : Integer : OTr inObject
+//   $inTag_t    : Text    : Tag path (inTag)
+//   $inValue_i  : Integer : Value to store (inValue)
 
 // Returns: Nothing
 
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
-#DECLARE($handle_i : Integer; $tag_t : Text; $value_i : Integer)
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_i : Integer)
 
 var $parent_o : Object
 var $leafKey_t : Text
 
 OTr_zLock
 
-If (OTr_zIsValidHandle($handle_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; True; \
+If (OTr_zIsValidHandle($inObject_i))
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; \
 		->$parent_o; ->$leafKey_t))
-		OB SET($parent_o; $leafKey_t; $value_i)
+		OB SET($parent_o; $leafKey_t; $inValue_i)
 	End if
 Else
 	OTr_zError("Invalid handle"; Current method name)
