@@ -39,6 +39,8 @@
 
 // Created by Wayne Stewart, 2026-04-03
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-03 - Branches on Storage.OTr.nativeBlobInObject;
+//     native OB Get used when True, else base64 decode.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_blob : Blob
@@ -51,7 +53,11 @@ OTr_zLock
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			$result_blob:=OTr_uTextToBlob(OB Get($parent_o; $leafKey_t; Is text))
+			If (Storage.OTr.nativeBlobInObject)
+				$result_blob:=OB Get($parent_o; $leafKey_t; Is BLOB)
+			Else
+				$result_blob:=OTr_uTextToBlob(OB Get($parent_o; $leafKey_t; Is text))
+			End if
 		End if
 	End if
 Else

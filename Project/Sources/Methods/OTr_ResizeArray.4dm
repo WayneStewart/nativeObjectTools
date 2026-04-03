@@ -26,7 +26,6 @@ var $parent_o : Object
 var $arrayObj_o : Object
 var $leafKey_t : Text
 var $currentSize_i; $index_i; $arrayType_i : Integer
-var $storedVal_t : Text
 
 OTr_zLock
 
@@ -46,12 +45,8 @@ If (OTr_zIsValidHandle($handle_i))
 					
 				Else 
 					If ($size_i<$currentSize_i)
-						// Shrink: release binary slots then remove entries
-						For ($index_i; $size_i+1; $currentSize_i)
-							If (($arrayType_i=Blob array:K8:30) | ($arrayType_i=Picture array:K8:22))
-								$storedVal_t:=OB Get:C1224($arrayObj_o; String:C10($index_i); Is text:K8:3)
-								OTr_zReleaseBinaryRef($storedVal_t)
-							End if 
+							// Shrink: remove entries
+							For ($index_i; $size_i+1; $currentSize_i)
 							OB REMOVE:C1226($arrayObj_o; String:C10($index_i))
 						End for 
 					End if 

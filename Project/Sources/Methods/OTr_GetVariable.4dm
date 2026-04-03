@@ -53,6 +53,7 @@ var $typeName_t : Text
 var $serialised_t : Text
 var $sep_i : Integer
 var $unlocked_b : Boolean
+var $picBlob_blob : Blob
 
 $unlocked_b:=False
 
@@ -100,8 +101,8 @@ If (OTr_zIsValidHandle($inObject_i))
 						$varPtr->:=OTr_uTextToBlob($serialised_t)
 						
 					: ($typeName_t="picture")
-						$varPtr->:=OTr_uTextToPicture($serialised_t)
-						
+							BASE64 DECODE($serialised_t; $picBlob_blob)
+							BLOB TO PICTURE($picBlob_blob; $varPtr->)
 					Else 
 						OTr_zError("Unknown variable type in stored value"; Current method name:C684)
 						OTr_zSetOK(0)

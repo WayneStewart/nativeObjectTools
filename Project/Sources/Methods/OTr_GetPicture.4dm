@@ -37,6 +37,8 @@
 
 // Created by Wayne Stewart, 2026-04-03
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-03 - Removed proxy string; Picture now
+//     retrieved natively via OB Get with Is picture.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_pic : Picture
@@ -49,7 +51,7 @@ OTr_zLock
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			$result_pic:=OTr_uTextToPicture(OB Get($parent_o; $leafKey_t; Is text))
+			$result_pic:=OB Get($parent_o; $leafKey_t; Is picture)
 		End if
 	End if
 Else

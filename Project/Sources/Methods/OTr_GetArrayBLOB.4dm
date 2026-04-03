@@ -20,6 +20,8 @@
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-03 - Branches on Storage.OTr.nativeBlobInObject;
+//     native retrieval used when True, else base64 decode.
 // ----------------------------------------------------
 
 #DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer)->$value_blob : Blob
@@ -38,7 +40,11 @@ If (OTr_zIsValidHandle($handle_i))
 			If ($arrayType_i=Blob array:K8:30)
 				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
 					If (OB Is defined:C1231($arrayObj_o; String:C10($index_i)))
-						$value_blob:=OTr_uTextToBlob($arrayObj_o[String:C10($index_i)])
+							If (Storage.OTr.nativeBlobInObject)
+								$value_blob:=$arrayObj_o[String:C10($index_i)]
+							Else
+								$value_blob:=OTr_uTextToBlob($arrayObj_o[String:C10($index_i)])
+							End if
 						OTr_zSetOK  // (1)
 					Else 
 						OTr_zSetOK  // (0)

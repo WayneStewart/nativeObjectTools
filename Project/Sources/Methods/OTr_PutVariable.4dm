@@ -60,6 +60,8 @@ var $type_i : Integer
 var $stored_t : Text
 var $unlocked_b : Boolean
 var $OK_i : Integer
+var $picBlob_blob : Blob
+var $picData_t : Text
 
 $unlocked_b:=False:C215
 
@@ -100,16 +102,12 @@ If (OTr_zIsValidHandle($inObject_i))
 			$stored_t:="var:pointer:"+OTr_uPointerToText($varPtr->)
 			
 		: ($type_i=Is BLOB:K8:12)
-			If (OB Is defined:C1231(<>OTR_Objects_ao{$inObject_i}; $inTag_t))
-				OTr_zReleaseBinaryRef(OB Get:C1224(<>OTR_Objects_ao{$inObject_i}; $inTag_t; Is text:K8:3))
-			End if 
 			$stored_t:="var:blob:"+OTr_uBlobToText($varPtr->)
 			
 		: ($type_i=Is picture:K8:10)
-			If (OB Is defined:C1231(<>OTR_Objects_ao{$inObject_i}; $inTag_t))
-				OTr_zReleaseBinaryRef(OB Get:C1224(<>OTR_Objects_ao{$inObject_i}; $inTag_t; Is text:K8:3))
-			End if 
-			$stored_t:="var:picture:"+OTr_uPictureToText($varPtr->)
+			PICTURE TO BLOB($varPtr->; $picBlob_blob; ".png")
+			BASE64 ENCODE($picBlob_blob; $picData_t; *)
+			$stored_t:="var:picture:"+$picData_t
 			
 		Else 
 			OTr_zError("Unsupported variable type"; Current method name:C684)

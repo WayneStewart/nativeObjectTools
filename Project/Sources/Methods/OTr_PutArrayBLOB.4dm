@@ -22,6 +22,8 @@
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-03 - Removed release call; branches on
+//     Storage.OTr.nativeBlobInObject for native or base64 storage.
 // ----------------------------------------------------
 
 #DECLARE($handle_i : Integer; $tag_t : Text; $index_i : Integer; $value_blob : Blob)
@@ -30,7 +32,6 @@ var $parent_o : Object
 var $arrayObj_o : Object
 var $leafKey_t : Text
 var $arrayType_i : Integer
-var $existingRef_t : Text
 
 OTr_zLock
 
@@ -42,10 +43,11 @@ If (OTr_zIsValidHandle($handle_i))
 			$arrayType_i:=OTr_zArrayType($arrayObj_o)
 			If ($arrayType_i=Blob array:K8:30)
 				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
-					// Release any existing blob slot before allocating a new one
-					$existingRef_t:=$arrayObj_o[String:C10($index_i)]
-					OTr_zReleaseBinaryRef($existingRef_t)
-					$arrayObj_o[String:C10($index_i)]:=OTr_uBlobToText($value_blob)
+						If (Storage.OTr.nativeBlobInObject)
+							$arrayObj_o[String:C10($index_i)]:=$value_blob
+						Else
+							$arrayObj_o[String:C10($index_i)]:=OTr_uBlobToText($value_blob)
+						End if
 					OTr_zSetOK  // (1)
 				Else 
 					OTr_zError("Index out of range"; Current method name:C684)
