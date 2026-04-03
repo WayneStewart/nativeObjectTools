@@ -2,10 +2,9 @@
 // ----------------------------------------------------
 // Project Method: OTr_uBlobToText ($theBlob_x : Blob) --> Text
 
-// Base64-encodes a BLOB to a Text string for inline storage
-// in an OTr Object property. Used only when
-// Storage.OTr.nativeBlobInObject is False (v19 or v19R1).
-// Returns empty text if the BLOB is empty.
+// Base64-encodes a BLOB to a Text string with a "blob:" prefix
+// for inline storage in an OTr Object property. Returns empty
+// text if the BLOB is empty.
 
 // Access: Private
 
@@ -24,5 +23,6 @@
 #DECLARE($theBlob_x : Blob)->$blobRef_t : Text
 
 If (BLOB SIZE($theBlob_x) > 0)
-	BASE64 ENCODE($theBlob_x; $blobRef_t; *)
-End if
+        var $b64_t : Text
+        BASE64 ENCODE($theBlob_x; $b64_t; *)
+        $blobRef_t := "blob:"+$b64_t

@@ -2,10 +2,8 @@
 // ----------------------------------------------------
 // Project Method: OTr_uTextToBlob ($encoded_t : Text) --> Blob
 
-// Decodes a base64-encoded Text string back to a BLOB.
-// Used only when Storage.OTr.nativeBlobInObject is False
-// (v19 or v19R1). Returns an empty BLOB if the input
-// text is empty.
+// Decodes a "blob:<base64>" Text string back to a BLOB.
+// Returns an empty BLOB if the input is empty.
 
 // Access: Private
 
@@ -23,6 +21,6 @@
 
 #DECLARE($encoded_t : Text)->$theBlob_x : Blob
 
-If (Length($encoded_t) > 0)
-	BASE64 DECODE($encoded_t; $theBlob_x)
+If (Length($encoded_t) > 5)
+        BASE64 DECODE(Substring($encoded_t; 6); $theBlob_x)
 End if
