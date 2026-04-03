@@ -26,7 +26,9 @@ If (Storage:C1525.OTr=Null:C1517)
 	
 	$ApplicationVersion_i:=Num:C11(Application version:C493)
 	Use (Storage:C1525)
-		Storage:C1525.OTr:=New shared object:C1526("structureName"; $name; "nativeBlobInObject"; ($ApplicationVersion_i>=1920))
+		Storage:C1525.OTr:=New shared object:C1526("structureName"; $name; \
+			"nativeBlobInObject"; ($ApplicationVersion_i>=1920); \
+			"mechanism"; OTR IP Arrays)
 	End use 
 End if 
 

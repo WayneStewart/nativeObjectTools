@@ -21,6 +21,7 @@
 
 #DECLARE($encoded_t : Text)->$theBlob_x : Blob
 
-If (Length($encoded_t) > 5)
-        BASE64 DECODE(Substring($encoded_t; 6); $theBlob_x)
-End if
+If (Length:C16($encoded_t)>0)
+	CONVERT FROM TEXT:C1011($encoded_t; "US-ASCII"; $theBlob_x)
+	BASE64 DECODE:C896($theBlob_x)
+End if 
