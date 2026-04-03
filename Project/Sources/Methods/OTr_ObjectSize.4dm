@@ -59,9 +59,9 @@ If (OTr_zIsValidHandle($handle_i))
 
 		$size_i:=$size_i+$externalSize_i
 
-	
-	
-	
+	End for each 
+
+
 Else 
 	OTr_zError("Invalid handle"; Current method name:C684)
 End if 
