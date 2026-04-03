@@ -4,8 +4,8 @@
 //   $tag_t : Text; $index_i : Integer; $value_blob : Blob)
 
 // Sets a single element of a Blob array item.
-// On v19R2+, the BLOB is stored natively in the object.
-// On earlier versions, it is Base64-encoded via OTr_uBlobToText.
+// The BLOB is stored as inline base64 text with a "blob:"
+// prefix via OTr_uBlobToText.
 
 // Access: Shared
 
@@ -40,11 +40,7 @@ If (OTr_zIsValidHandle($handle_i))
 			$arrayType_i:=OTr_zArrayType($arrayObj_o)
 			If ($arrayType_i=Blob array:K8:30)
 				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
-						If (Storage.OTr.nativeBlobInObject)
-							$arrayObj_o[String:C10($index_i)]:=$value_blob
-						Else
-							$arrayObj_o[String:C10($index_i)]:=OTr_uBlobToText($value_blob)
-						End if
+						$arrayObj_o[String:C10($index_i)]:=OTr_uBlobToText($value_blob)
 					OTr_zSetOK  // (1)
 				Else 
 					OTr_zError("Index out of range"; Current method name:C684)

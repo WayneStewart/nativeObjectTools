@@ -4,9 +4,9 @@
 //   $tag_t : Text; $index_i : Integer) -> $value_blob : Blob
 
 // Retrieves a single element from a Blob array item.
-// The stored "blob:N" reference is decoded via
-// OTr_uTextToBlob. Returns an empty BLOB on any
-// error or out-of-range index.
+// The element is expected to be inline base64 text with
+// a "blob:" prefix; decoded via OTr_uTextToBlob.
+// Returns an empty BLOB on any error or out-of-range index.
 
 // Access: Shared
 
@@ -40,11 +40,7 @@ If (OTr_zIsValidHandle($handle_i))
 			If ($arrayType_i=Blob array:K8:30)
 				If (($index_i>=0) & ($index_i<=$arrayObj_o.numElements))
 					If (OB Is defined:C1231($arrayObj_o; String:C10($index_i)))
-							If (Storage.OTr.nativeBlobInObject)
-								$value_blob:=$arrayObj_o[String:C10($index_i)]
-							Else
-								$value_blob:=OTr_uTextToBlob($arrayObj_o[String:C10($index_i)])
-							End if
+							$value_blob:=OTr_uTextToBlob($arrayObj_o[String:C10($index_i)])
 						OTr_zSetOK  // (1)
 					Else 
 						OTr_zSetOK  // (0)

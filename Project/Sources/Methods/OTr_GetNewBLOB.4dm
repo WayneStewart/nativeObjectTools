@@ -3,10 +3,10 @@
 // Project Method: OTr_GetNewBLOB (inObject; inTag) --> Blob
 
 // Retrieves a BLOB value from the specified tag path as
-// a function result. This is the recommended method for
-// retrieving BLOB items. The stored "blob:N" reference
-// is resolved via OTr_uTextToBlob. Returns an empty BLOB
-// on any error or missing tag.
+// a function result. The property is expected to be an
+// inline base64 text with a "blob:" prefix, decoded via
+// OTr_uTextToBlob. Returns an empty BLOB on any error or
+// missing tag.
 
 // **ORIGINAL DOCUMENTATION**
 // 
@@ -53,11 +53,7 @@ OTr_zLock
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			If (Storage.OTr.nativeBlobInObject)
-				$result_blob:=OB Get($parent_o; $leafKey_t; Is BLOB)
-			Else
-				$result_blob:=OTr_uTextToBlob(OB Get($parent_o; $leafKey_t; Is text))
-			End if
+			$result_blob:=OTr_uTextToBlob(OB Get($parent_o; $leafKey_t; Is text))
 		End if
 	End if
 Else

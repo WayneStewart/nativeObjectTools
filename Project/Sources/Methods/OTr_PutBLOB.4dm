@@ -2,9 +2,10 @@
 // ----------------------------------------------------
 // Project Method: OTr_PutBLOB (inObject; inTag; inValue)
 
-// Stores a BLOB value at the specified tag path.
-// On v19R2+, the BLOB is stored natively in the object.
-// On earlier versions, it is Base64-encoded via OTr_uBlobToText.
+// Stores a BLOB value at the specified tag path as an inline
+// base64 text property with a "blob:" prefix. This encoding
+// survives VARIABLE TO BLOB serialisation and is recognised
+// by OTr_zMapType.
 
 // **ORIGINAL DOCUMENTATION**
 // 
@@ -51,11 +52,7 @@ OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; ->$parent_o; ->$leafKey_t))
-		If (Storage.OTr.nativeBlobInObject)
-			OB SET($parent_o; $leafKey_t; $inValue_blob)
-		Else
-			OB SET($parent_o; $leafKey_t; OTr_uBlobToText($inValue_blob))
-		End if
+		OB SET($parent_o; $leafKey_t; OTr_uBlobToText($inValue_blob))
 	End if
 Else
 	OTr_zError("Invalid handle"; Current method name)
