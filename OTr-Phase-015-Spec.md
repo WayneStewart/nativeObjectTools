@@ -114,9 +114,36 @@ For each category below, store the same value via OT and OTr, retrieve it via bo
 
 ---
 
-## 6. Pass Criteria
+## 6. Output Format and Reporting
 
-- Every row in §5 not marked *intentional* must produce numerically or textually identical results from OT and OTr.
+### 6.1 Tabular Results
+
+The test method must accumulate results into a Text array and present them as a pipe-delimited table, one row per test category, with a header row:
+
+```
+| Test Name | OT Test | OT Result | OTr Test | OTr Result |
+| Creation / destruction | OT New / OT Clear | Pass | OTr_New / OTr_Clear | Pass |
+| String / Text | OT PutString / OT GetString | Pass | OTr_PutString / OTr_GetString | Pass |
+...
+```
+
+Each result cell must contain either `Pass` or `Fail: <brief reason>`. For rows marked as intentional differences (§4.3), the result cells should reflect the individual system's round-trip outcome, not a cross-system comparison.
+
+A summary line must follow the table:
+
+```
+Total: 28  Pass: 27  Fail: 1
+```
+
+### 6.2 File Output
+
+Upon completion, the method must write the full results table (header row, all data rows, and summary line) to a plain text file on the desktop. The filename must be a timestamp in the format `YYYY-MM-DD-HH-MM-SS.txt`, derived from the system time at the moment the method completes. Use `Current date` and `Current time` to construct the filename, and `Get 4D folder` with the Desktop folder constant to obtain the desktop path.
+
+Example filename: `2026-04-04-14-32-07.txt`
+
+### 6.3 Pass Criteria
+
+- Every row not marked *intentional* must show `Pass` in both the OT Result and OTr Result columns.
 - `OK` must equal `1` after every successful OTr call.
 - No unhandled 4D errors during the test run.
-- The method must complete and report a summary of pass / fail counts.
+- The results file must be present on the desktop on completion.
