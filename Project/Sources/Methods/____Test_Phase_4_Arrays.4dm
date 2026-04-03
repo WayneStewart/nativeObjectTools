@@ -332,7 +332,7 @@ $boolArr_ab{3}:=True:C214
 $boolArr_ab{4}:=False:C215
 OTr_PutArray($h_i; "flags"; ->$boolArr_ab)
 OTr_PutArrayBoolean($h_i; "flags"; 2; True:C214)
-If ((OTr_GetArrayBoolean($h_i; "flags"; 2)=True:C214) & (OTr_GetArrayBoolean($h_i; "flags"; 4)=False:C215))
+If ((OTr_GetArrayBoolean($h_i; "flags"; 2)=1) & (OTr_GetArrayBoolean($h_i; "flags"; 4)=0))
 	$passed_i:=$passed_i+1
 Else 
 	$failed_i:=$failed_i+1

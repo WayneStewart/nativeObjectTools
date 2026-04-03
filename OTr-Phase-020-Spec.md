@@ -76,6 +76,8 @@
 - [ ] Implement Phase 1.5 Load methods (`OTr_LoadFromText`, `OTr_LoadFromFile`, `OTr_LoadFromClipboard`) — blocked until Phase 5
 - [ ] Write test method `____Test_Phase_5` covering all complex type round-trips
 - [ ] Write test method `____Test_Phase_6` covering BLOB serialisation round-trips
+- [ ] Write test method `____Test_OT_Compatibility` covering side-by-side OT / OTr validation (see §5); register in `Test Methods` group in `folders.json`
+- [ ] Confirm side-by-side testing performed on a compatible platform (Windows or macOS prior to Tahoe 26.4 — see §5.1)
 
 ---
 
@@ -97,7 +99,84 @@
 
 ---
 
-## 5. Migration Guide Checklist
+## 5. Side-by-Side Compatibility Testing
+
+This section defines the procedure for validating OTr against the ObjectTools 5.0 plugin by running both APIs against identical test data within the same 4D session.
+
+### 5.1 Platform Requirement
+
+ObjectTools 5.0 is a compiled plugin that is **not compatible with macOS Tahoe (26.4) or later**. All side-by-side testing must be conducted on one of the following:
+
+- **Windows** (any supported version)
+- **macOS** running a release prior to macOS Tahoe 26.4
+
+> This constraint must be confirmed before beginning. Attempting to load the plugin on an incompatible OS will produce a load error and prevent the test database from opening.
+
+### 5.2 Setup
+
+- Install the ObjectTools 5.0 plugin into the project's `PlugIns` folder and verify it loads without error (check the 4D log and confirm `OT Register` returns a non-zero handle in a quick test).
+- The test method `____Test_OT_Compatibility` (see §5.4) should be registered in the `Test Methods` group in `Project/Sources/folders.json`.
+- Both OTr and OT must be exercised within the **same method call** so that test data is identical — do not compare across separate runs.
+
+### 5.3 Known Intentional Differences
+
+The following categories are expected to differ between OT and OTr and should **not** be treated as failures:
+
+| Category | Expected Difference |
+|---|---|
+| BLOB serialisation | `OT ObjectToBLOB` and `OTr_ObjectToBLOB` produce different binary formats. OTr uses `OTR1` magic bytes; OT uses its own legacy format. Cross-loading will fail by design. |
+| Record storage | OT stores a live reference (`rec:tableNum;recordNum`); OTr stores a field snapshot. Results from `OT GetRecord` and `OTr_GetRecord` will differ if the record has been modified between put and get. Test with an unmodified record to confirm snapshot fidelity. |
+| `OT GetBLOB` | OT writes to an output parameter; `OTr_GetBLOB` (deprecated stub) delegates to `OTr_GetNewBLOB` which returns the BLOB as a function result. The values should be identical; only the call signature differs. |
+| `OT ObjectSize` | OT reports in-memory plugin structure size; OTr approximates via JSON byte length. Values will not match numerically; both should be non-zero for a populated object. |
+| Export text format | `OT SaveToText` and `OTr_SaveToText` may produce structurally different output for objects containing BLOBs or Pictures, due to OTr's `OTr_uExpandBinaries` inline Base64 expansion. Round-trip fidelity within each system is the pass criterion. |
+
+### 5.4 Test Method: `____Test_OT_Compatibility`
+
+Create a new test method `____Test_OT_Compatibility` covering the categories below. For each category, store the same value via OT and OTr, retrieve it via both, and assert that the OTr-retrieved value matches the OT-retrieved value (except where noted as an intentional difference in §5.3).
+
+| Category | OT Command | OTr Method | Notes |
+|---|---|---|---|
+| Creation / destruction | `OT New` / `OT Clear` | `OTr_New` / `OTr_Clear` | Confirm handle allocation; OT and OTr handles are independent integers |
+| String / Text | `OT PutString` / `OT GetString` | `OTr_PutString` / `OTr_GetString` | |
+| Longint | `OT PutLong` / `OT GetLong` | `OTr_PutLong` / `OTr_GetLong` | |
+| Real | `OT PutReal` / `OT GetReal` | `OTr_PutReal` / `OTr_GetReal` | |
+| Boolean | `OT PutBoolean` / `OT GetBoolean` | `OTr_PutBoolean` / `OTr_GetBoolean` | OTr returns Integer (0/1); compare as Integer |
+| Date | `OT PutDate` / `OT GetDate` | `OTr_PutDate` / `OTr_GetDate` | |
+| Time | `OT PutTime` / `OT GetTime` | `OTr_PutTime` / `OTr_GetTime` | |
+| Pointer | `OT PutPointer` / `OT GetPointer` | `OTr_PutPointer` / `OTr_GetPointer` | Dereference both and compare the pointed-to value |
+| Picture | `OT PutPicture` / `OT GetPicture` | `OTr_PutPicture` / `OTr_GetPicture` | Compare byte-for-byte or via checksum |
+| BLOB | `OT PutBLOB` / `OT GetNewBLOB` | `OTr_PutBLOB` / `OTr_GetNewBLOB` | |
+| Variable | `OT PutVariable` / `OT GetVariable` | `OTr_PutVariable` / `OTr_GetVariable` | |
+| Record | `OT PutRecord` / `OT GetRecord` | `OTr_PutRecord` / `OTr_GetRecord` | See §5.3 — retrieve immediately without modification; compare field values individually |
+| Dot-path | `OT PutString` with dotted tag | `OTr_PutString` with dotted tag | Multi-level path; retrieve each level |
+| Array Longint | `OT PutArrayLong` / `OT GetArrayLong` | `OTr_PutArrayLong` / `OTr_GetArrayLong` | Compare element-by-element; confirm 1-based index parity |
+| Array Text | `OT PutArrayString` / `OT GetArrayString` | `OTr_PutArrayString` / `OTr_GetArrayString` | |
+| Array Real | `OT PutArrayReal` / `OT GetArrayReal` | `OTr_PutArrayReal` / `OTr_GetArrayReal` | |
+| Array Boolean | `OT PutArrayBoolean` / `OT GetArrayBoolean` | `OTr_PutArrayBoolean` / `OTr_GetArrayBoolean` | |
+| Array Pointer | `OT PutArrayPointer` / `OT GetArrayPointer` | `OTr_PutArrayPointer` / `OTr_GetArrayPointer` | Dereference each element |
+| Array Picture | `OT PutArrayPicture` / `OT GetArrayPicture` | `OTr_PutArrayPicture` / `OTr_GetArrayPicture` | |
+| Item info | `OT ItemExists` / `OT ItemType` | `OTr_ItemExists` / `OTr_ItemType` | Confirm type constants match OT legacy values |
+| Item count | `OT ItemCount` | `OTr_ItemCount` | |
+| Property enumeration | `OT GetAllProperties` | `OTr_GetAllProperties` | Compare name arrays; order may differ |
+| Delete / rename | `OT DeleteItem` / `OT RenameItem` | `OTr_DeleteItem` / `OTr_RenameItem` | Confirm item absent / renamed in both |
+| Copy | `OT CopyItem` | `OTr_CopyItem` | Retrieve copied value from destination tag |
+| Size of array | `OT SizeOfArray` | `OTr_SizeOfArray` | |
+| Sort arrays | `OT SortArrays` | `OTr_SortArrays` | Compare sorted order |
+| BLOB serialisation | `OT ObjectToBLOB` / `OT BLOBToObject` | `OTr_ObjectToBLOB` / `OTr_BLOBToObject` | Round-trip within each system independently; do not cross-load (§5.3) |
+| Text export/import | `OT SaveToText` / `OT LoadFromText` | `OTr_SaveToText` / `OTr_LoadFromText` | Round-trip within each system; compare retrieved values post-load |
+| Version | `OT GetVersion` | `OTr_GetVersion` | Values will differ; confirm both return non-empty, non-zero results |
+| Options | `OT GetOptions` / `OT SetOptions` | `OTr_GetOptions` / `OTr_SetOptions` | Confirm `FailOnItemNotFound` and `AutoCreateObjects` behave identically |
+
+### 5.5 Pass Criteria
+
+- Every row in §5.4 that is not listed as an intentional difference in §5.3 must produce numerically or textually identical results from OT and OTr.
+- `OK` must equal `1` after every successful OTr call.
+- No unhandled 4D errors during the test run.
+- The method must complete and report a summary of pass / fail counts.
+
+---
+
+## 6. Migration Guide Checklist
 
 *Items a caller must address when migrating from ObjectTools 5.0 to OTr.*
 
