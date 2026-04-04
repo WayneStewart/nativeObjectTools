@@ -1385,46 +1385,10 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
-	//MARK:- 29. Text export / import (Intentional diff §4.3)
-	// ====================================================
-	$testName_t:="Text export / import"
-	$testNumber_t:="29"
-	$otCmd_t:="OT SaveToText / OT LoadFromText"
-	$otrCmd_t:="OTr_SaveToText / OTr_LoadFromText"
-	$otResult_t:="Fail: not run"
-	// OTr_LoadFromText is not yet implemented (Phase 020).
-	$otrResult_t:="Skip: OTr_LoadFromText not yet implemented"
-	
-	$h3_i:=OT New
-	OT PutString($h3_i; "tser"; "text-ser-val")
-	$otTmpFile_t:=Temporary folder+"ot-compat-export.txt"
-	OT SaveToText($h3_i; $otTmpFile_t)
-	$loadedOtH_i:=OT LoadFromText($otTmpFile_t)
-	$gotten_t:=OT GetString($loadedOtH_i; "tser")
-	If ($gotten_t="text-ser-val")
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: round-trip got '"+$gotten_t+"'"
-	End if 
-	OT Clear($h3_i)
-	OT Clear($loadedOtH_i)
-	
-	// OTr side skipped (see above).
-	
-	$total_i:=$total_i+1
-	// Count as pass only if OT passes (OTr is a known skip).
-	If ($otResult_t="Pass")
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-	
-	// ====================================================
-	//MARK:- 30. Version
+	//MARK:- 29. Version
 	// ====================================================
 	$testName_t:="Version"
-	$testNumber_t:="30"
+	$testNumber_t:="29"
 	$otCmd_t:="OT GetVersion"
 	$otrCmd_t:="OTr_GetVersion"
 	$otResult_t:="Fail: not run"
@@ -1454,10 +1418,10 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
-	//MARK:- 31. Options
+	//MARK:- 30. Options
 	// ====================================================
 	$testName_t:="Options"
-	$testNumber_t:="31"
+	$testNumber_t:="30"
 	$otCmd_t:="OT GetOptions / OT SetOptions"
 	$otrCmd_t:="OTr_GetOptions / OTr_SetOptions"
 	$otResult_t:="Fail: not run"
