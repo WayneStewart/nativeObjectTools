@@ -844,13 +844,13 @@ If ($ready_b)
 	Else 
 		$otResult_t:="Fail: OK=0"
 	End if 
-	
-	$ptrTarget_t:="arr-ptr-val"
-	OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->$ptrTarget_t)
+	var myPtrTarget_t : Text
+	myPtrTarget_t:="arr-ptr-val"
+	OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->myPtrTarget_t)
 	$gotPtr_ptr:=OTr_GetArrayPointer($otrMain_i; "aptr"; 1)
 	If (OK=1)
 		If ($gotPtr_ptr#Null:C1517)
-			If ($gotPtr_ptr->="arr-ptr-val")
+			If (($gotPtr_ptr->)=myPtrTarget_t)
 				$otrResult_t:="Pass"
 			Else 
 				$otrResult_t:="Fail: value mismatch"
@@ -882,7 +882,7 @@ If ($ready_b)
 	// Intentional difference: OT re-encodes array pictures
 	// internally; exact equality cannot be assumed. Test checks
 	// that a non-empty picture is returned (round-trip succeeds).
-	ARRAY PICTURE:C68($setupApic_apic; 1)
+	ARRAY PICTURE:C279($setupApic_apic; 1)
 	OT PutArray($otMain_i; "apic"; $setupApic_apic)
 	OTr_PutArray($otrMain_i; "apic"; ->$setupApic_apic)
 	
