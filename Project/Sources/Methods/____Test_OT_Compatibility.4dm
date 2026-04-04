@@ -150,8 +150,7 @@ If ($ready_b)
 	$otMain_i:=OT New
 	$otrMain_i:=OTr_New
 	
-	APPEND TO ARRAY:C911($rows_at; "| Test Name | OT Test | OT Result | OTr Test | OTr Result |")
-	APPEND TO ARRAY:C911($rows_at; "|---|---|---|---|---|")
+	// APPEND TO ARRAY($rows_at; "|---|---|---|---|---|")
 	
 	READ PICTURE FILE:C678(Get 4D folder:C485(Current resources folder:K5:16)+"images"+Folder separator:K24:12+"Wombat.png"; $testPic_pic)
 	// 1x1 black PNG (shared by picture tests)
@@ -196,6 +195,9 @@ If ($ready_b)
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
+	
+	APPEND TO ARRAY:C911($rows_at; $TAB+"Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$CR)  // Header line
+	
 	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
