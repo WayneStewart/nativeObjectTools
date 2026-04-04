@@ -106,7 +106,28 @@ If (False:C215)
 	
 	C_LONGINT:C283(OTr_SaveToClipboard; $1)
 	C_BOOLEAN:C305(OTr_SaveToClipboard; $2)
-	
+
+	C_LONGINT:C283(OTr_SaveToBlob; $1)
+	C_BLOB:C604(OTr_SaveToBlob; $0)
+
+	C_LONGINT:C283(OTr_SaveToGZIP; $1)
+	C_BOOLEAN:C305(OTr_SaveToGZIP; $2)
+	C_BLOB:C604(OTr_SaveToGZIP; $0)
+
+	C_TEXT:C284(OTr_LoadFromText; $1)
+	C_LONGINT:C283(OTr_LoadFromText; $0)
+
+	C_LONGINT:C283(OTr_LoadFromClipboard; $0)
+
+	C_TEXT:C284(OTr_LoadFromFile; $1)
+	C_LONGINT:C283(OTr_LoadFromFile; $0)
+
+	C_BLOB:C604(OTr_LoadFromBlob; $1)
+	C_LONGINT:C283(OTr_LoadFromBlob; $0)
+
+	C_BLOB:C604(OTr_LoadFromGZIP; $1)
+	C_LONGINT:C283(OTr_LoadFromGZIP; $0)
+
 	C_LONGINT:C283(OTr_SetOptions; $1)
 	
 	C_LONGINT:C283(OTr_Copy; $0)
