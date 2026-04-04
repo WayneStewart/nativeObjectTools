@@ -18,6 +18,8 @@
 // Wayne Stewart, 2026-04-01 - Updated OB Keys usage for collection return.
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Guy Algot, 2026-04-03 - Zoom session. Changed optional param init
+//   to Choose pattern. Added :Cxxx command codes throughout.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 

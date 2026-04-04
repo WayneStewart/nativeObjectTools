@@ -19,6 +19,7 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-04 - Added OTr_zSetOK(1) on success.
 // ----------------------------------------------------
 
 #DECLARE($inSourceObject_i : Integer; $inSourceTag_t : Text; \
@@ -81,10 +82,7 @@ If (OTr_zIsValidHandle($inSourceObject_i)\
 							OB SET:C1220($destParent_o; $destLeafKey_t; \
 								OB Get:C1224($srcParent_o; $srcLeafKey_t; Is picture:K8:10))
 				End case 
-				
-			Else 
-				OTr_zError("Cannot resolve destination: "+$inDestTag_t; \
-					Current method name:C684)
+				OTr_zSetOK(1)
 			End if 
 			
 		Else 

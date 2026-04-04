@@ -47,6 +47,9 @@
 
 // Created by Wayne Stewart, 2026-04-03
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Guy Algot, 2026-04-03 - Zoom session. Fixed Get last field number
+//   call: removed erroneous -> dereference (it takes a pointer, not
+//   the table value). Added :Cxxx command codes throughout.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 

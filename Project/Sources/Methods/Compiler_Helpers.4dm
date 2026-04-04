@@ -34,4 +34,13 @@ If (False:C215)
 	
 	C_TEXT:C284(Fnd_FCS_WriteDocumentation; $1)
 	C_BOOLEAN:C305(Fnd_FCS_WriteDocumentation; ${2})
+	
+	ARRAY TEXT:C222($rows_at; 0)
+	ARRAY TEXT:C222($otrPropNames_at; 0)
+	ARRAY TEXT:C222(otPropNames_at; 0)
+	ARRAY LONGINT:C221($otrLongArr_ai; 0)
+	ARRAY LONGINT:C221(otLongArr_ai; 0)
+	
+	
+	
 End if 

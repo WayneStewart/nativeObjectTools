@@ -19,6 +19,7 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-04 - Added OTr_zSetOK(1) on success.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inNewTag_t : Text)
@@ -115,6 +116,7 @@ If (OTr_zIsValidHandle($inObject_i))
 				End case
 
 				OB REMOVE($parentObj_o; $leafKey_t)
+				OTr_zSetOK(1)
 
 			End if
 

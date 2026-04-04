@@ -18,6 +18,7 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-04 - Added OTr_zSetOK(1) on success.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer)->$size_i : Integer
@@ -60,7 +61,7 @@ If (OTr_zIsValidHandle($inObject_i))
 		$size_i:=$size_i+$externalSize_i
 
 	End for each 
-
+	OTr_zSetOK(1)
 
 Else 
 	OTr_zError("Invalid handle"; Current method name:C684)
