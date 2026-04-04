@@ -165,14 +165,14 @@
 	"Test Methods": {
 		"methods": [
 			"____Test_InsertDelete",
-			"____Test_OT_Compatibility",
 			"____Test_Phase_1",
 			"____Test_Phase_1_5",
 			"____Test_Phase_2",
 			"____Test_Phase_3",
 			"____Test_Phase_4_Arrays",
 			"____Test_Phase_5",
-			"____Test_Phase_6"
+			"____Test_Phase_6",
+			"____Test_Phase_15
 		]
 	},
 	"trash": {

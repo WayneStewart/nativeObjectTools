@@ -147,3 +147,70 @@ Example filename: `2026-04-04-14-32-07.txt`
 - `OK` must equal `1` after every successful OTr call.
 - No unhandled 4D errors during the test run.
 - The results file must be present on the desktop on completion.
+
+---
+
+## 7. Implementation Addendum — Test Execution Notes (2026-04-05)
+
+This section records all compromises, test adjustments, and compatibility issues discovered during the first full test run against ObjectTools 5.1r1 on macOS Apple Silicon (via Windows VM). Final result: **30/30 Pass**.
+
+### 7.1 Method Renamed
+
+The test method was initially created as `____Test_OT_Compatibility` and subsequently renamed to `____Test_Phase_15` to align with the naming convention of all other phase test methods.
+
+### 7.2 OTr Methods Missing `OTr_zSetOK(1)` on Success
+
+Six OTr methods were missing a call to `OTr_zSetOK(1)` on their success code path, causing `OK` to remain at its pre-call value (often `0` from a prior failing call). This produced cascading failures in tests that checked `OK=1`. The affected methods and their symptom:
+
+| Method | Symptom in test |
+|---|---|
+| `OTr_ItemType` | §20 OTr side `Fail: ItemExists=1 ItemType=112` — values correct but `OK=0` |
+| `OTr_GetString` | §24 (Copy) OTr side `Fail: got 'copy-val'` — value correct but `OK=0` |
+| `OTr_CopyItem` | §24 (Copy) OTr side failure |
+| `OTr_DeleteItem` | §23 (Delete/rename) OTr side failure |
+| `OTr_RenameItem` | §23 (Delete/rename) OTr side failure |
+| `OTr_ObjectSize` | §27 OTr side `Fail: returned 0 or OK=0` |
+
+Fix: added `OTr_zSetOK(1)` to the success path in each method.
+
+### 7.3 Array Items Must Be Pre-Declared
+
+`OT PutArrayLong`, `OT PutArrayString`, etc. require the array item to already exist in the object before an element can be written. The same applies to their OTr equivalents. Writing an element to a tag that has not yet been registered as an array item silently fails (returns `OK=0`, element reads back as zero/empty).
+
+Fix: each array test (§14–17, §18, §19, §25–26) now pre-declares the array with a call to `OT PutArray` / `OTr_PutArray` before writing any elements, passing a suitably typed 4D array.
+
+### 7.4 `OT SortArrays` — `ARRAY INTEGER` vs `ARRAY LONGINT`
+
+`OTr_SortArrays` uses an interprocess index array `<>OTR_SortIdx_ai` declared as `ARRAY LONGINT` in `Compiler_OTrSortInterprocess`. An initial version of the method used `ARRAY INTEGER` when resizing this array at runtime, causing a type mismatch compiler error. Fixed by changing the resize call to `ARRAY LONGINT`.
+
+### 7.5 Array Picture — Byte Equality Not Possible
+
+The original §19 test compared the retrieved picture byte-for-byte using `OTr_uEqualPictures`. This failed because ObjectTools re-encodes pictures at array-element storage time into its own internal format, so the retrieved bytes do not match the original. The OTr side also converts via Base64 serialisation, yielding a slightly different in-memory representation.
+
+Compromise: the test was relaxed to verify only that `Picture size > 0` after round-trip (i.e. a non-empty picture was returned), which confirms the storage and retrieval cycle completed successfully. This is documented as an intentional difference.
+
+### 7.6 Pointer and Array Pointer — Local Variable Limitation
+
+Both `OTr_GetPointer` and `OTr_GetArrayPointer` reconstruct pointers via `Get pointer(variableName)`, where the variable name was serialised by `OTr_uPointerToText` using `RESOLVE POINTER`. `Get pointer` resolves names in the calling method's local scope — which is `OTr_uTextToPointer` itself, not the original caller. As a result, pointers to local `$` variables cannot be reliably round-tripped: the pointer is returned non-null but points to an unrelated variable.
+
+**§8 (Pointer):** test already limited to `OK=1` check only; dereference skipped (noted in the method header by Guy Algot during the Zoom session).
+
+**§18 (Array Pointer):** initially also limited to `OK=1 + non-null`. Subsequently fixed in the test by using a **process variable** (no `$` prefix) as the pointer target. `Get pointer` can resolve process variable names correctly, so the full dereference check was restored and passes.
+
+This is a known limitation of the OTr pointer serialisation design. It is documented in the headers of `OTr_PutPointer`, `OTr_GetPointer`, `OTr_PutArrayPointer`, and `OTr_GetArrayPointer`.
+
+### 7.7 `OT GetArrayPicture` Call Form
+
+The §4.1 table lists `OT GetArrayPicture` as a method that cannot be implemented in OTr due to the output-parameter constraint. However, the ObjectTools plugin exposes `OT GetArrayPicture` as a **function** (returning Picture as a result), not as a statement with an output parameter. The test was corrected to call it in function form: `$pic := OT GetArrayPicture(handle; tag; index)`. The OTr equivalent `OTr_GetArrayPicture` was already implemented as a function. The §4.1 table entry should be removed in a future spec revision.
+
+### 7.8 `ARRAY PICTURE` Command Code Error
+
+During test development, an incorrect `:C68` command code was appended to `ARRAY PICTURE`, causing 4D to tokenise the call as `CREATE RECORD` instead. This was caught at runtime. The rule for this project is: **never write `:Cxxx` codes** — write plain English command names and let 4D tokenise automatically.
+
+### 7.9 File Location Change
+
+The output file path changed from the Desktop to `Data/Logs/` (a timestamped `.txt` file). The `.gitignore` already excludes `**/Logs`, so test output files are not tracked.
+
+### 7.10 VM / Git File-Locking Issue
+
+Initial development used a Windows VM mounting the project folder from the macOS host via a network share. When 4D was running in the VM, it held file locks that caused host-side edits to be silently overwritten on the next VM save. This was resolved by switching the VM to access the project via Git (pull/push), eliminating the shared-folder locking issue.
