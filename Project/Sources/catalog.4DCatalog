@@ -5,11 +5,13 @@
 	<table name="Table_1" uuid="95ADF9CAC34347798DE537CDB1557AF0" id="1">
 		<field name="ID" uuid="CB65148FA25B48C6A168D97285F7D9EF" type="4" unique="true" autosequence="true" not_null="true" id="1"/>
 		<field name="Name" uuid="0BD85CE468E44F6CB966C9DBA30E8E04" type="10" limiting_length="255" never_null="true" id="2"/>
+		<field name="ANumber" uuid="8686DC442E514A1599B5FE19AFDB51FC" type="4" never_null="true" id="3"/>
+		<field name="AnotherNumber" uuid="E89009D084B6498CBC722BCEA1F88083" type="6" never_null="true" id="4"/>
 		<primary_key field_name="ID" field_uuid="CB65148FA25B48C6A168D97285F7D9EF"/>
 		<table_extra>
-			<editor_table_info displayable_fields_count="6">
+			<editor_table_info displayable_fields_count="10">
 				<color red="255" green="255" blue="255" alpha="0"/>
-				<coordinates left="61.3203125" top="54.4140625" width="120" height="167.33203125"/>
+				<coordinates left="115.0703125" top="81.19921875" width="264.3359375" height="255.53125"/>
 			</editor_table_info>
 		</table_extra>
 	</table>
@@ -18,7 +20,7 @@
 			<table_ref uuid="95ADF9CAC34347798DE537CDB1557AF0" name="Table_1"/>
 		</field_ref>
 	</index>
-	<base_extra __stringCompHash="icu:68.1.0" __keywordBuildingHash="icu:68.1.0">
+	<base_extra>
 		<journal_file journal_file_enabled="true"/>
 	</base_extra>
 </base>

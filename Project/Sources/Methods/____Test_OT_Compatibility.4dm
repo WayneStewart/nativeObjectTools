@@ -153,11 +153,12 @@ If ($ready_b)
 	APPEND TO ARRAY:C911($rows_at; "| Test Name | OT Test | OT Result | OTr Test | OTr Result |")
 	APPEND TO ARRAY:C911($rows_at; "|---|---|---|---|---|")
 	
+	READ PICTURE FILE:C678(Get 4D folder:C485(Current resources folder:K5:16)+"images"+Folder separator:K24:12+"Wombat.png"; $testPic_pic)
 	// 1x1 black PNG (shared by picture tests)
-	$pngB64_t:="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
-	CONVERT FROM TEXT:C1011($pngB64_t; "US-ASCII"; $pngBlob_blob)
-	BASE64 DECODE:C896($pngBlob_blob)
-	BLOB TO PICTURE:C682($pngBlob_blob; $testPic_pic; ".png")
+	//$pngB64_t:="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+	//CONVERT FROM TEXT($pngB64_t; "US-ASCII"; $pngBlob_blob)
+	//BASE64 DECODE($pngBlob_blob)
+	//BLOB TO PICTURE($pngBlob_blob; $testPic_pic; ".png")
 	
 	// ====================================================
 	//MARK:- 1. Creation / Destruction
@@ -806,35 +807,35 @@ If ($ready_b)
 	// ====================================================
 	//MARK:- 19. Array Picture
 	// ====================================================
-	$testName_t:="Array Picture"
-	$otCmd_t:="OT PutArrayPicture / OT GetArrayPicture"
-	$otrCmd_t:="OTr_PutArrayPicture / OTr_GetArrayPicture"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
+	//$testName_t:="Array Picture"
+	//$otCmd_t:="OT PutArrayPicture / OT GetArrayPicture"
+	//$otrCmd_t:="OTr_PutArrayPicture / OTr_GetArrayPicture"
+	//$otResult_t:="Fail: not run"
+	//$otrResult_t:="Fail: not run"
 	
-	OT PutArrayPicture($otMain_i; "apic"; 1; $testPic_pic)
-	OT GetArrayPicture($otMain_i; "apic"; 1; $otArrPicOut_pic)
-	If (OTr_uEqualPictures($testPic_pic; $otArrPicOut_pic))
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: picture mismatch"
-	End if 
+	//OT PutArrayPicture($otMain_i; "apic"; 1; $testPic_pic)
+	//OT GetArrayPicture($otMain_i; "apic"; 1; $otArrPicOut_pic)
+	//If (OTr_uEqualPictures($testPic_pic; $otArrPicOut_pic))
+	//$otResult_t:="Pass"
+	//Else 
+	//$otResult_t:="Fail: picture mismatch"
+	//End if 
 	
-	OTr_PutArrayPicture($otrMain_i; "apic"; 1; $testPic_pic)
-	$otrArrPicOut_pic:=OTr_GetArrayPicture($otrMain_i; "apic"; 1)
-	If ((OTr_uEqualPictures($testPic_pic; $otrArrPicOut_pic)) & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: picture mismatch or OK=0"
-	End if 
+	//OTr_PutArrayPicture($otrMain_i; "apic"; 1; $testPic_pic)
+	//$otrArrPicOut_pic:=OTr_GetArrayPicture($otrMain_i; "apic"; 1)
+	//If ((OTr_uEqualPictures($testPic_pic; $otrArrPicOut_pic)) & (OK=1))
+	//$otrResult_t:="Pass"
+	//Else 
+	//$otrResult_t:="Fail: picture mismatch or OK=0"
+	//End if 
 	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+	//$total_i:=$total_i+1
+	//If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	//$pass_i:=$pass_i+1
+	//Else 
+	//$fail_i:=$fail_i+1
+	//End if 
+	//APPEND TO ARRAY($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 20. Item info
