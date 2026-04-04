@@ -13,5 +13,3 @@
 //SET TEXT TO PASTEBOARD($json)
 
 //OTr_GetArrayReal
-$vL_Err:=OT Register("20C9-EMQv-BJBl-D20M")  // v5.1r1  ` Modified by: Guy Algot (09/07/23)
-

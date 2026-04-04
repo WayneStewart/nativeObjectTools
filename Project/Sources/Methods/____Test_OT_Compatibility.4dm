@@ -24,6 +24,33 @@
 
 // Created by Wayne Stewart, 2026-04-04
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+//
+// Guy Algot, 2026-04-03 - Happy Hour Zoom session.
+//   Fixed OT availability check (>=0 → =0; original always aborted).
+//   Replaced pipe-delimited row output with TAB/CR-separated format.
+//   Fixed §1 handle comparisons >0 → #0. Removed spurious second
+//   OT New call. §8 OTr side reduced to OK=1 check only (known
+//   OTr_GetPointer output-param issue). Commented out §18 (Array
+//   Pointer), §19 (Array Picture), §29 (Text export/import).
+//   Removed & (OK=1) from §21 and §22 — OT plugin does not set OK.
+// Wayne Stewart, 2026-04-04 - Follow-up. Rewrote §12 (Record) to
+//   use table pointer + SAVE RECORD. §8 OT side restructured to
+//   use $ptrVar/$ptrVarOut. Picture init changed to READ PICTURE
+//   FILE (Wombat.png). Time separator ":" → "-". SHOW ON DISK added.
+// Wayne Stewart, 2026-04-04 - Fixed cascading OK=0 failures caused
+//   by missing OTr_zSetOK(1) on success paths in: OTr_ItemType,
+//   OTr_GetString, OTr_CopyItem, OTr_ObjectSize, OTr_DeleteItem,
+//   OTr_RenameItem. Expected result after fix: §20, §23, §24, §27
+//   now pass (Pass count rises from 18 to 22).
+//   KNOWN REMAINING ISSUES:
+//   - §14-17 (Array scalar) and §25-26 (SizeOfArray, SortArrays):
+//     both OT and OTr fail — arrays must be declared before writing
+//     elements; OTr_DeclareArray not yet implemented (Phase TBD).
+//   - Dynamic pointer issue (IDs by user): OTr_GetPointer cannot
+//     return a pointer via ->outParam when called with a direct
+//     expression; pre-storing in a variable first works. This affects
+//     OTr_GetPointer and OTr_GetArrayPointer only; all other tests
+//     are unaffected.
 // ----------------------------------------------------
 
 var $ready_b : Boolean
@@ -308,7 +335,7 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
 	
-	OT PutBoolean($otMain_i; "flag"; True:C214)
+	OT PutBoolean($otMain_i; "flag"; Num:C11(True:C214))
 	$gotBool_i:=OT GetBoolean($otMain_i; "flag")
 	If ($gotBool_i=1)
 		$otResult_t:="Pass"
@@ -410,7 +437,7 @@ If ($ready_b)
 	$otrResult_t:="Fail: not run"
 	$otPtrTarget_t:="ot-ptr-val"
 	$ptrTarget_t:="otr-ptr-val"
-	
+	var $ptrVar : Pointer
 	$ptrVar:=->$otPtrTarget_t
 	var $ptrVarOut : Pointer
 	
@@ -563,6 +590,7 @@ If ($ready_b)
 	[Table_1:1]Name:2:="Wayne"
 	SAVE RECORD:C53([Table_1:1])
 	
+	var $tablePtr : Pointer
 	$tablePtr:=->[Table_1:1]
 	OT PutRecord($otMain_i; "rec"; $tablePtr)
 	
@@ -637,6 +665,11 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
 	
+	// Declare a 3-element LongInt array first (size 3: §25 reuses indices 1-3)
+	ARRAY LONGINT:C221($setupAl_ai; 3)
+	OT PutArray($otMain_i; "al"; $setupAl_ai)
+	OTr_PutArray($otrMain_i; "al"; ->$setupAl_ai)
+	
 	// Store element at index 1, retrieve and compare
 	OT PutArrayLong($otMain_i; "al"; 1; 100)
 	$otArrVal_i:=OT GetArrayLong($otMain_i; "al"; 1)
@@ -671,6 +704,10 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
 	
+	ARRAY TEXT:C222($setupAs_at; 1)
+	OT PutArray($otMain_i; "as"; $setupAs_at)
+	OTr_PutArray($otrMain_i; "as"; ->$setupAs_at)
+	
 	OT PutArrayString($otMain_i; "as"; 1; "arr-str-val")
 	$otArrStr_t:=OT GetArrayString($otMain_i; "as"; 1)
 	If ($otArrStr_t="arr-str-val")
@@ -703,6 +740,10 @@ If ($ready_b)
 	$otrCmd_t:="OTr_PutArrayReal / OTr_GetArrayReal"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
+	
+	ARRAY REAL:C219($setupAr_arr; 1)
+	OT PutArray($otMain_i; "ar"; $setupAr_arr)
+	OTr_PutArray($otrMain_i; "ar"; ->$setupAr_arr)
 	
 	OT PutArrayReal($otMain_i; "ar"; 1; 9.99)
 	$otArrReal_r:=OT GetArrayReal($otMain_i; "ar"; 1)
@@ -737,7 +778,11 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
 	
-	OT PutArrayBoolean($otMain_i; "ab"; 1; True:C214)
+	ARRAY BOOLEAN:C223($setupAb_ab; 1)
+	OT PutArray($otMain_i; "ab"; $setupAb_ab)
+	OTr_PutArray($otrMain_i; "ab"; ->$setupAb_ab)
+	
+	OT PutArrayBoolean($otMain_i; "ab"; 1; Num:C11(True:C214))
 	$otArrBool_i:=OT GetArrayBoolean($otMain_i; "ab"; 1)
 	If ($otArrBool_i=1)
 		$otResult_t:="Pass"
@@ -768,76 +813,91 @@ If ($ready_b)
 	// Modified by: Guy Algot (4/3/26)
 	// skipped for now
 	
-	//$testName_t:="Array Pointer"
-	//$otCmd_t:="OT PutArrayPointer / OT GetArrayPointer"
-	//$otrCmd_t:="OTr_PutArrayPointer / OTr_GetArrayPointer"
-	//$otResult_t:="Fail: not run"
-	//$otrResult_t:="Fail: not run"
+	$testName_t:="Array Pointer"
+	$otCmd_t:="OT PutArrayPointer / OT GetArrayPointer"
+	$otrCmd_t:="OTr_PutArrayPointer / OTr_GetArrayPointer"
+	$otResult_t:="Fail: not run"
+	$otrResult_t:="Fail: not run"
 	
-	//ARRAY POINTER($otPtrTarget_p; 1)
-	//$otPtrTarget_t{1}:=
-	//$otPtrTarget_p:=->$otPtrTarget_at
+	var $otPtrTarget_t : Text
+	$otPtrTarget_t:="arr-ptr-val"
+	var $otArrPtrOut_ptr : Pointer
 	
-	//ARRAY TEXT($otPtrTargetOut_at; 0)
-	//var $otArrPtrOut_ptr : Pointer
+	//wombat 
 	
-	//OT PutArrayPointer($otMain_i; "aptr"; 1; $otPtrTarget_t)
-	//OT GetArrayPointer($otMain_i; "aptr"; 1; $otArrPtrOut_ptr)
-	//If ((OK=1) & ($otArrPtrOut_ptr#Null) & (Size of array()) & ($otArrPtrOut_ptr->="arr-ptr-val"))
-	//$otResult_t:="Pass"
-	//Else 
-	//$otResult_t:="Fail: dereference mismatch or OK=0"
-	//End if 
+	OT PutArrayPointer($otMain_i; "aptr"; 1; ->$otPtrTarget_t)
+	OT GetArrayPointer($otMain_i; "aptr"; 1; $otArrPtrOut_ptr)
+	If (OK=1)
+		If ($otArrPtrOut_ptr#Null:C1517)
+			If ($otArrPtrOut_ptr->="arr-ptr-val")
+				$otResult_t:="Pass"
+			Else 
+				$otResult_t:="Fail: value mismatch"
+			End if 
+		Else 
+			$otResult_t:="Fail: Null pointer"
+		End if 
+	Else 
+		$otResult_t:="Fail: OK=0"
+	End if 
 	
-	//$ptrTarget_t:="arr-ptr-val"
-	//OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->$ptrTarget_t)
-	//$gotPtr_ptr:=OTr_GetArrayPointer($otrMain_i; "aptr"; 1)
-	//If ((OK=1) & ($gotPtr_ptr#Null) & ($gotPtr_ptr->="arr-ptr-val"))
-	//$otrResult_t:="Pass"
-	//Else 
-	//$otrResult_t:="Fail: dereference mismatch or OK=0"
-	//End if 
+	$ptrTarget_t:="arr-ptr-val"
+	OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->$ptrTarget_t)
+	$gotPtr_ptr:=OTr_GetArrayPointer($otrMain_i; "aptr"; 1)
+	If (OK=1)
+		If ($gotPtr_ptr#Null:C1517)
+			If ($gotPtr_ptr->="arr-ptr-val")
+				$otrResult_t:="Pass"
+			Else 
+				$otrResult_t:="Fail: value mismatch"
+			End if 
+		Else 
+			$otrResult_t:="Fail: Null pointer"
+		End if 
+	Else 
+		$otrResult_t:="Fail: OK=0"
+	End if 
 	
-	//$total_i:=$total_i+1
-	//If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-	//$pass_i:=$pass_i+1
-	//Else 
-	//$fail_i:=$fail_i+1
-	//End if 
-	//APPEND TO ARRAY($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+	$total_i:=$total_i+1
+	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+		$pass_i:=$pass_i+1
+	Else 
+		$fail_i:=$fail_i+1
+	End if 
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 19. Array Picture
 	// ====================================================
-	//$testName_t:="Array Picture"
-	//$otCmd_t:="OT PutArrayPicture / OT GetArrayPicture"
-	//$otrCmd_t:="OTr_PutArrayPicture / OTr_GetArrayPicture"
-	//$otResult_t:="Fail: not run"
-	//$otrResult_t:="Fail: not run"
+	$testName_t:="Array Picture"
+	$otCmd_t:="OT PutArrayPicture / OT GetArrayPicture"
+	$otrCmd_t:="OTr_PutArrayPicture / OTr_GetArrayPicture"
+	$otResult_t:="Fail: not run"
+	$otrResult_t:="Fail: not run"
 	
-	//OT PutArrayPicture($otMain_i; "apic"; 1; $testPic_pic)
-	//OT GetArrayPicture($otMain_i; "apic"; 1; $otArrPicOut_pic)
-	//If (OTr_uEqualPictures($testPic_pic; $otArrPicOut_pic))
-	//$otResult_t:="Pass"
-	//Else 
-	//$otResult_t:="Fail: picture mismatch"
-	//End if 
+	OT PutArrayPicture($otMain_i; "apic"; 1; $testPic_pic)
+	$otArrPicOut_pic:=OT GetArrayPicture($otMain_i; "apic"; 1)
+	If (OTr_uEqualPictures($testPic_pic; $otArrPicOut_pic))
+		$otResult_t:="Pass"
+	Else 
+		$otResult_t:="Fail: picture mismatch"
+	End if 
 	
-	//OTr_PutArrayPicture($otrMain_i; "apic"; 1; $testPic_pic)
-	//$otrArrPicOut_pic:=OTr_GetArrayPicture($otrMain_i; "apic"; 1)
-	//If ((OTr_uEqualPictures($testPic_pic; $otrArrPicOut_pic)) & (OK=1))
-	//$otrResult_t:="Pass"
-	//Else 
-	//$otrResult_t:="Fail: picture mismatch or OK=0"
-	//End if 
+	OTr_PutArrayPicture($otrMain_i; "apic"; 1; $testPic_pic)
+	$otrArrPicOut_pic:=OTr_GetArrayPicture($otrMain_i; "apic"; 1)
+	If ((OTr_uEqualPictures($testPic_pic; $otrArrPicOut_pic)) & (OK=1))
+		$otrResult_t:="Pass"
+	Else 
+		$otrResult_t:="Fail: picture mismatch or OK=0"
+	End if 
 	
-	//$total_i:=$total_i+1
-	//If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-	//$pass_i:=$pass_i+1
-	//Else 
-	//$fail_i:=$fail_i+1
-	//End if 
-	//APPEND TO ARRAY($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+	$total_i:=$total_i+1
+	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+		$pass_i:=$pass_i+1
+	Else 
+		$fail_i:=$fail_i+1
+	End if 
+	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
 	
 	// ====================================================
 	//MARK:- 20. Item info
@@ -1096,6 +1156,10 @@ If ($ready_b)
 	// ascending; first element should be 10.
 	$h3_i:=OT New
 	$h4_i:=OTr_New
+	ARRAY LONGINT:C221($setupSort_ai; 3)
+	OT PutArray($h3_i; "sort"; $setupSort_ai)
+	OTr_PutArray($h4_i; "sort"; ->$setupSort_ai)
+	
 	OT PutArrayLong($h3_i; "sort"; 1; 30)
 	OT PutArrayLong($h3_i; "sort"; 2; 10)
 	OT PutArrayLong($h3_i; "sort"; 3; 20)
@@ -1344,7 +1408,8 @@ If ($ready_b)
 	$timeStr_t:=Replace string:C233($timeStr_t; ":"; "-")
 	$fileName_t:=$dateStr_t+"-"+$timeStr_t+".txt"
 	
-	$desktopPath_t:=System folder:C487(Desktop:K41:16)
+	
+	$desktopPath_t:=Get 4D folder:C485(Logs folder:K5:19)
 	$filePath_t:=$desktopPath_t+$fileName_t
 	
 	TEXT TO DOCUMENT:C1237($filePath_t; $tableText_t; "UTF-8")

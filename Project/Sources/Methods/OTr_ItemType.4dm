@@ -19,6 +19,8 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-04 - Added OTr_zSetOK(1) on success; was
+//   missing, causing cascading OK=0 in subsequent tests.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$otType_i : Integer
@@ -36,6 +38,7 @@ If (OTr_zIsValidHandle($inObject_i))
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
 			$otType_i:=OTr_zMapType($parent_o; $leafKey_t)
+			OTr_zSetOK(1)
 		Else
 			OTr_zError("Item not found: "+$inTag_t; Current method name)
 		End if
