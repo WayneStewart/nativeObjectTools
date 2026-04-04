@@ -172,13 +172,13 @@ End if
 // Last slot is always the tracked index array.
 // ------------------------------------------------
 If ($continue_b)
-	ARRAY INTEGER:C220(<>OTR_SortIdx_ai; $n_i)
+	ARRAY LONGINT:C221(<>OTR_SortIdx_ai; $n_i)
 	For ($j_i; 1; $n_i)
 		<>OTR_SortIdx_ai{$j_i}:=$j_i
 	End for 
 	
 	ARRAY POINTER:C280($ptrs_ap; $keyCount_i+1)
-	ARRAY INTEGER:C220($sortOrd_ai; $keyCount_i+1)
+	ARRAY LONGINT:C221($sortOrd_ai; $keyCount_i+1)
 	$ptrIdx_i:=0
 	
 	For ($slot_i; 1; $pairCount_i)
