@@ -8,6 +8,9 @@
 // Note: Pointer values are process-local. A pointer stored
 // from one process may not resolve correctly in another.
 
+// **VERY IMPORTANT NOTE**
+// This command must *NOT* be used with pointeers to local variables.
+
 // Access: Shared
 
 // Parameters:

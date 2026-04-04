@@ -7,6 +7,9 @@
 // deserialised via OTr_uTextToPointer. Returns a Null
 // pointer on any error or missing tag.
 
+// **VERY IMPORTANT NOTE**
+// This command must *NOT* be used with pointeers to local variables.
+
 // **ORIGINAL DOCUMENTATION**
 // 
 // *OT GetPointer* retrieves a Pointer value from *inObject*.

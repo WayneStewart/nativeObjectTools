@@ -6,6 +6,9 @@
 // The pointer is serialised to text via OTr_uPointerToText
 // and stored as the object property value.
 
+// **VERY IMPORTANT NOTE**
+// This command must *NOT* be used with pointeers to local variables.
+
 // **ORIGINAL DOCUMENTATION**
 // 
 // *OT PutPointer* puts *inValue* into *inObject*.
