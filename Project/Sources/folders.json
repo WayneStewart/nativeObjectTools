@@ -1,16 +1,16 @@
 {
-	"(Default Classes)": {},
-	"(Default Folder)": {
+	"((Default Classes))": {},
+	"((Default Folder))": {
 		"groups": [
-			"(Default Classes)",
-			"(Default Forms)",
-			"(Default Project Methods)",
-			"(Default Tables)"
+			"((Default Classes))",
+			"((Default Forms))",
+			"((Default Project Methods))",
+			"((Default Tables))"
 		]
 	},
-	"(Default Forms)": {},
-	"(Default Project Methods)": {},
-	"(Default Tables)": {},
+	"((Default Forms))": {},
+	"((Default Project Methods))": {},
+	"((Default Tables))": {},
 	"Constants": {
 		"methods": [
 			"_DEL_OTr_CreateConstants",
@@ -144,6 +144,22 @@
 			"OTr_zUnlock"
 		]
 	},
+	"OT Testing": {
+		"tables": [
+			"Table_1"
+		],
+		"methods": [
+			"____Test_InsertDelete",
+			"____Test_Phase_1",
+			"____Test_Phase_1_5",
+			"____Test_Phase_15",
+			"____Test_Phase_2",
+			"____Test_Phase_3",
+			"____Test_Phase_4_Arrays",
+			"____Test_Phase_5",
+			"____Test_Phase_6"
+		]
+	},
 	"OT Utility Methods": {
 		"methods": [
 			"OTr_uBlobToText",
@@ -162,22 +178,9 @@
 			"OTr_uTimeToText"
 		]
 	},
-	"Test Methods": {
-		"methods": [
-			"____Test_InsertDelete",
-			"____Test_Phase_1",
-			"____Test_Phase_1_5",
-			"____Test_Phase_2",
-			"____Test_Phase_3",
-			"____Test_Phase_4_Arrays",
-			"____Test_Phase_5",
-			"____Test_Phase_6",
-			"____Test_Phase_15
-		]
-	},
 	"trash": {
 		"groups": [
-			"(Default Folder)"
+			"((Default Folder))"
 		]
 	}
 }
