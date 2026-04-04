@@ -515,8 +515,44 @@ APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB
 // ====================================================
 $testName_t:="Picture (wombat)"
 $testNumber_t:="9a"
+$otCmd_t:="OT PutPicture / OT GetPicture"
+$otrCmd_t:="OTr_PutPicture / OTr_GetPicture"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
 
-// Isert test here
+// Strict byte equality with non-empty Wombat picture.
+// OT may re-encode non-empty pictures on round-trip;
+// OT failing is expected (intentional). OTr stores
+// natively and must pass byte equality.
+If (Picture size($wombat_pic)=0)
+	$otResult_t:="Skip: Wombat picture not loaded"
+	$otrResult_t:="Skip: Wombat picture not loaded"
+Else 
+	OT PutPicture($otMain_i; "pic9a"; $wombat_pic)
+	$gotPic_pic:=OT GetPicture($otMain_i; "pic9a")
+	If (OTr_uEqualPictures($wombat_pic; $gotPic_pic))
+		$otResult_t:="Pass"
+	Else 
+		$otResult_t:="Fail: picture mismatch (intentional - OT re-encodes)"
+	End if 
+	
+	OTr_PutPicture($otrMain_i; "pic9a"; $wombat_pic)
+	$gotPic_pic:=OTr_GetPicture($otrMain_i; "pic9a")
+	If ((OTr_uEqualPictures($wombat_pic; $gotPic_pic)) & (OK=1))
+		$otrResult_t:="Pass"
+	Else 
+		$otrResult_t:="Fail: picture mismatch or OK=0"
+	End if 
+End if 
+
+$total_i:=$total_i+1
+// OT failure is expected (intentional difference); count as pass if OTr passes
+If ($otrResult_t="Pass")
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 
 // ====================================================
@@ -934,8 +970,45 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	// ====================================================
 	$testName_t:="Array Picture (wombat)"
 	$testNumber_t:="19a"
+	$otCmd_t:="OT PutArrayPicture / OT GetArrayPicture"
+	$otrCmd_t:="OTr_PutArrayPicture / OTr_GetArrayPicture"
+	$otResult_t:="Fail: not run"
+	$otrResult_t:="Fail: not run"
 	
-	// Insert test here
+	// Strict byte equality with non-empty Wombat picture.
+	// OT re-encodes array pictures internally so retrieved
+	// bytes differ from the original; OT failing is an
+	// intentional/expected result. OTr stores natively
+	// and must pass byte equality.
+	If (Picture size($wombat_pic)=0)
+		$otResult_t:="Skip: Wombat picture not loaded"
+		$otrResult_t:="Skip: Wombat picture not loaded"
+	Else 
+		OT PutArrayPicture($otMain_i; "apic"; 1; $wombat_pic)
+		$otArrPicOut_pic:=OT GetArrayPicture($otMain_i; "apic"; 1)
+		If (OTr_uEqualPictures($wombat_pic; $otArrPicOut_pic))
+			$otResult_t:="Pass (unexpected)"
+		Else 
+			$otResult_t:="Fail: picture mismatch (intentional - OT re-encodes)"
+		End if 
+		
+		OTr_PutArrayPicture($otrMain_i; "apic"; 1; $wombat_pic)
+		$otrArrPicOut_pic:=OTr_GetArrayPicture($otrMain_i; "apic"; 1)
+		If ((OTr_uEqualPictures($wombat_pic; $otrArrPicOut_pic)) & (OK=1))
+			$otrResult_t:="Pass"
+		Else 
+			$otrResult_t:="Fail: picture mismatch or OK=0"
+		End if 
+	End if 
+	
+	$total_i:=$total_i+1
+	// OT failure is expected (intentional difference); count as pass if OTr passes
+	If ($otrResult_t="Pass")
+		$pass_i:=$pass_i+1
+	Else 
+		$fail_i:=$fail_i+1
+	End if 
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
 	//MARK:- 20. Item info
