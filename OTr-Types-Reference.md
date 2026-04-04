@@ -22,7 +22,7 @@ The **Suffix** column gives the variable name suffix convention used in OTr meth
 | `Is alpha field` | 0 | `_t` | Map to text |
 | `Is real` | 1 | `_r` | |
 | `Is text` | 2 | `_t` | |
-| `Is picture` | 3 | `_pic` | Stored via `pic:N` reference in OTr |
+| `Is picture` | 3 | `_pic` | Stored natively as an Object property in OTr (4D v16R4+) |
 | `Is date` | 4 | `_d` | Stored as `YYYY-MM-DD` text in OTr |
 | `Is undefined` | 5 | | |
 | `Is Boolean` | 6 | `_b` | |
@@ -44,7 +44,7 @@ The **Suffix** column gives the variable name suffix convention used in OTr meth
 | `Is pointer` | 23 | `_ptr` | Stored via `ptr:` serialisation in OTr |
 | `Is string var` | 24 | `_t` | Map to text |
 | `Is integer 64 bits` | 25 | | `<do not use>` |
-| `Is BLOB` | 30 | `_blob` | Stored via `blob:N` reference in OTr |
+| `Is BLOB` | 30 | `_blob` | Stored natively on v19R2+; base64 Text via `OTr_uBlobToText` on v19/v19R1 |
 | `Blob array` | 31 | `_ablob` | |
 | `Time array` | 32 | `_ah` | |
 | `_o_Is float` | 35 | | `<do not use>` |
@@ -64,13 +64,13 @@ See §7 of the parent specification for the full bidirectional mapping table.
 | OT Constant | OT Value | Maps To (4D) | OTr Storage Convention |
 |---|---|---|---|
 | `OT Real` | 1 | `Is real` (1) | Direct |
-| `OT Picture` | 3 | `Is picture` (3) | `pic:N` reference |
+| `OT Picture` | 3 | `Is picture` (3) | Native Object property |
 | `OT Date` | 4 | `Is date` (4) | `YYYY-MM-DD` text |
 | `OT Longint` | 5 | `Is longint` (9) | Direct |
 | `OT Boolean` | 6 | `Is Boolean` (6) | Direct |
 | `OT Time` | 11 | `Is time` (11) | `HH:MM:SS` text |
 | `OT Pointer` | 23 | `Is pointer` (23) | `ptr:` text |
-| `OT BLOB` | 30 | `Is BLOB` (30) | `blob:N` reference |
+| `OT BLOB` | 30 | `Is BLOB` (30) | Native on v19R2+; base64 Text on v19/v19R1 |
 | `OT Character` | 112 | `Is text` (2) | Direct |
 | `OT Array Character` | 113 | `Is collection` (42) | Collection of text |
 | `OT Object` | 114 | `Is object` (38) | Embedded 4D Object |

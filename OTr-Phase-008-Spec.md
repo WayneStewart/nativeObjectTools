@@ -63,8 +63,7 @@ These constants are internal to the component. They are not part of the public A
 **Signature:**
 
 ```4d
-#DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; \
-    $inArrayType_i : Integer; $inMode_i : Integer; $io_ArrayElement_ptr : Pointer)
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inArrayType_i : Integer; $inMode_i : Integer; $io_ArrayElement_ptr : Pointer)
 ```
 
 **Parameters:**
@@ -114,6 +113,7 @@ These constants are internal to the component. They are not part of the public A
 //   $io_ArrayElement_ptr : Pointer : Value pointer — out for Get, in for Put
 
 // Returns: Nothing. Sets OK to 0 on any failure.
+
 
 // Created by Wayne Stewart, 2026-04-04
 // ----------------------------------------------------

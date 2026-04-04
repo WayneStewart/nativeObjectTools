@@ -9,16 +9,14 @@
 
 ## Overview
 
-Phase 5 implements the **Pointer**, **BLOB**, **Picture**, **Record**, and **Variable** put/get routines from the legacy ObjectTools 5.0 plugin. These commands handle types that cannot be stored directly as native 4D Object properties and therefore require serialisation, parallel array storage, or both.
-
-Phase 5 also introduces two utility methods — `OTr_uExpandBinaries` and `OTr_uCollapseBinaries` — that support the JSON export/import pipeline by converting between the runtime `blob:N`/`pic:N` reference format and a self-contained Base64 representation suitable for serialisation to text, file, or clipboard.
+Phase 5 implements the **Pointer**, **BLOB**, **Picture**, **Record**, and **Variable** put/get routines from the legacy ObjectTools 5.0 plugin. These commands handle types that require serialisation for storage as 4D Object properties.
 
 Phase 5 depends upon:
-- Phase 1: handle registry (`<>OTR_Objects_ao`, `<>OTR_InUse_ab`), parallel binary arrays (`<>OTR_Blobs_ablob`, `<>OTR_BlobInUse_ab`, `<>OTR_Pictures_apic`, `<>OTR_PicInUse_ab`), locking (`OTr_zLock`/`OTr_zUnlock`), error handling (`OTr_zError`, `OTr_zSetOK`), handle validation (`OTr_zIsValidHandle`)
+- Phase 1: handle registry (`<>OTR_Objects_ao`, `<>OTR_InUse_ab`), locking (`OTr_zLock`/`OTr_zUnlock`), error handling (`OTr_zError`, `OTr_zSetOK`), handle validation (`OTr_zIsValidHandle`)
 - Phase 2: path resolution (`OTr_zResolvePath`)
-- Phase 4 utility methods: `OTr_uPointerToText`, `OTr_uTextToPointer`, `OTr_uBlobToText`, `OTr_uTextToBlob`, `OTr_uPictureToText`, `OTr_uTextToPicture`, `OTr_uDateToText`, `OTr_uTextToDate`, `OTr_uTimeToText`, `OTr_uTextToTime`
+- Phase 4 utility methods: `OTr_uPointerToText`, `OTr_uTextToPointer`, `OTr_uBlobToText`, `OTr_uTextToBlob`, `OTr_uDateToText`, `OTr_uTextToDate`, `OTr_uTimeToText`, `OTr_uTextToTime`
 
-The cleanup helper `OTr_zReleaseBinaryRef` (Phase 1) is used by all Put methods that may overwrite an existing binary reference.
+Note: `OTr_uPictureToText` and `OTr_uTextToPicture` are not dependencies — Pictures are stored natively in 4D Objects (v16R4+) and require no serialisation. `OTr_zReleaseBinaryRef` is not required — native Object properties are released automatically when overwritten or when the object slot is cleared.
 
 ---
 
@@ -29,19 +27,12 @@ The types addressed in Phase 5 each require a distinct storage strategy, as 4D O
 | OT Type | Runtime Storage | Example Value | Notes |
 |---|---|---|---|
 | Pointer | Text | `"myVar;-1;0"` | Via `RESOLVE POINTER` — no prefix |
-| BLOB | Text | `"blob:33"` | Index into `<>OTR_Blobs_ablob` |
-| Picture | Text | `"pic:27"` | Index into `<>OTR_Pictures_apic` |
+| BLOB | BLOB (or Text base64) | — | Native on v19R2+; base64 Text via `OTr_uBlobToText` on v19/v19R1 |
+| Picture | Picture | — | Stored natively as an Object property (4D v16R4+) |
 | Record | Object | `{__tableNum:3, LastName:"Stewart", ...}` | Sub-object snapshot; all fields serialised by name |
 | Variable | Text | `"var:text:Wayne"` | `var:typeName:serialisedValue` |
 
-**Export storage** — when an object is exported to JSON (via `OTr_SaveToText`, `OTr_SaveToFile`, `OTr_SaveToClipboard`), `blob:N` and `pic:N` references are not meaningful outside the running process. `OTr_uExpandBinaries` replaces them with self-contained Base64 strings before serialisation. The format used is:
-
-| Runtime Reference | Exported Form | Example |
-|---|---|---|
-| `"blob:N"` | `"b64blob:<base64data>"` | `"b64blob:SGVsbG8="` |
-| `"pic:N"` | `"b64pic:.png:<base64data>"` | `"b64pic:.png:iVBOR..."` |
-
-The picture export includes the codec in the prefix (`b64pic:<codec>:<base64data>`) so the import is fully self-describing. The default codec is `".png"`. `OTr_uCollapseBinaries` is the inverse operation, used during JSON import.
+**Export storage** — BLOB and Picture values stored natively in the Object are preserved inline by the JSON serialiser used in the Phase 6 export methods (`OTr_ObjectToBLOB`, `OTr_SaveToText`, etc.). No expansion or contraction step is required.
 
 ---
 
@@ -62,9 +53,6 @@ The picture export includes the codec in the prefix (`b64pic:<codec>:<base64data
 **Variable Routines:**
 `OTr_PutVariable`, `OTr_GetVariable`
 
-**Utility Methods:**
-`OTr_uExpandBinaries`, `OTr_uCollapseBinaries`
-
 ---
 
 ## Type Constants
@@ -79,9 +67,6 @@ Every new method created in this phase must be added to the appropriate group in
 
 **`OT API Methods`** (public, `"shared":true`):
 `OTr_PutPointer`, `OTr_GetPointer`, `OTr_PutBLOB`, `OTr_GetBLOB`, `OTr_GetNewBLOB`, `OTr_PutPicture`, `OTr_GetPicture`, `OTr_PutRecord`, `OTr_GetRecord`, `OTr_GetRecordTable`, `OTr_PutVariable`, `OTr_GetVariable`
-
-**`OT Utility Methods`** (`OTr_u*`, `"shared":false`):
-`OTr_uExpandBinaries`, `OTr_uCollapseBinaries`
 
 **`Test Methods`**:
 `____Test_Phase_5`
@@ -112,11 +97,13 @@ All Phase 5 public methods follow the patterns established in Phases 1–4. The 
 
 **Handle validation:** Always the first operation inside the lock: `If (OTr_zIsValidHandle($handle_i))`. If invalid, call `OTr_zError("Invalid handle"; Current method name)` and `OTr_zSetOK(0)`, then fall through to the unlock.
 
-**Existing binary reference cleanup:** Before overwriting a property that may already hold a `blob:N` or `pic:N` reference, read the existing value and pass it to `OTr_zReleaseBinaryRef($existingRef_t)`. This releases the parallel array slot before the new one is allocated. `OTr_zReleaseBinaryRef` silently ignores values that are not binary references.
+**Binary storage — BLOB write path:** Check `Storage.OTr.nativeBlobInObject`. If `True` (v19R2+), store via `OB SET($parent_o; $leafKey_t; $value_blob)`. If `False` (v19/v19R1), encode via `OTr_uBlobToText($value_blob)` and store the resulting Text. Overwriting an existing property requires no explicit cleanup — `OB SET` replaces the previous value and native memory management handles the release.
 
-**Binary storage — write path:** Call `OTr_uBlobToText($value_blob)` or `OTr_uPictureToText($value_pic)` to allocate a slot in the parallel array and obtain the reference string. Store the reference string via `OTr_zResolvePath` + `OB SET`.
+**Binary storage — BLOB read path:** Check `Storage.OTr.nativeBlobInObject`. If `True`, retrieve via `OB Get($parent_o; $leafKey_t; Is BLOB)`. If `False`, retrieve the Text property and decode via `OTr_uTextToBlob($base64_t)`.
 
-**Binary storage — read path:** Read the text property, pass it directly to `OTr_uTextToBlob($ref_t)` or `OTr_uTextToPicture($ref_t)`. These methods validate the reference and return an empty value if the reference is malformed or the slot is not in use.
+**Binary storage — Picture write path:** Store directly via `OB SET($parent_o; $leafKey_t; $value_pic)`. No conversion or slot management required.
+
+**Binary storage — Picture read path:** Retrieve directly via `OB Get($parent_o; $leafKey_t; Is picture)`.
 
 ---
 
@@ -236,7 +223,7 @@ OTr_zUnlock
 
 ## BLOB Routines
 
-BLOB values cannot be stored directly as 4D Object properties. OTr stores BLOBs in the parallel interprocess array `<>OTR_Blobs_ablob` and records a `blob:N` reference string as the object property value (see §3.7 of the parent specification). Slot allocation and retrieval are fully encapsulated in `OTr_uBlobToText` and `OTr_uTextToBlob`.
+BLOB values are stored natively as Object properties on 4D v19R2 or later. On v19 and v19R1, BLOBs are base64-encoded as Text via `OTr_uBlobToText`. The correct path is selected at runtime using the `Storage.OTr.nativeBlobInObject` flag set during initialisation. See §3.7 of the parent specification.
 
 ---
 
@@ -262,7 +249,7 @@ If `$handle_i` is not a valid object handle, an error is generated and `OK` is s
 
 If no item in the object has the given tag, a new item is created.
 
-If an item with the given tag exists and has the type *Is BLOB*, its value is replaced. The previous BLOB data in the parallel array is released and a new slot is allocated.
+If an item with the given tag exists and has the type *Is BLOB*, its value is replaced. No explicit cleanup of the previous value is required — `OB SET` releases it automatically.
 
 If an item with the given tag exists and has any other type, an error is generated and `OK` is set to zero if the `VariantItems` option is not set, otherwise the existing item is deleted and a new item is created.
 
@@ -273,11 +260,11 @@ OTr_zLock
 
 If (OTr_zIsValidHandle($handle_i))
     If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; True; ->$parent_o; ->$leafKey_t))
-        // Release any existing binary slot before allocating a new one
-        If (OB Is defined($parent_o; $leafKey_t))
-            OTr_zReleaseBinaryRef(OB Get($parent_o; $leafKey_t; Is text))
+        If (Storage.OTr.nativeBlobInObject)
+            OB SET($parent_o; $leafKey_t; $value_blob)
+        Else
+            OB SET($parent_o; $leafKey_t; OTr_uBlobToText($value_blob))
         End if
-        OB SET($parent_o; $leafKey_t; OTr_uBlobToText($value_blob))
     End if
 Else
     OTr_zError("Invalid handle"; Current method name)
@@ -287,7 +274,7 @@ End if
 OTr_zUnlock
 ```
 
-`OTr_uBlobToText` handles slot scanning, reuse of released slots, array growth, and returns the `"blob:N"` reference string. `OTr_zReleaseBinaryRef` silently ignores the existing value if it is not a `blob:` or `pic:` reference (e.g., if `VariantItems` is on and the tag previously held a non-binary value). All parallel array operations are performed within the lock.
+On v19R2 or later (`Storage.OTr.nativeBlobInObject` = `True`), the BLOB is stored natively via `OB SET`. On v19/v19R1, `OTr_uBlobToText` base64-encodes the BLOB to Text for storage.
 
 #### See Also
 
@@ -331,7 +318,11 @@ OTr_zLock
 If (OTr_zIsValidHandle($handle_i))
     If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False; ->$parent_o; ->$leafKey_t))
         If (OB Is defined($parent_o; $leafKey_t))
-            $outBLOB:=OTr_uTextToBlob(OB Get($parent_o; $leafKey_t; Is text))
+            If (Storage.OTr.nativeBlobInObject)
+                $outBLOB:=OB Get($parent_o; $leafKey_t; Is BLOB)
+            Else
+                $outBLOB:=OTr_uTextToBlob(OB Get($parent_o; $leafKey_t; Is text))
+            End if
         End if
     End if
 Else
@@ -342,7 +333,7 @@ End if
 OTr_zUnlock
 ```
 
-`OTr_uTextToBlob` validates the `blob:N` prefix, checks bounds and in-use flag, and returns an empty BLOB if the reference is invalid. The crash risk described in the legacy warning is substantially mitigated in the native OTr implementation, but the warning is preserved for documentation fidelity.
+The crash risk described in the legacy warning is substantially mitigated in the native OTr implementation, but the warning is preserved for documentation fidelity. Delegates to the same branched logic as `OTr_GetNewBLOB`.
 
 #### See Also
 
@@ -388,7 +379,7 @@ Functionally identical to `OTr_GetBLOB` except that the BLOB is returned as the 
 
 ## Picture Routines
 
-Picture values cannot be stored directly as 4D Object properties. OTr stores Pictures in the parallel interprocess array `<>OTR_Pictures_apic` and records a `pic:N` reference string as the object property value (see §3.7 of the parent specification). Slot allocation and retrieval are fully encapsulated in `OTr_uPictureToText` and `OTr_uTextToPicture`.
+Picture values are stored directly as native 4D Object properties using `OB SET` with the `Is picture` type (supported since 4D v16R4). No serialisation, parallel arrays, or reference strings are required. See §3.7 of the parent specification.
 
 ---
 
@@ -414,7 +405,7 @@ If `$handle_i` is not a valid object handle, an error is generated and `OK` is s
 
 If no item in the object has the given tag, a new item is created.
 
-If an item with the given tag exists and has the type *Is Picture*, its value is replaced. The previous picture data in the parallel array is released and a new slot is allocated.
+If an item with the given tag exists and has the type *Is Picture*, its value is replaced. No explicit cleanup is required — `OB SET` releases the previous value automatically.
 
 If an item with the given tag exists and has any other type, an error is generated and `OK` is set to zero if the `VariantItems` option is not set, otherwise the existing item is deleted and a new item is created.
 
@@ -425,11 +416,7 @@ OTr_zLock
 
 If (OTr_zIsValidHandle($handle_i))
     If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; True; ->$parent_o; ->$leafKey_t))
-        // Release any existing binary slot before allocating a new one
-        If (OB Is defined($parent_o; $leafKey_t))
-            OTr_zReleaseBinaryRef(OB Get($parent_o; $leafKey_t; Is text))
-        End if
-        OB SET($parent_o; $leafKey_t; OTr_uPictureToText($value_pic))
+        OB SET($parent_o; $leafKey_t; $value_pic)
     End if
 Else
     OTr_zError("Invalid handle"; Current method name)
@@ -439,7 +426,7 @@ End if
 OTr_zUnlock
 ```
 
-Mirrors `OTr_PutBLOB` exactly, using `OTr_uPictureToText` and `<>OTR_Pictures_apic` / `<>OTR_PicInUse_ab` in place of their BLOB equivalents.
+Pictures are stored natively as Object properties on all supported 4D versions. No version gate or utility method is required.
 
 #### See Also
 
@@ -481,7 +468,7 @@ OTr_zLock
 If (OTr_zIsValidHandle($handle_i))
     If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; $tag_t; False; ->$parent_o; ->$leafKey_t))
         If (OB Is defined($parent_o; $leafKey_t))
-            $result_pic:=OTr_uTextToPicture(OB Get($parent_o; $leafKey_t; Is text))
+            $result_pic:=OB Get($parent_o; $leafKey_t; Is picture)
         End if
     End if
 Else
@@ -492,7 +479,7 @@ End if
 OTr_zUnlock
 ```
 
-`OTr_uTextToPicture` validates the `pic:N` prefix, checks bounds and in-use flag, and returns an empty Picture if the reference is invalid.
+Pictures are retrieved natively via `OB Get` with the `Is picture` type specifier. If the property is not a Picture, `OB Get` returns an empty Picture.
 
 #### See Also
 
@@ -787,16 +774,15 @@ If (OTr_zIsValidHandle($handle_i))
         : ($type_i=Is pointer)
             $stored_t:="var:pointer:"+OTr_uPointerToText($varPtr->)
         : ($type_i=Is BLOB)
-            // Release any existing binary ref, then allocate new slot
-            If (OB Is defined(<>OTR_Objects_ao{$handle_i}; $tag_t))
-                OTr_zReleaseBinaryRef(OB Get(<>OTR_Objects_ao{$handle_i}; $tag_t; Is text))
-            End if
-            $stored_t:="var:blob:"+OTr_uBlobToText($varPtr->)
+            // BLOB variable: delegate to OTr_PutBLOB (handles version gate internally)
+            OTr_zUnlock
+            OTr_PutBLOB($handle_i; $tag_t; $varPtr->)
+            $unlocked_b:=True
         : ($type_i=Is picture)
-            If (OB Is defined(<>OTR_Objects_ao{$handle_i}; $tag_t))
-                OTr_zReleaseBinaryRef(OB Get(<>OTR_Objects_ao{$handle_i}; $tag_t; Is text))
-            End if
-            $stored_t:="var:picture:"+OTr_uPictureToText($varPtr->)
+            // Picture variable: delegate to OTr_PutPicture (native OB SET)
+            OTr_zUnlock
+            OTr_PutPicture($handle_i; $tag_t; $varPtr->)
+            $unlocked_b:=True
         Else
             OTr_zError("Unsupported variable type"; Current method name)
             OTr_zSetOK(0)
@@ -817,7 +803,7 @@ If (Not($unlocked_b))
 End if
 ```
 
-Array variables bypass the `var:` encoding entirely and are delegated to `OTr_PutArray`. For BLOB and Picture variables, the embedded value within the `var:` string is itself a `blob:N` or `pic:N` reference (e.g., `"var:blob:blob:33"`), so `OTr_uExpandBinaries` will correctly expand these during export. `OTr_zSetOK` is called with no parameter (getter form) to check whether a prior error in the Case of branch should suppress the write.
+Array variables bypass the `var:` encoding entirely and are delegated to `OTr_PutArray`. BLOB and Picture variables are similarly delegated to `OTr_PutBLOB` and `OTr_PutPicture` respectively, which apply native storage (with the appropriate version gate for BLOBs). `OTr_zSetOK` is called with no parameter (getter form) to check whether a prior error in the Case of branch should suppress the write.
 
 #### See Also
 
@@ -885,9 +871,15 @@ If (OTr_zIsValidHandle($handle_i))
                     : ($typeName_t="pointer")
                         $varPtr->:=OTr_uTextToPointer($serialised_t)
                     : ($typeName_t="blob")
-                        $varPtr->:=OTr_uTextToBlob($serialised_t)
+                        // BLOB variable was stored via OTr_PutBLOB — delegate to OTr_GetNewBLOB
+                        OTr_zUnlock
+                        $varPtr->:=OTr_GetNewBLOB($handle_i; $tag_t)
+                        $unlocked_b:=True
                     : ($typeName_t="picture")
-                        $varPtr->:=OTr_uTextToPicture($serialised_t)
+                        // Picture variable was stored via OTr_PutPicture — delegate to OTr_GetPicture
+                        OTr_zUnlock
+                        $varPtr->:=OTr_GetPicture($handle_i; $tag_t)
+                        $unlocked_b:=True
                     Else
                         OTr_zError("Unknown variable type in stored value"; Current method name)
                         OTr_zSetOK(0)
@@ -910,7 +902,7 @@ If (Not($unlocked_b))
 End if
 ```
 
-For array variables, the tag holds the array sub-object written by `OTr_PutArray`, and retrieval is delegated entirely to `OTr_GetArray`. For BLOB and Picture variables, `$serialised_t` will be a `blob:N` or `pic:N` reference string, which `OTr_uTextToBlob` / `OTr_uTextToPicture` resolve directly.
+For array variables, the tag holds the array sub-object written by `OTr_PutArray`, and retrieval is delegated entirely to `OTr_GetArray`. For BLOB and Picture variables, retrieval is delegated to `OTr_GetNewBLOB` and `OTr_GetPicture` respectively, which apply the correct native retrieval path.
 
 #### See Also
 
@@ -918,150 +910,12 @@ For array variables, the tag holds the array sub-object written by `OTr_PutArray
 
 ---
 
-## Export/Import Utility Methods
-
-The following two utility methods support the JSON export/import pipeline. They operate on a *copy* of the object (never on the live registry entry) and must be called within the registry lock, as they read from and write to the parallel interprocess arrays.
-
----
-
-### OTr_uExpandBinaries
-
-```
-OTr_uExpandBinaries ($obj_o : Object) → Object
-```
-
-| Parameter | Type | | Description |
-|---|---|---|---|
-| $obj_o | Object | → | A snapshot copy of an OTr object |
-| Function result | Object | ← | A new object with all `blob:N`/`pic:N` references replaced by self-contained Base64 strings |
-
-#### Discussion
-
-`OTr_uExpandBinaries` walks all properties of `$obj_o`, recursing into nested embedded objects. For each text property:
-
-- If the value matches `"blob:N"` — fetch the BLOB data from `<>OTR_Blobs_ablob{N}`, apply `BASE64 ENCODE`, convert to US-ASCII text, and replace the property value with `"b64blob:<base64data>"`.
-- If the value matches `"pic:N"` — fetch the Picture data from `<>OTR_Pictures_apic{N}`, convert to a BLOB via `PICTURE TO BLOB($pic; $blob; ".png")`, apply `BASE64 ENCODE`, convert to US-ASCII text, and replace the property value with `"b64pic:.png:<base64data>"`.
-- If the value matches `"var:blob:blob:N"` or `"var:picture:pic:N"` — expand the embedded binary reference in place, replacing only the `blob:N` / `pic:N` portion of the `var:` string.
-- All other property values are left unchanged.
-
-Returns the expanded object. The input `$obj_o` is not modified — the method works on a deep copy via `OB Copy` at the outset.
-
-Must be called **within the registry lock**, as it reads from the parallel interprocess arrays.
-
-#### OTr Implementation Notes
-
-```
-#DECLARE($obj_o : Object) -> $expanded_o : Object
-
-var $keys_c : Collection
-var $thisKey_t; $val_t; $encoded_t : Text
-var $slot_i : Integer
-var $tempBlob_blob : Blob
-var $tempPic_pic : Picture
-var $nested_o : Object
-
-$expanded_o:=OB Copy($obj_o)
-$keys_c:=OB Keys($expanded_o)
-
-For each ($thisKey_t; $keys_c)
-    Case of
-        : (OB Get type($expanded_o; $thisKey_t)=Is text)
-            $val_t:=OB Get($expanded_o; $thisKey_t; Is text)
-
-            If (Substring($val_t; 1; 5)="blob:")
-                $slot_i:=Num(Substring($val_t; 6))
-                If (($slot_i>0) & ($slot_i<=Size of array(<>OTR_Blobs_ablob)) \
-                    & (<>OTR_BlobInUse_ab{$slot_i}))
-                    $tempBlob_blob:=<>OTR_Blobs_ablob{$slot_i}
-                    BASE64 ENCODE($tempBlob_blob)
-                    OB SET($expanded_o; $thisKey_t; "b64blob:"+Convert to text($tempBlob_blob; "US-ASCII"))
-                End if
-
-            Else if (Substring($val_t; 1; 4)="pic:")
-                $slot_i:=Num(Substring($val_t; 5))
-                If (($slot_i>0) & ($slot_i<=Size of array(<>OTR_Pictures_apic)) \
-                    & (<>OTR_PicInUse_ab{$slot_i}))
-                    PICTURE TO BLOB(<>OTR_Pictures_apic{$slot_i}; $tempBlob_blob; ".png")
-                    BASE64 ENCODE($tempBlob_blob)
-                    OB SET($expanded_o; $thisKey_t; "b64pic:.png:"+Convert to text($tempBlob_blob; "US-ASCII"))
-                End if
-
-            Else if (Substring($val_t; 1; 9)="var:blob:")
-                // Expand the embedded blob:N portion of a var: string
-                $innerRef_t:=Substring($val_t; 10)  // "blob:N"
-                $slot_i:=Num(Substring($innerRef_t; 6))
-                If (($slot_i>0) & ($slot_i<=Size of array(<>OTR_Blobs_ablob)) \
-                    & (<>OTR_BlobInUse_ab{$slot_i}))
-                    $tempBlob_blob:=<>OTR_Blobs_ablob{$slot_i}
-                    BASE64 ENCODE($tempBlob_blob)
-                    OB SET($expanded_o; $thisKey_t; "var:blob:b64blob:"+Convert to text($tempBlob_blob; "US-ASCII"))
-                End if
-
-            Else if (Substring($val_t; 1; 12)="var:picture:")
-                // Expand the embedded pic:N portion of a var: string
-                $innerRef_t:=Substring($val_t; 13)  // "pic:N"
-                $slot_i:=Num(Substring($innerRef_t; 5))
-                If (($slot_i>0) & ($slot_i<=Size of array(<>OTR_Pictures_apic)) \
-                    & (<>OTR_PicInUse_ab{$slot_i}))
-                    PICTURE TO BLOB(<>OTR_Pictures_apic{$slot_i}; $tempBlob_blob; ".png")
-                    BASE64 ENCODE($tempBlob_blob)
-                    OB SET($expanded_o; $thisKey_t; "var:picture:b64pic:.png:"+Convert to text($tempBlob_blob; "US-ASCII"))
-                End if
-            End if
-
-        : (OB Get type($expanded_o; $thisKey_t)=Is object)
-            $nested_o:=OB Get($expanded_o; $thisKey_t; Is object)
-            OB SET($expanded_o; $thisKey_t; OTr_uExpandBinaries($nested_o))
-    End case
-End for each
-```
-
-#### See Also
-
-[OTr_uCollapseBinaries](#otr_ucollapsebinaries)
-
----
-
-### OTr_uCollapseBinaries
-
-```
-OTr_uCollapseBinaries ($obj_o : Object) → Object
-```
-
-| Parameter | Type | | Description |
-|---|---|---|---|
-| $obj_o | Object | → | A parsed JSON object containing `b64blob:` and/or `b64pic:` expanded strings |
-| Function result | Object | ← | A new object with all Base64 strings replaced by `blob:N` / `pic:N` parallel array references |
-
-#### Discussion
-
-`OTr_uCollapseBinaries` is the inverse of `OTr_uExpandBinaries`. It walks all properties of `$obj_o`, recursing into nested embedded objects. For each text property:
-
-- If the value begins with `"b64blob:"` — decode the Base64 data back to a BLOB via `CONVERT FROM TEXT` + `BASE64 DECODE`, call `OTr_uBlobToText` to allocate a parallel array slot, and replace the property value with the resulting `"blob:N"` reference.
-- If the value begins with `"b64pic:<codec>:"` — decode the Base64, reconstruct the Picture via `BLOB TO PICTURE($blob; $pic; $codec)`, call `OTr_uPictureToText` to allocate a parallel array slot, and replace the property value with `"pic:N"`.
-- If the value matches `"var:blob:b64blob:..."` or `"var:picture:b64pic:..."` — collapse only the embedded portion, restoring the full `var:blob:blob:N` or `var:picture:pic:N` form.
-- All other property values are left unchanged.
-
-Returns the collapsed object. The input `$obj_o` is not modified.
-
-Must be called **within the registry lock**, as it writes to the parallel interprocess arrays.
-
-#### OTr Implementation Notes
-
-The structure mirrors `OTr_uExpandBinaries` exactly but in reverse. Parse the prefix, decode Base64 via `CONVERT FROM TEXT($base64_t; "US-ASCII"; $tempBlob_blob)` followed by `BASE64 DECODE($tempBlob_blob)`, then:
-
-- For BLOB: `OB SET($collapsed_o; $thisKey_t; OTr_uBlobToText($tempBlob_blob))`
-- For Picture: `BLOB TO PICTURE($tempBlob_blob; $tempPic_pic; $codec)` then `OB SET($collapsed_o; $thisKey_t; OTr_uPictureToText($tempPic_pic))`
-
-The codec is extracted from the prefix string: for `"b64pic:.png:<data>"`, the codec is everything between the second `:` and the third `:`, i.e., `".png"`.
-
-#### See Also
-
-[OTr_uExpandBinaries](#otr_uexpandbinaries)
-
----
-
 ## Cross-Reference Index
+
+> *Note: `OTr_uExpandBinaries` and `OTr_uCollapseBinaries` were designed for this phase but retired in Phase 6 when binary data moved to native 4D Object storage. Their full specifications are preserved in `OTr-Phase-006-Spec.md` for reference.*
+
+| OTr Method | Legacy Command | Category |
+|---|---|---|
 
 | OTr Method | Legacy Command | Category |
 |---|---|---|
@@ -1077,5 +931,3 @@ The codec is extracted from the prefix string: for `"b64pic:.png:<data>"`, the c
 | `OTr_GetRecordTable` | `OT GetRecordTable` (v1.5) | Record |
 | `OTr_PutVariable` | `OT PutVariable` (v1.5) | Variable |
 | `OTr_GetVariable` | `OT GetVariable` (v1.5) | Variable |
-| `OTr_uExpandBinaries` | *(utility)* | Export/Import Utility |
-| `OTr_uCollapseBinaries` | *(utility)* | Export/Import Utility |

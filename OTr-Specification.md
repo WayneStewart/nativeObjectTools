@@ -39,19 +39,11 @@ The legacy plugin uses opaque Longint handles to reference internal memory struc
 ```4d
 ARRAY OBJECT(<>OTR_Objects_ao; 0)      // Object storage
 ARRAY BOOLEAN(<>OTR_InUse_ab; 0)       // Object slot availability
-
-ARRAY BLOB(<>OTR_Blobs_ax; 0)          // BLOB binary data
-ARRAY BOOLEAN(<>OTR_BlobInUse_ab; 0)   // BLOB slot availability
-
-ARRAY PICTURE(<>OTR_Pictures_ap; 0)    // Picture binary data
-ARRAY BOOLEAN(<>OTR_PicInUse_ab; 0)    // Picture slot availability
 ```
 
-`<>OTR_Objects_ao` — each element holds a native 4D Object. The object's properties correspond to the "tags" used in the legacy API. Native types (Integer, Real, Text, Boolean, Object, Collection) are stored directly as properties. Non-native types (Date, Time, BLOB, Picture, Pointer, Record, Variable) are stored as wrapper sub-objects with `__otr_type` metadata (see §3.6).
+`<>OTR_Objects_ao` — each element holds a native 4D Object. The object's properties correspond to the "tags" used in the legacy API. Native types (Integer, Real, Text, Boolean, Object, Collection, Picture) are stored directly as properties. BLOBs are stored natively on 4D v19R2 or later; on earlier versions they are base64-encoded as Text via `OTr_uBlobToText`. Non-native types (Date, Time, Pointer, Record, Variable) are stored as formatted Text strings (see §3.6).
 
 `<>OTR_InUse_ab` — each element is a Boolean flag indicating whether the corresponding slot in `<>OTR_Objects_ao` is currently allocated (`True`) or available for reuse (`False`).
-
-`<>OTR_Blobs_ax` / `<>OTR_Pictures_ap` — parallel arrays holding actual BLOB and Picture binary data. Object properties reference these via an index stored in the `__otr_ref` field of the wrapper sub-object (see §3.7).
 
 The array index into `<>OTR_Objects_ao` serves as the handle (Integer) returned to callers, preserving the Longint-handle calling convention from the legacy plugin.
 
@@ -125,8 +117,6 @@ All values are stored as flat, simple properties on the object. The type informa
 
 | OT Type | Stored As | Example Value | Notes |
 |---|---|---|---|
-| BLOB | Text | `"blob:33"` | Index into `<>OTR_Blobs_ax` |
-| Picture | Text | `"pic:27"` | Index into `<>OTR_Pictures_ap` |
 | Pointer | Text | `"ptr:myVar;0;0"` | Via `RESOLVE POINTER` |
 | Record | Text | `"rec:5;12"` | `rec:tableNum;recordNum` |
 
@@ -143,37 +133,26 @@ The resulting objects are clean and flat, identical in structure to OBJ_Module o
     "Name": "Wayne",
     "theDate": "2026-03-31",
     "alarm": "14:30:00",
-    "myAvatar": "pic:27",
-    "myEncryptedCreditCard": "blob:33",
     "ref": "ptr:myVar;0;0"
 }
 ```
 
-**`OTr_ItemType` resolution:** For the majority of cases, the caller knows the type because they chose the typed getter. `OTr_ItemType` determines type by: (1) checking the native 4D type of the property (`OB Get type`) — Integer, Real, Boolean, Object, and Collection are unambiguous; (2) for Text properties, checking for known prefixes (`blob:`, `pic:`, `ptr:`, `rec:`, `var:`); (3) for unprefixed Text, attempting date (`YYYY-MM-DD`) and time (`HH:MM:SS`) pattern matching; (4) falling back to `Is text` if no pattern matches.
+Pictures are stored natively as Object properties. BLOBs are stored natively on 4D v19R2 or later; on v19/v19R1 they are stored base64-encoded as Text (no prefix — the typed getter `OTr_GetNewBLOB` handles both forms transparently).
+
+**`OTr_ItemType` resolution:** For the majority of cases, the caller knows the type because they chose the typed getter. `OTr_ItemType` determines type by: (1) checking the native 4D type of the property (`OB Get type`) — Integer, Real, Boolean, Object, Collection, and Picture are unambiguous; (2) for BLOB: `OB Get type` returns `Is BLOB` on v19R2+; on v19/v19R1 a base64-encoded BLOB is stored as Text and cannot be distinguished from other Text by type alone — callers must use the typed getter; (3) for Text properties, checking for known prefixes (`ptr:`, `rec:`, `var:`); (4) for unprefixed Text, attempting date (`YYYY-MM-DD`) and time (`HH:MM:SS`) pattern matching; (5) falling back to `Is text` if no pattern matches.
 
 ### 3.7 BLOB and Picture Storage
 
-4D Objects cannot natively hold BLOB or Picture values as properties via `OB SET`. OTr uses **parallel interprocess arrays** for binary data:
+Since 4D v16R4, 4D Objects can store Picture values natively as properties via `OB SET`. Since 4D v19R2, they can also store BLOB values natively. OTr takes advantage of this directly — no parallel arrays are required.
 
-```4d
-ARRAY BLOB(<>OTR_Blobs_ax; 0)
-ARRAY BOOLEAN(<>OTR_BlobInUse_ab; 0)
-ARRAY PICTURE(<>OTR_Pictures_ap; 0)
-ARRAY BOOLEAN(<>OTR_PicInUse_ab; 0)
-```
+**Picture storage:** Stored directly as an Object property using `OB SET($obj; $tag; $picture_pic)` and retrieved with `OB Get($obj; $tag; Is picture)`. This works on all supported 4D versions (v19 LTS or later).
 
-**Storage process (`OTr_PutBLOB`):**
-1. Scan `<>OTR_BlobInUse_ab` for a `False` slot; if none, append to both arrays.
-2. Store the BLOB in `<>OTR_Blobs_ax{N}`, set `<>OTR_BlobInUse_ab{N}` to `True`.
-3. Store the string `"blob:N"` as the object property value.
+**BLOB storage:** Determined at initialisation time by a version gate stored in `Storage.OTr.nativeBlobInObject` (Boolean):
 
-**Retrieval process (`OTr_GetNewBLOB`):**
-1. Read the property value (e.g., `"blob:33"`); parse out the index.
-2. Return `<>OTR_Blobs_ax{33}`.
+- **True (v19R2 or later):** BLOB stored directly as an Object property using `OB SET($obj; $tag; $blob_x)`.
+- **False (v19 or v19R1):** BLOB base64-encoded to Text via `OTr_uBlobToText` and stored as a Text property. Retrieved by `OTr_uTextToBlob`. No prefix string is stored — the typed getter `OTr_GetNewBLOB` inspects the property type (`OB Get type`) to determine which path to take.
 
-**Picture storage** follows the same pattern with `<>OTR_Pictures_ap` / `<>OTR_PicInUse_ab`, using the prefix `"pic:N"`.
-
-**Cleanup:** When `OTr_Clear` releases an object, it scans all Text properties for `blob:` and `pic:` prefixes and releases the corresponding slots (zeroes the data, marks `InUse` as `False`). Trailing unused slots are trimmed (see §10.6).
+**Cleanup:** When `OTr_Clear` releases an object, native Object property values (including Pictures and BLOBs) are released automatically by setting the slot to `Null`. No explicit binary cleanup is required.
 
 ### 3.8 Array Storage
 
@@ -240,13 +219,9 @@ The classification by method prefix:
 An `OTr_zInit` method (private, called lazily by `OTr_New` and other entry points) must:
 
 1. Check whether the module has been initialised (via an interprocess Boolean flag, e.g., `<>OTR_Initialized_b`).
-2. If not: declare and size all interprocess arrays to zero, set default options (AutoCreateObjects on), and set the flag:
+2. If not: declare and size all interprocess arrays to zero, set default options (AutoCreateObjects on), detect the runtime 4D version and store the result in `Storage.OTr.nativeBlobInObject`, and set the flag:
    - `ARRAY OBJECT(<>OTR_Objects_ao; 0)` — object storage
    - `ARRAY BOOLEAN(<>OTR_InUse_ab; 0)` — object slot availability
-   - `ARRAY BLOB(<>OTR_Blobs_ax; 0)` — BLOB binary data
-   - `ARRAY BOOLEAN(<>OTR_BlobInUse_ab; 0)` — BLOB slot availability
-   - `ARRAY PICTURE(<>OTR_Pictures_ap; 0)` — Picture binary data
-   - `ARRAY BOOLEAN(<>OTR_PicInUse_ab; 0)` — Picture slot availability
 3. If already initialised: return immediately.
 
 This mirrors the `Fnd_Dict_Init` pattern.
@@ -432,7 +407,7 @@ The table below maps every legacy OT command to its OTr replacement method, with
 
 *Detailed specification:* [OTr-Phase-001-Spec.md](OTr-Phase-001-Spec.md) (Phase 1.5)
 
-These methods have no counterpart in the legacy ObjectTools plugin. They are OTr-specific additions to support testing, object inspection, and data transfer. All Save methods call `OTr_uExpandBinaries` (Phase 5) before serialisation, replacing runtime `blob:N`/`pic:N` references with self-contained Base64 strings. All Load methods call `OTr_uCollapseBinaries` after parsing, restoring Base64 strings to parallel array slots.
+These methods have no counterpart in the legacy ObjectTools plugin. They are OTr-specific additions to support testing, object inspection, and data transfer. Binary data (BLOB, Picture) is stored natively in 4D Objects and serialised inline by the export methods.
 
 | OTr Method | Notes |
 |---|---|
@@ -471,7 +446,7 @@ These methods manage the registry, locking, path resolution, and error handling.
 | `OTr_zIsValidHandle` | Bounds check + in-use check; returns Boolean |
 | `OTr_zGetObject` | Given a handle, return a pointer to the object in the array (or the object itself) |
 | `OTr_zResolvePath` | Given a dotted tag, navigate/create intermediate objects; return the leaf object and final key |
-| `OTr_zParsePrefix` | Parse a prefixed string (e.g., `"blob:33"`) and return the prefix and index/value |
+| `OTr_zParsePrefix` | Parse a prefixed string (e.g., `"ptr:myVar;0;0"`) and return the prefix and payload |
 | `OTr_zError` | Invoke the error handler (if set) or raise an error |
 | `OTr_zArrayToCollection` | Convert a 4D array (via Pointer) to a Collection |
 | `OTr_zCollectionToArray` | Convert a Collection to a 4D array (via Pointer) |
@@ -491,8 +466,6 @@ These methods perform type conversion, serialisation, and comparison operations.
 | `OTr_uMapType` | Bidirectional mapping between 4D type constants and OT legacy type constants |
 | `OTr_uEqualBLOBs` | Compare two BLOBs byte-for-byte; returns Boolean |
 | `OTr_uEqualPictures` | Compare two Pictures byte-for-byte; returns Boolean |
-| `OTr_uExpandBinaries` | Walk an object snapshot and replace `blob:N`/`pic:N` references with self-contained Base64 strings for JSON export |
-| `OTr_uCollapseBinaries` | Walk a parsed JSON object and replace Base64 strings with `blob:N`/`pic:N` parallel array references for JSON import |
 
 ---
 
@@ -508,12 +481,12 @@ These methods perform type conversion, serialisation, and comparison operations.
 
 ### Phase 1.5 — Simple Export/Import
 
-No legacy ObjectTools equivalent. These methods provide a self-contained JSON representation of a stored object for testing, inspection, and data transfer. The Save methods are implemented as part of the Phase 1 baseline (they depend only on the handle registry) but are **updated in Phase 5** to call `OTr_uExpandBinaries` before serialisation. The Load methods are similarly dependent on Phase 5 (`OTr_uCollapseBinaries`) and must therefore be implemented no earlier than Phase 5.
+No legacy ObjectTools equivalent. These methods provide a self-contained JSON representation of a stored object for testing, inspection, and data transfer. Binary data (BLOB, Picture) is stored natively in 4D Objects and serialised inline by the export methods.
 
-- `OTr_SaveToText` — serialise object to self-contained JSON Text; optional `$prettyPrint_b` flag (default `False`); calls `OTr_uExpandBinaries` within the lock before `JSON Stringify`
-- `OTr_SaveToFile` — write self-contained JSON to a file path using UTF-8 encoding; optional `$prettyPrint_b` flag (default `True`); same expansion pattern
-- `OTr_SaveToClipboard` — place self-contained JSON on the system clipboard; optional `$prettyPrint_b` flag (default `True`); same expansion pattern
-- `OTr_LoadFromText` — parse JSON Text into a new OTr object; calls `OTr_uCollapseBinaries` within the lock after `JSON Parse`; returns new handle
+- `OTr_SaveToText` — serialise object to self-contained JSON Text; optional `$prettyPrint_b` flag (default `False`)
+- `OTr_SaveToFile` — write self-contained JSON to a file path using UTF-8 encoding; optional `$prettyPrint_b` flag (default `True`)
+- `OTr_SaveToClipboard` — place self-contained JSON on the system clipboard; optional `$prettyPrint_b` flag (default `True`)
+- `OTr_LoadFromText` — parse JSON Text into a new OTr object; returns new handle
 - `OTr_LoadFromFile` — read UTF-8 JSON file and delegate to `OTr_LoadFromText`; returns new handle
 - `OTr_LoadFromClipboard` — read JSON from clipboard and delegate to `OTr_LoadFromText`; returns new handle
 
@@ -531,14 +504,13 @@ No legacy ObjectTools equivalent. These methods provide a self-contained JSON re
 ### Phase 4 — Array Operations
 - `OTr_zArrayToCollection`, `OTr_zCollectionToArray`
 - `OTr_uDateToText`, `OTr_uTextToDate`, `OTr_uTimeToText`, `OTr_uTextToTime`
-- `OTr_uPointerToText`, `OTr_uTextToPointer`, `OTr_uBlobToText`, `OTr_uTextToBlob`, `OTr_uPictureToText`, `OTr_uTextToPicture`
+- `OTr_uPointerToText`, `OTr_uTextToPointer`, `OTr_uBlobToText`, `OTr_uTextToBlob`
 - `OTr_PutArray`, `OTr_GetArray`
 - All `OTr_PutArray*` and `OTr_GetArray*` element methods
 - `OTr_SizeOfArray`, `OTr_ResizeArray`, `OTr_InsertElement`, `OTr_DeleteElement`
 - `OTr_FindInArray`, `OTr_SortArrays`
 
 ### Phase 5 — Complex Types
-- `OTr_uExpandBinaries`, `OTr_uCollapseBinaries`
 - `OTr_PutPointer`, `OTr_GetPointer`
 - `OTr_PutBLOB`, `OTr_GetBLOB`, `OTr_GetNewBLOB`, `OTr_PutPicture`, `OTr_GetPicture`
 - `OTr_PutRecord`, `OTr_GetRecord`, `OTr_GetRecordTable`
@@ -554,7 +526,7 @@ No legacy ObjectTools equivalent. These methods provide a self-contained JSON re
 
 All design questions have been resolved. This section records each decision and its rationale.
 
-**10.1 — BLOB and Picture storage.** `OB SET` cannot store BLOB or Picture values directly. **Decision:** Parallel interprocess arrays (`<>OTR_Blobs_ax`, `<>OTR_Pictures_ap`) with paired `InUse` Boolean arrays. Object properties store a simple prefixed string (`"blob:33"`, `"pic:27"`) referencing the array index. See §3.7 for full detail.
+**10.1 — BLOB and Picture storage.** The original design used parallel interprocess arrays (`<>OTR_Blobs_ax`, `<>OTR_Pictures_ap`) with prefixed reference strings (`"blob:N"`, `"pic:N"`). This design was superseded in Phase 6. **Decision (revised):** Native storage directly in the 4D Object. Pictures have been storable natively since v16R4; BLOBs since v19R2. On v19/v19R1, BLOBs are base64-encoded as Text via `OTr_uBlobToText`. A Boolean flag `Storage.OTr.nativeBlobInObject` is set at initialisation to select the correct path. See §3.7 for full detail.
 
 **10.2 — `OTr_PutObject` semantics.** **Decision:** Default to deep copy (`OB Copy`), matching legacy `OT PutObject` behaviour. No optional reference parameter — OTr is a drop-in replacement, nothing more.
 
@@ -562,9 +534,9 @@ All design questions have been resolved. This section records each decision and 
 
 **10.4 — Lock reentrancy.** **Decision:** Simple, non-reentrant locking. A single `Semaphore` / `CLEAR SEMAPHORE` pair with no lock counter. The core rule is: **never call a lock-acquiring method while the lock is already held** — doing so will deadlock. In practice this means public `OTr_` methods acquire the lock, delegate only to `OTr_z` internal helpers (which do not lock), then release the lock before doing any further work. A public method *may* call another public method provided the lock has been fully released first — the safe pattern is: acquire → snapshot with `OB Copy` → release → then call other methods freely. Mutation methods (those that write to the registry) should never call other public methods from within a locked section.
 
-**10.5 — Import/Export format.** **Decision:** JSON-based format with bundled binaries. `OTr_ObjectToBLOB` serialises the object to JSON (wrapper sub-objects are preserved), then appends referenced BLOBs and Pictures from the parallel arrays with an index table. Not compatible with the legacy OT binary format (reverse-engineering the proprietary format is impractical).
+**10.5 — Import/Export format.** **Decision:** JSON-based format. `OTr_ObjectToBLOB` serialises the object to JSON using `JSON Stringify`. Pictures and BLOBs stored natively in the Object are preserved inline by the JSON serialiser. Not compatible with the legacy OT binary format (reverse-engineering the proprietary format is impractical). See [OTr-Phase-006-Spec.md](OTr-Phase-006-Spec.md) for the full serialisation specification.
 
-**10.6 — Tail-trimming on Clear.** **Decision:** Hybrid approach. On `OTr_Clear($handle)`: (a) scan the object for BLOB/Picture wrapper references and release those slots immediately (zero out data, mark `InUse` as `False`); (b) set the object slot to empty and mark `InUse` as `False`; (c) if the cleared slot is at the tail of the arrays, trim consecutive trailing unused slots from all arrays. Mid-array slots are left for reuse.
+**10.6 — Tail-trimming on Clear.** **Decision:** On `OTr_Clear($handle)`: (a) set the object slot to `Null` (releasing all natively stored properties, including Pictures and BLOBs, via the 4D garbage collector); (b) mark `<>OTR_InUse_ab{handle}` as `False`; (c) if the cleared slot is at the tail of the arrays, trim consecutive trailing unused slots. Mid-array slots are left for reuse.
 
 **10.7 — Deprecated `OT GetBLOB` retention.** **Decision:** Implement `OTr_GetBLOB` as a stub that fires a deprecation warning via the error handler, then delegates to `OTr_GetNewBLOB` and assigns the result to the out parameter.
 

@@ -8,51 +8,25 @@
 
 ## 1. Phase Implementation
 
-| Done | Phase | Spec Document |
-|:---:|---|---|
-| ✅ | Phase 1 — Core Infrastructure | *(no separate spec)* |
-| ✅ | Phase 1.5 — Simple Export/Import | *(no separate spec)* |
-| ✅ | Phase 2 — Scalar Put/Get | *(no separate spec)* |
-| ✅ | Phase 3 — Item Info and Utilities | [OTr-Phase-003-Spec.md](OTr-Phase-003-Spec.md) |
-| ✅ | Phase 4 — Array Operations | [OTr-Phase-004-Spec.md](OTr-Phase-004-Spec.md) |
-|   | Phase 5 — Complex Types | [OTr-Phase-005-Spec.md](OTr-Phase-005-Spec.md) |
-|   | Phase 6 — Import/Export | [OTr-Phase-006-Spec.md](OTr-Phase-006-Spec.md) |
-|   | Phase 7 — API Naming Alignment | [OTr-Phase-007-Spec.md](OTr-Phase-007-Spec.md) |
-|   | Phase 8 — Unified Array Element Accessor | [OTr-Phase-008-Spec.md](OTr-Phase-008-Spec.md) |
-|   | Phase 15 — Side-by-Side Compatibility Testing | [OTr-Phase-015-Spec.md](OTr-Phase-015-Spec.md) |
-|   | Phase 100 — Dual Storage Mechanism and Three-Layer Architecture *(post-release)* | [OTr-Phase-100-Spec.md](OTr-Phase-100-Spec.md) |
+| Spec | Impl | Phase | Spec Document |
+|:---:|:---:|---|---|
+| ✅ | ✅ | Phase 1 — Core Infrastructure | *(no separate spec)* |
+| ✅ | ✅ | Phase 1.5 — Simple Export/Import | *(no separate spec)* |
+| ✅ | ✅ | Phase 2 — Scalar Put/Get | *(no separate spec)* |
+| ✅ | ✅ | Phase 3 — Item Info and Utilities | [OTr-Phase-003-Spec.md](OTr-Phase-003-Spec.md) |
+| ✅ | ✅ | Phase 4 — Array Operations | [OTr-Phase-004-Spec.md](OTr-Phase-004-Spec.md) |
+| ✅ | ✅ | Phase 5 — Complex Types | [OTr-Phase-005-Spec.md](OTr-Phase-005-Spec.md) |
+| ✅ | ✅ | Phase 6 — Import/Export | [OTr-Phase-006-Spec.md](OTr-Phase-006-Spec.md) |
+| ✅ | ✅ | Phase 7 — API Naming Alignment | [OTr-Phase-007-Spec.md](OTr-Phase-007-Spec.md) |
+| ✅ |    | Phase 8 — Unified Array Element Accessor | [OTr-Phase-008-Spec.md](OTr-Phase-008-Spec.md) |
+| ✅ | ✅ | Phase 15 — Side-by-Side Compatibility Testing | [OTr-Phase-015-Spec.md](OTr-Phase-015-Spec.md) |
+|    |    | Phase 100 — Dual Storage Mechanism and Three-Layer Architecture *(post-release)* | [OTr-Phase-100-Spec.md](OTr-Phase-100-Spec.md) |
 
 ---
 
 ## 2. Known Gaps (Unimplemented Methods)
 
-### Phase 5 — Complex Types
-
-| Method | Category |
-|---|---|
-| `OTr_PutPointer` | Scalar Put |
-| `OTr_GetPointer` | Scalar Get |
-| `OTr_PutBLOB` | Scalar Put |
-| `OTr_GetBLOB` | Scalar Get (deprecated stub) |
-| `OTr_GetNewBLOB` | Scalar Get |
-| `OTr_PutPicture` | Scalar Put |
-| `OTr_GetPicture` | Scalar Get |
-| `OTr_PutRecord` | Scalar Put |
-| `OTr_GetRecord` | Scalar Get |
-| `OTr_GetRecordTable` | Scalar Get |
-| `OTr_PutVariable` | Scalar Put |
-| `OTr_GetVariable` | Scalar Get |
-| `OTr_uExpandBinaries` | Utility |
-| `OTr_uCollapseBinaries` | Utility |
-
-### Phase 6 — Import/Export
-
-| Method | Category |
-|---|---|
-| `OTr_ObjectToBLOB` | Import/Export |
-| `OTr_ObjectToNewBLOB` | Import/Export |
-| `OTr_BLOBToObject` | Import/Export |
-| `OTr_uMapType` | Utility (finalise) |
+*No outstanding unimplemented methods. `OTr_uExpandBinaries` and `OTr_uCollapseBinaries` were retired in Phase 6; binary data is stored natively in 4D Objects.*
 
 ---
 
@@ -75,8 +49,7 @@
 - [ ] Confirm all public API methods are `"shared":true`; all `OTr_z*`, `OTr_u*`, and `Test_OTr_*` are `"shared":false`
 - [ ] Confirm semaphore is released on every exit path (including error paths) in all public methods
 - [ ] Confirm `OTr_zInit` is called (lazily) at the top of every public method
-- [ ] Update Phase 1.5 Save methods to call `OTr_uExpandBinaries` (depends on Phase 5 completion)
-- [ ] Implement Phase 1.5 Load methods (`OTr_LoadFromText`, `OTr_LoadFromFile`, `OTr_LoadFromClipboard`) — blocked until Phase 5
+- [ ] Confirm Phase 1.5 Load methods (`OTr_LoadFromText`, `OTr_LoadFromFile`, `OTr_LoadFromClipboard`) are implemented
 - [ ] Write test method `____Test_Phase_5` covering all complex type round-trips
 - [ ] Write test method `____Test_Phase_6` covering BLOB serialisation round-trips
 - [ ] Write test method `____Test_OT_Compatibility` per [OTr-Phase-015-Spec.md](OTr-Phase-015-Spec.md); register in `Test Methods` group in `folders.json`
@@ -88,7 +61,7 @@
 
 - [ ] Handle allocation: slot reuse confirmed (cleared slot reused by next `OTr_New`)
 - [ ] Tail-trimming: trailing unused slots trimmed on `OTr_Clear` (§10.6)
-- [ ] Binary reference cleanup: `OTr_zReleaseBinaryRef` called before overwriting any `blob:N` / `pic:N` property
+- [ ] BLOB/Picture overwrite: existing values correctly replaced without leaking (native Object properties require no explicit release)
 - [ ] Dot-path navigation: multi-level paths create intermediate objects when `AutoCreateObjects` is set
 - [ ] 1-based ↔ 0-based index mapping: verified at first element, last element, and out-of-bounds for all array methods
 - [ ] `OTr_ItemType` returns legacy OT type constants (not native 4D constants)
@@ -96,7 +69,7 @@
 - [ ] `OTr_GetBLOB` fires deprecation warning via error handler before delegating to `OTr_GetNewBLOB`
 - [ ] Date stored as `YYYY-MM-DD` text; Time stored as `HH:MM:SS` text; round-trip verified
 - [ ] `OTr_SortArrays` multi-key sort verified with mixed ascending/descending keys
-- [ ] `OTr_BLOBToObject` slot-index remapping: `blob:N` / `pic:N` indices from source session correctly remapped to new session slots
+- [ ] `OTr_BLOBToObject` deserialisation: JSON payload correctly parsed and a new OTr handle returned with all properties (including native BLOBs and Pictures) correctly restored
 - [ ] `OTr_BLOBToObject` magic-byte check: legacy OT BLOB produces a clear incompatibility error
 - [ ] Compiler mode: all methods compile without error in 4D v19 LTS (no class syntax)
 
