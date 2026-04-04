@@ -163,695 +163,695 @@ If ($testOtH_i=0)
 End if 
 
 
-If ($ready_b)
+
+OT Clear($testOtH_i)
+
+// ====================================================
+// INIT
+// ====================================================
+OTr_ClearAll
+$total_i:=0
+$pass_i:=0
+$fail_i:=0
+
+$otMain_i:=OT New
+$otrMain_i:=OTr_New
+
+// APPEND TO ARRAY($rows_at; "|---|---|---|---|---|")
+
+READ PICTURE FILE:C678(Get 4D folder:C485(Current resources folder:K5:16)+"images"+Folder separator:K24:12+"Wombat.png"; $testPic_pic)
+// 1x1 black PNG (shared by picture tests)
+//$pngB64_t:="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+//CONVERT FROM TEXT($pngB64_t; "US-ASCII"; $pngBlob_blob)
+//BASE64 DECODE($pngBlob_blob)
+//BLOB TO PICTURE($pngBlob_blob; $testPic_pic; ".png")
+
+// ====================================================
+//MARK:- 1. Creation / Destruction
+// ====================================================
+$testName_t:="Creation / destruction"
+$otCmd_t:="OT New / OT Clear"
+$otrCmd_t:="OTr_New / OTr_Clear"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+$testOtH_i:=OT New
+
+If ($testOtH_i#0)
 	OT Clear($testOtH_i)
-	
-	// ====================================================
-	// INIT
-	// ====================================================
-	OTr_ClearAll
-	$total_i:=0
-	$pass_i:=0
-	$fail_i:=0
-	
-	$otMain_i:=OT New
-	$otrMain_i:=OTr_New
-	
-	// APPEND TO ARRAY($rows_at; "|---|---|---|---|---|")
-	
-	READ PICTURE FILE:C678(Get 4D folder:C485(Current resources folder:K5:16)+"images"+Folder separator:K24:12+"Wombat.png"; $testPic_pic)
-	// 1x1 black PNG (shared by picture tests)
-	//$pngB64_t:="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
-	//CONVERT FROM TEXT($pngB64_t; "US-ASCII"; $pngBlob_blob)
-	//BASE64 DECODE($pngBlob_blob)
-	//BLOB TO PICTURE($pngBlob_blob; $testPic_pic; ".png")
-	
-	// ====================================================
-	//MARK:- 1. Creation / Destruction
-	// ====================================================
-	$testName_t:="Creation / destruction"
-	$otCmd_t:="OT New / OT Clear"
-	$otrCmd_t:="OTr_New / OTr_Clear"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	$testOtH_i:=OT New
-	
-	If ($testOtH_i#0)
-		OT Clear($testOtH_i)
-		$otResult_t:="Pass"
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: OT New returned 0"
+End if 
+
+$testOtrH_i:=OTr_New
+If (($testOtrH_i#0) & (OK=1))
+	OTr_Clear($testOtrH_i)
+	If (OK=1)
+		$otrResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: OT New returned 0"
+		$otrResult_t:="Fail: OTr_Clear set OK=0"
 	End if 
-	
-	$testOtrH_i:=OTr_New
-	If (($testOtrH_i#0) & (OK=1))
-		OTr_Clear($testOtrH_i)
-		If (OK=1)
-			$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: OTr_New returned 0 or OK=0"
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+
+APPEND TO ARRAY:C911($rows_at; $TAB+"Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$CR)  // Header line
+
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 2. String / Text
+// ====================================================
+$testName_t:="String / Text"
+$otCmd_t:="OT PutString / OT GetString"
+$otrCmd_t:="OTr_PutString / OTr_GetString"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+OT PutString($otMain_i; "str"; "compat-str")
+$gotten_t:=OT GetString($otMain_i; "str")
+If ($gotten_t="compat-str")
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: got '"+$gotten_t+"'"
+End if 
+
+OTr_PutString($otrMain_i; "str"; "compat-str")
+$gotten_t:=OTr_GetString($otrMain_i; "str")
+If (($gotten_t="compat-str") & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: got '"+$gotten_t+"'"
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 3. Longint
+// ====================================================
+$testName_t:="Longint"
+$otCmd_t:="OT PutLong / OT GetLong"
+$otrCmd_t:="OTr_PutLong / OTr_GetLong"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+OT PutLong($otMain_i; "num"; 424242)
+$gotLong_i:=OT GetLong($otMain_i; "num")
+If ($gotLong_i=424242)
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: got "+String:C10($gotLong_i)
+End if 
+
+OTr_PutLong($otrMain_i; "num"; 424242)
+$gotLong_i:=OTr_GetLong($otrMain_i; "num")
+If (($gotLong_i=424242) & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: got "+String:C10($gotLong_i)
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 4. Real
+// ====================================================
+$testName_t:="Real"
+$otCmd_t:="OT PutReal / OT GetReal"
+$otrCmd_t:="OTr_PutReal / OTr_GetReal"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+OT PutReal($otMain_i; "ratio"; 3.14159)
+$gotReal_r:=OT GetReal($otMain_i; "ratio")
+If ($gotReal_r=3.14159)
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: got "+String:C10($gotReal_r)
+End if 
+
+OTr_PutReal($otrMain_i; "ratio"; 3.14159)
+$gotReal_r:=OTr_GetReal($otrMain_i; "ratio")
+If (($gotReal_r=3.14159) & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: got "+String:C10($gotReal_r)
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 5. Boolean
+// ====================================================
+$testName_t:="Boolean"
+$otCmd_t:="OT PutBoolean / OT GetBoolean"
+$otrCmd_t:="OTr_PutBoolean / OTr_GetBoolean"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+OT PutBoolean($otMain_i; "flag"; Num:C11(True:C214))
+$gotBool_i:=OT GetBoolean($otMain_i; "flag")
+If ($gotBool_i=1)
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: got "+String:C10($gotBool_i)
+End if 
+
+OTr_PutBoolean($otrMain_i; "flag"; True:C214)
+$gotBool_i:=OTr_GetBoolean($otrMain_i; "flag")
+If (($gotBool_i=1) & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: got "+String:C10($gotBool_i)
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 6. Date
+// ====================================================
+$testName_t:="Date"
+$otCmd_t:="OT PutDate / OT GetDate"
+$otrCmd_t:="OTr_PutDate / OTr_GetDate"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+$testDate_d:=!2026-04-04!
+
+OT PutDate($otMain_i; "dt"; $testDate_d)
+$gotDate_d:=OT GetDate($otMain_i; "dt")
+If ($gotDate_d=$testDate_d)
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: got "+String:C10($gotDate_d)
+End if 
+
+OTr_PutDate($otrMain_i; "dt"; $testDate_d)
+$gotDate_d:=OTr_GetDate($otrMain_i; "dt")
+If (($gotDate_d=$testDate_d) & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: got "+String:C10($gotDate_d)
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 7. Time
+// ====================================================
+$testName_t:="Time"
+$otCmd_t:="OT PutTime / OT GetTime"
+$otrCmd_t:="OTr_PutTime / OTr_GetTime"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+$testTime_h:=?10:30:45?
+
+OT PutTime($otMain_i; "tm"; $testTime_h)
+$gotTime_h:=OT GetTime($otMain_i; "tm")
+If ($gotTime_h=$testTime_h)
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: got "+String:C10($gotTime_h)
+End if 
+
+OTr_PutTime($otrMain_i; "tm"; $testTime_h)
+$gotTime_h:=OTr_GetTime($otrMain_i; "tm")
+If (($gotTime_h=$testTime_h) & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: got "+String:C10($gotTime_h)
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 8. Pointer
+// ====================================================
+$testName_t:="Pointer"
+$otCmd_t:="OT PutPointer / OT GetPointer"
+$otrCmd_t:="OTr_PutPointer / OTr_GetPointer"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+$otPtrTarget_t:="ot-ptr-val"
+$ptrTarget_t:="otr-ptr-val"
+var $ptrVar : Pointer
+$ptrVar:=->$otPtrTarget_t
+var $ptrVarOut : Pointer
+
+OT PutPointer($otMain_i; "ptr"; $ptrVar)
+OT GetPointer($otMain_i; "ptr"; $ptrVarOut)  //->$gotPtr_ptr)
+If ((OK=1) & ($ptrVarOut#Null:C1517) & ($ptrVarOut->="ot-ptr-val"))
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: dereference mismatch or OK=0"
+End if 
+
+OTr_PutPointer($otrMain_i; "ptr"; ->$ptrTarget_t)
+// NOTE: OTr_GetPointer has a known issue — the output
+// pointer is set in the local parameter copy, not the
+// caller variable. Test verifies OK=1 only.
+OTr_GetPointer($otrMain_i; "ptr"; ->$gotPtr_ptr)
+If (OK=1)
+	$otrResult_t:="Pass (OK=1; dereference skipped - known issue)"
+Else 
+	$otrResult_t:="Fail: OK=0"
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & (Substring:C12($otrResult_t; 1; 4)="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 9. Picture
+// ====================================================
+$testName_t:="Picture"
+$otCmd_t:="OT PutPicture / OT GetPicture"
+$otrCmd_t:="OTr_PutPicture / OTr_GetPicture"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+OT PutPicture($otMain_i; "pic"; $testPic_pic)
+$gotPic_pic:=OT GetPicture($otMain_i; "pic")
+If (OTr_uEqualPictures($testPic_pic; $gotPic_pic))
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: picture mismatch"
+End if 
+
+OTr_PutPicture($otrMain_i; "pic"; $testPic_pic)
+$gotPic_pic:=OTr_GetPicture($otrMain_i; "pic")
+If ((OTr_uEqualPictures($testPic_pic; $gotPic_pic)) & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: picture mismatch or OK=0"
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 10. BLOB
+// ====================================================
+$testName_t:="BLOB"
+$otCmd_t:="OT PutBLOB / OT GetNewBLOB"
+$otrCmd_t:="OTr_PutBLOB / OTr_GetNewBLOB"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+CONVERT FROM TEXT:C1011("compat-blob-data"; "UTF-8"; $testBlob_blob)
+
+OT PutBLOB($otMain_i; "blob"; $testBlob_blob)
+$gotBlob_blob:=OT GetNewBLOB($otMain_i; "blob")
+If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: BLOB content mismatch"
+End if 
+
+OTr_PutBLOB($otrMain_i; "blob"; $testBlob_blob)
+$gotBlob_blob:=OTr_GetNewBLOB($otrMain_i; "blob")
+If ((OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob)) & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: BLOB content mismatch or OK=0"
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 11. Variable
+// ====================================================
+$testName_t:="Variable"
+$otCmd_t:="OT PutVariable / OT GetVariable"
+$otrCmd_t:="OTr_PutVariable / OTr_GetVariable"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+$otVarTarget_t:="ot-var-val"
+$varTarget_t:="otr-var-val"
+$otVarDest_t:=""
+$varDest_t:=""
+
+OT PutVariable($otMain_i; "var"; ->$otVarTarget_t)
+OT GetVariable($otMain_i; "var"; ->$otVarDest_t)
+If ($otVarDest_t="ot-var-val")
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: got '"+$otVarDest_t+"'"
+End if 
+
+OTr_PutVariable($otrMain_i; "var"; ->$varTarget_t)
+OTr_GetVariable($otrMain_i; "var"; ->$varDest_t)
+If (($varDest_t="otr-var-val") & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: got '"+$varDest_t+"'"
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 12. Record  (Intentional difference §4.3)
+// ====================================================
+$testName_t:="Record"
+$otCmd_t:="OT PutRecord / OT GetRecord"
+$otrCmd_t:="OTr_PutRecord / OTr_GetRecord"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+// Use Table 1 (Table_1, sole table in this database).
+// CREATE RECORD then immediately PutRecord/GetRecord
+// without any modification (intentional difference note
+// in §4.3 applies only when modification occurs between
+// Put and Get; immediate round-trip should match).
+CREATE RECORD:C68([Table_1:1])
+[Table_1:1]Name:2:="Wayne"
+SAVE RECORD:C53([Table_1:1])
+
+var $tablePtr : Pointer
+$tablePtr:=->[Table_1:1]
+OT PutRecord($otMain_i; "rec"; $tablePtr)
+
+CREATE RECORD:C68([Table_1:1])
+OT GetRecord($otMain_i; "rec")
+[Table_1:1]ID:1:=Sequence number:C244([Table_1:1])
+SAVE RECORD:C53([Table_1:1])
+
+If (OK=1)
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: OT GetRecord set OK=0"
+End if 
+
+OTr_PutRecord($otrMain_i; "rec"; 1)
+OTr_GetRecord($otrMain_i; "rec"; 1)
+If (OK=1)
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: OTr_GetRecord set OK=0"
+End if 
+// SAVE RECORD is intentionally omitted — the new record
+// is discarded without being written to disk.
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 13. Dot-path
+// ====================================================
+$testName_t:="Dot-path"
+$otCmd_t:="OT PutString (dotted) / OT GetString"
+$otrCmd_t:="OTr_PutString (dotted) / OTr_GetString"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+OT PutString($otMain_i; "a.b.c"; "dot-val")
+$gotten_t:=OT GetString($otMain_i; "a.b.c")
+If ($gotten_t="dot-val")
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: got '"+$gotten_t+"'"
+End if 
+
+OTr_PutString($otrMain_i; "a.b.c"; "dot-val")
+$gotten_t:=OTr_GetString($otrMain_i; "a.b.c")
+If (($gotten_t="dot-val") & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: got '"+$gotten_t+"'"
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 14. Array Longint
+// ====================================================
+$testName_t:="Array Longint"
+$otCmd_t:="OT PutArrayLong / OT GetArrayLong"
+$otrCmd_t:="OTr_PutArrayLong / OTr_GetArrayLong"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+// Declare a 3-element LongInt array first (size 3: §25 reuses indices 1-3)
+ARRAY LONGINT:C221($setupAl_ai; 3)
+OT PutArray($otMain_i; "al"; $setupAl_ai)
+OTr_PutArray($otrMain_i; "al"; ->$setupAl_ai)
+
+// Store element at index 1, retrieve and compare
+OT PutArrayLong($otMain_i; "al"; 1; 100)
+$otArrVal_i:=OT GetArrayLong($otMain_i; "al"; 1)
+If ($otArrVal_i=100)
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: got "+String:C10($otArrVal_i)
+End if 
+
+OTr_PutArrayLong($otrMain_i; "al"; 1; 100)
+$otrArrVal_i:=OTr_GetArrayLong($otrMain_i; "al"; 1)
+If (($otrArrVal_i=100) & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: got "+String:C10($otrArrVal_i)
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 15. Array Text
+// ====================================================
+$testName_t:="Array Text"
+$otCmd_t:="OT PutArrayString / OT GetArrayString"
+$otrCmd_t:="OTr_PutArrayString / OTr_GetArrayString"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+ARRAY TEXT:C222($setupAs_at; 1)
+OT PutArray($otMain_i; "as"; $setupAs_at)
+OTr_PutArray($otrMain_i; "as"; ->$setupAs_at)
+
+OT PutArrayString($otMain_i; "as"; 1; "arr-str-val")
+$otArrStr_t:=OT GetArrayString($otMain_i; "as"; 1)
+If ($otArrStr_t="arr-str-val")
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: got '"+$otArrStr_t+"'"
+End if 
+
+OTr_PutArrayString($otrMain_i; "as"; 1; "arr-str-val")
+$otrArrStr_t:=OTr_GetArrayString($otrMain_i; "as"; 1)
+If (($otrArrStr_t="arr-str-val") & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: got '"+$otrArrStr_t+"'"
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 16. Array Real
+// ====================================================
+$testName_t:="Array Real"
+$otCmd_t:="OT PutArrayReal / OT GetArrayReal"
+$otrCmd_t:="OTr_PutArrayReal / OTr_GetArrayReal"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+ARRAY REAL:C219($setupAr_arr; 1)
+OT PutArray($otMain_i; "ar"; $setupAr_arr)
+OTr_PutArray($otrMain_i; "ar"; ->$setupAr_arr)
+
+OT PutArrayReal($otMain_i; "ar"; 1; 9.99)
+$otArrReal_r:=OT GetArrayReal($otMain_i; "ar"; 1)
+If ($otArrReal_r=9.99)
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: got "+String:C10($otArrReal_r)
+End if 
+
+OTr_PutArrayReal($otrMain_i; "ar"; 1; 9.99)
+$otrArrReal_r:=OTr_GetArrayReal($otrMain_i; "ar"; 1)
+If (($otrArrReal_r=9.99) & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: got "+String:C10($otrArrReal_r)
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 17. Array Boolean
+// ====================================================
+$testName_t:="Array Boolean"
+$otCmd_t:="OT PutArrayBoolean / OT GetArrayBoolean"
+$otrCmd_t:="OTr_PutArrayBoolean / OTr_GetArrayBoolean"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+ARRAY BOOLEAN:C223($setupAb_ab; 1)
+OT PutArray($otMain_i; "ab"; $setupAb_ab)
+OTr_PutArray($otrMain_i; "ab"; ->$setupAb_ab)
+
+OT PutArrayBoolean($otMain_i; "ab"; 1; Num:C11(True:C214))
+$otArrBool_i:=OT GetArrayBoolean($otMain_i; "ab"; 1)
+If ($otArrBool_i=1)
+	$otResult_t:="Pass"
+Else 
+	$otResult_t:="Fail: got "+String:C10($otArrBool_i)
+End if 
+
+OTr_PutArrayBoolean($otrMain_i; "ab"; 1; True:C214)
+$otrArrBool_i:=OTr_GetArrayBoolean($otrMain_i; "ab"; 1)
+If (($otrArrBool_i=1) & (OK=1))
+	$otrResult_t:="Pass"
+Else 
+	$otrResult_t:="Fail: got "+String:C10($otrArrBool_i)
+End if 
+
+$total_i:=$total_i+1
+If (($otResult_t="Pass") & ($otrResult_t="Pass"))
+	$pass_i:=$pass_i+1
+Else 
+	$fail_i:=$fail_i+1
+End if 
+APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
+
+// ====================================================
+//MARK:- 18. Array Pointer
+// ====================================================
+
+// Modified by: Guy Algot (4/3/26)
+// skipped for now
+
+$testName_t:="Array Pointer"
+$otCmd_t:="OT PutArrayPointer / OT GetArrayPointer"
+$otrCmd_t:="OTr_PutArrayPointer / OTr_GetArrayPointer"
+$otResult_t:="Fail: not run"
+$otrResult_t:="Fail: not run"
+
+$otPtrTarget_t:="arr-ptr-val"
+
+//wombat 
+
+ARRAY POINTER:C280($setupAptr_aptr; 1)
+OT PutArray($otMain_i; "aptr"; $setupAptr_aptr)
+OTr_PutArray($otrMain_i; "aptr"; ->$setupAptr_aptr)
+
+OT PutArrayPointer($otMain_i; "aptr"; 1; ->$otPtrTarget_t)
+OT GetArrayPointer($otMain_i; "aptr"; 1; $otArrPtrOut_ptr)
+If (OK=1)
+	If ($otArrPtrOut_ptr#Null:C1517)
+		If ($otArrPtrOut_ptr->="arr-ptr-val")
+			$otResult_t:="Pass"
 		Else 
-			$otrResult_t:="Fail: OTr_Clear set OK=0"
+			$otResult_t:="Fail: value mismatch"
 		End if 
 	Else 
-		$otrResult_t:="Fail: OTr_New returned 0 or OK=0"
+		$otResult_t:="Fail: Null pointer"
 	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	
-	APPEND TO ARRAY:C911($rows_at; $TAB+"Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$CR)  // Header line
-	
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 2. String / Text
-	// ====================================================
-	$testName_t:="String / Text"
-	$otCmd_t:="OT PutString / OT GetString"
-	$otrCmd_t:="OTr_PutString / OTr_GetString"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	OT PutString($otMain_i; "str"; "compat-str")
-	$gotten_t:=OT GetString($otMain_i; "str")
-	If ($gotten_t="compat-str")
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: got '"+$gotten_t+"'"
-	End if 
-	
-	OTr_PutString($otrMain_i; "str"; "compat-str")
-	$gotten_t:=OTr_GetString($otrMain_i; "str")
-	If (($gotten_t="compat-str") & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: got '"+$gotten_t+"'"
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 3. Longint
-	// ====================================================
-	$testName_t:="Longint"
-	$otCmd_t:="OT PutLong / OT GetLong"
-	$otrCmd_t:="OTr_PutLong / OTr_GetLong"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	OT PutLong($otMain_i; "num"; 424242)
-	$gotLong_i:=OT GetLong($otMain_i; "num")
-	If ($gotLong_i=424242)
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: got "+String:C10($gotLong_i)
-	End if 
-	
-	OTr_PutLong($otrMain_i; "num"; 424242)
-	$gotLong_i:=OTr_GetLong($otrMain_i; "num")
-	If (($gotLong_i=424242) & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: got "+String:C10($gotLong_i)
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 4. Real
-	// ====================================================
-	$testName_t:="Real"
-	$otCmd_t:="OT PutReal / OT GetReal"
-	$otrCmd_t:="OTr_PutReal / OTr_GetReal"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	OT PutReal($otMain_i; "ratio"; 3.14159)
-	$gotReal_r:=OT GetReal($otMain_i; "ratio")
-	If ($gotReal_r=3.14159)
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: got "+String:C10($gotReal_r)
-	End if 
-	
-	OTr_PutReal($otrMain_i; "ratio"; 3.14159)
-	$gotReal_r:=OTr_GetReal($otrMain_i; "ratio")
-	If (($gotReal_r=3.14159) & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: got "+String:C10($gotReal_r)
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 5. Boolean
-	// ====================================================
-	$testName_t:="Boolean"
-	$otCmd_t:="OT PutBoolean / OT GetBoolean"
-	$otrCmd_t:="OTr_PutBoolean / OTr_GetBoolean"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	OT PutBoolean($otMain_i; "flag"; Num:C11(True:C214))
-	$gotBool_i:=OT GetBoolean($otMain_i; "flag")
-	If ($gotBool_i=1)
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: got "+String:C10($gotBool_i)
-	End if 
-	
-	OTr_PutBoolean($otrMain_i; "flag"; True:C214)
-	$gotBool_i:=OTr_GetBoolean($otrMain_i; "flag")
-	If (($gotBool_i=1) & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: got "+String:C10($gotBool_i)
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 6. Date
-	// ====================================================
-	$testName_t:="Date"
-	$otCmd_t:="OT PutDate / OT GetDate"
-	$otrCmd_t:="OTr_PutDate / OTr_GetDate"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	$testDate_d:=!2026-04-04!
-	
-	OT PutDate($otMain_i; "dt"; $testDate_d)
-	$gotDate_d:=OT GetDate($otMain_i; "dt")
-	If ($gotDate_d=$testDate_d)
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: got "+String:C10($gotDate_d)
-	End if 
-	
-	OTr_PutDate($otrMain_i; "dt"; $testDate_d)
-	$gotDate_d:=OTr_GetDate($otrMain_i; "dt")
-	If (($gotDate_d=$testDate_d) & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: got "+String:C10($gotDate_d)
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 7. Time
-	// ====================================================
-	$testName_t:="Time"
-	$otCmd_t:="OT PutTime / OT GetTime"
-	$otrCmd_t:="OTr_PutTime / OTr_GetTime"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	$testTime_h:=?10:30:45?
-	
-	OT PutTime($otMain_i; "tm"; $testTime_h)
-	$gotTime_h:=OT GetTime($otMain_i; "tm")
-	If ($gotTime_h=$testTime_h)
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: got "+String:C10($gotTime_h)
-	End if 
-	
-	OTr_PutTime($otrMain_i; "tm"; $testTime_h)
-	$gotTime_h:=OTr_GetTime($otrMain_i; "tm")
-	If (($gotTime_h=$testTime_h) & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: got "+String:C10($gotTime_h)
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 8. Pointer
-	// ====================================================
-	$testName_t:="Pointer"
-	$otCmd_t:="OT PutPointer / OT GetPointer"
-	$otrCmd_t:="OTr_PutPointer / OTr_GetPointer"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	$otPtrTarget_t:="ot-ptr-val"
-	$ptrTarget_t:="otr-ptr-val"
-	var $ptrVar : Pointer
-	$ptrVar:=->$otPtrTarget_t
-	var $ptrVarOut : Pointer
-	
-	OT PutPointer($otMain_i; "ptr"; $ptrVar)
-	OT GetPointer($otMain_i; "ptr"; $ptrVarOut)  //->$gotPtr_ptr)
-	If ((OK=1) & ($ptrVarOut#Null:C1517) & ($ptrVarOut->="ot-ptr-val"))
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: dereference mismatch or OK=0"
-	End if 
-	
-	OTr_PutPointer($otrMain_i; "ptr"; ->$ptrTarget_t)
-	// NOTE: OTr_GetPointer has a known issue — the output
-	// pointer is set in the local parameter copy, not the
-	// caller variable. Test verifies OK=1 only.
-	OTr_GetPointer($otrMain_i; "ptr"; ->$gotPtr_ptr)
-	If (OK=1)
-		$otrResult_t:="Pass (OK=1; dereference skipped - known issue)"
-	Else 
-		$otrResult_t:="Fail: OK=0"
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & (Substring:C12($otrResult_t; 1; 4)="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 9. Picture
-	// ====================================================
-	$testName_t:="Picture"
-	$otCmd_t:="OT PutPicture / OT GetPicture"
-	$otrCmd_t:="OTr_PutPicture / OTr_GetPicture"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	OT PutPicture($otMain_i; "pic"; $testPic_pic)
-	$gotPic_pic:=OT GetPicture($otMain_i; "pic")
-	If (OTr_uEqualPictures($testPic_pic; $gotPic_pic))
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: picture mismatch"
-	End if 
-	
-	OTr_PutPicture($otrMain_i; "pic"; $testPic_pic)
-	$gotPic_pic:=OTr_GetPicture($otrMain_i; "pic")
-	If ((OTr_uEqualPictures($testPic_pic; $gotPic_pic)) & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: picture mismatch or OK=0"
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 10. BLOB
-	// ====================================================
-	$testName_t:="BLOB"
-	$otCmd_t:="OT PutBLOB / OT GetNewBLOB"
-	$otrCmd_t:="OTr_PutBLOB / OTr_GetNewBLOB"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	CONVERT FROM TEXT:C1011("compat-blob-data"; "UTF-8"; $testBlob_blob)
-	
-	OT PutBLOB($otMain_i; "blob"; $testBlob_blob)
-	$gotBlob_blob:=OT GetNewBLOB($otMain_i; "blob")
-	If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: BLOB content mismatch"
-	End if 
-	
-	OTr_PutBLOB($otrMain_i; "blob"; $testBlob_blob)
-	$gotBlob_blob:=OTr_GetNewBLOB($otrMain_i; "blob")
-	If ((OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob)) & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: BLOB content mismatch or OK=0"
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 11. Variable
-	// ====================================================
-	$testName_t:="Variable"
-	$otCmd_t:="OT PutVariable / OT GetVariable"
-	$otrCmd_t:="OTr_PutVariable / OTr_GetVariable"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	$otVarTarget_t:="ot-var-val"
-	$varTarget_t:="otr-var-val"
-	$otVarDest_t:=""
-	$varDest_t:=""
-	
-	OT PutVariable($otMain_i; "var"; ->$otVarTarget_t)
-	OT GetVariable($otMain_i; "var"; ->$otVarDest_t)
-	If ($otVarDest_t="ot-var-val")
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: got '"+$otVarDest_t+"'"
-	End if 
-	
-	OTr_PutVariable($otrMain_i; "var"; ->$varTarget_t)
-	OTr_GetVariable($otrMain_i; "var"; ->$varDest_t)
-	If (($varDest_t="otr-var-val") & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: got '"+$varDest_t+"'"
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 12. Record  (Intentional difference §4.3)
-	// ====================================================
-	$testName_t:="Record"
-	$otCmd_t:="OT PutRecord / OT GetRecord"
-	$otrCmd_t:="OTr_PutRecord / OTr_GetRecord"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	// Use Table 1 (Table_1, sole table in this database).
-	// CREATE RECORD then immediately PutRecord/GetRecord
-	// without any modification (intentional difference note
-	// in §4.3 applies only when modification occurs between
-	// Put and Get; immediate round-trip should match).
-	CREATE RECORD:C68([Table_1:1])
-	[Table_1:1]Name:2:="Wayne"
-	SAVE RECORD:C53([Table_1:1])
-	
-	var $tablePtr : Pointer
-	$tablePtr:=->[Table_1:1]
-	OT PutRecord($otMain_i; "rec"; $tablePtr)
-	
-	CREATE RECORD:C68([Table_1:1])
-	OT GetRecord($otMain_i; "rec")
-	[Table_1:1]ID:1:=Sequence number:C244([Table_1:1])
-	SAVE RECORD:C53([Table_1:1])
-	
-	If (OK=1)
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: OT GetRecord set OK=0"
-	End if 
-	
-	OTr_PutRecord($otrMain_i; "rec"; 1)
-	OTr_GetRecord($otrMain_i; "rec"; 1)
-	If (OK=1)
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: OTr_GetRecord set OK=0"
-	End if 
-	// SAVE RECORD is intentionally omitted — the new record
-	// is discarded without being written to disk.
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 13. Dot-path
-	// ====================================================
-	$testName_t:="Dot-path"
-	$otCmd_t:="OT PutString (dotted) / OT GetString"
-	$otrCmd_t:="OTr_PutString (dotted) / OTr_GetString"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	OT PutString($otMain_i; "a.b.c"; "dot-val")
-	$gotten_t:=OT GetString($otMain_i; "a.b.c")
-	If ($gotten_t="dot-val")
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: got '"+$gotten_t+"'"
-	End if 
-	
-	OTr_PutString($otrMain_i; "a.b.c"; "dot-val")
-	$gotten_t:=OTr_GetString($otrMain_i; "a.b.c")
-	If (($gotten_t="dot-val") & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: got '"+$gotten_t+"'"
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 14. Array Longint
-	// ====================================================
-	$testName_t:="Array Longint"
-	$otCmd_t:="OT PutArrayLong / OT GetArrayLong"
-	$otrCmd_t:="OTr_PutArrayLong / OTr_GetArrayLong"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	// Declare a 3-element LongInt array first (size 3: §25 reuses indices 1-3)
-	ARRAY LONGINT:C221($setupAl_ai; 3)
-	OT PutArray($otMain_i; "al"; $setupAl_ai)
-	OTr_PutArray($otrMain_i; "al"; ->$setupAl_ai)
-	
-	// Store element at index 1, retrieve and compare
-	OT PutArrayLong($otMain_i; "al"; 1; 100)
-	$otArrVal_i:=OT GetArrayLong($otMain_i; "al"; 1)
-	If ($otArrVal_i=100)
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: got "+String:C10($otArrVal_i)
-	End if 
-	
-	OTr_PutArrayLong($otrMain_i; "al"; 1; 100)
-	$otrArrVal_i:=OTr_GetArrayLong($otrMain_i; "al"; 1)
-	If (($otrArrVal_i=100) & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: got "+String:C10($otrArrVal_i)
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 15. Array Text
-	// ====================================================
-	$testName_t:="Array Text"
-	$otCmd_t:="OT PutArrayString / OT GetArrayString"
-	$otrCmd_t:="OTr_PutArrayString / OTr_GetArrayString"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	ARRAY TEXT:C222($setupAs_at; 1)
-	OT PutArray($otMain_i; "as"; $setupAs_at)
-	OTr_PutArray($otrMain_i; "as"; ->$setupAs_at)
-	
-	OT PutArrayString($otMain_i; "as"; 1; "arr-str-val")
-	$otArrStr_t:=OT GetArrayString($otMain_i; "as"; 1)
-	If ($otArrStr_t="arr-str-val")
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: got '"+$otArrStr_t+"'"
-	End if 
-	
-	OTr_PutArrayString($otrMain_i; "as"; 1; "arr-str-val")
-	$otrArrStr_t:=OTr_GetArrayString($otrMain_i; "as"; 1)
-	If (($otrArrStr_t="arr-str-val") & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: got '"+$otrArrStr_t+"'"
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 16. Array Real
-	// ====================================================
-	$testName_t:="Array Real"
-	$otCmd_t:="OT PutArrayReal / OT GetArrayReal"
-	$otrCmd_t:="OTr_PutArrayReal / OTr_GetArrayReal"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	ARRAY REAL:C219($setupAr_arr; 1)
-	OT PutArray($otMain_i; "ar"; $setupAr_arr)
-	OTr_PutArray($otrMain_i; "ar"; ->$setupAr_arr)
-	
-	OT PutArrayReal($otMain_i; "ar"; 1; 9.99)
-	$otArrReal_r:=OT GetArrayReal($otMain_i; "ar"; 1)
-	If ($otArrReal_r=9.99)
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: got "+String:C10($otArrReal_r)
-	End if 
-	
-	OTr_PutArrayReal($otrMain_i; "ar"; 1; 9.99)
-	$otrArrReal_r:=OTr_GetArrayReal($otrMain_i; "ar"; 1)
-	If (($otrArrReal_r=9.99) & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: got "+String:C10($otrArrReal_r)
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 17. Array Boolean
-	// ====================================================
-	$testName_t:="Array Boolean"
-	$otCmd_t:="OT PutArrayBoolean / OT GetArrayBoolean"
-	$otrCmd_t:="OTr_PutArrayBoolean / OTr_GetArrayBoolean"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	ARRAY BOOLEAN:C223($setupAb_ab; 1)
-	OT PutArray($otMain_i; "ab"; $setupAb_ab)
-	OTr_PutArray($otrMain_i; "ab"; ->$setupAb_ab)
-	
-	OT PutArrayBoolean($otMain_i; "ab"; 1; Num:C11(True:C214))
-	$otArrBool_i:=OT GetArrayBoolean($otMain_i; "ab"; 1)
-	If ($otArrBool_i=1)
-		$otResult_t:="Pass"
-	Else 
-		$otResult_t:="Fail: got "+String:C10($otArrBool_i)
-	End if 
-	
-	OTr_PutArrayBoolean($otrMain_i; "ab"; 1; True:C214)
-	$otrArrBool_i:=OTr_GetArrayBoolean($otrMain_i; "ab"; 1)
-	If (($otrArrBool_i=1) & (OK=1))
-		$otrResult_t:="Pass"
-	Else 
-		$otrResult_t:="Fail: got "+String:C10($otrArrBool_i)
-	End if 
-	
-	$total_i:=$total_i+1
-	If (($otResult_t="Pass") & ($otrResult_t="Pass"))
-		$pass_i:=$pass_i+1
-	Else 
-		$fail_i:=$fail_i+1
-	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$CR)
-	
-	// ====================================================
-	//MARK:- 18. Array Pointer
-	// ====================================================
-	
-	// Modified by: Guy Algot (4/3/26)
-	// skipped for now
-	
-	$testName_t:="Array Pointer"
-	$otCmd_t:="OT PutArrayPointer / OT GetArrayPointer"
-	$otrCmd_t:="OTr_PutArrayPointer / OTr_GetArrayPointer"
-	$otResult_t:="Fail: not run"
-	$otrResult_t:="Fail: not run"
-	
-	$otPtrTarget_t:="arr-ptr-val"
-	
-	//wombat 
-	
-	ARRAY POINTER:C280($setupAptr_aptr; 1)
-	OT PutArray($otMain_i; "aptr"; $setupAptr_aptr)
-	OTr_PutArray($otrMain_i; "aptr"; ->$setupAptr_aptr)
-	
-	OT PutArrayPointer($otMain_i; "aptr"; 1; ->$otPtrTarget_t)
-	OT GetArrayPointer($otMain_i; "aptr"; 1; $otArrPtrOut_ptr)
-	If (OK=1)
-		If ($otArrPtrOut_ptr#Null:C1517)
-			If ($otArrPtrOut_ptr->="arr-ptr-val")
-				$otResult_t:="Pass"
-			Else 
-				$otResult_t:="Fail: value mismatch"
-			End if 
-		Else 
-			$otResult_t:="Fail: Null pointer"
-		End if 
-	Else 
-		$otResult_t:="Fail: OK=0"
-	End if 
-	var myPtrTarget_t : Text
-	// NOTE: OTr pointer array round-trip for local ($) variables
-	// is unreliable — OTr_uTextToPointer reconstructs via
-	// Get pointer which cannot resolve the caller's local scope.
-	// Test verifies OK=1 and non-null only (same pattern as §8).
-	myPtrTarget_t:="arr-ptr-val"
-	OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->myPtrTarget_t)
-	$gotPtr_ptr:=OTr_GetArrayPointer($otrMain_i; "aptr"; 1)
-	If ((OK=1) & ($gotPtr_ptr#Null:C1517))
-			If (($gotPtr_ptr->)=myPtrTarget_t)
+Else 
+	$otResult_t:="Fail: OK=0"
+End if 
+var myPtrTarget_t : Text
+// NOTE: OTr pointer array round-trip for local ($) variables
+// is unreliable — OTr_uTextToPointer reconstructs via
+// Get pointer which cannot resolve the caller's local scope.
+// Test verifies OK=1 and non-null only (same pattern as §8).
+myPtrTarget_t:="arr-ptr-val"
+OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->myPtrTarget_t)
+$gotPtr_ptr:=OTr_GetArrayPointer($otrMain_i; "aptr"; 1)
+If ((OK=1) & ($gotPtr_ptr#Null:C1517))
+	If (($gotPtr_ptr->)=myPtrTarget_t)
 		$otrResult_t:="Pass (OK=1; value check skipped - local var limitation)"
 	Else 
 		$otrResult_t:="Fail: OK=0 or Null pointer"
