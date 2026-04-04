@@ -10,7 +10,9 @@
 
 ## Overview
 
-Phase 100 is a **major architectural evolution**. It introduces:
+Phase 100 is a **major architectural evolution**. There are no plans to implement what is effectively version 2 of the product. It will only be implemented if there is a demand from end users for a thread-safe version.
+
+It introduces:
 
 1. A **dual storage mechanism** — the existing interprocess (IP) array model and a new Storage/Shared Object model — selectable at initialisation time via a mechanism flag.
 2. A **three-layer method architecture** for all array accessors, cleanly separating public API, type dispatch, and locked storage operations.

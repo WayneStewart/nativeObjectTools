@@ -60,8 +60,8 @@ Scalar-compatible types (Text, String, LongInt, Integer, Real, Boolean) are stor
 | Date array | Text (`YYYY-MM-DD`) | `OTr_uDateToText` | `OTr_uTextToDate` |
 | Time array | Text (`HH:MM:SS`) | `OTr_uTimeToText` | `OTr_uTextToTime` |
 | Pointer array | Text (`name;tableNum;fieldNum`) | `OTr_uPointerToText` | `OTr_uTextToPointer` |
-| Blob array | Text (`blob:N`) | `OTr_uBlobToText` | `OTr_uTextToBlob` |
-| Picture array | Text (`pic:N`) | `OTr_uPictureToText` | `OTr_uTextToPicture` |
+| Blob array | Text (base64) or BLOB | `OTr_uBlobToText` (v19/v19R1) / direct `OB SET` (v19R2+) | `OTr_uTextToBlob` (v19/v19R1) / direct `OB Get` (v19R2+) |
+| Picture array | Picture | direct `OB SET` | direct `OB Get` |
 
 ### Type Constants
 
@@ -249,16 +249,18 @@ OTr_uBlobToText ($theBlob_x : Blob) → Text
 
 | Parameter | Type | | Description |
 |---|---|---|---|
-| $theBlob_x | Blob | → | The BLOB to store |
-| Function result | Text | ← | Reference string `blob:N` |
+| $theBlob_x | Blob | → | The BLOB to encode |
+| Function result | Text | ← | Base64-encoded text representation of the BLOB |
 
 #### Discussion
 
-Stores a BLOB in the OTr parallel BLOB array (`<>OTR_Blobs_ablob`) and returns a `blob:N` reference string for storage in an OTr object property. Released slots are reused before a new slot is appended.
+Encodes a BLOB to a base64 Text string for storage as an Object property on 4D v19 and v19R1, where native BLOB storage in Objects is unavailable. This method performs pure base64 encoding with no slot management or reference strings. It is only called when `Storage.OTr.nativeBlobInObject` is `False`.
+
+On v19R2 or later, BLOBs are stored directly via `OB SET` and this method is not called.
 
 #### OTr Implementation Notes
 
-Scans `<>OTR_BlobInUse_ab` with `Find in array` for the first `False` entry. If none exists (`-1` returned), appends a new slot to both `<>OTR_Blobs_ablob` and `<>OTR_BlobInUse_ab` via `INSERT IN ARRAY`. Stores the BLOB, marks the slot in-use, and returns `"blob:" + String($slot_i)`.
+Uses `BASE64 ENCODE($theBlob_x; $result_t)`. Returns the encoded text.
 
 #### See Also
 
@@ -269,21 +271,21 @@ Scans `<>OTR_BlobInUse_ab` with `Find in array` for the first `False` entry. If 
 ### OTr_uTextToBlob
 
 ```
-OTr_uTextToBlob ($blobRef_t : Text) → Blob
+OTr_uTextToBlob ($base64_t : Text) → Blob
 ```
 
 | Parameter | Type | | Description |
 |---|---|---|---|
-| $blobRef_t | Text | → | Reference string `blob:N` |
-| Function result | Blob | ← | The stored BLOB, or empty BLOB if reference is invalid |
+| $base64_t | Text | → | Base64-encoded text representation of the BLOB |
+| Function result | Blob | ← | The decoded BLOB, or an empty BLOB if input is empty |
 
 #### Discussion
 
-Retrieves a BLOB from the OTr parallel BLOB array using a `blob:N` reference string. If the prefix is absent, the slot index is out of range, or the slot is not in use, an empty BLOB is returned silently.
+Decodes a base64 Text string back to a BLOB. This is the inverse of `OTr_uBlobToText` and is only called when `Storage.OTr.nativeBlobInObject` is `False`. If `$base64_t` is empty, an empty BLOB is returned.
 
 #### OTr Implementation Notes
 
-Checks the `"blob:"` prefix via `Substring`. Parses the slot index with `Num(Substring($blobRef_t; 6))`. Validates that the index is within array bounds and the slot is in-use before copying the data.
+Uses `BASE64 DECODE($base64_t; $result_x)`. Returns the decoded BLOB.
 
 #### See Also
 
@@ -291,53 +293,15 @@ Checks the `"blob:"` prefix via `Substring`. Parses the slot index with `Num(Sub
 
 ---
 
-### OTr_uPictureToText
+### ~~OTr_uPictureToText~~ — Retired (Phase 6)
 
-```
-OTr_uPictureToText ($thePicture_g : Picture) → Text
-```
-
-| Parameter | Type | | Description |
-|---|---|---|---|
-| $thePicture_g | Picture | → | The picture to store |
-| Function result | Text | ← | Reference string `pic:N` |
-
-#### Discussion
-
-Stores a Picture in the OTr parallel Picture array (`<>OTR_Pictures_apic`) and returns a `pic:N` reference string for storage in an OTr object property. Released slots are reused before a new slot is appended.
-
-#### OTr Implementation Notes
-
-As per `OTr_uBlobToText`, but using `<>OTR_Pictures_apic` and `<>OTR_PicInUse_ab`. Returns `"pic:" + String($slot_i)`.
-
-#### See Also
-
-[OTr_uTextToPicture](#otr_utexttopicture)
+This method was removed in Phase 6. Pictures are stored natively as Object properties using `OB SET($parent_o; $key_t; $picture_pic)` on all supported 4D versions (v16R4 or later). The `pic:N` parallel-array reference design was superseded. See [OTr-Phase-006-Spec.md](OTr-Phase-006-Spec.md).
 
 ---
 
-### OTr_uTextToPicture
+### ~~OTr_uTextToPicture~~ — Retired (Phase 6)
 
-```
-OTr_uTextToPicture ($picRef_t : Text) → Picture
-```
-
-| Parameter | Type | | Description |
-|---|---|---|---|
-| $picRef_t | Text | → | Reference string `pic:N` |
-| Function result | Picture | ← | The stored picture, or empty picture if reference is invalid |
-
-#### Discussion
-
-Retrieves a Picture from the OTr parallel Picture array using a `pic:N` reference string. If the prefix is absent, the slot index is out of range, or the slot is not in use, an empty picture is returned silently.
-
-#### OTr Implementation Notes
-
-As per `OTr_uTextToBlob`, but checking for the `"pic:"` prefix (`Substring($picRef_t; 1; 4)`) and using `<>OTR_Pictures_apic`.
-
-#### See Also
-
-[OTr_uPictureToText](#otr_upicturetotext)
+This method was removed in Phase 6. Pictures are retrieved natively using `OB Get($parent_o; $key_t; Is picture)`. See [OTr-Phase-006-Spec.md](OTr-Phase-006-Spec.md).
 
 ---
 
@@ -488,7 +452,7 @@ If `$handle_i` is not a valid object handle, the tag does not exist, or the tag 
 
 #### OTr Implementation Notes
 
-After navigating to the array Object, compare `$size_i` to the current `numElements`. For growth, iterate from `numElements + 1` through `$size_i`, adding default-valued properties. For shrinkage, iterate from `$size_i + 1` through `numElements`, calling `OB REMOVE` on each property key and releasing any `blob:N` / `pic:N` slots. Update `numElements` via `OB SET`.
+After navigating to the array Object, compare `$size_i` to the current `numElements`. For growth, iterate from `numElements + 1` through `$size_i`, adding default-valued properties. For shrinkage, iterate from `$size_i + 1` through `numElements`, calling `OB REMOVE` on each property key. Native Object properties (including Pictures and BLOBs) are released automatically when removed. Update `numElements` via `OB SET`.
 
 #### See Also
 
@@ -556,7 +520,7 @@ If `$handle_i` is not a valid object handle, the tag does not exist, the tag doe
 
 #### OTr Implementation Notes
 
-Before removing, check whether any of the elements in the deleted range contain `blob:N` or `pic:N` text values; if so, release the corresponding parallel array slots. Remove the `$howMany_i` properties from `$where_i` through `$where_i + $howMany_i - 1`. Re-key all subsequent properties (from `$where_i + $howMany_i` through `numElements`) downward by `$howMany_i`. Update `numElements`.
+Remove the `$howMany_i` properties from `$where_i` through `$where_i + $howMany_i - 1` via `OB REMOVE`. Native Object properties (including Pictures and BLOBs) are released automatically when removed. Re-key all subsequent properties (from `$where_i + $howMany_i` through `numElements`) downward by `$howMany_i`. Update `numElements`.
 
 #### See Also
 
@@ -857,9 +821,7 @@ OTr_GetArrayBLOB ($handle_i : Integer; $tag_t : Text; $index_i : Integer; $outVa
 
 #### Discussion
 
-Stores or retrieves a single BLOB element. BLOBs are stored via `OTr_uBlobToText` (which allocates a parallel array slot and returns a `blob:N` reference) and retrieved via `OTr_uTextToBlob`. The Get method returns the BLOB via an output parameter rather than a function result.
-
-If an element being replaced already holds a `blob:N` reference, the old parallel array slot is released before the new one is allocated.
+Stores or retrieves a single BLOB element. The storage path branches on `Storage.OTr.nativeBlobInObject`: on v19R2 or later, the element is stored directly as a native BLOB value; on v19/v19R1, the BLOB is base64-encoded via `OTr_uBlobToText` and stored as Text. Retrieval applies the corresponding inverse path. The Get method returns the BLOB via an output parameter rather than a function result.
 
 #### See Also
 
@@ -886,11 +848,11 @@ OTr_GetArrayPicture ($handle_i : Integer; $tag_t : Text; $index_i : Integer; $ou
 
 #### Discussion
 
-Stores or retrieves a single Picture element. Pictures are stored via `OTr_uPictureToText` and retrieved via `OTr_uTextToPicture`. The Get method returns the Picture via an output parameter.
+Stores or retrieves a single Picture element. Pictures are stored natively as Object property values via `OB SET` (no utility method required) and retrieved via `OB Get` with the `Is picture` type specifier. The Get method returns the Picture via an output parameter.
 
 #### See Also
 
-[OTr_uPictureToText](#otr_upicturetotext), [OTr_uTextToPicture](#otr_utexttopicture)
+[OTr_PutArrayPicture](#otr_putarraypicture)
 
 ---
 
@@ -932,10 +894,10 @@ Stores or retrieves a single Pointer element. Pointers are serialised via `OTr_u
 | `OTr_uTextToTime` | *(internal utility)* | Utility |
 | `OTr_uPointerToText` | *(internal utility)* | Utility |
 | `OTr_uTextToPointer` | *(internal utility)* | Utility |
-| `OTr_uBlobToText` | *(internal utility)* | Utility |
-| `OTr_uTextToBlob` | *(internal utility)* | Utility |
-| `OTr_uPictureToText` | *(internal utility)* | Utility |
-| `OTr_uTextToPicture` | *(internal utility)* | Utility |
+| `OTr_uBlobToText` | *(internal utility — v19/v19R1 only)* | Utility |
+| `OTr_uTextToBlob` | *(internal utility — v19/v19R1 only)* | Utility |
+| ~~`OTr_uPictureToText`~~ | *(retired — Phase 6)* | Utility |
+| ~~`OTr_uTextToPicture`~~ | *(retired — Phase 6)* | Utility |
 | `OTr_PutArray` | `OT PutArray` (v1) | Bulk Array |
 | `OTr_GetArray` | `OT GetArray` (v1) | Bulk Array |
 | `OTr_PutArrayLong` | `OT PutArrayLong` (v1) | Put/Get Element |

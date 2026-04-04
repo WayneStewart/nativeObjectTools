@@ -290,7 +290,7 @@ The sizes in `$outItemSizes` represent the total size of the item within the obj
 
 #### OTr Implementation Notes
 
-Use `OB Keys` on the target object (or the embedded object navigated to via `$tag_t`) to populate `$outNames`. For each property, determine its OT type constant using the `OTr_ItemType` resolution algorithm and populate `$outTypes`. For `$outItemSizes` and `$outDataSizes`, compute an approximation: for Text values, use `Length`; for Objects, serialise to JSON and measure; for Collections, serialise and measure; for BLOBs and Pictures referenced via `blob:N` or `pic:N`, read the actual data size from the parallel arrays. Properties beginning with `__otr_` must be excluded.
+Use `OB Keys` on the target object (or the embedded object navigated to via `$tag_t`) to populate `$outNames`. For each property, determine its OT type constant using the `OTr_ItemType` resolution algorithm and populate `$outTypes`. For `$outItemSizes` and `$outDataSizes`, compute an approximation: for Text values, use `Length`; for Objects, serialise to JSON and measure; for Collections, serialise and measure; for native BLOBs, use `BLOB size`; for native Pictures, use `Picture size`. Properties beginning with `__otr_` must be excluded.
 
 #### See Also
 
@@ -440,7 +440,7 @@ Otherwise, the items are compared according to the rules of equality used for eq
 
 #### OTr Implementation Notes
 
-Retrieve both values and compare. For scalar types (Integer, Real, Text, Boolean, Date, Time), use standard 4D comparison operators. For Objects, use `JSON Stringify` on both and compare the resulting text (this handles recursive comparison). For Collections (arrays), compare element-by-element after checking length equality. For BLOBs and Pictures referenced via `blob:N`/`pic:N`, retrieve the actual binary data from the parallel arrays and compare. Text comparison for character arrays should use the `=` operator which is case-insensitive and diacritical-insensitive in 4D by default.
+Retrieve both values and compare. For scalar types (Integer, Real, Text, Boolean, Date, Time), use standard 4D comparison operators. For Objects, use `JSON Stringify` on both and compare the resulting text (this handles recursive comparison). For Collections (arrays), compare element-by-element after checking length equality. For native BLOBs, use `OTr_uEqualBLOBs`; for native Pictures, use `OTr_uEqualPictures`. Text comparison for character arrays should use the `=` operator which is case-insensitive and diacritical-insensitive in 4D by default.
 
 #### See Also
 
@@ -473,7 +473,7 @@ If either object handle is not valid, or if the source item does not exist, or i
 
 #### OTr Implementation Notes
 
-Read the source property value and write it to the destination property. For embedded objects (Object type), perform a deep copy using `OB Copy` to ensure independence. For BLOB and Picture references (`blob:N`, `pic:N`), allocate a new slot in the parallel array, copy the binary data, and store the new reference string in the destination. For all other types, a simple property copy suffices. Use `OTr_zResolvePath` on both source and destination paths.
+Read the source property value and write it to the destination property. For embedded objects (Object type), perform a deep copy using `OB Copy` to ensure independence. For native BLOBs and Pictures, `OB Copy` on the parent object (or direct `OB Get`/`OB SET`) produces an independent copy of the binary data automatically. For all other types, a simple property copy suffices. Use `OTr_zResolvePath` on both source and destination paths.
 
 #### See Also
 
@@ -540,7 +540,7 @@ If `$handle_i` is not a valid object handle or `$tag_t` refers to an item that d
 
 #### OTr Implementation Notes
 
-Use `OTr_zResolvePath` to navigate to the parent object, then remove the leaf property via `OB REMOVE`. Before removal, check whether the property value is a BLOB or Picture reference (`blob:N`, `pic:N`) and release the corresponding slot in the parallel array. If the property is an embedded object, recursively scan its properties for any `blob:` or `pic:` references and release those slots as well. This mirrors the cleanup logic described in §3.7 of the parent specification for `OTr_Clear`.
+Use `OTr_zResolvePath` to navigate to the parent object, then remove the leaf property via `OB REMOVE`. Native Object properties — including BLOBs and Pictures — are released automatically when removed. If the property is an embedded object, its properties (including any nested binary values) are released transitively when the parent is removed.
 
 #### See Also
 
