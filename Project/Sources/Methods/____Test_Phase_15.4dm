@@ -176,8 +176,9 @@ $fail_i:=0
 
 $otMain_i:=OT New
 $otrMain_i:=OTr_New
+$testNumber_t:=""
 
-// APPEND TO ARRAY($rows_at; "|---|---|---|---|---|")
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+"Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$LF)  // Header line
 
 READ PICTURE FILE:C678(Get 4D folder:C485(Current resources folder:K5:16)+"images"+Folder separator:K24:12+"Wombat.png"; $wombat_pic)
 // 1x1 black PNG (shared by picture tests)
@@ -190,6 +191,7 @@ READ PICTURE FILE:C678(Get 4D folder:C485(Current resources folder:K5:16)+"image
 //MARK:- 1. Creation / Destruction
 // ====================================================
 $testName_t:="Creation / destruction"
+$testNumber_t:="1"
 $otCmd_t:="OT New / OT Clear"
 $otrCmd_t:="OTr_New / OTr_Clear"
 $otResult_t:="Fail: not run"
@@ -223,14 +225,14 @@ Else
 	$fail_i:=$fail_i+1
 End if 
 
-APPEND TO ARRAY:C911($rows_at; $TAB+"Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$LF)  // Header line
 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 2. String / Text
 // ====================================================
 $testName_t:="String / Text"
+$testNumber_t:="2"
 $otCmd_t:="OT PutString / OT GetString"
 $otrCmd_t:="OTr_PutString / OTr_GetString"
 $otResult_t:="Fail: not run"
@@ -258,12 +260,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 3. Longint
 // ====================================================
 $testName_t:="Longint"
+$testNumber_t:="3"
 $otCmd_t:="OT PutLong / OT GetLong"
 $otrCmd_t:="OTr_PutLong / OTr_GetLong"
 $otResult_t:="Fail: not run"
@@ -291,12 +294,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 4. Real
 // ====================================================
 $testName_t:="Real"
+$testNumber_t:="4"
 $otCmd_t:="OT PutReal / OT GetReal"
 $otrCmd_t:="OTr_PutReal / OTr_GetReal"
 $otResult_t:="Fail: not run"
@@ -324,12 +328,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 5. Boolean
 // ====================================================
 $testName_t:="Boolean"
+$testNumber_t:="5"
 $otCmd_t:="OT PutBoolean / OT GetBoolean"
 $otrCmd_t:="OTr_PutBoolean / OTr_GetBoolean"
 $otResult_t:="Fail: not run"
@@ -357,12 +362,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 6. Date
 // ====================================================
 $testName_t:="Date"
+$testNumber_t:="6"
 $otCmd_t:="OT PutDate / OT GetDate"
 $otrCmd_t:="OTr_PutDate / OTr_GetDate"
 $otResult_t:="Fail: not run"
@@ -391,12 +397,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 7. Time
 // ====================================================
 $testName_t:="Time"
+$testNumber_t:="7"
 $otCmd_t:="OT PutTime / OT GetTime"
 $otrCmd_t:="OTr_PutTime / OTr_GetTime"
 $otResult_t:="Fail: not run"
@@ -425,12 +432,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 8. Pointer
 // ====================================================
 $testName_t:="Pointer"
+$testNumber_t:="8"
 $otCmd_t:="OT PutPointer / OT GetPointer"
 $otrCmd_t:="OTr_PutPointer / OTr_GetPointer"
 $otResult_t:="Fail: not run"
@@ -466,12 +474,13 @@ If (($otResult_t="Pass") & (Substring:C12($otrResult_t; 1; 4)="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
-//MARK:- 9. Picture
+//MARK:- 9. Picture (empty picture)
 // ====================================================
-$testName_t:="Picture"
+$testName_t:="Picture (empty picture)"
+$testNumber_t:="9"
 $otCmd_t:="OT PutPicture / OT GetPicture"
 $otrCmd_t:="OTr_PutPicture / OTr_GetPicture"
 $otResult_t:="Fail: not run"
@@ -499,12 +508,22 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+
+// ====================================================
+//MARK:- 9a. Picture (wombat)
+// ====================================================
+$testName_t:="Picture (wombat)"
+$testNumber_t:="9a"
+
+// Isert test here
+
 
 // ====================================================
 //MARK:- 10. BLOB
 // ====================================================
 $testName_t:="BLOB"
+$testNumber_t:="10"
 $otCmd_t:="OT PutBLOB / OT GetNewBLOB"
 $otrCmd_t:="OTr_PutBLOB / OTr_GetNewBLOB"
 $otResult_t:="Fail: not run"
@@ -533,12 +552,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 11. Variable
 // ====================================================
 $testName_t:="Variable"
+$testNumber_t:="11"
 $otCmd_t:="OT PutVariable / OT GetVariable"
 $otrCmd_t:="OTr_PutVariable / OTr_GetVariable"
 $otResult_t:="Fail: not run"
@@ -570,12 +590,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 12. Record  (Intentional difference §4.3)
 // ====================================================
 $testName_t:="Record"
+$testNumber_t:="12"
 $otCmd_t:="OT PutRecord / OT GetRecord"
 $otrCmd_t:="OTr_PutRecord / OTr_GetRecord"
 $otResult_t:="Fail: not run"
@@ -621,12 +642,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 13. Dot-path
 // ====================================================
 $testName_t:="Dot-path"
+$testNumber_t:="13"
 $otCmd_t:="OT PutString (dotted) / OT GetString"
 $otrCmd_t:="OTr_PutString (dotted) / OTr_GetString"
 $otResult_t:="Fail: not run"
@@ -654,12 +676,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 14. Array Longint
 // ====================================================
 $testName_t:="Array Longint"
+$testNumber_t:="14"
 $otCmd_t:="OT PutArrayLong / OT GetArrayLong"
 $otrCmd_t:="OTr_PutArrayLong / OTr_GetArrayLong"
 $otResult_t:="Fail: not run"
@@ -693,12 +716,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 15. Array Text
 // ====================================================
 $testName_t:="Array Text"
+$testNumber_t:="15"
 $otCmd_t:="OT PutArrayString / OT GetArrayString"
 $otrCmd_t:="OTr_PutArrayString / OTr_GetArrayString"
 $otResult_t:="Fail: not run"
@@ -730,12 +754,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 16. Array Real
 // ====================================================
 $testName_t:="Array Real"
+$testNumber_t:="16"
 $otCmd_t:="OT PutArrayReal / OT GetArrayReal"
 $otrCmd_t:="OTr_PutArrayReal / OTr_GetArrayReal"
 $otResult_t:="Fail: not run"
@@ -767,12 +792,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 17. Array Boolean
 // ====================================================
 $testName_t:="Array Boolean"
+$testNumber_t:="17"
 $otCmd_t:="OT PutArrayBoolean / OT GetArrayBoolean"
 $otrCmd_t:="OTr_PutArrayBoolean / OTr_GetArrayBoolean"
 $otResult_t:="Fail: not run"
@@ -804,16 +830,13 @@ If (($otResult_t="Pass") & ($otrResult_t="Pass"))
 Else 
 	$fail_i:=$fail_i+1
 End if 
-APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 
 // ====================================================
 //MARK:- 18. Array Pointer
 // ====================================================
-
-// Modified by: Guy Algot (4/3/26)
-// skipped for now
-
 $testName_t:="Array Pointer"
+$testNumber_t:="18"
 $otCmd_t:="OT PutArrayPointer / OT GetArrayPointer"
 $otrCmd_t:="OTr_PutArrayPointer / OTr_GetArrayPointer"
 $otResult_t:="Fail: not run"
@@ -863,12 +886,13 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
-	//MARK:- 19. Array Picture
+	//MARK:- 19. Array Picture (empty picture)
 	// ====================================================
-	$testName_t:="Array Picture"
+	$testName_t:="Array Picture (empty picture)"
+	$testNumber_t:="19"
 	$otCmd_t:="OT PutArrayPicture / OT GetArrayPicture"
 	$otrCmd_t:="OTr_PutArrayPicture / OTr_GetArrayPicture"
 	$otResult_t:="Fail: not run"
@@ -903,12 +927,21 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	
+	// ====================================================
+	//MARK:- 19a. Array Picture (wombat)
+	// ====================================================
+	$testName_t:="Array Picture (wombat)"
+	$testNumber_t:="19a"
+	
+	// Insert test here
 	
 	// ====================================================
 	//MARK:- 20. Item info
 	// ====================================================
 	$testName_t:="Item info"
+	$testNumber_t:="20"
 	$otCmd_t:="OT ItemExists / OT ItemType"
 	$otrCmd_t:="OTr_ItemExists / OTr_ItemType"
 	$otResult_t:="Fail: not run"
@@ -936,12 +969,13 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
 	//MARK:- 21. Item count
 	// ====================================================
 	$testName_t:="Item count"
+	$testNumber_t:="21"
 	$otCmd_t:="OT ItemCount"
 	$otrCmd_t:="OTr_ItemCount"
 	$otResult_t:="Fail: not run"
@@ -984,12 +1018,13 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
 	//MARK:- 22. Property enumeration
 	// ====================================================
 	$testName_t:="Property enumeration"
+	$testNumber_t:="22"
 	$otCmd_t:="OT GetAllProperties"
 	$otrCmd_t:="OTr_GetAllProperties"
 	$otResult_t:="Fail: not run"
@@ -1027,12 +1062,13 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
 	//MARK:- 23. Delete / Rename
 	// ====================================================
 	$testName_t:="Delete / rename"
+	$testNumber_t:="23"
 	$otCmd_t:="OT DeleteItem / OT RenameItem"
 	$otrCmd_t:="OTr_DeleteItem / OTr_RenameItem"
 	$otResult_t:="Fail: not run"
@@ -1070,12 +1106,13 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
 	//MARK:- 24. Copy
 	// ====================================================
 	$testName_t:="Copy"
+	$testNumber_t:="24"
 	$otCmd_t:="OT CopyItem"
 	$otrCmd_t:="OTr_CopyItem"
 	$otResult_t:="Fail: not run"
@@ -1110,10 +1147,11 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
 	//MARK:- 25. Size of array
+	$testNumber_t:="25"
 	// ====================================================
 	$testName_t:="Size of array"
 	$otCmd_t:="OT SizeOfArray"
@@ -1147,12 +1185,13 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
 	//MARK:- 26. Sort arrays
 	// ====================================================
 	$testName_t:="Sort arrays"
+	$testNumber_t:="26"
 	$otCmd_t:="OT SortArrays"
 	$otrCmd_t:="OTr_SortArrays"
 	$otResult_t:="Fail: not run"
@@ -1197,12 +1236,13 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
 	//MARK:- 27. Object size  (Intentional difference §4.3)
 	// ====================================================
 	$testName_t:="Object size"
+	$testNumber_t:="27"
 	$otCmd_t:="OT ObjectSize"
 	$otrCmd_t:="OTr_ObjectSize"
 	$otResult_t:="Fail: not run"
@@ -1229,12 +1269,13 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
 	//MARK:- 28. BLOB serialisation (Intentional diff §4.3)
 	// ====================================================
 	$testName_t:="BLOB serialisation"
+	$testNumber_t:="28"
 	$otCmd_t:="OT ObjectToBLOB / OT BLOBToObject"
 	$otrCmd_t:="OTr_ObjectToNewBLOB / OTr_BLOBToObject"
 	$otResult_t:="Fail: not run"
@@ -1275,12 +1316,13 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	//// ====================================================
 	////MARK:- 29. Text export / import (Intentional diff §4.3)
 	//// ====================================================
 	//$testName_t:="Text export / import"
+	//$testNumber_t:="29"
 	//$otCmd_t:="OT SaveToText / OT LoadFromText"
 	//$otrCmd_t:="OTr_SaveToText / OTr_LoadFromText"
 	//$otResult_t:="Fail: not run"
@@ -1310,12 +1352,13 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	//Else 
 	//$fail_i:=$fail_i+1
 	//End if 
-	//APPEND TO ARRAY($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	//APPEND TO ARRAY($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
 	//MARK:- 30. Version
 	// ====================================================
 	$testName_t:="Version"
+	$testNumber_t:="30"
 	$otCmd_t:="OT GetVersion"
 	$otrCmd_t:="OTr_GetVersion"
 	$otResult_t:="Fail: not run"
@@ -1342,12 +1385,13 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
 	//MARK:- 31. Options
 	// ====================================================
 	$testName_t:="Options"
+	$testNumber_t:="31"
 	$otCmd_t:="OT GetOptions / OT SetOptions"
 	$otrCmd_t:="OTr_GetOptions / OTr_SetOptions"
 	$otResult_t:="Fail: not run"
@@ -1380,7 +1424,7 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-	APPEND TO ARRAY:C911($rows_at; $TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
+	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
 	
 	// ====================================================
 	//MARK:- TEARDOWN
