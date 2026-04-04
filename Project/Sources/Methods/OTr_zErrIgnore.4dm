@@ -15,4 +15,4 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-#DECLARE()
+//#DECLARE()
