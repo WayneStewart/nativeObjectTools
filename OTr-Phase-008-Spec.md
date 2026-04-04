@@ -39,9 +39,9 @@ Replace both methods with a single `OTr_u_AccessArrayElement` method that accept
 
 ---
 
-## 2. New Constant Theme: OTr Access Mode
+## 2. New Constant Theme: OTr Array Access Mode
 
-A new constant theme `OTr Access Mode` is added to the XLF resource file.
+A new constant theme `OTr Array Access Mode` is added to the XLF resource file.
 
 | Constant Name | Value | Meaning |
 |---|---|---|
