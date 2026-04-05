@@ -15,6 +15,8 @@
 
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-05 - Sets OK to 0 on invalid handle so callers
+//   inherit correct error-state OK without individual edits.
 // ----------------------------------------------------
 
 #DECLARE($handle_i : Integer)->$isValid_b : Boolean
@@ -22,14 +24,18 @@
 
 $isValid_b:=False:C215
 
-Case of 
+Case of
 	: ($handle_i<=0)
-		
+		OTr_zSetOK(0)
+
 	: ($handle_i>Size of array:C274(<>OTR_InUse_ab))
-		
-	Else 
+		OTr_zSetOK(0)
+
+	Else
 		$isValid_b:=<>OTR_InUse_ab{$handle_i}
-		
-		
-End case 
+		If (Not:C34($isValid_b))
+			OTr_zSetOK(0)
+		End if
+
+End case
 
