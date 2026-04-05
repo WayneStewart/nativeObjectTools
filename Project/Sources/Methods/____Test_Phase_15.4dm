@@ -1,4 +1,8 @@
 //%attributes = {"invisible":true,"shared":false}
+
+// Entire method commented out to allow for compiling when plugin is not present.
+
+/*
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_15.4dm
 
@@ -180,7 +184,8 @@ $testNumber_t:=""
 
 APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+"Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$LF)  // Header line
 
-READ PICTURE FILE:C678(Get 4D folder:C485(Current resources folder:K5:16)+"images"+Folder separator:K24:12+"Wombat.png"; $wombat_pic)
+$wombat_pic:=OTr_z_Wombat
+
 // 1x1 black PNG (shared by picture tests)
 //$pngB64_t:="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
 //CONVERT FROM TEXT($pngB64_t; "US-ASCII"; $pngBlob_blob)
@@ -1498,3 +1503,6 @@ If ((OK=1) & ($gotPtr_ptr#Null:C1517))
 	SET TEXT TO PASTEBOARD:C523($tableText_t)
 	
 End if 
+
+
+*/

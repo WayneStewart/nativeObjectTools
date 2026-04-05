@@ -106,28 +106,28 @@ If (False:C215)
 	
 	C_LONGINT:C283(OTr_SaveToClipboard; $1)
 	C_BOOLEAN:C305(OTr_SaveToClipboard; $2)
-
+	
 	C_LONGINT:C283(OTr_SaveToBlob; $1)
 	C_BLOB:C604(OTr_SaveToBlob; $0)
-
+	
 	C_LONGINT:C283(OTr_SaveToGZIP; $1)
 	C_BOOLEAN:C305(OTr_SaveToGZIP; $2)
 	C_BLOB:C604(OTr_SaveToGZIP; $0)
-
+	
 	C_TEXT:C284(OTr_LoadFromText; $1)
 	C_LONGINT:C283(OTr_LoadFromText; $0)
-
+	
 	C_LONGINT:C283(OTr_LoadFromClipboard; $0)
-
+	
 	C_TEXT:C284(OTr_LoadFromFile; $1)
 	C_LONGINT:C283(OTr_LoadFromFile; $0)
-
+	
 	C_BLOB:C604(OTr_LoadFromBlob; $1)
 	C_LONGINT:C283(OTr_LoadFromBlob; $0)
-
+	
 	C_BLOB:C604(OTr_LoadFromGZIP; $1)
 	C_LONGINT:C283(OTr_LoadFromGZIP; $0)
-
+	
 	C_LONGINT:C283(OTr_SetOptions; $1)
 	
 	C_LONGINT:C283(OTr_Copy; $0)
@@ -139,6 +139,8 @@ If (False:C215)
 	
 	C_BOOLEAN:C305(OTr_zIsValidHandle; $0)
 	C_LONGINT:C283(OTr_zIsValidHandle; $1)
+	
+	C_LONGINT:C283(OTr_New; $0)
 	
 	C_LONGINT:C283(OTr_Clear; $1)
 	
@@ -194,11 +196,11 @@ If (False:C215)
 	C_OBJECT:C1216(OTr_zMapType; $1)
 	C_TEXT:C284(OTr_zMapType; $2)
 	
-
+	
 	C_LONGINT:C283(OTr_Register; $0)
 	C_TEXT:C284(OTr_Register; $1)
 	
-	C_LONGINT:C283(OTr_New; $0)
+	C_LONGINT:C283(OTr; $0)
 	
 	C_POINTER:C301(OTr_GetHandleList; $1)
 	
@@ -311,6 +313,83 @@ If (False:C215)
 	C_LONGINT:C283(OTr_GetArrayPointer; $1; $3)
 	C_TEXT:C284(OTr_GetArrayPointer; $2)
 	
+	C_VARIANT:C1683(OTr_u_AccessArrayElement; $0; $5)
+	C_LONGINT:C283(OTr_u_AccessArrayElement; $1; $3; $4)
+	C_TEXT:C284(OTr_u_AccessArrayElement; $2)
+	
+	C_LONGINT:C283(OTr_GetArrayLong; $0; $1; $3)
+	C_TEXT:C284(OTr_GetArrayLong; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayLong; $1; $3; $4)
+	C_TEXT:C284(OTr_PutArrayLong; $2)
+	
+	C_REAL:C285(OTr_GetArrayReal; $0)
+	C_LONGINT:C283(OTr_GetArrayReal; $1; $3)
+	C_TEXT:C284(OTr_GetArrayReal; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayReal; $1; $3)
+	C_TEXT:C284(OTr_PutArrayReal; $2)
+	C_REAL:C285(OTr_PutArrayReal; $4)
+	
+	C_TEXT:C284(OTr_GetArrayString; $0; $2)
+	C_LONGINT:C283(OTr_GetArrayString; $1; $3)
+	
+	C_LONGINT:C283(OTr_PutArrayString; $1; $3)
+	C_TEXT:C284(OTr_PutArrayString; $2; $4)
+	
+	C_TEXT:C284(OTr_GetArrayText; $0; $2)
+	C_LONGINT:C283(OTr_GetArrayText; $1; $3)
+	
+	C_LONGINT:C283(OTr_PutArrayText; $1; $3)
+	C_TEXT:C284(OTr_PutArrayText; $2; $4)
+	
+	C_DATE:C307(OTr_GetArrayDate; $0)
+	C_LONGINT:C283(OTr_GetArrayDate; $1; $3)
+	C_TEXT:C284(OTr_GetArrayDate; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayDate; $1; $3)
+	C_TEXT:C284(OTr_PutArrayDate; $2)
+	C_DATE:C307(OTr_PutArrayDate; $4)
+	
+	C_TIME:C306(OTr_GetArrayTime; $0)
+	C_LONGINT:C283(OTr_GetArrayTime; $1; $3)
+	C_TEXT:C284(OTr_GetArrayTime; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayTime; $1; $3)
+	C_TEXT:C284(OTr_PutArrayTime; $2)
+	C_TIME:C306(OTr_PutArrayTime; $4)
+	
+	C_LONGINT:C283(OTr_GetArrayBoolean; $0; $1; $3)
+	C_TEXT:C284(OTr_GetArrayBoolean; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayBoolean; $1; $3)
+	C_TEXT:C284(OTr_PutArrayBoolean; $2)
+	C_BOOLEAN:C305(OTr_PutArrayBoolean; $4)
+	
+	C_BLOB:C604(OTr_GetArrayBLOB; $0)
+	C_LONGINT:C283(OTr_GetArrayBLOB; $1; $3)
+	C_TEXT:C284(OTr_GetArrayBLOB; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayBLOB; $1; $3)
+	C_TEXT:C284(OTr_PutArrayBLOB; $2)
+	C_BLOB:C604(OTr_PutArrayBLOB; $4)
+	
+	C_PICTURE:C286(OTr_GetArrayPicture; $0)
+	C_LONGINT:C283(OTr_GetArrayPicture; $1; $3)
+	C_TEXT:C284(OTr_GetArrayPicture; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayPicture; $1; $3)
+	C_TEXT:C284(OTr_PutArrayPicture; $2)
+	C_PICTURE:C286(OTr_PutArrayPicture; $4)
+	
+	C_POINTER:C301(OTr_GetArrayPointer; $0)
+	C_LONGINT:C283(OTr_GetArrayPointer; $1; $3)
+	C_TEXT:C284(OTr_GetArrayPointer; $2)
+	
+	C_LONGINT:C283(OTr_PutArrayPointer; $1; $3)
+	C_TEXT:C284(OTr_PutArrayPointer; $2)
+	C_POINTER:C301(OTr_PutArrayPointer; $4)
+	
 	C_LONGINT:C283(OTr_PutPointer; $1)
 	C_TEXT:C284(OTr_PutPointer; $2)
 	C_POINTER:C301(OTr_PutPointer; $3)
@@ -405,16 +484,19 @@ If (False:C215)
 	C_LONGINT:C283(OTr_GetVariable; $1)
 	C_TEXT:C284(OTr_GetVariable; $2)
 	C_POINTER:C301(OTr_GetVariable; $3)
-
+	
 	C_LONGINT:C283(OTr_uMapType; $1; $2; $0)
-
+	
 	C_LONGINT:C283(OTr_ObjectToBLOB; $1; $3)
 	C_POINTER:C301(OTr_ObjectToBLOB; $2)
-
+	
 	C_LONGINT:C283(OTr_ObjectToNewBLOB; $1)
 	C_BLOB:C604(OTr_ObjectToNewBLOB; $0)
-
+	
 	C_BLOB:C604(OTr_BLOBToObject; $1)
 	C_LONGINT:C283(OTr_BLOBToObject; $0)
-
+	
+	C_PICTURE:C286(OTr_z_Wombat; $0)
+	C_PICTURE:C286(OTr_z_Koala; $0)
+	
 End if 
