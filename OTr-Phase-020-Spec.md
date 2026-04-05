@@ -18,7 +18,7 @@
 | ✅ | ✅ | Phase 5 — Complex Types | [OTr-Phase-005-Spec.md](OTr-Phase-005-Spec.md) |
 | ✅ | ✅ | Phase 6 — Import/Export | [OTr-Phase-006-Spec.md](OTr-Phase-006-Spec.md) |
 | ✅ | ✅ | Phase 7 — API Naming Alignment | [OTr-Phase-007-Spec.md](OTr-Phase-007-Spec.md) |
-| ✅ |    | Phase 8 — Unified Array Element Accessor | [OTr-Phase-008-Spec.md](OTr-Phase-008-Spec.md) |
+| ✅ | ✅ | Phase 8 — Unified Array Element Accessor | [OTr-Phase-008-Spec.md](OTr-Phase-008-Spec.md) |
 | ✅ | ✅ | Phase 15 — Side-by-Side Compatibility Testing | [OTr-Phase-015-Spec.md](OTr-Phase-015-Spec.md) |
 |    |    | Phase 100 — Dual Storage Mechanism and Three-Layer Architecture *(post-release)* | [OTr-Phase-100-Spec.md](OTr-Phase-100-Spec.md) |
 

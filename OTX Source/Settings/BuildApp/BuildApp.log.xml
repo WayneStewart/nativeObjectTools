@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<BuildApplicationLog>
+
+  <Log>
+    <MessageType>Error</MessageType>
+    <Target>Demo</Target>
+    <CodeDesc>NO_ERR</CodeDesc>
+    <CodeId>0</CodeId>
+    <Message>Unable to find 4D Volume Desktop.</Message>
+  </Log>
+
+  <Log>
+    <MessageType>Comment</MessageType>
+    <Target>Compilation</Target>
+    <CodeDesc>NO_ERR</CodeDesc>
+    <CodeId>0</CodeId>
+    <Message>Start compilation [2007-09-18T00:57:02]</Message>
+  </Log>
+
+  <Log>
+    <MessageType>Comment</MessageType>
+    <Target>Common</Target>
+    <CodeDesc>NO_ERR</CodeDesc>
+    <CodeId>0</CodeId>
+    <Message>Start copying files : Macintosh HD:Users:waynestewart:Documents:4D:Summit 2007:OTX:OTX_Build:Components:OTX.4dbase:OTX.4DC</Message>
+  </Log>
+
+  <Log>
+    <MessageType>Comment</MessageType>
+    <Target>Common</Target>
+    <CodeDesc>NO_ERR</CodeDesc>
+    <CodeId>0</CodeId>
+    <Message>End copying files : Macintosh HD:Users:waynestewart:Documents:4D:Summit 2007:OTX:OTX_Build:Components:OTX.4dbase:OTX.4DC</Message>
+  </Log>
+
+  <Log>
+    <MessageType>Comment</MessageType>
+    <Target>Application</Target>
+    <CodeDesc>NO_ERR</CodeDesc>
+    <CodeId>0</CodeId>
+    <Message>End compilation [2007-09-18T00:57:03]</Message>
+  </Log>
+
+</BuildApplicationLog>

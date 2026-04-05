@@ -1,15 +1,13 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_GetArrayPointer (inObject; inTag; inIndex) --> Pointer
+// Project Method: OTr_GetArrayPointer_New (inObject; inTag; inIndex) --> Pointer
 
 // Retrieves a single element from a Pointer array item.
 // The stored text is deserialised via OTr_uTextToPointer.
-// Returns a Nil pointer on any error or out-of-range index.
+// Returns a Null pointer on any error or out-of-range index.
 // Note: Pointer values are process-local. A pointer stored
 // from one process may not resolve correctly in another.
-
-// **VERY IMPORTANT NOTE**
-// This command must *NOT* be used with pointeers to local variables.
+// OK is unchanged on success; set to 0 on any failure.
 
 // Access: Shared
 
@@ -19,46 +17,18 @@
 //   $inIndex_i  : Integer : Element index, 1-based; 0 = default element (inIndex)
 
 // Returns:
-//   $result_ptr : Pointer : Element value, or Nil on any failure
+//   $result_ptr : Pointer : Element value, or Null on any failure
 
-// Created by Wayne Stewart, 2026-04-02
+// Created by Wayne Stewart, 2026-04-05
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
-// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_ptr : Pointer
 
-var $parent_o : Object
-var $arrayObj_o : Object
-var $leafKey_t : Text
-var $arrayType_i : Integer
+var $raw_v : Variant
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
-		->$parent_o; ->$leafKey_t))
-		If (OB Is defined:C1231($parent_o; $leafKey_t))
-			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
-			$arrayType_i:=OTr_zArrayType($arrayObj_o)
-			If ($arrayType_i=Pointer array:K8:23)
-				If (($inIndex_i>=0) & ($inIndex_i<=$arrayObj_o.numElements))
-					If (OB Is defined:C1231($arrayObj_o; String:C10($inIndex_i)))
-						$result_ptr:=OTr_uTextToPointer($arrayObj_o[String:C10($inIndex_i)])
-						OTr_zSetOK  // (1)
-					Else 
-						OTr_zSetOK  // (0)
-					End if 
-				Else 
-					OTr_zSetOK  // (0)
-				End if 
-			Else 
-				OTr_zError("Tag does not reference a Pointer array"; Current method name:C684)
-				OTr_zSetOK  // (0)
-			End if 
-		Else 
-			OTr_zSetOK  // (0)
-		End if 
-	End if 
-Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
-	OTr_zSetOK  // (0)
-End if 
+$result_ptr := Null
+$raw_v := OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Pointer array)
+If (Value type($raw_v) # Is undefined)
+	$result_ptr := OTr_uTextToPointer($raw_v)
+End if

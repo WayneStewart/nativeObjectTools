@@ -443,6 +443,8 @@ Else
 	$failures_t:=$failures_t+"FindInArray Text — not found should return -1"+Char:C90(Carriage return:K15:38)
 End if 
 
+OTr_SaveToClipboard($h_i)
+
 // ====================================================
 //MARK:- OTr_FindInArray — LongInt
 // ====================================================
