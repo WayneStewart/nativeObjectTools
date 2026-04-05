@@ -22,4 +22,6 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_t : Text
 
-$result_t := OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Text array)
+OK:=1
+
+$result_t:=OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Text array:K8:16)

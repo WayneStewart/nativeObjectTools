@@ -1,1 +1,0 @@
-﻿Dict_IsValid (dict ID) --> Boolean    Checks whether a dictionary reference is valid.    Parameters:     $1 : Longint : Dictionary ID    Returns:     $0 : Boolean : True if the dictionary reference is valid

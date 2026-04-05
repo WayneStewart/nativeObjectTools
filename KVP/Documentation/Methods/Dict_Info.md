@@ -1,1 +1,0 @@
-﻿Dict_Info (label) --> Text    Returns requested information.   See the Fnd_Gen_ComponentInfo method for more information.    Parameters:     $1 : Text : Info desired ("version" or "name")    Returns:     $0 : Text : Response

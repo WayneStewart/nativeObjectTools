@@ -22,6 +22,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_blob : Blob)
 
+OK:=1
 var $encoded_t : Text
 
 $encoded_t := OTr_uBlobToText($inValue_blob)

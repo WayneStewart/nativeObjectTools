@@ -1,1 +1,0 @@
-﻿Dict_SetPointer (dict ID; key; Pointer value)    Assigns a value to a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text    : Key name    $3 : Pointer : Value to store    NB. The actual pointer is not saved but a   reference to the pointer is saved based on  the variable name or Table/Field number.

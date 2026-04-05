@@ -1,1 +1,0 @@
-﻿Dict_Copy (dict ID {; new name}) --> New Dictionary ID  This method will copy a Dict dictionary into a new dictionary  If a new name is not supplied a default name will be  provided.    Parameters:    $1 : Long : Dictionary to copy ID     $2 : Text : New Dictionary Name (optional)    Returns:    $0 : Long : New Dictionary ID    

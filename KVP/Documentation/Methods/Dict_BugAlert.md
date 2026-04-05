@@ -1,1 +1,0 @@
-﻿Dict_BugAlert (method {; details})    PRIVATE METHOD  The alert for displaying code bugs.    Parameters:     $1 : Text : Method name     $2 : Text : Details about the problem (optional))

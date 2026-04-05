@@ -1,1 +1,0 @@
-﻿KVP_Real (Key {; Real value}) --> Real     Assigns a Real value to a key-value pair.  It will also return the Real value    Parameters:     $1 : Text : Key name    $2 : Real : Value to store (optional)    Returns:     $0 : Real : Value stored

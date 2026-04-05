@@ -1,1 +1,0 @@
-﻿Dict_RetainCount (dict ID) --> Longint    Returns the retain count for a dictionary    Parameters:     $1 : Longint : Dictionary ID    Returns:     $0 : Longint : Retain count 

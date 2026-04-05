@@ -22,6 +22,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_h : Time)
 
+OK:=1
 var $encoded_t : Text
 
 $encoded_t := OTr_uTimeToText($inValue_h)

@@ -1,1 +1,0 @@
-﻿Dict_SetBoolean (dict ID; key; Boolean value)    Assigns a Boolean value to a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    $3 : Boolean : Value to store

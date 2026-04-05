@@ -1,1 +1,0 @@
-﻿Dict_SaveToText (dict ID)    Saves a dictionary to a text variable.  It is in the format of an XML document.    Parameters:     $1 : Longint : Dictionary ID    Returns:    $0 : Text : Text variable to receive dictionary

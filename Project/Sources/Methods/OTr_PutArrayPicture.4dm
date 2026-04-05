@@ -22,6 +22,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_pic : Picture)
 
+OK:=1
 OTr_zLock
 OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Picture array; $inValue_pic)
 OTr_zUnlock

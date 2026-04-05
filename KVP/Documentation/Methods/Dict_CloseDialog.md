@@ -1,1 +1,0 @@
-﻿Dict_CloseDialog (Close Now)    Call this method with the parameter True to close   the usage display dialog which is opened Dict_DisplayUsage.    You should call this method in your On Quit method to  allow 4D to close the window ( & process ) automatically.    Parameters:     $1 : Boolean : Close window

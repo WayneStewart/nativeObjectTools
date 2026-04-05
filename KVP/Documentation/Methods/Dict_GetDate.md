@@ -1,1 +1,0 @@
-﻿Dict_GetDate (dict ID; key) --> Date    Returns the value from a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    Returns:     $0 : Date : The key's value

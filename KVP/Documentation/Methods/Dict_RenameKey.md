@@ -1,1 +1,0 @@
-﻿Dict_RenameKey (dict ID; key; new key name)    Renames the key tag value    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    $3 : Text : New key name

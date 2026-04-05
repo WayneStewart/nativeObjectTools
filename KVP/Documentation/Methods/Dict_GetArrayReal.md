@@ -1,1 +1,0 @@
-﻿Dict_GetArrayReal (dict ID; Key name; Where) -> Real    Dict_GetArrayReal retrieves the value stored at  index location Where in the array Key name     Parameters:    $1 : Longint : Dictionary ID    $2 : Text    : Key name    $3 : Longint : Element to retrieve      Returns:    $0 : Real : The retrieved element

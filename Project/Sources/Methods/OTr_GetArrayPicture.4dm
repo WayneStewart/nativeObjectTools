@@ -23,4 +23,5 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_pic : Picture
 
+OK:=1
 $result_pic := OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Picture array)

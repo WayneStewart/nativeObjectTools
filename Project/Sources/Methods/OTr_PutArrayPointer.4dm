@@ -24,6 +24,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_ptr : Pointer)
 
+OK:=1
 var $encoded_t : Text
 
 $encoded_t := OTr_uPointerToText($inValue_ptr)

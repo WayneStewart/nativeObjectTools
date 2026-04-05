@@ -1,1 +1,0 @@
-﻿Dict_ID (name) --> Number    Returns the reference number of the   dictionary with the specified name.  Returns 0 if the dictionary does not exist.    Note this is identical to Dict_Named  Parameters:     $1 : Text : A dictionary name    Returns:     $0 : Longint : The dictionary's reference number

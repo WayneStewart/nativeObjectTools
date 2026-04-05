@@ -1,1 +1,0 @@
-﻿Dict_ItemCount (dict ID) --> Number    Returns the number of items in a dictionary.    Parameters:     $1 : Longint : Dictionary ID    Returns:     $0 : Longint : Item count

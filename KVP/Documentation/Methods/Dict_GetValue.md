@@ -1,1 +1,0 @@
-﻿Dict_GetValue (dict ID; key) --> Text    Returns the value from a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    Returns:     $0 : Text : The key's value as text

@@ -1,1 +1,0 @@
-﻿Dict_LoadFromBlob (->blob) --> Longint    Loads a dictionary from a BLOB.    Parameters:     $1 : Pointer : Dictionary as blob    Returns:     $0 : Longint : Dictionary ID

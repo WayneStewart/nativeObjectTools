@@ -27,7 +27,6 @@
 		"methods": [
 			"__WriteDocumentation",
 			"Compiler_Helpers",
-			"Dict_CheckHostMethods",
 			"Fnd_FCS_ParseParameterLine",
 			"Fnd_FCS_WriteDocumentation"
 		]

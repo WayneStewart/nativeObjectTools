@@ -1,1 +1,0 @@
-﻿Dict_GetArrayDate (dict ID; Key name; Where) -> Date    Dict_GetArrayDate retrieves the value stored at  index location Where in the array Key name     Parameters:    $1 : Longint : Dictionary ID    $2 : Text    : Key name    $3 : Longint : Element to retrieve      Returns:    $0 : Date : The retrieved element

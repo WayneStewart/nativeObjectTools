@@ -1,1 +1,0 @@
-﻿Dict_Key (dict ID; key number) --> Text    Returns the nth key from a dictionary.    Access: Private    Parameters:     $1 : Longint : Dictionary ID    $2 : Longint : Key number    Returns:     $0 : Text : The key's value as text

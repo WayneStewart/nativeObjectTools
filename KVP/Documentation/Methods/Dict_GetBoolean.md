@@ -1,1 +1,0 @@
-﻿Dict_GetBoolean (dict ID; key) --> Boolean    Returns a Boolean value from a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    Returns:     $0 : Boolean : The key's value

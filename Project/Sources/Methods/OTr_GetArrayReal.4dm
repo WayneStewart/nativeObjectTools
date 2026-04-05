@@ -22,4 +22,5 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_r : Real
 
+OK:=1
 $result_r := OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Real array)

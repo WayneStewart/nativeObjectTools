@@ -1,1 +1,0 @@
-﻿Dict_GetReal (dict ID; key) --> Real    Returns the value from a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    Returns:     $0 : Real : The key's value

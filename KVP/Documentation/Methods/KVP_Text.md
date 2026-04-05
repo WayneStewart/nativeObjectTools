@@ -1,1 +1,0 @@
-﻿KVP_Text (Key {; Text value}) --> Text     Assigns a Text value to a key-value pair.  It will also return the Text value    Parameters:     $1 : Text : Key name    $2 : Text : Value to store (optional)    Returns:     $0 : Text : Value stored

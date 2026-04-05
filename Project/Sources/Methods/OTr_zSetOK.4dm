@@ -17,19 +17,22 @@
 //   $OK : Integer : The state for the OK variable
 
 // Created by Wayne Stewart (2026-04-02)
+// Wayne Stewart, 2026-04-05 - Implemented host-database OK propagation.
 // ----------------------------------------------------
 
 #DECLARE($newOK : Integer)->$OK : Integer
 
+OTr_zInit  // Make certain everything is initalised
+
 If (Count parameters:C259=1)
 	OK:=$newOK
+	
+	If (Storage:C1525.OTr.structureName="nativeObjectTools")
+	Else 
+		EXECUTE METHOD:C1007("OT Host CheckVariable"; *; "OK"; String:C10($newOK))
+	End if 
+	
 End if 
-
-// Alert HOST database
-
-
-//  Still to be written
-
 
 $OK:=OK
 

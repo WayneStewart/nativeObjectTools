@@ -1,1 +1,0 @@
-﻿KVP_Blob (Key {; Blob value}) --> Blob     Assigns a Blob value to a key-value pair.  It will also return the Blob value    Parameters:     $1 : Text : Key name    $2 : Blob : Value to store (optional)    Returns:     $0 : Blob : Value stored    NB.  Blob & Picture values cannot be saved as  part of Dictionary saved via Dict_Save to an   external file or Blob.

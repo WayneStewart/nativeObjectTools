@@ -1,1 +1,0 @@
-﻿Dict_Load (->blob or path)    Load a dictionary from either a blob or a file    Access: Private    Parameters:     $1 : Pointer : Dictionary or path    Returns:     $0 : Longint : Dictionary ID

@@ -1,1 +1,0 @@
-﻿Dict_Values (dict ID; ->array)    Fills an array with the values in a dictionary.    Parameters:     $1 : Longint : Dictionary ID    $2 : Pointer : Array to receive values

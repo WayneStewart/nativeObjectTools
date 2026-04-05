@@ -1,1 +1,0 @@
-﻿KVP_Date (Key {; Date value}) --> Date     Assigns a Date value to a key-value pair.  It will also return the Date value    Parameters:     $1 : Text : Key name    $2 : Date : Value to store (optional)    Returns:     $0 : Date : Value stored

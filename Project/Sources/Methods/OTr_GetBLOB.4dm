@@ -39,5 +39,6 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outBLOB_blob : Blob)
 
+OK:=1
 OTr_zError("OTr_GetBLOB is not implemented. Use OTr_GetNewBLOB instead."; Current method name)
 OTr_zSetOK(0)

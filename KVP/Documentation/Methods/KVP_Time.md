@@ -1,1 +1,0 @@
-﻿KVP_Time (Key {; Time value}) --> Time     Assigns a Time value to a key-value pair.  It will also return the Time value    Parameters:     $1 : Text : Key name    $2 : Time : Value to store (optional)    Returns:     $0 : Time : Value stored

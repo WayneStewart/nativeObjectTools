@@ -1,1 +1,0 @@
-﻿Dict_Remove (dict ID; key)    Removes key(s) from a dictionary.  Note a wildcard can be used on the key to remove  several keys.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name

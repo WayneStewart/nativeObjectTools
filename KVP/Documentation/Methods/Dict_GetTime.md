@@ -1,1 +1,0 @@
-﻿Dict_GetTime (dict ID; key) --> Time    Returns the value from a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    Returns:     $0 : Time : The key's value

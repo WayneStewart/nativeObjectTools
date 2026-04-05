@@ -166,6 +166,9 @@ End if
 //MARK:- OTr_PutArrayLong / OTr_GetArrayLong
 // ====================================================
 
+// Re-establish OK=1 precondition (previous section intentionally left OK=0)
+OTr_zSetOK(1)
+
 // Rebuild a known 5-element LongInt array
 ARRAY LONGINT:C221($longArr_ai; 5)
 For ($i_i; 1; 5)

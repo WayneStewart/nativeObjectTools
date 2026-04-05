@@ -1,1 +1,0 @@
-﻿Dict_SetPicture (dict ID; key; Picture)    Assigns a Picture to a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    $3 : Picture : Picture to store    NB.  Blob & Picture values cannot be saved as  part of Dictionary saved via Dict_Save to an   external file or Blob.

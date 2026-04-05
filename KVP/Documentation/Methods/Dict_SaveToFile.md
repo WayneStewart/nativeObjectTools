@@ -1,1 +1,0 @@
-﻿Dict_SaveToFile (dict ID; path)    Saves a dictionary as a file.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Path to the file to create (or update)

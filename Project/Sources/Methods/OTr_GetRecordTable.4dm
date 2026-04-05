@@ -36,6 +36,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_i : Integer
 
+OK:=1
 var $parent_o : Object
 var $leafKey_t : Text
 var $snapshot_o : Object

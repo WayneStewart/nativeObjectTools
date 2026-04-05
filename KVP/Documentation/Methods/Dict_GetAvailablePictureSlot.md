@@ -1,1 +1,0 @@
-﻿Dict_GetAvailablePictureSlot (Key) -> Array Position    This method will return an array position   that a picture can be stored in.    PRIVATE METHOD  Parameters:     $1 : Text : Key to store picture with    Returns:    $0 : Longint : The array position

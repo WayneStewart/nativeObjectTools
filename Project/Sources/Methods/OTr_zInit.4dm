@@ -10,6 +10,7 @@
 
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-05 - Added OTr_z_CheckHostMethods call for host propagation setup.
 // ----------------------------------------------------
 
 
@@ -30,6 +31,7 @@ If (Storage:C1525.OTr=Null:C1517)
 			"nativeBlobInObject"; ($ApplicationVersion_i>=1920); \
 			"mechanism"; OTR IP Arrays)
 	End use 
+	OTr_z_CheckHostMethods
 End if 
 
 

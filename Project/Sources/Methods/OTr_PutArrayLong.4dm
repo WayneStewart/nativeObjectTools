@@ -23,6 +23,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_i : Integer)
 
+OK:=1
 OTr_zLock
 OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; LongInt array; $inValue_i)
 OTr_zUnlock

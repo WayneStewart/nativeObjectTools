@@ -25,6 +25,7 @@
 #DECLARE($inSourceObject_i : Integer; $inSourceTag_t : Text; \
 $inDestObject_i : Integer; $inDestTag_t : Text)
 
+OK:=1
 var $srcParent_o : Object
 var $srcLeafKey_t : Text
 var $destParent_o : Object

@@ -1,1 +1,0 @@
-﻿Dict_InsertArrayElement (dict ID; Key name; Where)    Dict_InsertArrayElement inserts an element   into an array in a dictionary at location Where.    The element is given a default value.    Parameters:    $1 : Longint : Dictionary ID    $2 : Text    : Key name    $3 : Longint : insert element at this location

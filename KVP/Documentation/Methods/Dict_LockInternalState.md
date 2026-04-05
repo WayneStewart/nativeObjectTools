@@ -1,1 +1,0 @@
-﻿Dict_LockInternalState (lock?)    Locks the internal state for the dictionary module.    Access: Private    Parameters:     $1 : Boolean : True to Lock, False to Unlock

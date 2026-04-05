@@ -1,1 +1,0 @@
-﻿Dict_GetBlob (dict ID; key) --> Blob    Returns a Blob value from a dictionary given a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    Returns:     $0 : Blob : The key's value

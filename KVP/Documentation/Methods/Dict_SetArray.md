@@ -1,1 +1,0 @@
-﻿Dict_SetArray (dict ID; key; ->array)    Stores an array of values inside a dictionary.    Access: Shared    Parameters:     $1 : Longint : Dictionary ID    $2 : Text    : Key    $3 : Pointer : Array

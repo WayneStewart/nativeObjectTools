@@ -1,1 +1,0 @@
-﻿Dict_FoundationPresent -> Boolean    PRIVATE METHOD    This method will return true if the host database  is also running Foundation.    Returns:     $0 : Boolean : APD Process

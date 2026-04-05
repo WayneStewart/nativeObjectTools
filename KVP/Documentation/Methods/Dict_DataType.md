@@ -1,1 +1,0 @@
-﻿Dict_DataType (dict ID; key name) --> Number    Returns the data type of a key.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text : Key name    Returns:     $0 : Longint : Data type

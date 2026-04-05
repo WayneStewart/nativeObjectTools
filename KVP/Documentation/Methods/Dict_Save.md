@@ -1,1 +1,0 @@
-﻿Dict_Save (dict ID; ->blob or path)    Saves a dictionary as either a blob or a file.    Access Type: Private    Parameters:     $1 : Longint : Dictionary ID    $2 : Pointer : Blob or path

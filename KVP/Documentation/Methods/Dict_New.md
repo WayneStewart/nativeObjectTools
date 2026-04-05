@@ -1,1 +1,0 @@
-﻿Dict_New ({name}) --> Longint    Creates a new dictionary and returns a reference to it.  You may optionally name the dictionary, if you don't  or if a non-unique name is given then a default UNIQUE   name will be given.    Parameters:     $1 : Text : Name (optional)    Returns:     $0 : Longint : Dictionary ID

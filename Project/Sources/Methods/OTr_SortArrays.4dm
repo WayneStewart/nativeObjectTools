@@ -39,6 +39,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag1_t : Text; $inDirection1_t : Text; $inTag2_t : Text; $inDirection2_t : Text; $inTag3_t : Text; $inDirection3_t : Text; $inTag4_t : Text; $inDirection4_t : Text; $inTag5_t : Text; $inDirection5_t : Text; $inTag6_t : Text; $inDirection6_t : Text; $inTag7_t : Text; $inDirection7_t : Text)
 
+OK:=1
 var $pairCount_i; $keyCount_i; $ptrIdx_i : Integer
 var $n_i; $j_i; $slot_i : Integer
 var $continue_b : Boolean

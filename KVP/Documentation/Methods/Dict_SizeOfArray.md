@@ -1,1 +1,0 @@
-﻿Dict_SizeOfArray (dict ID; key)    Returns the size of an array stored in a dictionary.    Parameters:     $1 : Longint : Dictionary ID    $2 : Text    : Key name    Returns:    $0 : Longint : Size of the array

@@ -1,1 +1,0 @@
-﻿Dict_APD_Cleanup (On/Off)    Call this method with the parameter True to start the   automatic cleanup of Anonymous Process Dictionaries.    You should also call this method with False in your   On Quit method in order to kill this process so that  4D can shut down.    Parameters:     $1 : Boolean : Start or stop the APD_Cleanup Process

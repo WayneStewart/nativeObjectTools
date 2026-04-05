@@ -1,1 +1,0 @@
-﻿Dict_ActiveDictionaries (-> ActiveDictionaryNumbers)    Returns an array of IDs of dictionaries that have not been cleared.    Parameters:     $1 : Pointer : Longint array to receive IDs

@@ -23,6 +23,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_d : Date
 
+OK:=1
 var $raw_v : Variant
 
 $raw_v := OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Date array)

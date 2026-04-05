@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project Method: Fnd_FCS_WriteDocumentation {(Method Name or prefix; Write Tooltip; Exclude Private Methods; silent)}
 
@@ -13,7 +13,7 @@
 //  The third parameter - True: Exclude Private methods
 //  The fourth parameter - True: Don't show a final "Finished" alert
 
-// Access: Shared
+// Access: Private
 
 // Parameters:
 //   $MethodName_t : Text : Method Name, Prefix of empty (all methods)

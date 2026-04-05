@@ -25,4 +25,5 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_i : Integer
 
+OK:=1
 $result_i := OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; LongInt array)

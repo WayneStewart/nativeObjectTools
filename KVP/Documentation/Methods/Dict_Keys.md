@@ -1,1 +1,0 @@
-﻿Dict_Keys (dict ID; ->keys array)    Fills an array with the keys in a dictionary.    Parameters:     $1 : Longint : Dictionary ID    $2 : Pointer : Text array
