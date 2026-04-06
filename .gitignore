@@ -105,6 +105,9 @@ Thumbs.db
 # ARM Libraries
 Libraries/*
 
+# Plugins
+/Plugins/
+
 *.dylib
 Project/Sources/Methods/_Testing.4dm
 
