@@ -2,6 +2,7 @@
 
 **Version:** 0.1
 **Date:** 2026-04-04
+**Status:** Future (v2.0 Roadmap)
 **Author:** Wayne Stewart / Claude
 **Parent Document:** [OTr-Specification.md](OTr-Specification.md)
 **Predecessor Phase:** [OTr-Phase-008-Spec.md](OTr-Phase-008-Spec.md)

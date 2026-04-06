@@ -2,6 +2,7 @@
 
 **Version:** 0.1
 **Date:** 2026-04-04	
+**Status:** In Progress
 **Author:** Wayne Stewart / Claude
 
 ---

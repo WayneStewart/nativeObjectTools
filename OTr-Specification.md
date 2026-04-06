@@ -4,6 +4,8 @@
 **Date:** 2026-03-31
 **Author:** Wayne Stewart / Claude
 
+> **Navigation:** [Jump to Specifications Index](#specifications-index) for a complete list of all phase specifications and retired documents.
+
 ---
 
 ## 1. Purpose
@@ -426,168 +428,143 @@ The legacy plugin defines its own type constants. OTr must map between these and
 
 The authoritative reference for all 4D type constants, variable name suffixes, and the legacy OT → 4D mapping table is maintained in **[OTr-Types-Reference.md](OTr-Types-Reference.md)**.
 
-An `OTr_uMapType` internal method handles bidirectional mapping; its detailed specification is in [OTr-Phase-006-Spec.md](OTr-Phase-006-Spec.md).
+
+## 7. Command Reference by Phase
+
+The complete API is organised into phases, each with dedicated specification documents. Refer to the appropriate phase spec for detailed method signatures, behaviour, and examples.
+
+### Phase 1: Core Infrastructure & Handle Management (incl. 1.5 Export)
+**Specification:** [OTr-Phase-001-Spec.md](Documentation/Specifications/OTr-Phase-001-Spec.md)
+
+Creation, destruction, handle validation, options, error handlers, metadata. Includes Phase 1.5 addendum: simple JSON export (SaveToText, SaveToFile, SaveToClipboard).
+
+| Commands |
+|----------|
+| **Core (Phase 1):** `OTr_New`, `OTr_Clear`, `OTr_ClearAll`, `OTr_Copy` |
+| `OTr_IsObject`, `OTr_GetHandleList` |
+| `OTr_GetOptions`, `OTr_SetOptions`, `OTr_SetErrorHandler` |
+| `OTr_GetVersion`, `OTr_Register`, `OTr_CompiledApplication` |
+| **Export (Phase 1.5):** `OTr_SaveToText`, `OTr_SaveToFile`, `OTr_SaveToClipboard` |
+
+### Phase 2: Scalar Put/Get & Dotted-Path Navigation
+**Specification:** [OTr-Phase-002-Spec.md](Documentation/Specifications/OTr-Phase-002-Spec.md)
+
+Fundamental data storage and retrieval for scalar types and embedded objects.
+
+| Commands |
+|----------|
+| `OTr_PutLong`, `OTr_GetLong` |
+| `OTr_PutReal`, `OTr_GetReal` |
+| `OTr_PutString`, `OTr_GetString` |
+| `OTr_PutText`, `OTr_GetText` |
+| `OTr_PutDate`, `OTr_GetDate` |
+| `OTr_PutTime`, `OTr_GetTime` |
+| `OTr_PutBoolean`, `OTr_GetBoolean` |
+| `OTr_PutObject`, `OTr_GetObject` |
+
+### Phase 3: Object Inspection & Item Utilities
+**Specification:** [OTr-Phase-003-Spec.md](Documentation/Specifications/OTr-Phase-003-Spec.md)
+
+Query object structure, enumerate properties, copy/compare/rename/delete items.
+
+| Commands |
+|----------|
+| `OTr_ItemExists`, `OTr_ItemType`, `OTr_IsEmbedded`, `OTr_ItemCount`, `OTr_ObjectSize` |
+| `OTr_GetItemProperties`, `OTr_GetNamedProperties`, `OTr_GetAllProperties`, `OTr_GetAllNamedProperties` |
+| `OTr_CopyItem`, `OTr_CompareItems`, `OTr_RenameItem`, `OTr_DeleteItem` |
+
+### Phase 4: Array Operations
+**Specification:** [OTr-Phase-004-Spec.md](Documentation/Specifications/OTr-Phase-004-Spec.md)
+
+Bulk array storage, typed element access, and array utilities.
+
+| Commands |
+|----------|
+| `OTr_PutArray`, `OTr_GetArray` (bulk) |
+| `OTr_PutArrayLong`, `OTr_GetArrayLong` (and similar for all scalar types) |
+| `OTr_SizeOfArray`, `OTr_ResizeArray`, `OTr_InsertElement`, `OTr_DeleteElement`, `OTr_FindInArray`, `OTr_SortArrays` |
+
+### Phase 5: Complex Types (BLOB, Picture, Pointer, Record, Variable)
+**Specification:** [OTr-Phase-005-Spec.md](Documentation/Specifications/OTr-Phase-005-Spec.md)
+
+Storage and retrieval of non-native types via serialisation and metadata.
+
+| Commands |
+|----------|
+| `OTr_PutBLOB`, `OTr_GetBLOB`, `OTr_GetNewBLOB` |
+| `OTr_PutPicture`, `OTr_GetPicture` |
+| `OTr_PutPointer`, `OTr_GetPointer` |
+| `OTr_PutRecord`, `OTr_GetRecord`, `OTr_GetRecordTable` |
+| `OTr_PutVariable`, `OTr_GetVariable` |
+
+### Phase 6: Full Import/Export (with Type Preservation)
+**Specification:** [OTr-Phase-006-Spec.md](Documentation/Specifications/OTr-Phase-006-Spec.md)
+
+Binary BLOB serialisation with type metadata; round-trip fidelity for all types.
+
+| Commands |
+|----------|
+| `OTr_ObjectToBLOB`, `OTr_ObjectToNewBLOB` |
+| `OTr_BLOBToObject` |
+
+### Phase 7–9: Advanced Features & Quality Assurance
+**Specifications:** [OTr-Phase-007-Spec.md](Documentation/Specifications/OTr-Phase-007-Spec.md), [OTr-Phase-008-Spec.md](Documentation/Specifications/OTr-Phase-008-Spec.md), [OTr-Phase-009-Spec.md](Documentation/Specifications/OTr-Phase-009-Spec.md)
+
+**Status:** Phases 7–8 complete; Phase 9 substantially complete.
+
+Additional features, optimisations, and pre-release audit corrections.
+
+### Phase 10–20: Release Preparation & Testing
+**Specifications:** [OTr-Phase-010-Spec.md](Documentation/Specifications/OTr-Phase-010-Spec.md), [OTr-Phase-015-Spec.md](Documentation/Specifications/OTr-Phase-015-Spec.md), [OTr-Phase-020-Spec.md](Documentation/Specifications/OTr-Phase-020-Spec.md)
+
+**Status:** Phase 10 (logging) and Phase 15 (parallel OT vs OTr testing) currently in progress. Phase 20 (release checklist) is active as part of v0.5 release preparation.
+
+Phases 10, 15, and 20 complete the final release cycle for v0.5, ensuring comprehensive logging, validation testing, and release readiness.
 
 ---
 
-## 8. Internal (Private) Methods
+## 8. Type Constant Mapping
 
-In addition to the public API methods, OTr requires two classes of internal helper methods, both marked `"invisible":true,"shared":false` in their `%attributes` line (see §3A).
+The legacy plugin defines its own type constants. OTr maps between these and native 4D type constants for backward compatibility.
 
-### 8.1 Private Infrastructure Methods (`OTr_z` prefix)
-
-These methods manage the registry, locking, path resolution, and error handling. They form the structural backbone of the module and are not concerned with type conversion.
-
-| Method | Purpose |
-|---|---|
-| `OTr_zInit` | Lazy initialisation of interprocess arrays and default options |
-| `OTr_zLock` | Acquire semaphore (with optional reentrancy support) |
-| `OTr_zUnlock` | Release semaphore |
-| `OTr_zIsValidHandle` | Bounds check + in-use check; returns Boolean |
-| `OTr_zGetObject` | Given a handle, return a pointer to the object in the array (or the object itself) |
-| `OTr_zResolvePath` | Given a dotted tag, navigate/create intermediate objects; return the leaf object and final key |
-| `OTr_zParsePrefix` | Parse a prefixed string (e.g., `"ptr:myVar;0;0"`) and return the prefix and payload |
-| `OTr_zError` | Invoke the error handler (if set) or raise an error |
-| `OTr_zArrayToCollection` | Convert a 4D array (via Pointer) to a Collection |
-| `OTr_zCollectionToArray` | Convert a Collection to a 4D array (via Pointer) |
-
-### 8.2 Utility Methods (`OTr_u` prefix)
-
-These methods perform type conversion, serialisation, and comparison operations. They are stateless helpers — they do not access the registry or acquire locks — and may be called freely from both public and private methods.
-
-| Method | Purpose |
-|---|---|
-| `OTr_uDateToText` | Convert a 4D Date to `YYYY-MM-DD` text |
-| `OTr_uTextToDate` | Parse `YYYY-MM-DD` text back to a 4D Date |
-| `OTr_uTimeToText` | Convert a 4D Time to `HH:MM:SS` text |
-| `OTr_uTextToTime` | Parse `HH:MM:SS` text back to a 4D Time |
-| `OTr_uPointerToText` | Serialise a Pointer via `RESOLVE POINTER` to `variableName;tableNum;fieldNum` text; used for both scalar storage (with `ptr:` prefix) and array element storage |
-| `OTr_uTextToPointer` | Deserialise `variableName;tableNum;fieldNum` text back to a Pointer; inverse of `OTr_uPointerToText` |
-| `OTr_uMapType` | Bidirectional mapping between 4D type constants and OT legacy type constants |
-| `OTr_uEqualBLOBs` | Compare two BLOBs byte-for-byte; returns Boolean |
-| `OTr_uEqualPictures` | Compare two Pictures byte-for-byte; returns Boolean |
+**Reference:** [OTr-Types-Reference.md](OTr-Types-Reference.md)
 
 ---
 
-## 9. Implementation Phases
+## 9. Internal Methods
 
-### Phase 1 — Core Infrastructure
-- `OTr_zInit`, `OTr_zLock`, `OTr_zUnlock`, `OTr_zIsValidHandle`, `OTr_zGetObject`, `OTr_zError`
-- `OTr_New`, `OTr_Clear`, `OTr_ClearAll`, `OTr_Copy`
-- `OTr_GetOptions`, `OTr_SetOptions`
-- `OTr_GetVersion`, `OTr_Register`, `OTr_CompiledApplication`
-- `OTr_SetErrorHandler`, `OTr_GetHandleList`
-- `OTr_IsObject`
+### Infrastructure (`OTr_z` prefix)
+Lazy initialisation, locking, path resolution, error dispatch.
 
-### Phase 1.5 — Simple Export/Import
+**Detailed specification:** See individual phase specs.
 
-No legacy ObjectTools equivalent. These methods provide a self-contained JSON representation of a stored object for testing, inspection, and data transfer. Binary data (BLOB, Picture) is stored natively in 4D Objects and serialised inline by the export methods.
+### Utilities (`OTr_u` prefix)
+Type conversion, serialisation, comparison.
 
-- `OTr_SaveToText` — serialise object to self-contained JSON Text; optional `$prettyPrint_b` flag (default `False`)
-- `OTr_SaveToFile` — write self-contained JSON to a file path using UTF-8 encoding; optional `$prettyPrint_b` flag (default `True`)
-- `OTr_SaveToClipboard` — place self-contained JSON on the system clipboard; optional `$prettyPrint_b` flag (default `True`)
-- `OTr_LoadFromText` — parse JSON Text into a new OTr object; returns new handle
-- `OTr_LoadFromFile` — read UTF-8 JSON file and delegate to `OTr_LoadFromText`; returns new handle
-- `OTr_LoadFromClipboard` — read JSON from clipboard and delegate to `OTr_LoadFromText`; returns new handle
-
-### Phase 2 — Scalar Put/Get (Common Types)
-- `OTr_zResolvePath` (with AutoCreateObjects support)
-- `OTr_PutLong`, `OTr_PutReal`, `OTr_PutString`, `OTr_PutText`, `OTr_PutDate`, `OTr_PutTime`, `OTr_PutBoolean`
-- `OTr_GetLong`, `OTr_GetReal`, `OTr_GetString`, `OTr_GetText`, `OTr_GetDate`, `OTr_GetTime`, `OTr_GetBoolean`
-- `OTr_PutObject`, `OTr_GetObject`
-
-### Phase 3 — Item Info and Utilities
-- `OTr_ItemExists`, `OTr_ItemType`, `OTr_IsEmbedded`, `OTr_ItemCount`, `OTr_ObjectSize`
-- `OTr_GetItemProperties`, `OTr_GetNamedProperties`, `OTr_GetAllProperties`, `OTr_GetAllNamedProperties`
-- `OTr_CopyItem`, `OTr_CompareItems`, `OTr_RenameItem`, `OTr_DeleteItem`
-
-### Phase 4 — Array Operations
-- `OTr_zArrayToCollection`, `OTr_zCollectionToArray`
-- `OTr_uDateToText`, `OTr_uTextToDate`, `OTr_uTimeToText`, `OTr_uTextToTime`
-- `OTr_uPointerToText`, `OTr_uTextToPointer`, `OTr_uBlobToText`, `OTr_uTextToBlob`
-- `OTr_PutArray`, `OTr_GetArray`
-- All `OTr_PutArray*` and `OTr_GetArray*` element methods
-- `OTr_SizeOfArray`, `OTr_ResizeArray`, `OTr_InsertElement`, `OTr_DeleteElement`
-- `OTr_FindInArray`, `OTr_SortArrays`
-
-### Phase 5 — Complex Types
-- `OTr_PutPointer`, `OTr_GetPointer`
-- `OTr_PutBLOB`, `OTr_GetBLOB`, `OTr_GetNewBLOB`, `OTr_PutPicture`, `OTr_GetPicture`
-- `OTr_PutRecord`, `OTr_GetRecord`, `OTr_GetRecordTable`
-- `OTr_PutVariable`, `OTr_GetVariable`
-
-### Phase 6 — Import/Export
-- `OTr_uMapType` (finalised for serialisation format), `OTr_uEqualBLOBs`, `OTr_uEqualPictures`
-- `OTr_ObjectToBLOB`, `OTr_ObjectToNewBLOB`, `OTr_BLOBToObject`
+**Detailed specification:** See individual phase specs.
 
 ---
 
-## 10. Design Decisions (Resolved)
+## 10. Coding Standard
 
-All design questions have been resolved. This section records each decision and its rationale.
-
-**10.1 — BLOB and Picture storage.** The original design used parallel interprocess arrays (`<>OTR_Blobs_ax`, `<>OTR_Pictures_ap`) with prefixed reference strings (`"blob:N"`, `"pic:N"`). This design was superseded in Phase 6. **Decision (revised):** Native storage directly in the 4D Object. Pictures have been storable natively since v16R4; BLOBs since v19R2. On v19/v19R1, BLOBs are base64-encoded as Text via `OTr_uBlobToText`. A Boolean flag `Storage.OTr.nativeBlobInObject` is set at initialisation to select the correct path. See §3.7 for full detail.
-
-**10.2 — `OTr_PutObject` semantics.** **Decision:** Default to deep copy (`OB Copy`), matching legacy `OT PutObject` behaviour. No optional reference parameter — OTr is a drop-in replacement, nothing more.
-
-**10.3 — `OTr_GetObject` return type.** **Decision:** Copy the embedded object into a new registry slot and return the new handle (Integer). Matches legacy `OT GetObject` semantics exactly. The caller is responsible for calling `OTr_Clear` on the returned handle.
-
-**10.4 — Lock reentrancy.** **Decision:** Simple, non-reentrant locking. A single `Semaphore` / `CLEAR SEMAPHORE` pair with no lock counter. The core rule is: **never call a lock-acquiring method while the lock is already held** — doing so will deadlock. In practice this means public `OTr_` methods acquire the lock, delegate only to `OTr_z` internal helpers (which do not lock), then release the lock before doing any further work. A public method *may* call another public method provided the lock has been fully released first — the safe pattern is: acquire → snapshot with `OB Copy` → release → then call other methods freely. Mutation methods (those that write to the registry) should never call other public methods from within a locked section.
-
-**10.5 — Import/Export format.** **Decision:** JSON-based format. `OTr_ObjectToBLOB` serialises the object to JSON using `JSON Stringify`. Pictures and BLOBs stored natively in the Object are preserved inline by the JSON serialiser. Not compatible with the legacy OT binary format (reverse-engineering the proprietary format is impractical). See [OTr-Phase-006-Spec.md](OTr-Phase-006-Spec.md) for the full serialisation specification.
-
-**10.6 — Tail-trimming on Clear.** **Decision:** On `OTr_Clear($handle)`: (a) set the object slot to `Null` (releasing all natively stored properties, including Pictures and BLOBs, via the 4D garbage collector); (b) mark `<>OTR_InUse_ab{handle}` as `False`; (c) if the cleared slot is at the tail of the arrays, trim consecutive trailing unused slots. Mid-array slots are left for reuse.
-
-**10.7 — Deprecated `OT GetBLOB` retention.** **Decision:** Implement `OTr_GetBLOB` as a stub that fires a deprecation warning via the error handler, then delegates to `OTr_GetNewBLOB` and assigns the result to the out parameter.
-
-**10.8 — Time storage.** **Decision:** Store as plain formatted text string `"HH:MM:SS"`. Consistent with Date storage (§10.10). The typed getter `OTr_GetTime` parses the string back to a Time value.
-
-**10.9 — Bracket notation `[x]`.** **Decision:** Not implemented. OTr is a drop-in replacement for the legacy ObjectTools API — no extensions. `OTr_zResolvePath` handles dot-separated paths only.
-
-**10.10 — Date storage format.** **Decision:** Store as plain formatted text string `"YYYY-MM-DD"`. Consistent with OBJ_Module's approach and with Time storage (§10.8). The typed getter `OTr_GetDate` parses the string back to a Date value.
+All OTr methods must:
+- Use `#DECLARE` with named parameters (no numbered parameters)
+- Include type suffixes on variable names
+- Be marked `"invisible":true` in their `%attributes` line
+- Public API methods (`OTr_*` prefix) be marked `"shared":true`
+- Internal methods (`OTr_z*`, `OTr_u*`) be marked `"shared":false`
+- Follow the standard defined in `4D-Method-Writing-Guide.md`
 
 ---
 
 ## 11. Testing Strategy
 
-A comprehensive unit test suite is **required** and must be maintained alongside the implementation. All test methods use the `Test_OTr_` prefix, are marked `"invisible":true` and `"shared":false`, and follow the coding standard defined in `4D-Method-Writing-Guide.md`.
+Comprehensive unit tests are required for every phase. All tests use the `Test_OTr_` prefix and are marked `"invisible":true,"shared":false`.
 
-### 11.1 Test Method Organisation
-
-Tests are grouped by functional area, with one or more test methods per group:
-
-| Test Method | Covers |
-|---|---|
-| `Test_OTr_Creation` | `OTr_New`, `OTr_Clear`, `OTr_ClearAll`, `OTr_Copy`; handle allocation, slot reuse, deallocation, deep copy fidelity |
-| `Test_OTr_PutGetScalar` | All scalar put/get pairs: Long, Real, String, Text, Date, Time, Boolean |
-| `Test_OTr_PutGetComplex` | Object (embedded), BLOB, Picture, Pointer, Record, Variable |
-| `Test_OTr_DotPath` | Dotted-path navigation, AutoCreateObjects, intermediate object creation, multi-level nesting |
-| `Test_OTr_Arrays` | `OTr_PutArray`, `OTr_GetArray`, all typed `PutArray*`/`GetArray*` methods, 1-based to 0-based index mapping |
-| `Test_OTr_ArrayUtils` | `OTr_SizeOfArray`, `OTr_ResizeArray`, `OTr_InsertElement`, `OTr_DeleteElement`, `OTr_FindInArray`, `OTr_SortArrays` |
-| `Test_OTr_ItemInfo` | `OTr_ItemExists`, `OTr_ItemType`, `OTr_IsEmbedded`, `OTr_ItemCount`, `OTr_ObjectSize`, all `GetProperties` variants |
-| `Test_OTr_ItemUtils` | `OTr_CopyItem`, `OTr_CompareItems`, `OTr_RenameItem`, `OTr_DeleteItem` |
-| `Test_OTr_ImportExport` | `OTr_ObjectToBLOB`, `OTr_ObjectToNewBLOB`, `OTr_BLOBToObject`; round-trip fidelity for all stored types |
-| `Test_OTr_Options` | `OTr_GetOptions`, `OTr_SetOptions`; FailOnItemNotFound, AutoCreateObjects, VariantItems behaviour |
-| `Test_OTr_ErrorHandler` | `OTr_SetErrorHandler`; error handler invocation, chaining, invalid handle errors |
-| `Test_OTr_Utilities` | `OTr_GetVersion`, `OTr_Register`, `OTr_CompiledApplication`, `OTr_GetHandleList`, `OTr_IsObject` |
-| `Test_OTr_All` | Runner method that calls all individual test methods and reports aggregate pass/fail |
-
-### 11.2 Test Requirements
-
-Each test method must verify:
-
-- **Round-trip fidelity:** Values stored via `Put` methods must be retrieved identically via the corresponding `Get` methods, for every supported type.
-- **Dot-path navigation:** Multi-level dotted paths (e.g., `"a.b.c.d"`) must correctly create and navigate nested objects.
-- **AutoCreateObjects:** Setting a value on a non-existent dotted path must auto-create intermediate objects when the option is enabled, and must fail or return an error when it is disabled.
-- **Handle lifecycle:** Handles returned by `OTr_New` must be valid, handles passed to `OTr_Clear` must become invalid, and cleared slots must be reused by subsequent `OTr_New` calls.
-- **Edge cases:** Invalid handles (0, negative, out of bounds, already cleared), empty tags, non-existent tags (with and without FailOnItemNotFound), type mismatches.
-- **Array index mapping:** Callers use 1-based indices; internal Collections are 0-based. Verify correct mapping at boundaries (first element, last element, out-of-bounds).
-- **Import/export round-trip:** An object serialised to BLOB and deserialised back must be identical to the original for all stored types.
-- **Backward compatibility:** Where the legacy ObjectTools plugin is available in the same database, OTr results should match OT results for identical operations. This is a validation test, not a hard dependency.
-
-### 11.3 Test Output
-
-Test methods should use `ASSERT` (where available) or a simple pass/fail accumulator pattern. `Test_OTr_All` should output a summary indicating the total number of tests, passes, and failures, suitable for display in the 4D debugger or log.
+**Test methods:**
+- `____Test_Phase_1.4dm` — Core infrastructure (incl. Phase 1.5 export)
+- `____Test_Phase_2.4dm` — Scalar put/get
+- And similar for phases 3–6
 
 ---
 
@@ -598,16 +575,49 @@ For existing codebases migrating from ObjectTools to OTr:
 1. **Find and replace** `OT ` with `OTr_` in all method calls (noting the space-to-underscore change).
 2. **Remove** calls to `OT Register` (or leave them — `OTr_Register` is a no-op).
 3. **Review** any code that relies on the binary BLOB format from `OT ObjectToBLOB`, as the OTr serialisation format may differ.
-4. **Review** `OT PutObject` / `OT GetObject` usage for copy-vs-reference semantics (pending design decision §10.2).
+4. **Review** `OT PutObject` / `OT GetObject` usage for copy-vs-reference semantics (Phase 2).
 5. **Verify** that all `OT Clear` calls are matched — the same memory management discipline applies.
 
 ---
 
 ## 13. Reference Materials
 
-| Document | Location | Purpose |
-|---|---|---|
-| ObjectTools 5 Reference | `/LegacyDocumentation/ObjectTools 5 Reference.pdf` | Complete legacy API specification (116 pages) |
-| 4D Method Writing Guide | `/4D-Method-Writing-Guide.md` | Coding standard for all OTr methods |
-| Fnd_Dict Library | `/Fnd_Dict/` | Structural template — handle-based registry with semaphore locking |
-| OBJ_Module (Cannon Smith) | `https://github.com/cannonsmith/OBJ_Module.git` | Native 4D object utilities — dot-path resolution, base64 blob/picture, array handling, record conversion, deep comparison. Key methods: `OBJP_GetSubObject` (path resolver), `OBJ_Set_Blob`/`OBJ_Set_Picture` (base64 encoding), `OBJ_Set_Object` (copy vs reference), `OBJ_Set_Array` (type-aware array storage), `OBJ_FromRecord`/`OBJ_ToRecord` (record serialisation), `OBJ_IsEqual` (deep comparison) |
+| Document | Purpose |
+|---|---|
+| `4D-Method-Writing-Guide.md` | Coding standard for all OTr methods |
+| `OTr-Types-Reference.md` | Type constant mapping (4D ↔ legacy OT) |
+| `OTr-Phase-*.md` | Detailed specification for each phase |
+| ObjectTools 5 Reference (legacy) | `LegacyDocumentation/ObjectTools 5 Reference.pdf` |
+| Fnd_Dict Library | Structural template — handle-based registry with semaphore locking |
+
+---
+
+## 14. Specifications Index {#specifications-index}
+
+This master document is accompanied by detailed specifications for each implementation phase. Refer to the appropriate phase document for method signatures, behaviour, edge cases, and examples.
+
+### Complete Specifications (Phases 1–8)
+
+- **[OTr-Phase-001-Spec.md](Documentation/Specifications/OTr-Phase-001-Spec.md)** — Phase 001–1.5: Core infrastructure & simple export ✓
+- **[OTr-Phase-002-Spec.md](Documentation/Specifications/OTr-Phase-002-Spec.md)** — Phase 002: Scalar put/get ✓
+- **[OTr-Phase-003-Spec.md](Documentation/Specifications/OTr-Phase-003-Spec.md)** — Phase 003: Object inspection ✓
+- **[OTr-Phase-004-Spec.md](Documentation/Specifications/OTr-Phase-004-Spec.md)** — Phase 004: Array operations ✓
+- **[OTr-Phase-005-Spec.md](Documentation/Specifications/OTr-Phase-005-Spec.md)** — Phase 005: Complex types ✓
+- **[OTr-Phase-006-Spec.md](Documentation/Specifications/OTr-Phase-006-Spec.md)** — Phase 006: Full import/export ✓
+- **[OTr-Phase-007-Spec.md](Documentation/Specifications/OTr-Phase-007-Spec.md)** — Phase 007: Advanced features ✓
+- **[OTr-Phase-008-Spec.md](Documentation/Specifications/OTr-Phase-008-Spec.md)** — Phase 008: Unified accessors ✓
+
+### In-Progress Specifications
+
+- **[OTr-Phase-009-Spec.md](Documentation/Specifications/OTr-Phase-009-Spec.md)** — Phase 009: Pre-release audit (substantially complete)
+- **[OTr-Phase-010-Spec.md](Documentation/Specifications/OTr-Phase-010-Spec.md)** — Phase 010: Logging subsystem (in progress)
+- **[OTr-Phase-015-Spec.md](Documentation/Specifications/OTr-Phase-015-Spec.md)** — Phase 015: Parallel OT vs OTr testing (in progress)
+
+### Release & Roadmap Specifications
+
+- **[OTr-Phase-020-Spec.md](Documentation/Specifications/OTr-Phase-020-Spec.md)** — Phase 020: Release checklist (v0.5 release)
+- **[OTr-Phase-100-Spec.md](Documentation/Specifications/OTr-Phase-100-Spec.md)** — Phase 100: Version 2.0 roadmap and future enhancements
+
+### Retired Specifications
+
+Historical specifications are archived in `Documentation/Specifications/Retired/` for reference.

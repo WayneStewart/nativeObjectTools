@@ -2,6 +2,7 @@
 
 **Version:** 0.3
 **Date:** 2026-04-04
+**Status:** Active (v0.5 Release Checklist)
 **Author:** Wayne Stewart / Claude
 
 ---

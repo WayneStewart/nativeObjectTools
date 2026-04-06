@@ -2,6 +2,7 @@
 
 **Version:** 0.3
 **Date:** 2026-04-06
+**Status:** In Progress
 **Author:** Wayne Stewart / Claude / Codex
 **Parent Document:** [OTr-Specification.md](OTr-Specification.md)
 
