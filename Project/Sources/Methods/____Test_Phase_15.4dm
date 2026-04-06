@@ -2,7 +2,6 @@
 
 // Entire method commented out to allow for compiling when plugin is not present.
 
-/*
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_15.4dm
 
@@ -65,7 +64,7 @@ $StackSize_i:=0
 $DesiredProcessName_t:=Current method name:C684
 
 If (Current process name:C1392=$DesiredProcessName_t)
-
+	
 	var $ready_b : Boolean
 	var $otMain_i : Integer
 	var $otrMain_i : Integer
@@ -146,39 +145,39 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $countCheck_i : Integer
 	var $reg_i : Integer
 	var $TAB; $LF : Text
-
+	
 	$TAB:=Char:C90(Tab:K15:37)
 	$LF:=Char:C90(Line feed:K15:40)
-
+	
 	ARRAY TEXT:C222($rows_at; 0)
 	ARRAY TEXT:C222($otrPropNames_at; 0)
 	ARRAY TEXT:C222(otPropNames_at; 0)
 	ARRAY LONGINT:C221($otrLongArr_ai; 0)
 	ARRAY LONGINT:C221(otLongArr_ai; 0)
-
-
+	
+	
 	// ====================================================
 	// CHECK OT AVAILABLE
 	// ====================================================
 	$ready_b:=True:C214
-
+	
 	$reg_i:=OT Register("20C9-EMQv-BJBl-D20M")  // v5.1r1  ` Modified by: Guy Algot (09/07/23)
-
+	
 	$testOtH_i:=OT New
-
+	
 	// $wombat:=OT IsObject($testOtH_i)
 	//Do something with the object
 	//End if 
-
+	
 	If ($testOtH_i=0)
 		ALERT:C41("ObjectTools 5.0 is not available or not registered. "+Char:C90(Carriage return:K15:38)+"Ensure the plugin is installed and this method runs on a compatible platform. Test aborted.")
 		$ready_b:=False:C215
 	End if 
-
-
-
+	
+	
+	
 	OT Clear($testOtH_i)
-
+	
 	// ====================================================
 	// INIT
 	// ====================================================
@@ -186,21 +185,21 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$total_i:=0
 	$pass_i:=0
 	$fail_i:=0
-
+	
 	$otMain_i:=OT New
 	$otrMain_i:=OTr_New
 	$testNumber_t:=""
-
+	
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+"Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$LF)  // Header line
-
+	
 	$wombat_pic:=OTr_z_Wombat
-
+	
 	// 1x1 black PNG (shared by picture tests)
 	//$pngB64_t:="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
 	//CONVERT FROM TEXT($pngB64_t; "US-ASCII"; $pngBlob_blob)
 	//BASE64 DECODE($pngBlob_blob)
 	//BLOB TO PICTURE($pngBlob_blob; $wombat_pic; ".png")
-
+	
 	// ====================================================
 	//MARK:- 1. Creation / Destruction
 	// ====================================================
@@ -210,16 +209,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_New / OTr_Clear"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	$testOtH_i:=OT New
-
+	
 	If ($testOtH_i#0)
 		OT Clear($testOtH_i)
 		$otResult_t:="Pass"
 	Else 
 		$otResult_t:="Fail: OT New returned 0"
 	End if 
-
+	
 	$testOtrH_i:=OTr_New
 	If ($testOtrH_i#0)
 		OTr_Clear($testOtrH_i)
@@ -231,17 +230,17 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: OTr_New returned 0 or OK=0"
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
 	Else 
 		$fail_i:=$fail_i+1
 	End if 
-
-
+	
+	
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 2. String / Text
 	// ====================================================
@@ -251,7 +250,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutString / OTr_GetString"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	OT PutString($otMain_i; "str"; "compat-str")
 	$gotten_t:=OT GetString($otMain_i; "str")
 	If ($gotten_t="compat-str")
@@ -259,7 +258,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: got '"+$gotten_t+"'"
 	End if 
-
+	
 	OTr_PutString($otrMain_i; "str"; "compat-str")
 	$gotten_t:=OTr_GetString($otrMain_i; "str")
 	If ($gotten_t="compat-str")
@@ -267,7 +266,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: got '"+$gotten_t+"'"
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -275,7 +274,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 3. Longint
 	// ====================================================
@@ -285,7 +284,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutLong / OTr_GetLong"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	OT PutLong($otMain_i; "num"; 424242)
 	$gotLong_i:=OT GetLong($otMain_i; "num")
 	If ($gotLong_i=424242)
@@ -293,7 +292,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: got "+String:C10($gotLong_i)
 	End if 
-
+	
 	OTr_PutLong($otrMain_i; "num"; 424242)
 	$gotLong_i:=OTr_GetLong($otrMain_i; "num")
 	If ($gotLong_i=424242)
@@ -301,7 +300,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: got "+String:C10($gotLong_i)
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -309,7 +308,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 4. Real
 	// ====================================================
@@ -319,7 +318,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutReal / OTr_GetReal"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	OT PutReal($otMain_i; "ratio"; 3.14159)
 	$gotReal_r:=OT GetReal($otMain_i; "ratio")
 	If ($gotReal_r=3.14159)
@@ -327,7 +326,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: got "+String:C10($gotReal_r)
 	End if 
-
+	
 	OTr_PutReal($otrMain_i; "ratio"; 3.14159)
 	$gotReal_r:=OTr_GetReal($otrMain_i; "ratio")
 	If ($gotReal_r=3.14159)
@@ -335,7 +334,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: got "+String:C10($gotReal_r)
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -343,7 +342,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 5. Boolean
 	// ====================================================
@@ -353,7 +352,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutBoolean / OTr_GetBoolean"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	OT PutBoolean($otMain_i; "flag"; Num:C11(True:C214))
 	$gotBool_i:=OT GetBoolean($otMain_i; "flag")
 	If ($gotBool_i=1)
@@ -361,7 +360,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: got "+String:C10($gotBool_i)
 	End if 
-
+	
 	OTr_PutBoolean($otrMain_i; "flag"; True:C214)
 	$gotBool_i:=OTr_GetBoolean($otrMain_i; "flag")
 	If ($gotBool_i=1)
@@ -369,7 +368,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: got "+String:C10($gotBool_i)
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -377,7 +376,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 6. Date
 	// ====================================================
@@ -388,7 +387,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
 	$testDate_d:=!2026-04-04!
-
+	
 	OT PutDate($otMain_i; "dt"; $testDate_d)
 	$gotDate_d:=OT GetDate($otMain_i; "dt")
 	If ($gotDate_d=$testDate_d)
@@ -396,7 +395,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: got "+String:C10($gotDate_d)
 	End if 
-
+	
 	OTr_PutDate($otrMain_i; "dt"; $testDate_d)
 	$gotDate_d:=OTr_GetDate($otrMain_i; "dt")
 	If ($gotDate_d=$testDate_d)
@@ -404,7 +403,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: got "+String:C10($gotDate_d)
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -412,7 +411,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 7. Time
 	// ====================================================
@@ -423,7 +422,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
 	$testTime_h:=?10:30:45?
-
+	
 	OT PutTime($otMain_i; "tm"; $testTime_h)
 	$gotTime_h:=OT GetTime($otMain_i; "tm")
 	If ($gotTime_h=$testTime_h)
@@ -431,7 +430,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: got "+String:C10($gotTime_h)
 	End if 
-
+	
 	OTr_PutTime($otrMain_i; "tm"; $testTime_h)
 	$gotTime_h:=OTr_GetTime($otrMain_i; "tm")
 	If ($gotTime_h=$testTime_h)
@@ -439,7 +438,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: got "+String:C10($gotTime_h)
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -447,7 +446,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 8. Pointer
 	// ====================================================
@@ -462,7 +461,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $ptrVar : Pointer
 	$ptrVar:=->$otPtrTarget_t
 	var $ptrVarOut : Pointer
-
+	
 	OT PutPointer($otMain_i; "ptr"; $ptrVar)
 	OT GetPointer($otMain_i; "ptr"; $ptrVarOut)  //->$gotPtr_ptr)
 	If (OK=1) & ($ptrVarOut#Null:C1517) & ($ptrVarOut->="ot-ptr-val")
@@ -470,7 +469,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: dereference mismatch or OK=0"
 	End if 
-
+	
 	OTr_PutPointer($otrMain_i; "ptr"; ->$ptrTarget_t)
 	// NOTE: OTr_GetPointer has a known issue — the output
 	// pointer is set in the local parameter copy, not the
@@ -481,7 +480,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: OK=0"
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & (Substring:C12($otrResult_t; 1; 4)="Pass")
 		$pass_i:=$pass_i+1
@@ -489,7 +488,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 9. Picture (empty picture)
 	// ====================================================
@@ -499,7 +498,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutPicture / OTr_GetPicture"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	OT PutPicture($otMain_i; "pic"; $wombat_pic)
 	$gotPic_pic:=OT GetPicture($otMain_i; "pic")
 	If (OTr_uEqualPictures($wombat_pic; $gotPic_pic))
@@ -507,7 +506,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: picture mismatch"
 	End if 
-
+	
 	OTr_PutPicture($otrMain_i; "pic"; $wombat_pic)
 	$gotPic_pic:=OTr_GetPicture($otrMain_i; "pic")
 	If (OTr_uEqualPictures($wombat_pic; $gotPic_pic))
@@ -515,7 +514,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: picture mismatch or OK=0"
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -523,7 +522,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 9a. Picture (wombat)
 	// ====================================================
@@ -533,10 +532,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutPicture / OTr_GetPicture"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	// Strict byte equality with non-empty Wombat picture.
 	// Both OT and OTr are expected to preserve it on round-trip.
-	If (Picture size($wombat_pic)=0)
+	If (Picture size:C356($wombat_pic)=0)
 		$otResult_t:="Skip: Wombat picture not loaded"
 		$otrResult_t:="Skip: Wombat picture not loaded"
 	Else 
@@ -547,7 +546,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otResult_t:="Fail: picture mismatch"
 		End if 
-
+		
 		OTr_PutPicture($otrMain_i; "pic9a"; $wombat_pic)
 		$gotPic_pic:=OTr_GetPicture($otrMain_i; "pic9a")
 		If (OTr_uEqualPictures($wombat_pic; $gotPic_pic))
@@ -556,7 +555,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$otrResult_t:="Fail: picture mismatch or OK=0"
 		End if 
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -564,8 +563,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
-
+	
+	
 	// ====================================================
 	//MARK:- 10. BLOB
 	// ====================================================
@@ -576,7 +575,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
 	CONVERT FROM TEXT:C1011("compat-blob-data"; "UTF-8"; $testBlob_blob)
-
+	
 	OT PutBLOB($otMain_i; "blob"; $testBlob_blob)
 	$gotBlob_blob:=OT GetNewBLOB($otMain_i; "blob")
 	If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
@@ -584,7 +583,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: BLOB content mismatch"
 	End if 
-
+	
 	OTr_PutBLOB($otrMain_i; "blob"; $testBlob_blob)
 	$gotBlob_blob:=OTr_GetNewBLOB($otrMain_i; "blob")
 	If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
@@ -592,7 +591,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: BLOB content mismatch or OK=0"
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -600,7 +599,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 11. Variable
 	// ====================================================
@@ -614,7 +613,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$varTarget_t:="otr-var-val"
 	$otVarDest_t:=""
 	$varDest_t:=""
-
+	
 	OT PutVariable($otMain_i; "var"; ->$otVarTarget_t)
 	OT GetVariable($otMain_i; "var"; ->$otVarDest_t)
 	If ($otVarDest_t="ot-var-val")
@@ -622,7 +621,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: got '"+$otVarDest_t+"'"
 	End if 
-
+	
 	OTr_PutVariable($otrMain_i; "var"; ->$varTarget_t)
 	OTr_GetVariable($otrMain_i; "var"; ->$varDest_t)
 	If ($varDest_t="otr-var-val")
@@ -630,7 +629,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: got '"+$varDest_t+"'"
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -638,7 +637,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 12. Record  (Intentional difference §4.3)
 	// ====================================================
@@ -648,7 +647,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutRecord / OTr_GetRecord"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	// Use Table 1 (Table_1, sole table in this database).
 	// CREATE RECORD then immediately PutRecord/GetRecord
 	// without any modification (intentional difference note
@@ -657,22 +656,22 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	CREATE RECORD:C68([Table_1:1])
 	[Table_1:1]Name:2:="Wayne"
 	SAVE RECORD:C53([Table_1:1])
-
+	
 	var $tablePtr : Pointer
 	$tablePtr:=->[Table_1:1]
 	OT PutRecord($otMain_i; "rec"; $tablePtr)
-
+	
 	CREATE RECORD:C68([Table_1:1])
 	OT GetRecord($otMain_i; "rec")
 	[Table_1:1]ID:1:=Sequence number:C244([Table_1:1])
 	SAVE RECORD:C53([Table_1:1])
-
+	
 	If (OK=1)
 		$otResult_t:="Pass"
 	Else 
 		$otResult_t:="Fail: OT GetRecord set OK=0"
 	End if 
-
+	
 	OTr_PutRecord($otrMain_i; "rec"; 1)
 	OTr_GetRecord($otrMain_i; "rec"; 1)
 	If (OK=1)
@@ -682,7 +681,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	// SAVE RECORD is intentionally omitted — the new record
 	// is discarded without being written to disk.
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -690,7 +689,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 13. Dot-path
 	// ====================================================
@@ -700,7 +699,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutString (dotted) / OTr_GetString"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	OT PutString($otMain_i; "a.b.c"; "dot-val")
 	$gotten_t:=OT GetString($otMain_i; "a.b.c")
 	If ($gotten_t="dot-val")
@@ -708,7 +707,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: got '"+$gotten_t+"'"
 	End if 
-
+	
 	OTr_PutString($otrMain_i; "a.b.c"; "dot-val")
 	$gotten_t:=OTr_GetString($otrMain_i; "a.b.c")
 	If ($gotten_t="dot-val")
@@ -716,7 +715,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: got '"+$gotten_t+"'"
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -724,7 +723,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 14. Array Longint
 	// ====================================================
@@ -734,12 +733,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutArrayLong / OTr_GetArrayLong"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	// Declare a 3-element LongInt array first (size 3: §25 reuses indices 1-3)
 	ARRAY LONGINT:C221($setupAl_ai; 3)
 	OT PutArray($otMain_i; "al"; $setupAl_ai)
 	OTr_PutArray($otrMain_i; "al"; ->$setupAl_ai)
-
+	
 	// Store element at index 1, retrieve and compare
 	OT PutArrayLong($otMain_i; "al"; 1; 100)
 	$otArrVal_i:=OT GetArrayLong($otMain_i; "al"; 1)
@@ -748,7 +747,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: got "+String:C10($otArrVal_i)
 	End if 
-
+	
 	OTr_PutArrayLong($otrMain_i; "al"; 1; 100)
 	$otrArrVal_i:=OTr_GetArrayLong($otrMain_i; "al"; 1)
 	If ($otrArrVal_i=100)
@@ -756,7 +755,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: got "+String:C10($otrArrVal_i)
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -764,7 +763,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 15. Array Text
 	// ====================================================
@@ -774,11 +773,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutArrayString / OTr_GetArrayString"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	ARRAY TEXT:C222($setupAs_at; 1)
 	OT PutArray($otMain_i; "as"; $setupAs_at)
 	OTr_PutArray($otrMain_i; "as"; ->$setupAs_at)
-
+	
 	OT PutArrayString($otMain_i; "as"; 1; "arr-str-val")
 	$otArrStr_t:=OT GetArrayString($otMain_i; "as"; 1)
 	If ($otArrStr_t="arr-str-val")
@@ -786,7 +785,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: got '"+$otArrStr_t+"'"
 	End if 
-
+	
 	OTr_PutArrayString($otrMain_i; "as"; 1; "arr-str-val")
 	$otrArrStr_t:=OTr_GetArrayString($otrMain_i; "as"; 1)
 	If ($otrArrStr_t="arr-str-val")
@@ -794,7 +793,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: got '"+$otrArrStr_t+"'"
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -802,7 +801,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 16. Array Real
 	// ====================================================
@@ -812,11 +811,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutArrayReal / OTr_GetArrayReal"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	ARRAY REAL:C219($setupAr_arr; 1)
 	OT PutArray($otMain_i; "ar"; $setupAr_arr)
 	OTr_PutArray($otrMain_i; "ar"; ->$setupAr_arr)
-
+	
 	OT PutArrayReal($otMain_i; "ar"; 1; 9.99)
 	$otArrReal_r:=OT GetArrayReal($otMain_i; "ar"; 1)
 	If ($otArrReal_r=9.99)
@@ -824,7 +823,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: got "+String:C10($otArrReal_r)
 	End if 
-
+	
 	OTr_PutArrayReal($otrMain_i; "ar"; 1; 9.99)
 	$otrArrReal_r:=OTr_GetArrayReal($otrMain_i; "ar"; 1)
 	If ($otrArrReal_r=9.99)
@@ -832,7 +831,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: got "+String:C10($otrArrReal_r)
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -840,7 +839,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 17. Array Boolean
 	// ====================================================
@@ -850,11 +849,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutArrayBoolean / OTr_GetArrayBoolean"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	ARRAY BOOLEAN:C223($setupAb_ab; 1)
 	OT PutArray($otMain_i; "ab"; $setupAb_ab)
 	OTr_PutArray($otrMain_i; "ab"; ->$setupAb_ab)
-
+	
 	OT PutArrayBoolean($otMain_i; "ab"; 1; Num:C11(True:C214))
 	$otArrBool_i:=OT GetArrayBoolean($otMain_i; "ab"; 1)
 	If ($otArrBool_i=1)
@@ -862,7 +861,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otResult_t:="Fail: got "+String:C10($otArrBool_i)
 	End if 
-
+	
 	OTr_PutArrayBoolean($otrMain_i; "ab"; 1; True:C214)
 	$otrArrBool_i:=OTr_GetArrayBoolean($otrMain_i; "ab"; 1)
 	If ($otrArrBool_i=1)
@@ -870,7 +869,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	Else 
 		$otrResult_t:="Fail: got "+String:C10($otrArrBool_i)
 	End if 
-
+	
 	$total_i:=$total_i+1
 	If ($otResult_t="Pass") & ($otrResult_t="Pass")
 		$pass_i:=$pass_i+1
@@ -878,7 +877,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$fail_i:=$fail_i+1
 	End if 
 	APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+	
 	// ====================================================
 	//MARK:- 18. Array Pointer
 	// ====================================================
@@ -888,15 +887,15 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$otrCmd_t:="OTr_PutArrayPointer / OTr_GetArrayPointer"
 	$otResult_t:="Fail: not run"
 	$otrResult_t:="Fail: not run"
-
+	
 	$otPtrTarget_t:="arr-ptr-val"
-
+	
 	//wombat 
-
+	
 	ARRAY POINTER:C280($setupAptr_aptr; 1)
 	OT PutArray($otMain_i; "aptr"; $setupAptr_aptr)
 	OTr_PutArray($otrMain_i; "aptr"; ->$setupAptr_aptr)
-
+	
 	OT PutArrayPointer($otMain_i; "aptr"; 1; ->$otPtrTarget_t)
 	OT GetArrayPointer($otMain_i; "aptr"; 1; $otArrPtrOut_ptr)
 	If (OK=1)
@@ -926,7 +925,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otrResult_t:="Fail: OK=0 or Null pointer"
 		End if 
-
+		
 		$total_i:=$total_i+1
 		If ($otResult_t="Pass") & (Substring:C12($otrResult_t; 1; 4)="Pass")
 			$pass_i:=$pass_i+1
@@ -934,7 +933,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 19. Array Picture (empty picture)
 		// ====================================================
@@ -944,14 +943,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otrCmd_t:="OTr_PutArrayPicture / OTr_GetArrayPicture"
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
-
+		
 		// Intentional difference: OT re-encodes array pictures
 		// internally; exact equality cannot be assumed. Test checks
 		// that a non-empty picture is returned (round-trip succeeds).
 		ARRAY PICTURE:C279($setupApic_apic; 1)
 		OT PutArray($otMain_i; "apic"; $setupApic_apic)
 		OTr_PutArray($otrMain_i; "apic"; ->$setupApic_apic)
-
+		
 		OT PutArrayPicture($otMain_i; "apic"; 1; $wombat_pic)
 		$otArrPicOut_pic:=OT GetArrayPicture($otMain_i; "apic"; 1)
 		If (Picture size:C356($otArrPicOut_pic)>0)
@@ -959,7 +958,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otResult_t:="Fail: empty picture returned"
 		End if 
-
+		
 		OTr_PutArrayPicture($otrMain_i; "apic"; 1; $wombat_pic)
 		$otrArrPicOut_pic:=OTr_GetArrayPicture($otrMain_i; "apic"; 1)
 		If (Picture size:C356($otrArrPicOut_pic)>0)
@@ -967,7 +966,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otrResult_t:="Fail: empty picture or OK=0"
 		End if 
-
+		
 		$total_i:=$total_i+1
 		If ($otResult_t="Pass") & ($otrResult_t="Pass")
 			$pass_i:=$pass_i+1
@@ -975,7 +974,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 19a. Array Picture (wombat)
 		// ====================================================
@@ -985,10 +984,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otrCmd_t:="OTr_PutArrayPicture / OTr_GetArrayPicture"
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
-
+		
 		// Strict byte equality with non-empty Wombat picture.
 		// Both OT and OTr are expected to preserve it on round-trip.
-		If (Picture size($wombat_pic)=0)
+		If (Picture size:C356($wombat_pic)=0)
 			$otResult_t:="Skip: Wombat picture not loaded"
 			$otrResult_t:="Skip: Wombat picture not loaded"
 		Else 
@@ -999,7 +998,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			Else 
 				$otResult_t:="Fail: picture mismatch"
 			End if 
-
+			
 			OTr_PutArrayPicture($otrMain_i; "apic"; 1; $wombat_pic)
 			$otrArrPicOut_pic:=OTr_GetArrayPicture($otrMain_i; "apic"; 1)
 			If (OTr_uEqualPictures($wombat_pic; $otrArrPicOut_pic))
@@ -1008,7 +1007,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 				$otrResult_t:="Fail: picture mismatch or OK=0"
 			End if 
 		End if 
-
+		
 		$total_i:=$total_i+1
 		If ($otResult_t="Pass") & ($otrResult_t="Pass")
 			$pass_i:=$pass_i+1
@@ -1016,7 +1015,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 20. Item info
 		// ====================================================
@@ -1026,7 +1025,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otrCmd_t:="OTr_ItemExists / OTr_ItemType"
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
-
+		
 		// "str" was stored in the main handles above (row 2).
 		// OT type for String/Text is 112 (OT Character constant).
 		If (OT ItemExists($otMain_i; "str")=1) & (OT ItemType($otMain_i; "str")=112)
@@ -1034,7 +1033,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otResult_t:="Fail: ItemExists or ItemType mismatch"
 		End if 
-
+		
 		$gotItemExists_i:=OTr_ItemExists($otrMain_i; "str")
 		$gotItemType_i:=OTr_ItemType($otrMain_i; "str")
 		If ($gotItemExists_i=1) & ($gotItemType_i=112)
@@ -1042,7 +1041,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otrResult_t:="Fail: ItemExists="+String:C10($gotItemExists_i)+" ItemType="+String:C10($gotItemType_i)
 		End if 
-
+		
 		$total_i:=$total_i+1
 		If ($otResult_t="Pass") & ($otrResult_t="Pass")
 			$pass_i:=$pass_i+1
@@ -1050,7 +1049,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 21. Item count
 		// ====================================================
@@ -1060,7 +1059,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otrCmd_t:="OTr_ItemCount"
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
-
+		
 		// Use fresh handles with exactly 3 scalar items.
 		$h3_i:=OT New
 		$h4_i:=OTr_New
@@ -1070,28 +1069,28 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		OTr_PutString($h4_i; "x"; "a")
 		OTr_PutString($h4_i; "y"; "b")
 		OTr_PutString($h4_i; "z"; "c")
-
+		
 		$otCount_i:=OT ItemCount($h3_i)
 		If ($otCount_i=3)
 			$otResult_t:="Pass"
 		Else 
 			$otResult_t:="Fail: got "+String:C10($otCount_i)
 		End if 
-
+		
 		$otrCount_i:=OTr_ItemCount($h4_i)
 		If ($otrCount_i=3)  //)
-
+			
 			// Modified by: Guy Algot (4/3/26)
 			// OT plugin does not set OK var, no need to check
-
+			
 			$otrResult_t:="Pass"
 		Else 
 			$otrResult_t:="Fail: got "+String:C10($otrCount_i)
 		End if 
-
+		
 		OT Clear($h3_i)
 		OTr_Clear($h4_i)
-
+		
 		$total_i:=$total_i+1
 		If ($otResult_t="Pass") & ($otrResult_t="Pass")
 			$pass_i:=$pass_i+1
@@ -1099,7 +1098,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 22. Property enumeration
 		// ====================================================
@@ -1109,14 +1108,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otrCmd_t:="OTr_GetAllProperties"
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
-
+		
 		$h3_i:=OT New
 		$h4_i:=OTr_New
 		OT PutString($h3_i; "p1"; "v1")
 		OT PutString($h3_i; "p2"; "v2")
 		OTr_PutString($h4_i; "p1"; "v1")
 		OTr_PutString($h4_i; "p2"; "v2")
-
+		
 		ARRAY TEXT:C222(otPropNames_at; 0)
 		OT GetAllProperties($h3_i; otPropNames_at)
 		If (Size of array:C274(otPropNames_at)=2)
@@ -1124,7 +1123,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otResult_t:="Fail: got "+String:C10(Size of array:C274(otPropNames_at))+" names"
 		End if 
-
+		
 		ARRAY TEXT:C222($otrPropNames_at; 0)
 		OTr_GetAllProperties($h4_i; ->$otrPropNames_at)
 		If (Size of array:C274($otrPropNames_at)=2)  //)
@@ -1132,10 +1131,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otrResult_t:="Fail: got "+String:C10(Size of array:C274($otrPropNames_at))+" names"
 		End if 
-
+		
 		OT Clear($h3_i)
 		OTr_Clear($h4_i)
-
+		
 		$total_i:=$total_i+1
 		If ($otResult_t="Pass") & ($otrResult_t="Pass")
 			$pass_i:=$pass_i+1
@@ -1143,7 +1142,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 23. Delete / Rename
 		// ====================================================
@@ -1153,14 +1152,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otrCmd_t:="OTr_DeleteItem / OTr_RenameItem"
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
-
+		
 		$h3_i:=OT New
 		$h4_i:=OTr_New
 		OT PutString($h3_i; "del"; "gone")
 		OT PutString($h3_i; "ren"; "stays")
 		OTr_PutString($h4_i; "del"; "gone")
 		OTr_PutString($h4_i; "ren"; "stays")
-
+		
 		OT DeleteItem($h3_i; "del")
 		OT RenameItem($h3_i; "ren"; "renamed")
 		If (OT ItemExists($h3_i; "del")=0) & (OT ItemExists($h3_i; "renamed")=1)
@@ -1168,7 +1167,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otResult_t:="Fail: delete or rename did not work"
 		End if 
-
+		
 		OTr_DeleteItem($h4_i; "del")
 		OTr_RenameItem($h4_i; "ren"; "renamed")
 		If (OTr_ItemExists($h4_i; "del")=0) & (OTr_ItemExists($h4_i; "renamed")=1)
@@ -1176,10 +1175,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otrResult_t:="Fail: delete or rename did not work"
 		End if 
-
+		
 		OT Clear($h3_i)
 		OTr_Clear($h4_i)
-
+		
 		$total_i:=$total_i+1
 		If ($otResult_t="Pass") & ($otrResult_t="Pass")
 			$pass_i:=$pass_i+1
@@ -1187,7 +1186,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 24. Copy
 		// ====================================================
@@ -1197,7 +1196,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otrCmd_t:="OTr_CopyItem"
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
-
+		
 		$h3_i:=OT New
 		$h4_i:=OTr_New
 		OT PutString($otMain_i; "src"; "copy-val")
@@ -1208,7 +1207,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otResult_t:="Fail: got '"+$gotten_t+"'"
 		End if 
-
+		
 		OTr_PutString($otrMain_i; "src"; "copy-val")
 		OTr_CopyItem($otrMain_i; "src"; $h4_i; "dst")
 		$gotten_t:=OTr_GetString($h4_i; "dst")
@@ -1217,10 +1216,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otrResult_t:="Fail: got '"+$gotten_t+"'"
 		End if 
-
+		
 		OT Clear($h3_i)
 		OTr_Clear($h4_i)
-
+		
 		$total_i:=$total_i+1
 		If ($otResult_t="Pass") & ($otrResult_t="Pass")
 			$pass_i:=$pass_i+1
@@ -1228,7 +1227,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 25. Size of array
 		$testNumber_t:="25"
@@ -1238,27 +1237,27 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otrCmd_t:="OTr_SizeOfArray"
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
-
+		
 		// "al" already stores at index 1 (row 14); add 2 and 3.
 		OT PutArrayLong($otMain_i; "al"; 2; 200)
 		OT PutArrayLong($otMain_i; "al"; 3; 300)
 		OTr_PutArrayLong($otrMain_i; "al"; 2; 200)
 		OTr_PutArrayLong($otrMain_i; "al"; 3; 300)
-
+		
 		$otArrSize_i:=OT SizeOfArray($otMain_i; "al")
 		If ($otArrSize_i=3)
 			$otResult_t:="Pass"
 		Else 
 			$otResult_t:="Fail: got "+String:C10($otArrSize_i)
 		End if 
-
+		
 		$otrArrSize_i:=OTr_SizeOfArray($otrMain_i; "al")
 		If ($otrArrSize_i=3)
 			$otrResult_t:="Pass"
 		Else 
 			$otrResult_t:="Fail: got "+String:C10($otrArrSize_i)
 		End if 
-
+		
 		$total_i:=$total_i+1
 		If ($otResult_t="Pass") & ($otrResult_t="Pass")
 			$pass_i:=$pass_i+1
@@ -1266,7 +1265,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 26. Sort arrays
 		// ====================================================
@@ -1276,7 +1275,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otrCmd_t:="OTr_SortArrays"
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
-
+		
 		// Populate "sort" array with values 30, 10, 20 then sort
 		// ascending; first element should be 10.
 		$h3_i:=OT New
@@ -1284,7 +1283,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		ARRAY LONGINT:C221($setupSort_ai; 3)
 		OT PutArray($h3_i; "sort"; $setupSort_ai)
 		OTr_PutArray($h4_i; "sort"; ->$setupSort_ai)
-
+		
 		OT PutArrayLong($h3_i; "sort"; 1; 30)
 		OT PutArrayLong($h3_i; "sort"; 2; 10)
 		OT PutArrayLong($h3_i; "sort"; 3; 20)
@@ -1295,7 +1294,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otResult_t:="Fail: first element after sort = "+String:C10($gotLong_i)
 		End if 
-
+		
 		OTr_PutArrayLong($h4_i; "sort"; 1; 30)
 		OTr_PutArrayLong($h4_i; "sort"; 2; 10)
 		OTr_PutArrayLong($h4_i; "sort"; 3; 20)
@@ -1306,10 +1305,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otrResult_t:="Fail: first element after sort = "+String:C10($gotLong_i)
 		End if 
-
+		
 		OT Clear($h3_i)
 		OTr_Clear($h4_i)
-
+		
 		$total_i:=$total_i+1
 		If ($otResult_t="Pass") & ($otrResult_t="Pass")
 			$pass_i:=$pass_i+1
@@ -1317,7 +1316,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 27. Object size  (Intentional difference §4.3)
 		// ====================================================
@@ -1327,7 +1326,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otrCmd_t:="OTr_ObjectSize"
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
-
+		
 		// Values will not match (§4.3); both must be non-zero.
 		$otSize_i:=OT ObjectSize($otMain_i)
 		If ($otSize_i>0)
@@ -1335,14 +1334,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otResult_t:="Fail: returned 0"
 		End if 
-
+		
 		$otrSize_i:=OTr_ObjectSize($otrMain_i)
 		If ($otrSize_i>0)
 			$otrResult_t:="Pass (size="+String:C10($otrSize_i)+")"
 		Else 
 			$otrResult_t:="Fail: returned 0 or OK=0"
 		End if 
-
+		
 		$total_i:=$total_i+1
 		If (Substring:C12($otResult_t; 1; 4)="Pass") & (Substring:C12($otrResult_t; 1; 4)="Pass")
 			$pass_i:=$pass_i+1
@@ -1350,7 +1349,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 28. BLOB serialisation (Intentional diff §4.3)
 		// ====================================================
@@ -1360,14 +1359,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otrCmd_t:="OTr_ObjectToNewBLOB / OTr_BLOBToObject"
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
-
+		
 		// Round-trip within each system independently; do NOT
 		// cross-load (formats are incompatible per §4.3).
 		$h3_i:=OT New
 		$h4_i:=OTr_New
 		OT PutString($h3_i; "bser"; "blob-ser-val")
 		OTr_PutString($h4_i; "bser"; "blob-ser-val")
-
+		
 		OT ObjectToBLOB($h3_i; $otBlob_blob)
 		$loadedOtH_i:=OT BLOBToObject($otBlob_blob)
 		$gotten_t:=OT GetString($loadedOtH_i; "bser")
@@ -1378,7 +1377,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		End if 
 		OT Clear($h3_i)
 		OT Clear($loadedOtH_i)
-
+		
 		$serialOtrBlob_blob:=OTr_ObjectToNewBLOB($h4_i)
 		$h3_i:=OTr_BLOBToObject($serialOtrBlob_blob)
 		$gotten_t:=OTr_GetString($h3_i; "bser")
@@ -1389,7 +1388,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		End if 
 		OTr_Clear($h4_i)
 		OTr_Clear($h3_i)
-
+		
 		$total_i:=$total_i+1
 		If ($otResult_t="Pass") & ($otrResult_t="Pass")
 			$pass_i:=$pass_i+1
@@ -1397,7 +1396,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 29. Version
 		// ====================================================
@@ -1407,7 +1406,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otrCmd_t:="OTr_GetVersion"
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
-
+		
 		// Values will differ; both must be non-empty.
 		$otVer_t:=OT GetVersion
 		If (Length:C16($otVer_t)>0)
@@ -1415,14 +1414,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otResult_t:="Fail: empty version"
 		End if 
-
+		
 		$otrVer_t:=OTr_GetVersion
 		If (Length:C16($otrVer_t)>0)
 			$otrResult_t:="Pass (v="+$otrVer_t+")"
 		Else 
 			$otrResult_t:="Fail: empty version or OK=0"
 		End if 
-
+		
 		$total_i:=$total_i+1
 		If (Substring:C12($otResult_t; 1; 4)="Pass") & (Substring:C12($otrResult_t; 1; 4)="Pass")
 			$pass_i:=$pass_i+1
@@ -1430,7 +1429,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- 30. Options
 		// ====================================================
@@ -1441,7 +1440,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$otResult_t:="Fail: not run"
 		$otrResult_t:="Fail: not run"
 		$testOpts_i:=1+4  // FailOnItemNotFound + AutoCreateObjects
-
+		
 		$originalOtOpts_i:=OT GetOptions
 		OT SetOptions($testOpts_i)
 		$readOtOpts_i:=OT GetOptions
@@ -1451,7 +1450,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otResult_t:="Fail: read "+String:C10($readOtOpts_i)+" expected "+String:C10($testOpts_i)
 		End if 
-
+		
 		$originalOtrOpts_i:=OTr_GetOptions
 		OTr_SetOptions($testOpts_i)
 		$readOtrOpts_i:=OTr_GetOptions
@@ -1461,7 +1460,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		Else 
 			$otrResult_t:="Fail: read "+String:C10($readOtrOpts_i)+" expected "+String:C10($testOpts_i)
 		End if 
-
+		
 		$total_i:=$total_i+1
 		If ($otResult_t="Pass") & ($otrResult_t="Pass")
 			$pass_i:=$pass_i+1
@@ -1469,20 +1468,20 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			$fail_i:=$fail_i+1
 		End if 
 		APPEND TO ARRAY:C911($rows_at; $testNumber_t+$TAB+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF)
-
+		
 		// ====================================================
 		//MARK:- TEARDOWN
 		// ====================================================
 		OT Clear($otMain_i)
 		OTr_ClearAll
-
+		
 		// ====================================================
 		//MARK:- ASSEMBLE TABLE AND WRITE FILE
 		// ====================================================
 		$summaryLine_t:="Total: "+String:C10($total_i)+"  Pass: "+String:C10($pass_i)+"  Fail: "+String:C10($fail_i)
 		APPEND TO ARRAY:C911($rows_at; "")
 		APPEND TO ARRAY:C911($rows_at; $summaryLine_t)
-
+		
 		// Join rows with line feeds
 		$tableText_t:=""
 		For ($i_i; 1; Size of array:C274($rows_at))
@@ -1491,7 +1490,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			End if 
 			$tableText_t:=$tableText_t+$rows_at{$i_i}
 		End for 
-
+		
 		// Build timestamp filename: YYYY-MM-DD-HH-MM-SS.txt
 		$y_i:=Year of:C25(Current date:C33)
 		$mo_i:=Month of:C24(Current date:C33)
@@ -1501,25 +1500,25 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$timeStr_t:=String:C10(Current time:C178; HH MM SS:K7:1)
 		$timeStr_t:=Replace string:C233($timeStr_t; ":"; "-")
 		$fileName_t:=$dateStr_t+"-"+$timeStr_t+".txt"
-
-
+		
+		
 		$desktopPath_t:=Get 4D folder:C485(Logs folder:K5:19)
 		$filePath_t:=$desktopPath_t+$fileName_t
-
+		
 		TEXT TO DOCUMENT:C1237($filePath_t; $tableText_t; "UTF-8")
 		SHOW ON DISK:C922($filePath_t)
 		ALERT:C41($summaryLine_t+Char:C90(Carriage return:K15:38)+"Results written to: "+$fileName_t)
 		SET TEXT TO PASTEBOARD:C523($tableText_t)
-
+		
 	End if 
-
-
-	*/
-//Else 
-//// This version allows for one unique process
-//$ProcessID_i:=New process(Current method name; $StackSize_i; $DesiredProcessName_t; *)
-
-//RESUME PROCESS($ProcessID_i)
-//SHOW PROCESS($ProcessID_i)
-//BRING TO FRONT($ProcessID_i)
-//End if 
+	
+	
+	
+Else 
+	// This version allows for one unique process
+	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $DesiredProcessName_t; *)
+	
+	RESUME PROCESS:C320($ProcessID_i)
+	SHOW PROCESS:C325($ProcessID_i)
+	BRING TO FRONT:C326($ProcessID_i)
+End if 
