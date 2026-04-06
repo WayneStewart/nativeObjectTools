@@ -50,7 +50,6 @@
 
 #DECLARE($inObject_i : Integer; $ioBLOB_ptr : Pointer; $inAppend_i : Integer)
 
-OK:=1
 var $obj_o : Object
 var $serialised_blob : Blob
 var $doAppend_i : Integer

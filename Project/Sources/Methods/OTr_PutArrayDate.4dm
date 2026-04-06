@@ -22,7 +22,6 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_d : Date)
 
-OK:=1
 var $encoded_t : Text
 
 $encoded_t := OTr_uDateToText($inValue_d)

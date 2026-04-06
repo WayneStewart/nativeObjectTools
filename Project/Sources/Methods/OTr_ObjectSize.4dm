@@ -31,7 +31,6 @@
 
 #DECLARE($inObject_i : Integer)->$size_i : Integer
 
-OK:=1
 $size_i:=0
 
 // OTr_zLock // Unnecessary to lock for Read Only access
@@ -47,7 +46,6 @@ Else
 End if
 
 // OTr_zUnlock // Unnecessary to lock for Read Only access
-
 
 
 

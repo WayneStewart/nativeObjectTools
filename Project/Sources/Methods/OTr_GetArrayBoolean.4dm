@@ -23,7 +23,6 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_i : Integer
 
-OK:=1
 var $raw_v : Variant
 
 $raw_v := OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Boolean array)

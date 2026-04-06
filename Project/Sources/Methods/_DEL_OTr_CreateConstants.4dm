@@ -10,6 +10,14 @@ Constants_AddLong("OTR Get Element"; 1)
 Constants_AddLong("OTR Put Element"; 2)
 
 
+Constants_NewGroup("OT Logging Mode")
+Constants_AddString("OT Log Off"; "off")
+Constants_AddString("OT Log Debug"; "debug")
+Constants_AddString("OT Log Info"; "info")
+Constants_AddString("OT Log Notice"; "notice")
+Constants_AddString("OT Log Warn"; "warn")
+Constants_AddString("OT Log Error"; "error")
+
 Constants_SaveFile
 
 

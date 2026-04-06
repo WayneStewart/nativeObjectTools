@@ -34,7 +34,6 @@
 
 #DECLARE($inBLOB_blob : Blob)->$handle_i : Integer
 
-OK:=1
 var $work_blob : Blob
 var $obj_o : Object
 var $compressed_i : Integer

@@ -25,7 +25,6 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_ptr : Pointer
 
-OK:=1
 var $raw_v : Variant
 
 $result_ptr := Null

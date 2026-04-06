@@ -21,5 +21,4 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_t : Text
 
-OK:=1
 $result_t := OTr_GetArrayString($inObject_i; $inTag_t; $inIndex_i)

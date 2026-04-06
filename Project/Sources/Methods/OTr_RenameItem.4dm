@@ -24,7 +24,6 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inNewTag_t : Text)
 
-OK:=1
 var $dotPos_i : Integer
 var $scanPos_i : Integer
 var $parentPath_t : Text

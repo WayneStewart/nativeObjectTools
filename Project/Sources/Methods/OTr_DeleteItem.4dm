@@ -23,7 +23,6 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)
 
-OK:=1
 var $parent_o : Object
 var $leafKey_t : Text
 

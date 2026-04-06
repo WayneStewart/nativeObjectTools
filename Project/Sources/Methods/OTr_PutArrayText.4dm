@@ -21,5 +21,4 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_t : Text)
 
-OK:=1
 OTr_PutArrayString($inObject_i; $inTag_t; $inIndex_i; $inValue_t)

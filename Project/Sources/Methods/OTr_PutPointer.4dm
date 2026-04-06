@@ -50,7 +50,6 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_ptr : Pointer)
 
-OK:=1
 var $parent_o : Object
 var $leafKey_t : Text
 
