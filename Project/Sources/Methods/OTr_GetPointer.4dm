@@ -23,13 +23,14 @@
 // and therefore accepts a plain variable without ->.
 //
 // Correct usage:
-
+// ```
 //   var myPtr : Pointer
 //   OTr_GetPointer(handle; "tag"; ->myPtr)
-//  use ->myPtr, not myPtr
+//   // use ->myPtr, not myPtr
 //   If (OK=1) & (myPtr#Null)
 //     // use myPtr->
 //   End if
+// ```
 
 // **ORIGINAL DOCUMENTATION**
 // 

@@ -33,7 +33,7 @@
 var $Attributes_t; $callSyntax_t; $CR; $FirstChars_t; $lastChar_t; $alert_t; $MethodCode_t; \
 $nextline_t; $parameterBlock_t; $parameterline_t; \
 $processName_t; $Space; $callSyntaxParameters_t; $documentationPath_t; $returnsBlock_t; $displayMethodName_t; $tooltipComment_t; $currentParagraph_t; $line_t; $trimmedLine_t; $digits_t; $paramName_t; $paramType_t; $paramDesc_t; $firstChar_t : Text
-var $isNumbered_b; $isDeclareStyle_b : Boolean
+var $isNumbered_b; $isDeclareStyle_b; $inCodeBlock_b : Boolean
 var $CurrentMethod_i; $line_i; $lineEnd_i; $nextLine_i; $numberofLines_i; $NumberOfMethods_i; \
 $parameterBlock_i; $Position_i; $ProcessID_i; $returns_i; $StackSize_i; $commentLineCount_i; $commentLine_i; $lastUnderscore_i : Integer
 var $Attributes_o; $lineInfo_o : Object
@@ -405,6 +405,7 @@ End if
 		TEXT TO ARRAY:C1149($MethodCode_t; $commentLines_at; MAXTEXTLENBEFOREV11:K35:3; "Courier"; 9)
 		ARRAY TEXT:C222($formattedCommentLines_at; 0)
 		$currentParagraph_t:=""
+		$inCodeBlock_b:=False:C215
 		$commentLineCount_i:=Size of array:C274($commentLines_at)
 		For ($commentLine_i; 1; $commentLineCount_i)
 			$line_t:=$commentLines_at{$commentLine_i}
@@ -414,65 +415,96 @@ End if
 				$trimmedLine_t:=Substring:C12($trimmedLine_t; 2)
 			End while 
 			
-			If (Length:C16($trimmedLine_t)=0)
-				If (Length:C16($currentParagraph_t)>0)
-					APPEND TO ARRAY:C911($formattedCommentLines_at; $currentParagraph_t)
-					$currentParagraph_t:=""
-				End if 
-				If ((Size of array:C274($formattedCommentLines_at)=0))
+			If ($trimmedLine_t="```")
+				// Code fence token — toggle code-block mode
+				If ($inCodeBlock_b)
+					// Closing fence
+					APPEND TO ARRAY:C911($formattedCommentLines_at; "```")
+					$inCodeBlock_b:=False:C215
 				Else 
-					If ($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)}#"")
-						APPEND TO ARRAY:C911($formattedCommentLines_at; "")
-					End if 
-				End if 
-			Else 
-				$digits_t:="0123456789"
-				$Position_i:=Position:C15("."; $trimmedLine_t)
-				$isNumbered_b:=False:C215
-				If ($Position_i>1)
-					$nextline_t:=Substring:C12($trimmedLine_t; 1; $Position_i-1)
-					$isNumbered_b:=True:C214
-					For ($line_i; 1; Length:C16($nextline_t))
-						If (Position:C15(Substring:C12($nextline_t; $line_i; 1); $digits_t)=0)
-							$isNumbered_b:=False:C215
-						End if 
-					End for 
-					If ($isNumbered_b)
-						If (Length:C16($trimmedLine_t)>$Position_i)
-							If (Substring:C12($trimmedLine_t; $Position_i+1; 1)#$Space)
-								$isNumbered_b:=False:C215
-							End if 
-						Else 
-							$isNumbered_b:=False:C215
-						End if 
-					End if 
-				End if 
-				
-				If ($isNumbered_b)  // Numbered line: keep as standalone line
+					// Opening fence — flush any pending paragraph first
 					If (Length:C16($currentParagraph_t)>0)
 						APPEND TO ARRAY:C911($formattedCommentLines_at; $currentParagraph_t)
+						$currentParagraph_t:=""
+					End if 
+					If (Size of array:C274($formattedCommentLines_at)>0)
 						If ($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)}#"")
 							APPEND TO ARRAY:C911($formattedCommentLines_at; "")
 						End if 
-						$currentParagraph_t:=""
 					End if 
+					APPEND TO ARRAY:C911($formattedCommentLines_at; "```")
+					$inCodeBlock_b:=True:C214
+				End if 
+			Else 
+				If ($inCodeBlock_b)
+					// Inside a code block: preserve line verbatim, no underscore escaping, no merging
 					APPEND TO ARRAY:C911($formattedCommentLines_at; $trimmedLine_t)
 				Else 
-					If (Length:C16($currentParagraph_t)=0)
-						$currentParagraph_t:=$trimmedLine_t
-					Else 
-						If (Substring:C12($line_t; 1; 1)=$Space)  // Indented continuation
-							$currentParagraph_t:=$currentParagraph_t+" "+$trimmedLine_t
+					// Normal prose processing
+					// Escape underscores for Markdown here (per-line, outside code blocks)
+					$trimmedLine_t:=Replace string:C233($trimmedLine_t; "_"; "\\_")
+					
+					If (Length:C16($trimmedLine_t)=0)
+						If (Length:C16($currentParagraph_t)>0)
+							APPEND TO ARRAY:C911($formattedCommentLines_at; $currentParagraph_t)
+							$currentParagraph_t:=""
+						End if 
+						If ((Size of array:C274($formattedCommentLines_at)=0))
 						Else 
-							$lastChar_t:=Substring:C12($currentParagraph_t; Length:C16($currentParagraph_t); 1)
-							If (Position:C15($lastChar_t; ".:?")>0)
+							If ($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)}#"")
+								APPEND TO ARRAY:C911($formattedCommentLines_at; "")
+							End if 
+						End if 
+					Else 
+						$digits_t:="0123456789"
+						$Position_i:=Position:C15("."; $trimmedLine_t)
+						$isNumbered_b:=False:C215
+						If ($Position_i>1)
+							$nextline_t:=Substring:C12($trimmedLine_t; 1; $Position_i-1)
+							$isNumbered_b:=True:C214
+							For ($line_i; 1; Length:C16($nextline_t))
+								If (Position:C15(Substring:C12($nextline_t; $line_i; 1); $digits_t)=0)
+									$isNumbered_b:=False:C215
+								End if 
+							End for 
+							If ($isNumbered_b)
+								If (Length:C16($trimmedLine_t)>$Position_i)
+									If (Substring:C12($trimmedLine_t; $Position_i+1; 1)#$Space)
+										$isNumbered_b:=False:C215
+									End if 
+								Else 
+									$isNumbered_b:=False:C215
+								End if 
+							End if 
+						End if 
+						
+						If ($isNumbered_b)  // Numbered line: keep as standalone line
+							If (Length:C16($currentParagraph_t)>0)
 								APPEND TO ARRAY:C911($formattedCommentLines_at; $currentParagraph_t)
 								If ($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)}#"")
 									APPEND TO ARRAY:C911($formattedCommentLines_at; "")
 								End if 
+								$currentParagraph_t:=""
+							End if 
+							APPEND TO ARRAY:C911($formattedCommentLines_at; $trimmedLine_t)
+						Else 
+							If (Length:C16($currentParagraph_t)=0)
 								$currentParagraph_t:=$trimmedLine_t
 							Else 
-								$currentParagraph_t:=$currentParagraph_t+" "+$trimmedLine_t
+								If (Substring:C12($line_t; 1; 1)=$Space)  // Indented continuation
+									$currentParagraph_t:=$currentParagraph_t+" "+$trimmedLine_t
+								Else 
+									$lastChar_t:=Substring:C12($currentParagraph_t; Length:C16($currentParagraph_t); 1)
+									If (Position:C15($lastChar_t; ".:?")>0)
+										APPEND TO ARRAY:C911($formattedCommentLines_at; $currentParagraph_t)
+										If ($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)}#"")
+											APPEND TO ARRAY:C911($formattedCommentLines_at; "")
+										End if 
+										$currentParagraph_t:=$trimmedLine_t
+									Else 
+										$currentParagraph_t:=$currentParagraph_t+" "+$trimmedLine_t
+									End if 
+								End if 
 							End if 
 						End if 
 					End if 
@@ -482,6 +514,10 @@ End if
 		
 		If (Length:C16($currentParagraph_t)>0)
 			APPEND TO ARRAY:C911($formattedCommentLines_at; $currentParagraph_t)
+		End if 
+		If ($inCodeBlock_b)  // Unclosed code fence — force-close
+			APPEND TO ARRAY:C911($formattedCommentLines_at; "```")
+			$inCodeBlock_b:=False:C215
 		End if 
 		
 		$MethodCode_t:=""
@@ -493,7 +529,6 @@ End if
 			$MethodCode_t:=$MethodCode_t+$formattedCommentLines_at{$commentLine_i}
 		End for 
 		
-		$MethodCode_t:=Replace string:C233($MethodCode_t; "_"; "\\_")
 		
 		If (Length:C16($parameterBlock_t)>0)
 			$MethodCode_t:=$MethodCode_t+$CR+$CR+$parameterBlock_t
