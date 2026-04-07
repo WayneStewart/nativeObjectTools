@@ -22,10 +22,10 @@
 // Wayne Stewart, 2026-04-04 - Added OTr_zSetOK(1) on success.
 // ----------------------------------------------------
 
-#DECLARE($inSourceObject_i : Integer; $inSourceTag_t : Text; \
+#DECLARE($inSourceObject_i : Integer; $inSourceTag_t : Text; $inDestObject_i : Integer; $inDestTag_t : Text)
 
-OTr_zAddToCallStack(Current method name)
-$inDestObject_i : Integer; $inDestTag_t : Text)
+OTr_zAddToCallStack(Current method name:C684)
+
 
 var $srcParent_o : Object
 var $srcLeafKey_t : Text
@@ -73,16 +73,16 @@ If (OTr_zIsValidHandle($inSourceObject_i)\
 							OB Get:C1224($srcParent_o; $srcLeafKey_t; Is collection:K8:32))
 						
 					: ($nativeType_i=Is text:K8:3)
-							OB SET:C1220($destParent_o; $destLeafKey_t; \
-								OB Get:C1224($srcParent_o; $srcLeafKey_t; Is text:K8:3))
-
-						: ($nativeType_i=Is BLOB:K8:12)
-							OB SET:C1220($destParent_o; $destLeafKey_t; \
-								OB Get:C1224($srcParent_o; $srcLeafKey_t; Is BLOB:K8:12))
-
-						: ($nativeType_i=Is picture:K8:10)
-							OB SET:C1220($destParent_o; $destLeafKey_t; \
-								OB Get:C1224($srcParent_o; $srcLeafKey_t; Is picture:K8:10))
+						OB SET:C1220($destParent_o; $destLeafKey_t; \
+							OB Get:C1224($srcParent_o; $srcLeafKey_t; Is text:K8:3))
+						
+					: ($nativeType_i=Is BLOB:K8:12)
+						OB SET:C1220($destParent_o; $destLeafKey_t; \
+							OB Get:C1224($srcParent_o; $srcLeafKey_t; Is BLOB:K8:12))
+						
+					: ($nativeType_i=Is picture:K8:10)
+						OB SET:C1220($destParent_o; $destLeafKey_t; \
+							OB Get:C1224($srcParent_o; $srcLeafKey_t; Is picture:K8:10))
 				End case 
 				OTr_zSetOK(1)
 			End if 
@@ -102,4 +102,4 @@ End if
 
 OTr_zUnlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

@@ -540,4 +540,6 @@ If (False:C215)
 	C_LONGINT:C283(____Test_Phase_15_OTr; $1)
 	C_LONGINT:C283(____Test_Phase_15_OT; $1)
 	
+	
+	C_TEXT:C284(OTr_Info; $1; $0)
 End if 

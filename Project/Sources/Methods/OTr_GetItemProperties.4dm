@@ -29,10 +29,10 @@
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inIndex_i : Integer; \
-
-OTr_zAddToCallStack(Current method name)
 $outName_ptr : Pointer; $outType_ptr : Pointer; \
 $outItemSize_ptr : Pointer; $outDataSize_ptr : Pointer)
+
+OTr_zAddToCallStack(Current method name:C684)
 
 var $k_i : Integer
 var $validIdx_i : Integer
@@ -104,13 +104,13 @@ If (OTr_zIsValidHandle($inObject_i))
 					
 				: ($nativeType_i=Is text:K8:3)
 					$dataSize_i:=Length:C16(OB Get:C1224(<>OTR_Objects_ao{$inObject_i}; $keys_at{$inIndex_i}; Is text:K8:3))
-
+					
 				: ($nativeType_i=Is BLOB:K8:12)
 					$dataSize_i:=BLOB size:C605(OB Get:C1224(<>OTR_Objects_ao{$inObject_i}; $keys_at{$inIndex_i}; Is BLOB:K8:12))
-
+					
 				: ($nativeType_i=Is picture:K8:10)
 					$dataSize_i:=Picture size:C356(OB Get:C1224(<>OTR_Objects_ao{$inObject_i}; $keys_at{$inIndex_i}; Is picture:K8:10))
-
+					
 			End case 
 			
 			$itemSize_i:=$dataSize_i+Length:C16($keys_at{$inIndex_i})
@@ -139,4 +139,4 @@ End if
 
 OTr_zUnlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

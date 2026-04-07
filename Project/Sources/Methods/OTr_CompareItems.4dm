@@ -29,9 +29,9 @@
 // ----------------------------------------------------
 
 #DECLARE($inSourceObject_i : Integer; $inSourceTag_t : Text; \
-
-OTr_zAddToCallStack(Current method name)
 $inCompareObject_i : Integer; $inCompareTag_t : Text)->$result_i : Integer
+
+OTr_zAddToCallStack(Current method name:C684)
 
 var $srcParent_o : Object
 var $srcLeafKey_t : Text
@@ -98,26 +98,26 @@ If (OTr_zIsValidHandle($inSourceObject_i)\
 							$srcParent_o; $srcLeafKey_t; Is text:K8:3)
 						$cmpText_t:=OB Get:C1224(\
 							$cmpParent_o; $cmpLeafKey_t; Is text:K8:3)
-					If (OTr_uEqualStrings($srcText_t; $cmpText_t))
-						$result_i:=1
-					End if 
-
-				: ($nativeSrcType_i=Is BLOB:K8:12)
-					If (OTr_uEqualBLOBs(OB Get:C1224($srcParent_o; $srcLeafKey_t; Is BLOB:K8:12); \
-						OB Get:C1224($cmpParent_o; $cmpLeafKey_t; Is BLOB:K8:12)))
-						$result_i:=1
-					End if 
-
-				: ($nativeSrcType_i=Is picture:K8:10)
-					If (OTr_uEqualPictures(OB Get:C1224($srcParent_o; $srcLeafKey_t; Is picture:K8:10); \
-						OB Get:C1224($cmpParent_o; $cmpLeafKey_t; Is picture:K8:10)))
-						$result_i:=1
-					End if 
-
-				: ($nativeSrcType_i=Is object:K8:27)
-					If (OTr_uEqualObjects(OB Get:C1224($srcParent_o; $srcLeafKey_t; Is object:K8:27); OB Get:C1224($cmpParent_o; $cmpLeafKey_t; Is object:K8:27)))
-						$result_i:=1
-					End if 
+						If (OTr_uEqualStrings($srcText_t; $cmpText_t))
+							$result_i:=1
+						End if 
+						
+					: ($nativeSrcType_i=Is BLOB:K8:12)
+						If (OTr_uEqualBLOBs(OB Get:C1224($srcParent_o; $srcLeafKey_t; Is BLOB:K8:12); \
+							OB Get:C1224($cmpParent_o; $cmpLeafKey_t; Is BLOB:K8:12)))
+							$result_i:=1
+						End if 
+						
+					: ($nativeSrcType_i=Is picture:K8:10)
+						If (OTr_uEqualPictures(OB Get:C1224($srcParent_o; $srcLeafKey_t; Is picture:K8:10); \
+							OB Get:C1224($cmpParent_o; $cmpLeafKey_t; Is picture:K8:10)))
+							$result_i:=1
+						End if 
+						
+					: ($nativeSrcType_i=Is object:K8:27)
+						If (OTr_uEqualObjects(OB Get:C1224($srcParent_o; $srcLeafKey_t; Is object:K8:27); OB Get:C1224($cmpParent_o; $cmpLeafKey_t; Is object:K8:27)))
+							$result_i:=1
+						End if 
 						
 					: ($nativeSrcType_i=Is collection:K8:32)
 						If (JSON Stringify:C1217(OB Get:C1224(\
@@ -147,4 +147,4 @@ End if
 
 OTr_zUnlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

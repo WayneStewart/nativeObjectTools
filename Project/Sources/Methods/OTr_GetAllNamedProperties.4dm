@@ -29,10 +29,11 @@
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outNames_ptr : Pointer; \
-
-OTr_zAddToCallStack(Current method name)
 $outTypes_ptr : Pointer; $outItemSizes_ptr : Pointer; \
 $outDataSizes_ptr : Pointer)
+
+OTr_zAddToCallStack(Current method name:C684)
+
 
 var $target_o : Object
 var $parent_o : Object
@@ -137,13 +138,13 @@ If (OTr_zIsValidHandle($inObject_i))
 							
 						: ($nativeType_i=Is text:K8:3)
 							$dataSize_i:=Length:C16(OB Get:C1224($target_o; $thisKey_t; Is text:K8:3))
-
+							
 						: ($nativeType_i=Is BLOB:K8:12)
 							$dataSize_i:=BLOB size:C605(OB Get:C1224($target_o; $thisKey_t; Is BLOB:K8:12))
-
+							
 						: ($nativeType_i=Is picture:K8:10)
 							$dataSize_i:=Picture size:C356(OB Get:C1224($target_o; $thisKey_t; Is picture:K8:10))
-
+							
 					End case 
 					
 					$itemSize_i:=$dataSize_i+Length:C16($thisKey_t)
@@ -183,4 +184,4 @@ End if
 
 OTr_zUnlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

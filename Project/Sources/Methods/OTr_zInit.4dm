@@ -32,6 +32,9 @@ If (Storage:C1525.OTr=Null:C1517)
 			"mechanism"; OTR IP Arrays)
 	End use 
 	OTr_z_CheckHostMethods
+	
+	OTr_zLogInit  // Check logging is ready and write the startup message.
+	
 End if 
 
 

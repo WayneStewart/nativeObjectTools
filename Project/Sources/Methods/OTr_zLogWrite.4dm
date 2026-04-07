@@ -29,14 +29,14 @@ var $activeRank_i : Integer
 var $sequence_i : Integer
 var $size_r : Real
 
-If (Storage.OTr.logInitialised_b#True)
+If (Storage:C1525.OTr.logInitialised_b#True:C214)
 	OTr_zLogInit
-End if
+End if 
 
-If (Storage.OTr.logInitialised_b#True)
+If (Storage:C1525.OTr.logInitialised_b#True:C214)
 	
-Else
-	$activeLevel_t:=Storage.OTr.logLevel
+Else 
+	$activeLevel_t:=Storage:C1525.OTr.logLevel
 	If ($activeLevel_t#"off")
 		$activeRank_i:=OTr_zLogLevelToInt($activeLevel_t)
 		If ($inLevel_t="debug")
@@ -47,23 +47,23 @@ Else
 		
 		If ($levelRank_i<=$activeRank_i)
 			$currentFileName_t:=OTr_zLogFileName
-			$currentFilePath_t:=Storage.OTr.logDirectory+$currentFileName_t
-			If (Test path name($currentFilePath_t)=Is a document)
-				$size_r:=Get document size($currentFilePath_t)
-				If ($size_r>=Storage.OTr.logSizeThreshold)
+			$currentFilePath_t:=Storage:C1525.OTr.logDirectory+$currentFileName_t
+			If (Test path name:C476($currentFilePath_t)=Is a document:K24:1)
+				$size_r:=Get document size:C479($currentFilePath_t)
+				If ($size_r>=Storage:C1525.OTr.logSizeThreshold)
 					LOG CLOSE LOG
-					Use (Storage.OTr)
-						Storage.OTr.logSequence:=Storage.OTr.logSequence+1
-						$sequence_i:=Storage.OTr.logSequence
-					End use
+					Use (Storage:C1525.OTr)
+						Storage:C1525.OTr.log.sequence:=Storage:C1525.OTr.log.sequence+1
+						$sequence_i:=Storage:C1525.OTr.log.sequence
+					End use 
 					$currentFileName_t:=OTr_zLogFileName
 				End if 
 			End if 
 			
-			Log Folder Path(Storage.OTr.logDirectory)
+			Log Folder Path(Storage:C1525.OTr.logDirectory)
 			Log File Name($currentFileName_t)
-			LOG ENABLE(True)
+			LOG ENABLE(True:C214)
 			LOG ADD ENTRY($inLevel_t; $inSource_t; $inMessage_t)
 		End if 
 	End if 
-End if
+End if 

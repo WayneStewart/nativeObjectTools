@@ -11,13 +11,12 @@
 
 // Created by Wayne Stewart, 2026-04-07
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
-// Wayne Stewart, 2026-04-07 - Added Phase 10 logging directory helper.
 // ----------------------------------------------------
 
 #DECLARE()->$outPath_t : Text
 
-$outPath_t:=Get 4D folder(Logs folder; *)+"ObjectTools"+Folder separator
+$outPath_t:=Get 4D folder:C485(Logs folder:K5:19; *)+"ObjectTools"+Folder separator:K24:12
 
-If (Test path name($outPath_t)#Is a folder)
-	CREATE FOLDER($outPath_t; *)
-End if
+If (Test path name:C476($outPath_t)#Is a folder:K24:2)
+	CREATE FOLDER:C475($outPath_t; *)
+End if 

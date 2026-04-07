@@ -1,4 +1,3 @@
-//%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project Method: On Host Database Event ($event_i : Integer)
 
@@ -18,11 +17,11 @@
 
 #DECLARE($event_i : Integer)
 
-Case of
+Case of 
 	: ($event_i=1)
-		OTr_zLogInit
-
+		OTr_Startup
+		
 	: ($event_i=3)
 		OTr_zLogShutdown
-
-End case
+		
+End case 

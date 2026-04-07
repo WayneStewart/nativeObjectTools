@@ -26,32 +26,32 @@
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $outNames_ptr : Pointer; \
+$outTypes_ptr : Pointer; $outItemSizes_ptr : Pointer; \
+$outDataSizes_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name)
-	$outTypes_ptr : Pointer; $outItemSizes_ptr : Pointer; \
-	$outDataSizes_ptr : Pointer)
+OTr_zAddToCallStack(Current method name:C684)
 
 // Delegate to OTr_GetAllNamedProperties with an empty tag,
 // forwarding only the pointer params that were actually supplied.
 
-Case of
-
-	: (Count parameters<=2)
+Case of 
+		
+	: (Count parameters:C259<=2)
 		OTr_GetAllNamedProperties($inObject_i; ""; $outNames_ptr)
-
-	: (Count parameters=3)
-		OTr_GetAllNamedProperties( \
+		
+	: (Count parameters:C259=3)
+		OTr_GetAllNamedProperties(\
 			$inObject_i; ""; $outNames_ptr; $outTypes_ptr)
-
-	: (Count parameters=4)
-		OTr_GetAllNamedProperties( \
+		
+	: (Count parameters:C259=4)
+		OTr_GetAllNamedProperties(\
 			$inObject_i; ""; $outNames_ptr; $outTypes_ptr; $outItemSizes_ptr)
-
-	Else
-		OTr_GetAllNamedProperties( \
+		
+	Else 
+		OTr_GetAllNamedProperties(\
 			$inObject_i; ""; $outNames_ptr; $outTypes_ptr; \
 			$outItemSizes_ptr; $outDataSizes_ptr)
+		
+End case 
 
-End case
-
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)
