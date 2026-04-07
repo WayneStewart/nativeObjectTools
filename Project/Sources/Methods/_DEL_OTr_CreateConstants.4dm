@@ -1,4 +1,4 @@
-//%attributes = {}
+//%attributes = {"invisible":true}
 Constants_NewFile("OTr.xlf")
 
 Constants_NewGroup("OTr Storage Mechanism")

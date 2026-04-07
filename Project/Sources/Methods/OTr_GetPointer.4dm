@@ -8,7 +8,28 @@
 // pointer on any error or missing tag.
 
 // **VERY IMPORTANT NOTE**
-// This command must *NOT* be used with pointeers to local variables.
+// This command must *NOT* be used with pointers to local variables.
+
+// Because 4D methods receive all parameters by value, the output
+// parameter ($outPointer_ptr) must be passed using the pointer-to-
+// pointer syntax — i.e. ->myVar — so that the method can write the
+// result back to the caller's variable via dereference ($outPointer_ptr->:=).
+
+// Passing a plain Pointer variable without -> gives the method only a
+// local copy; the caller's variable is never updated.
+//
+// This differs from OT GetPointer, which as a compiled plugin command
+// can write directly to its output parameter via C-level memory access
+// and therefore accepts a plain variable without ->.
+//
+// Correct usage:
+
+//   var myPtr : Pointer
+//   OTr_GetPointer(handle; "tag"; ->myPtr)
+//  use ->myPtr, not myPtr
+//   If (OK=1) & (myPtr#Null)
+//     // use myPtr->
+//   End if
 
 // **ORIGINAL DOCUMENTATION**
 // 
@@ -57,14 +78,14 @@ var $leafKey_t : Text
 OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; ->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			$outPointer_ptr:=OTr_uTextToPointer(OB Get($parent_o; $leafKey_t; Is text))
-		End if
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name)
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
+			$outPointer_ptr->:=OTr_uTextToPointer(OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3))
+		End if 
+	End if 
+Else 
+	OTr_zError("Invalid handle"; Current method name:C684)
 	OTr_zSetOK(0)
-End if
+End if 
 
 OTr_zUnlock

@@ -87,6 +87,8 @@
 - [ ] Audit all `OT Clear` call sites — same memory management discipline required; no garbage collection
 - [ ] Confirm calling code uses `OTr_GetBoolean` return value as Integer (0/1), not Boolean
 - [ ] Confirm calling code treats array indices as 1-based (OTr maps internally to 0-based Collections)
+- [ ] Update all `OT GetPointer` call sites: OTr requires the output variable to be passed with the pointer-to-pointer syntax (`->myVar`), not as a plain variable. This is because 4D methods receive parameters by value and cannot write back through a plain Pointer; the `->` lets the method dereference one level to deposit the result. (`OT GetPointer` as a compiled plugin command had C-level write access and did not require this.)
+- [ ] Update all `OT GetArrayPointer` call sites: `OTr_GetArrayPointer` returns the pointer as a function result rather than via an output parameter — change `OT GetArrayPointer(h; tag; idx; outVar)` to `outVar := OTr_GetArrayPointer(h; tag; idx)`
 
 ---
 
