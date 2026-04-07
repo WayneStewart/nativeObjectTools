@@ -1,0 +1,1 @@
+<!-- Does not require any parameters -->## LOG THIS| Parameters || --- || Does not require any parameters |

@@ -1,0 +1,1 @@
+<!--Log Form Event -> Text$0 : Type : ⬅️ : Returns Form event Code Access: Shared Description-->## Log Form EventLog Form Event --> TextReturns Form event CodeAttributes: Shared, Invisible, Preemptive indifferent| Parameter | Type |  | Description || --- | --- | --- | --- ||$0|Type|⬅️|Returns Form event Code Access: Shared Description|

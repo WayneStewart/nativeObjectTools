@@ -37,7 +37,7 @@ End if
 
 
 
-C_BOOLEAN:C305(<>OTR_Initialised_b)
+C_BOOLEAN:C305(<>OTR_Initialised_b; OTR_Initialised_b)
 
 Compiler_OTr
 
@@ -53,3 +53,8 @@ If (Not:C34(<>OTR_Initialised_b))
 	<>OTR_Initialised_b:=True:C214
 End if 
 
+If (OTR_Initialised_b)
+Else 
+	ARRAY TEXT:C222(OTR_callStack_at; 0)
+	OTR_Initialised_b:=True:C214
+End if 

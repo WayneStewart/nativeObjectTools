@@ -23,6 +23,25 @@
 			"Constants_SaveFile"
 		]
 	},
+	"Logging": {
+		"methods": [
+			"Compiler_Log",
+			"Compiler_LogMethods",
+			"LOG ADD ENTRY",
+			"LOG CLOSE LOG",
+			"LOG CLOSE LOG2",
+			"LOG DECLARE LOG",
+			"LOG ENABLE",
+			"Log File Name",
+			"Log Folder Path",
+			"Log Form Event",
+			"LOG STOP LOG WRITER",
+			"LOG THIS",
+			"LOG USE LOG",
+			"Log_Init",
+			"TimetoDie"
+		]
+	},
 	"Miscellaneous": {
 		"methods": [
 			"__WriteDocumentation",
@@ -160,12 +179,24 @@
 		"methods": [
 			"____Test_Phase_1",
 			"____Test_Phase_1_5",
+			"____Test_Phase_10",
+			"____Test_Phase_10_OT",
+			"____Test_Phase_10_OTr",
+			"____Test_Phase_10a",
+			"____Test_Phase_10a_OT",
+			"____Test_Phase_10a_OTr",
+			"____Test_Phase_10b",
+			"____Test_Phase_10b_OT",
+			"____Test_Phase_10b_OTr",
 			"____Test_Phase_15",
+			"____Test_Phase_15_OT",
+			"____Test_Phase_15_OTr",
 			"____Test_Phase_2",
 			"____Test_Phase_3",
 			"____Test_Phase_4_Arrays",
 			"____Test_Phase_5",
-			"____Test_Phase_6"
+			"____Test_Phase_6",
+			"____Test_Phase_8"
 		]
 	},
 	"OT Utility Methods": {

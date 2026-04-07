@@ -15,7 +15,7 @@
 //     waynestewart@mac.com
 // ----------------------------------------------------
 
-C_BOOLEAN:C305(<>OTR_Initialised_b)
+C_BOOLEAN:C305(<>OTR_Initialised_b; OTR_Initialised_b)
 
 
 If (Not:C34(<>OTR_Initialised_b))
@@ -30,6 +30,13 @@ If (Not:C34(<>OTR_Initialised_b))
 	Compiler_OTrSortInterprocess  // These are the arrays used in the sorting routines
 	
 End if 
+
+
+If (Not:C34(OTR_Initialised_b))
+	ARRAY TEXT:C222(OTR_callStack_at; 0)
+	
+End if 
+
 
 
 If (False:C215)
