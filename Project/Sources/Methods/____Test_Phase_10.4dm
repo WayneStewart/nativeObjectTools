@@ -32,23 +32,26 @@
 //   method into controller + OTr/OT sub-methods following
 //   the same pattern as ____Test_Phase_15.
 // ----------------------------------------------------
+#DECLARE($suppressAlert_b : Boolean)
+
 var $ProcessID_i; $StackSize_i : Integer
 var $DesiredProcessName_t : Text
 
-// ----------------------------------------------------
-
 $StackSize_i:=0
-$DesiredProcessName_t:=Current method name
+$DesiredProcessName_t:=Current method name:C684
 
-If (Current process name=$DesiredProcessName_t)
+$suppressAlert_b:=Choose:C955(Count parameters:C259=1; $suppressAlert_b; False:C215)
 
+
+If (Current process name:C1392=$DesiredProcessName_t)
+	
 	// ====================================================
 	// INIT ACCUMULATOR
 	// ====================================================
 	OTr_ClearAll
 	var $accum_i : Integer
 	$accum_i:=OTr_New
-
+	
 	// ====================================================
 	// EXECUTE SUB-METHODS
 	// OTr sub-method runs first; it bulk-loads three array
@@ -56,9 +59,9 @@ If (Current process name=$DesiredProcessName_t)
 	// pre-seeded as empty arrays of the correct length).
 	// OT sub-method then updates otCmd and otResult by index.
 	// ====================================================
-	____Test_Phase_10_OTr ($accum_i)
-	____Test_Phase_10_OT ($accum_i)
-
+	____Test_Phase_10_OTr($accum_i)
+	____Test_Phase_10_OT($accum_i)
+	
 	// ====================================================
 	// READ RESULTS FROM ACCUMULATOR
 	// ====================================================
@@ -70,15 +73,15 @@ If (Current process name=$DesiredProcessName_t)
 	var $desktopPath_t; $fileName_t; $filePath_t : Text
 	var $dateStr_t; $timeStr_t : Text
 	var $y_i; $mo_i; $d_i : Integer
-
-	$TAB:=Char(Tab)
-	$LF:=Char(Line feed)
-
+	
+	$TAB:=Char:C90(Tab:K15:37)
+	$LF:=Char:C90(Line feed:K15:40)
+	
 	$total_i:=OTr_SizeOfArray($accum_i; "testName")
-
+	
 	// Header row
 	$tableText_t:="Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$LF
-
+	
 	// Data rows
 	For ($i_i; 1; $total_i)
 		$testName_t:=OTr_GetArrayText($accum_i; "testName"; $i_i)
@@ -87,41 +90,43 @@ If (Current process name=$DesiredProcessName_t)
 		$otrCmd_t:=OTr_GetArrayText($accum_i; "otrCmd"; $i_i)
 		$otrResult_t:=OTr_GetArrayText($accum_i; "otrResult"; $i_i)
 		$tableText_t:=$tableText_t+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF
-	End for
-
+	End for 
+	
 	// ====================================================
 	// TEARDOWN ACCUMULATOR
 	// ====================================================
 	OTr_Clear($accum_i)
-
+	
 	// ====================================================
 	// ASSEMBLE SUMMARY AND WRITE FILE
 	// ====================================================
-	$summaryLine_t:="Total scenarios: "+String($total_i)
+	$summaryLine_t:="Total scenarios: "+String:C10($total_i)
 	$tableText_t:=$tableText_t+$LF+$summaryLine_t
-
-	$y_i:=Year of(Current date)
-	$mo_i:=Month of(Current date)
-	$d_i:=Day of(Current date)
-	$dateStr_t:=String($y_i; "0000")+"-"+String($mo_i; "00")+"-"+String($d_i; "00")
-	$timeStr_t:=String(Current time; HH MM SS)
-	$timeStr_t:=Replace string($timeStr_t; ":"; "-")
+	
+	$y_i:=Year of:C25(Current date:C33)
+	$mo_i:=Month of:C24(Current date:C33)
+	$d_i:=Day of:C23(Current date:C33)
+	$dateStr_t:=String:C10($y_i; "0000")+"-"+String:C10($mo_i; "00")+"-"+String:C10($d_i; "00")
+	$timeStr_t:=String:C10(Current time:C178; HH MM SS:K7:1)
+	$timeStr_t:=Replace string:C233($timeStr_t; ":"; "-")
 	$fileName_t:="____Test_Phase_10-"+$dateStr_t+"-"+$timeStr_t+".txt"
-
-	$desktopPath_t:=Get 4D folder(Logs folder)
+	
+	$desktopPath_t:=Get 4D folder:C485(Logs folder:K5:19)
 	$filePath_t:=$desktopPath_t+$fileName_t
-
-	TEXT TO DOCUMENT($filePath_t; $tableText_t; "UTF-8")
-	SHOW ON DISK($filePath_t)
-	ALERT($summaryLine_t+Char(Carriage return)+"Results written to: "+$fileName_t)
-	SET TEXT TO PASTEBOARD($tableText_t)
-
-Else
+	
+	TEXT TO DOCUMENT:C1237($filePath_t; $tableText_t; "UTF-8")
+	SHOW ON DISK:C922($filePath_t)
+	If ($suppressAlert_b)
+	Else 
+		ALERT:C41($summaryLine_t+Char:C90(Carriage return:K15:38)+"Results written to: "+$fileName_t)
+		SET TEXT TO PASTEBOARD:C523($tableText_t)
+	End if 
+Else 
 	// This version allows for one unique process
-	$ProcessID_i:=New process(Current method name; $StackSize_i; $DesiredProcessName_t; *)
-
-	RESUME PROCESS($ProcessID_i)
-	SHOW PROCESS($ProcessID_i)
-	BRING TO FRONT($ProcessID_i)
-End if
+	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $DesiredProcessName_t; $suppressAlert_b; *)
+	
+	RESUME PROCESS:C320($ProcessID_i)
+	SHOW PROCESS:C325($ProcessID_i)
+	BRING TO FRONT:C326($ProcessID_i)
+End if 
 

@@ -498,21 +498,25 @@ If (False:C215)
 	
 	C_PICTURE:C286(OTr_z_Wombat; $0)
 	C_PICTURE:C286(OTr_z_Koala; $0)
-
+	
 	// Phase 10 sub-methods
+	C_BOOLEAN:C305(____Test_Phase_10; $1)
 	C_LONGINT:C283(____Test_Phase_10_OTr; $1)
 	C_LONGINT:C283(____Test_Phase_10_OT; $1)
-
+	
 	// Phase 10a sub-methods
+	C_BOOLEAN:C305(____Test_Phase_10a; $1)
 	C_LONGINT:C283(____Test_Phase_10a_OTr; $1)
 	C_LONGINT:C283(____Test_Phase_10a_OT; $1)
-
+	
 	// Phase 10b sub-methods
+	C_BOOLEAN:C305(____Test_Phase_10b; $1)
 	C_LONGINT:C283(____Test_Phase_10b_OTr; $1)
 	C_LONGINT:C283(____Test_Phase_10b_OT; $1)
-
+	
 	// Phase 15 sub-methods
+	C_BOOLEAN:C305(____Test_Phase_15; $1)
 	C_LONGINT:C283(____Test_Phase_15_OTr; $1)
 	C_LONGINT:C283(____Test_Phase_15_OT; $1)
-
+	
 End if 
