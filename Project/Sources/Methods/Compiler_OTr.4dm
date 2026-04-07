@@ -479,6 +479,7 @@ If (False:C215)
 	C_LONGINT:C283(OTr_zLogLevelToInt; $0)
 	C_TEXT:C284(OTr_zLogLevelToInt; $1)
 	C_TEXT:C284(OTr_zLogFileName; $0)
+	OTr_zLogShutdown
 	
 	C_LONGINT:C283(OTr_PutRecord; $1; $3)
 	C_TEXT:C284(OTr_PutRecord; $2)
