@@ -207,6 +207,9 @@ If (False:C215)
 	C_LONGINT:C283(OTr_Register; $0)
 	C_TEXT:C284(OTr_Register; $1)
 	
+	C_TEXT:C284(OTr_LogLevel; $0; $1)
+	C_BOOLEAN:C305(OTr_LogLevel; $2)
+	
 	C_LONGINT:C283(OTr; $0)
 	
 	C_POINTER:C301(OTr_GetHandleList; $1)

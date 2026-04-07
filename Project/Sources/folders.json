@@ -107,6 +107,7 @@
 			"OTr_LoadFromFile",
 			"OTr_LoadFromGZIP",
 			"OTr_LoadFromText",
+			"OTr_LogLevel",
 			"OTr_New",
 			"OTr_ObjectSize",
 			"OTr_ObjectToBLOB",
