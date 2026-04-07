@@ -168,6 +168,7 @@
 			"OTr_zLogInit",
 			"OTr_zLogLevelToInt",
 			"OTr_zLogShutdown",
+			"OTr_zLogWrite",
 			"OTr_zMapType",
 			"OTr_zResolvePath",
 			"OTr_zSetOK",
