@@ -25,6 +25,8 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$count_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 var $target_o : Object
 var $parent_o : Object
 var $leafKey_t : Text
@@ -84,3 +86,5 @@ Else
 End if 
 
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

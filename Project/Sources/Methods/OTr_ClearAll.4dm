@@ -19,3 +19,5 @@ ARRAY OBJECT:C1221(<>OTR_Objects_ao; 0)
 ARRAY BOOLEAN:C223(<>OTR_InUse_ab; 0)
 
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

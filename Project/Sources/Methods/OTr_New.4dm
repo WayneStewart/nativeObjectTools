@@ -16,6 +16,8 @@
 
 #DECLARE()->$handle_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 var $slot_i : Integer
 
 OTr_zLock
@@ -36,3 +38,5 @@ End if
 OTr_zUnlock
 
 $handle_i:=$slot_i
+
+OTr_zRemoveFromCallStack(Current method name)

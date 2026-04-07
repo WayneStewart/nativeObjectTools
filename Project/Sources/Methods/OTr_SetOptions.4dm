@@ -18,8 +18,12 @@
 
 #DECLARE($inOptions_i : Integer)
 
+OTr_zAddToCallStack(Current method name)
+
 OTr_zLock
 
 <>OTR_Options_i:=$inOptions_i
 
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

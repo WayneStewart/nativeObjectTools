@@ -23,9 +23,13 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_d : Date
 
+OTr_zAddToCallStack(Current method name)
+
 var $raw_v : Variant
 
 $raw_v := OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Date array)
 If (Value type($raw_v) # Is undefined)
 	$result_d := OTr_uTextToDate($raw_v)
 End if
+
+OTr_zRemoveFromCallStack(Current method name)

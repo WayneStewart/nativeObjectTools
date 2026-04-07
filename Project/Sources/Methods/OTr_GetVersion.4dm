@@ -16,4 +16,8 @@
 
 #DECLARE()->$version_t : Text
 
+OTr_zAddToCallStack(Current method name)
+
 $version_t:="OTr 0.5.0"
+
+OTr_zRemoveFromCallStack(Current method name)

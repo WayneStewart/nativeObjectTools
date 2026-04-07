@@ -23,6 +23,8 @@
 
 #DECLARE($inObject_i : Integer)->$isObject_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 OTr_zLock
 
 $isObject_i:=0
@@ -36,3 +38,5 @@ If ($inObject_i>0)
 End if
 
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

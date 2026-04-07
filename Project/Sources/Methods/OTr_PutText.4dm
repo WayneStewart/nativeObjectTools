@@ -20,4 +20,8 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_t : Text)
 
+OTr_zAddToCallStack(Current method name)
+
 OTr_PutString($inObject_i; $inTag_t; $inValue_t)
+
+OTr_zRemoveFromCallStack(Current method name)

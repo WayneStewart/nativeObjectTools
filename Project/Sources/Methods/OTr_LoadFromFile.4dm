@@ -25,6 +25,8 @@
 
 #DECLARE($inFilePath_t : Text)->$handle_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 var $json_t : Text
 
 $handle_i:=0
@@ -33,3 +35,5 @@ If (Test path name($inFilePath_t)=Is a document)
 	$json_t:=Document to text($inFilePath_t; "UTF-8")
 	$handle_i:=OTr_LoadFromText($json_t)
 End if
+
+OTr_zRemoveFromCallStack(Current method name)

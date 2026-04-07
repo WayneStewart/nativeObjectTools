@@ -16,6 +16,10 @@
 
 #DECLARE()->$options_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 OTr_zInit
 
 $options_i:=<>OTR_Options_i
+
+OTr_zRemoveFromCallStack(Current method name)

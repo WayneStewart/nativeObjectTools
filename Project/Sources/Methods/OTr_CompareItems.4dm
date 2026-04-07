@@ -29,6 +29,8 @@
 // ----------------------------------------------------
 
 #DECLARE($inSourceObject_i : Integer; $inSourceTag_t : Text; \
+
+OTr_zAddToCallStack(Current method name)
 $inCompareObject_i : Integer; $inCompareTag_t : Text)->$result_i : Integer
 
 var $srcParent_o : Object
@@ -144,3 +146,5 @@ Else
 End if 
 
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

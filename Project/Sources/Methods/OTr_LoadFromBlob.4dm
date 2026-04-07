@@ -24,6 +24,8 @@
 
 #DECLARE($inBlob_blob : Blob)->$handle_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 var $loaded_o : Object
 var $slot_i : Integer
 var $compressed_i : Integer
@@ -60,3 +62,5 @@ If (BLOB size($inBlob_blob)>0)
 	End if
 
 End if
+
+OTr_zRemoveFromCallStack(Current method name)

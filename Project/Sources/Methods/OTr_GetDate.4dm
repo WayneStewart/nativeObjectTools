@@ -20,6 +20,8 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_d : Date
 
+OTr_zAddToCallStack(Current method name)
+
 var $parent_o : Object
 var $leafKey_t : Text
 
@@ -35,3 +37,5 @@ If (OTr_zIsValidHandle($inObject_i))
 End if
 
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

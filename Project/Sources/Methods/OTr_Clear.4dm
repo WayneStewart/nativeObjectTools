@@ -18,6 +18,8 @@
 
 #DECLARE($ioObject_i : Integer)
 
+OTr_zAddToCallStack(Current method name)
+
 var $size_i : Integer
 
 OTr_zLock
@@ -37,3 +39,5 @@ Else
 End if
 
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

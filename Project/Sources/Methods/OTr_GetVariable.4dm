@@ -47,6 +47,8 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outVarPointer_ptr : Pointer)
 
+OTr_zAddToCallStack(Current method name)
+
 var $parent_o : Object
 var $leafKey_t : Text
 var $raw_t : Text
@@ -178,4 +180,6 @@ End if
 
 If (Not($unlocked_b))
 	OTr_zUnlock
-End if 
+End if
+
+OTr_zRemoveFromCallStack(Current method name)

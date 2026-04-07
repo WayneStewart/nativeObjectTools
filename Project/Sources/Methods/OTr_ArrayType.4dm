@@ -24,6 +24,8 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$arrayType_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 var $parent_o : Object
 var $arrayObj_o : Object
 var $leafKey_t : Text
@@ -37,4 +39,6 @@ If (OTr_zIsValidHandle($inObject_i))
 			$arrayType_i:=OTr_zArrayType($arrayObj_o)
 		End if 
 	End if 
-End if 
+End if
+
+OTr_zRemoveFromCallStack(Current method name)

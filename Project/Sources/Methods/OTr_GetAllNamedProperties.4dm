@@ -29,6 +29,8 @@
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outNames_ptr : Pointer; \
+
+OTr_zAddToCallStack(Current method name)
 $outTypes_ptr : Pointer; $outItemSizes_ptr : Pointer; \
 $outDataSizes_ptr : Pointer)
 
@@ -180,3 +182,5 @@ Else
 End if 
 
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

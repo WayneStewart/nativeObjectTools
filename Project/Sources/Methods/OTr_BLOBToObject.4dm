@@ -34,6 +34,8 @@
 
 #DECLARE($inBLOB_blob : Blob)->$handle_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 var $work_blob : Blob
 var $obj_o : Object
 var $compressed_i : Integer
@@ -77,3 +79,5 @@ Else
 	End if
 
 End if
+
+OTr_zRemoveFromCallStack(Current method name)

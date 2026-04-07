@@ -25,6 +25,8 @@
 // ----------------------------------------------------
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inArray_ptr : Pointer)
 
+OTr_zAddToCallStack(Current method name)
+
 var $anObj_o; $parent_o; $arrayObject_o : Object
 var $leafKey_t : Text
 var $type_i; $index_i; $count_i; $currentItem_i : Integer
@@ -82,5 +84,4 @@ End if
 
 OTr_zUnlock
 
-
-
+OTr_zRemoveFromCallStack(Current method name)

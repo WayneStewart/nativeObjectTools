@@ -19,4 +19,8 @@
 
 #DECLARE($inSerialNum_t : Text)->$result_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 $result_i:=1
+
+OTr_zRemoveFromCallStack(Current method name)

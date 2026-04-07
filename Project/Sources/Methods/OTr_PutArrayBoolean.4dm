@@ -21,6 +21,10 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_b : Boolean)
 
+OTr_zAddToCallStack(Current method name)
+
 OTr_zLock
 OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Boolean array; $inValue_b)
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

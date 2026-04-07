@@ -36,4 +36,8 @@
 
 #DECLARE($inObject_i : Integer)->$result_blob : Blob
 
+OTr_zAddToCallStack(Current method name)
+
 OTr_ObjectToBLOB($inObject_i; ->$result_blob)
+
+OTr_zRemoveFromCallStack(Current method name)

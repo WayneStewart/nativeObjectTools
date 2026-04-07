@@ -22,9 +22,13 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_blob : Blob)
 
+OTr_zAddToCallStack(Current method name)
+
 var $encoded_t : Text
 
 $encoded_t := OTr_uBlobToText($inValue_blob)
 OTr_zLock
 OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Blob array; $encoded_t)
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

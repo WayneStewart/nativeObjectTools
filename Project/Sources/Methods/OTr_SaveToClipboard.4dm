@@ -20,6 +20,8 @@
 
 #DECLARE($inObject_i : Integer; $inPrettyPrint_b : Boolean)
 
+OTr_zAddToCallStack(Current method name)
+
 var $snapshot_o : Object
 var $json_t : Text
 var $valid_b : Boolean
@@ -48,3 +50,5 @@ If ($valid_b)
 
 	SET TEXT TO PASTEBOARD($json_t)
 End if
+
+OTr_zRemoveFromCallStack(Current method name)

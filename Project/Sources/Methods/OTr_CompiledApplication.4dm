@@ -16,8 +16,12 @@
 
 #DECLARE()->$isCompiled_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 If (Is compiled mode)
 	$isCompiled_i:=1
 Else
 	$isCompiled_i:=0
 End if
+
+OTr_zRemoveFromCallStack(Current method name)

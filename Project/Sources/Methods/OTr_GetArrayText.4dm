@@ -21,4 +21,8 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_t : Text
 
+OTr_zAddToCallStack(Current method name)
+
 $result_t := OTr_GetArrayString($inObject_i; $inTag_t; $inIndex_i)
+
+OTr_zRemoveFromCallStack(Current method name)

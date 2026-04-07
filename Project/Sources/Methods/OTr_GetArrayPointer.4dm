@@ -25,6 +25,8 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_ptr : Pointer
 
+OTr_zAddToCallStack(Current method name)
+
 var $raw_v : Variant
 
 $result_ptr := Null
@@ -32,3 +34,5 @@ $raw_v := OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Pointer ar
 If (Value type($raw_v) # Is undefined)
 	$result_ptr := OTr_uTextToPointer($raw_v)
 End if
+
+OTr_zRemoveFromCallStack(Current method name)

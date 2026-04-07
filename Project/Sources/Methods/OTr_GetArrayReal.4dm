@@ -22,4 +22,8 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_r : Real
 
+OTr_zAddToCallStack(Current method name)
+
 $result_r := OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Real array)
+
+OTr_zRemoveFromCallStack(Current method name)

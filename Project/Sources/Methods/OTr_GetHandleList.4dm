@@ -18,6 +18,8 @@
 
 #DECLARE($outHandles_ptr : Pointer)
 
+OTr_zAddToCallStack(Current method name)
+
 var $index_i : Integer
 
 ARRAY LONGINT:C221($handleList_ai; 0)
@@ -33,3 +35,5 @@ End for
 OTr_zUnlock
 
 COPY ARRAY:C226($handleList_ai; $outHandles_ptr->)
+
+OTr_zRemoveFromCallStack(Current method name)

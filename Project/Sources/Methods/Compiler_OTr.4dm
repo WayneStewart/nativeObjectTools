@@ -481,6 +481,8 @@ If (False:C215)
 	C_TEXT:C284(OTr_zLogFileName; $0)
 	OTr_zLogShutdown
 	C_TEXT:C284(OTr_zLogWrite; $1; $2; $3)
+	C_TEXT:C284(OTr_zAddToCallStack; $1)
+	C_TEXT:C284(OTr_zRemoveFromCallStack; $1)
 	
 	C_LONGINT:C283(OTr_PutRecord; $1; $3)
 	C_TEXT:C284(OTr_PutRecord; $2)

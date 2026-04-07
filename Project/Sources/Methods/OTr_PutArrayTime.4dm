@@ -22,9 +22,13 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_h : Time)
 
+OTr_zAddToCallStack(Current method name)
+
 var $encoded_t : Text
 
 $encoded_t := OTr_uTimeToText($inValue_h)
 OTr_zLock
 OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Time array; $encoded_t)
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

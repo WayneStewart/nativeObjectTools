@@ -25,6 +25,8 @@
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inFilePath_t : Text; \
+
+OTr_zAddToCallStack(Current method name)
 	$inPrettyPrint_b : Boolean)
 
 var $snapshot_o : Object
@@ -55,3 +57,5 @@ If ($valid_b)
 
 	TEXT TO DOCUMENT($inFilePath_t; $json_t; "UTF-8")
 End if
+
+OTr_zRemoveFromCallStack(Current method name)

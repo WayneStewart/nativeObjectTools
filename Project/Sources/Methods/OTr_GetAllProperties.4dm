@@ -26,6 +26,8 @@
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $outNames_ptr : Pointer; \
+
+OTr_zAddToCallStack(Current method name)
 	$outTypes_ptr : Pointer; $outItemSizes_ptr : Pointer; \
 	$outDataSizes_ptr : Pointer)
 
@@ -51,3 +53,5 @@ Case of
 			$outItemSizes_ptr; $outDataSizes_ptr)
 
 End case
+
+OTr_zRemoveFromCallStack(Current method name)

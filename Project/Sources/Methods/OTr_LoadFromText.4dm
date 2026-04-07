@@ -25,6 +25,8 @@
 
 #DECLARE($inJSON_t : Text)->$handle_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 var $parsed_o : Object
 var $slot_i : Integer
 var $currentErrMethod_t : Text
@@ -69,3 +71,5 @@ If ($inJSON_t#"")
 	End if
 
 End if
+
+OTr_zRemoveFromCallStack(Current method name)

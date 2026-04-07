@@ -24,6 +24,8 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inNewTag_t : Text)
 
+OTr_zAddToCallStack(Current method name)
+
 var $dotPos_i : Integer
 var $scanPos_i : Integer
 var $parentPath_t : Text
@@ -131,3 +133,5 @@ Else
 End if
 
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

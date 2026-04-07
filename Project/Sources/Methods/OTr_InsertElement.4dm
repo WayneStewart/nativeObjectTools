@@ -27,6 +27,8 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inWhere_i : Integer; $inHowMany_i : Integer)
 
+OTr_zAddToCallStack(Current method name)
+
 var $parent_o : Object
 var $arrayObj_o : Object
 var $leafKey_t : Text
@@ -65,3 +67,5 @@ If (OTr_zIsValidHandle($inObject_i))
 Else
 	OTr_zError("Invalid handle"; Current method name:C684)
 End if
+
+OTr_zRemoveFromCallStack(Current method name)

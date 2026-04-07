@@ -22,6 +22,8 @@
 
 #DECLARE($inObject_i : Integer; $inPrettyPrint_b : Boolean)->$json_t : Text
 
+OTr_zAddToCallStack(Current method name)
+
 var $snapshot_o : Object
 var $valid_b : Boolean
 
@@ -48,3 +50,5 @@ If ($valid_b)
 		$json_t:=JSON Stringify($snapshot_o)
 	End if
 End if
+
+OTr_zRemoveFromCallStack(Current method name)

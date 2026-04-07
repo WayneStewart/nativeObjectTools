@@ -169,6 +169,8 @@
 			"OTr_zLogLevelToInt",
 			"OTr_zLogShutdown",
 			"OTr_zLogWrite",
+			"OTr_zAddToCallStack",
+			"OTr_zRemoveFromCallStack",
 			"OTr_zMapType",
 			"OTr_zResolvePath",
 			"OTr_zSetOK",

@@ -39,5 +39,9 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outBLOB_blob : Blob)
 
+OTr_zAddToCallStack(Current method name)
+
 OTr_zError("OTr_GetBLOB is not implemented. Use OTr_GetNewBLOB instead."; Current method name)
 OTr_zSetOK(0)
+
+OTr_zRemoveFromCallStack(Current method name)

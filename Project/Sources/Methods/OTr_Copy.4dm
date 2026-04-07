@@ -19,6 +19,8 @@
 
 #DECLARE($inObject_i : Integer)->$copyHandle_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 var $slot_i : Integer
 var $source_o : Object
 
@@ -44,3 +46,5 @@ Else
 End if
 
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

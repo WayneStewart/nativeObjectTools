@@ -22,6 +22,8 @@
 
 #DECLARE($inObject_i : Integer)->$outBlob_blob : Blob
 
+OTr_zAddToCallStack(Current method name)
+
 var $snapshot_o : Object
 var $valid_b : Boolean
 
@@ -40,3 +42,5 @@ If ($valid_b)
 	VARIABLE TO BLOB($snapshot_o; $outBlob_blob)
 	COMPRESS BLOB($outBlob_blob; GZIP best compression mode)
 End if
+
+OTr_zRemoveFromCallStack(Current method name)

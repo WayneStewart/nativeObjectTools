@@ -19,9 +19,13 @@
 
 #DECLARE($inNewHandler_t : Text)->$previousHandler_t : Text
 
+OTr_zAddToCallStack(Current method name)
+
 OTr_zLock
 
 $previousHandler_t:=<>OTR_ErrorHandler_t
 <>OTR_ErrorHandler_t:=$inNewHandler_t
 
 OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name)

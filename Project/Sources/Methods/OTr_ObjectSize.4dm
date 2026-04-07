@@ -31,6 +31,8 @@
 
 #DECLARE($inObject_i : Integer)->$size_i : Integer
 
+OTr_zAddToCallStack(Current method name)
+
 $size_i:=0
 
 // OTr_zLock // Unnecessary to lock for Read Only access
@@ -47,12 +49,4 @@ End if
 
 // OTr_zUnlock // Unnecessary to lock for Read Only access
 
-
-
-
-
-
-
-
-
-
+OTr_zRemoveFromCallStack(Current method name)
