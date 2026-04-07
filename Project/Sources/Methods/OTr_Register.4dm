@@ -23,4 +23,6 @@ OTr_zAddToCallStack(Current method name)
 
 $result_i:=1
 
+OTr_zLogWrite("info"; "plugin"; "successfully registered ObjectTools")
+
 OTr_zRemoveFromCallStack(Current method name)
