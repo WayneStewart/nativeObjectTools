@@ -1,0 +1,22 @@
+//%attributes = {"invisible":true,"shared":false}
+// ----------------------------------------------------
+// Project Method: OTr_zLogFileName () --> Text
+
+// Builds the current session log file name for OTr.
+
+// Access: Private
+
+// Returns:
+//   $outFileName_t : Text : Current session log file name
+
+// Created by Wayne Stewart, 2026-04-07
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-07 - Added Phase 10 session log filename helper.
+// ----------------------------------------------------
+
+#DECLARE()->$outFileName_t : Text
+
+var $sequenceText_t : Text
+
+$sequenceText_t:=String(Storage.OTr.logSequence; "000")
+$outFileName_t:="ObjectTools "+Storage.OTr.logSession+"."+$sequenceText_t+".txt"
