@@ -48,35 +48,41 @@ var $key_t : Text
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			$arrayObj_o := OB Get($parent_o; $leafKey_t)
-			$storedType_i := OTr_zArrayType($arrayObj_o)
+			If (OB Get type($parent_o; $leafKey_t) = Is object)
+				$arrayObj_o := OB Get($parent_o; $leafKey_t)
+				$storedType_i := OTr_zArrayType($arrayObj_o)
 
-			$typeOK_b := ($storedType_i = $inArrayType_i)
-			If (Not($typeOK_b))
-				Case of
-					: (($inArrayType_i = LongInt array) | ($inArrayType_i = Integer array))
-						$typeOK_b := ($storedType_i = LongInt array) | ($storedType_i = Integer array)
-					: (($inArrayType_i = Text array) | ($inArrayType_i = String array))
-						$typeOK_b := ($storedType_i = Text array) | ($storedType_i = String array)
-				End case
-			End if
+				$typeOK_b := ($storedType_i = $inArrayType_i)
+				If (Not($typeOK_b))
+					Case of
+						: (($inArrayType_i = LongInt array) | ($inArrayType_i = Integer array))
+							$typeOK_b := ($storedType_i = LongInt array) | ($storedType_i = Integer array)
+						: (($inArrayType_i = Text array) | ($inArrayType_i = String array))
+							$typeOK_b := ($storedType_i = Text array) | ($storedType_i = String array)
+					End case
+				End if
 
-			If ($typeOK_b)
-				If (($inIndex_i >= 0) & ($inIndex_i <= $arrayObj_o.numElements))
-					$key_t := String($inIndex_i)
-					If (Count parameters = 5)
-						$arrayObj_o[$key_t] := $inValue_v
-					End if
-					If (OB Is defined($arrayObj_o; $key_t))
-						$result_v := $arrayObj_o[$key_t]
+				If ($typeOK_b)
+					If (($inIndex_i >= 0) & ($inIndex_i <= $arrayObj_o.numElements))
+						$key_t := String($inIndex_i)
+						If (Count parameters = 5)
+							$arrayObj_o[$key_t] := $inValue_v
+						End if
+						If (OB Is defined($arrayObj_o; $key_t))
+							$result_v := $arrayObj_o[$key_t]
+						Else
+							OTr_zSetOK(0)
+						End if
 					Else
+						OTr_zError("Index out of range"; Current method name)
 						OTr_zSetOK(0)
 					End if
 				Else
-					OTr_zError("Index out of range"; Current method name)
+					OTr_zError("Array type mismatch"; Current method name)
 					OTr_zSetOK(0)
 				End if
 			Else
+				// The tag exists but holds a scalar, not an array object.
 				OTr_zError("Array type mismatch"; Current method name)
 				OTr_zSetOK(0)
 			End if

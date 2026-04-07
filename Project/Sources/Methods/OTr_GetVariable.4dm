@@ -56,6 +56,7 @@ var $serialised_t : Text
 var $sep_i : Integer
 var $unlocked_b : Boolean
 var $picBlob_blob : Blob
+var $destType_i : Integer
 
 $unlocked_b:=False
 
@@ -75,36 +76,82 @@ If (OTr_zIsValidHandle($inObject_i))
 				$sep_i:=Position:C15(":"; $rest_t)
 				$typeName_t:=Substring:C12($rest_t; 1; $sep_i-1)
 				$serialised_t:=Substring:C12($rest_t; $sep_i+1)
+				$destType_i:=Type:C295($outVarPointer_ptr->)
 				
 				Case of 
 						
 					: ($typeName_t="longint")
-						$outVarPointer_ptr->:=Num:C11($serialised_t)
+						If (($destType_i=Is longint:K8:6) | ($destType_i=Is integer:K8:5))
+							$outVarPointer_ptr->:=Num:C11($serialised_t)
+						Else 
+							OTr_zError("Variable type mismatch"; Current method name:C684)
+							OTr_zSetOK(0)
+						End if 
 						
 					: ($typeName_t="real")
-						$outVarPointer_ptr->:=Num:C11($serialised_t)
+						If ($destType_i=Is real:K8:4)
+							$outVarPointer_ptr->:=Num:C11($serialised_t)
+						Else 
+							OTr_zError("Variable type mismatch"; Current method name:C684)
+							OTr_zSetOK(0)
+						End if 
 						
 					: ($typeName_t="text")
-						$outVarPointer_ptr->:=$serialised_t
+						If (($destType_i=Is text:K8:3) | ($destType_i=Is string var:K8:2))
+							$outVarPointer_ptr->:=$serialised_t
+						Else 
+							OTr_zError("Variable type mismatch"; Current method name:C684)
+							OTr_zSetOK(0)
+						End if 
 						
 					: ($typeName_t="boolean")
-						$outVarPointer_ptr->:=($serialised_t="true")
+						If ($destType_i=Is boolean:K8:9)
+							$outVarPointer_ptr->:=($serialised_t="true")
+						Else 
+							OTr_zError("Variable type mismatch"; Current method name:C684)
+							OTr_zSetOK(0)
+						End if 
 						
 					: ($typeName_t="date")
-						$outVarPointer_ptr->:=OTr_uTextToDate($serialised_t)
+						If ($destType_i=Is date:K8:7)
+							$outVarPointer_ptr->:=OTr_uTextToDate($serialised_t)
+						Else 
+							OTr_zError("Variable type mismatch"; Current method name:C684)
+							OTr_zSetOK(0)
+						End if 
 						
 					: ($typeName_t="time")
-						$outVarPointer_ptr->:=OTr_uTextToTime($serialised_t)
+						If ($destType_i=Is time:K8:8)
+							$outVarPointer_ptr->:=OTr_uTextToTime($serialised_t)
+						Else 
+							OTr_zError("Variable type mismatch"; Current method name:C684)
+							OTr_zSetOK(0)
+						End if 
 						
 					: ($typeName_t="pointer")
-						$outVarPointer_ptr->:=OTr_uTextToPointer($serialised_t)
+						If ($destType_i=Is pointer:K8:11)
+							$outVarPointer_ptr->:=OTr_uTextToPointer($serialised_t)
+						Else 
+							OTr_zError("Variable type mismatch"; Current method name:C684)
+							OTr_zSetOK(0)
+						End if 
 						
 					: ($typeName_t="blob")
-						$outVarPointer_ptr->:=OTr_uTextToBlob($serialised_t)
+						If ($destType_i=Is BLOB:K8:12)
+							$outVarPointer_ptr->:=OTr_uTextToBlob($serialised_t)
+						Else 
+							OTr_zError("Variable type mismatch"; Current method name:C684)
+							OTr_zSetOK(0)
+						End if 
 						
 					: ($typeName_t="picture")
+						If ($destType_i=Is picture:K8:10)
 							BASE64 DECODE($serialised_t; $picBlob_blob)
-								BLOB TO PICTURE:C682($picBlob_blob; $outVarPointer_ptr->; ".png")
+							BLOB TO PICTURE:C682($picBlob_blob; $outVarPointer_ptr->; ".png")
+						Else 
+							OTr_zError("Variable type mismatch"; Current method name:C684)
+							OTr_zSetOK(0)
+						End if 
 					Else 
 						OTr_zError("Unknown variable type in stored value"; Current method name:C684)
 						OTr_zSetOK(0)
