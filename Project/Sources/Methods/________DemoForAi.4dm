@@ -1,13 +1,22 @@
 //%attributes = {"invisible":true}
-//Function calcTimeZoneDiff  //  offset between myTime (or value) and GMT.
-C_TIME:C306($mycTimeh)
-C_REAL:C285($diff_r)
-C_LONGINT:C283($diffInSeconds_i)
-$mycTimeh:=Current time:C178
+////Function calcTimeZoneDiff  //  offset between myTime (or value) and GMT.
+//C_TIME($mycTimeh)
+//C_REAL($diff_r)
+//C_LONGINT($diffInSeconds_i)
+//$mycTimeh:=Current time
 
 
-$diff_r:=(($mycTimeh)-((Time:C179(Substring:C12(String:C10(Current date:C33; ISO date GMT:K1:10; $mycTimeh); 12; 19)))))/(60*60)
+//$diff_r:=(($mycTimeh)-((Time(Substring(String(Current date; ISO date GMT; $mycTimeh); 12; 19)))))/(60*60)
 
 
-$diffInSeconds_i:=$diff_r*3600
+//$diffInSeconds_i:=$diff_r*3600
 
+$time_GMT_t:=Timestamp:C1445
+$ms:=Substring:C12($time_GMT_t)
+C_OBJECT:C1216($time_o)
+
+$time_o:=current_UnixTime($time_GMT_t)
+
+$time_o:=CONVERT_UNIXTIME($time_o.timestamp)
+
+$time_Local_t:=$time_o.LOCAL.datetime

@@ -1,7 +1,11 @@
 //%attributes = {}
 C_OBJECT:C1216($0; $timeObj)
 
-$timestamp:=Timestamp:C1445
+If (Count parameters:C259=1)
+	$timestamp:=$1
+Else 
+	$timestamp:=Timestamp:C1445
+End if 
 
 ARRAY LONGINT:C221($pos; 0)
 ARRAY LONGINT:C221($len; 0)
