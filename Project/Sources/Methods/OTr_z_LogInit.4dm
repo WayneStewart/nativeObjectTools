@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr_zLogInit
+// Project Method: OTr_z_LogInit
 
 // Initialises OTr logging state and configures the helper logger.
 
@@ -25,15 +25,15 @@ var $utcOffset_r : Real
 var $ram_r : Real
 
 If (Storage:C1525.OTr.log=Null:C1517)
-	
-	$logDirectory_t:=OTr_zLogDirectory
+
+	$logDirectory_t:=OTr_z_LogDirectory
 	$dateText_t:=OTr_uDateToText(Current date:C33(*))
 	$timeText_t:=OTr_uTimeToText(Current time:C178(*))
 	$session_t:=Substring:C12($dateText_t; 3; 2)+"-"+Substring:C12($dateText_t; 6; 2)+"-"+Substring:C12($dateText_t; 9; 2)+"-"+Substring:C12($timeText_t; 1; 2)+"-"+Substring:C12($timeText_t; 4; 2)
 	$resolvedLevel_t:="info"
 	$threshold_i:=1048576
 	$retainSessions_i:=10
-	$utcOffset_r:=0
+	$utcOffset_r:=OTr_zComputeUTCOffset
 	
 	$logLevelFile_t:=$logDirectory_t+"log_level"
 	$legacyLevelFile_t:=$logDirectory_t+"log_debug_level"

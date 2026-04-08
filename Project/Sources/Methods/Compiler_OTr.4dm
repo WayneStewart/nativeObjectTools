@@ -478,7 +478,7 @@ If (False:C215)
 	
 	C_LONGINT:C283(OTr_zSetOK; $1; $0)
 	
-	C_TEXT:C284(OTr_zLogDirectory; $0)
+	C_TEXT:C284(OTr_z_LogDirectory; $0)
 	C_LONGINT:C283(OTr_zLogLevelToInt; $0)
 	C_TEXT:C284(OTr_zLogLevelToInt; $1)
 	C_TEXT:C284(OTr_zLogFileName; $0)
@@ -518,7 +518,7 @@ If (False:C215)
 	C_PICTURE:C286(OTr_z_Wombat; $0)
 	C_PICTURE:C286(OTr_z_Koala; $0)
 	
-	OTr_zLogInit
+	OTr_z_LogInit
 	
 	// Phase 10 sub-methods
 	C_BOOLEAN:C305(____Test_Phase_10; $1)

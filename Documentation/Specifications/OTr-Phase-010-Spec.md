@@ -579,7 +579,7 @@ Unrecognised tokens return `1` (the `"info"` rank) as a safe default.
 
 ---
 
-### 12.5 `OTr_zLogDirectory`
+### 12.5 `OTr_z_LogDirectory`
 
 **Access:** Private (`"invisible":true`, `"shared":false`)
 

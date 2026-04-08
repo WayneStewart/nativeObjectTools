@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr_zLogDirectory () --> Text
+// Project Method: OTr_z_LogDirectory () --> Text
 
 // Returns the absolute path to the ObjectTools log folder.
 
@@ -10,7 +10,6 @@
 //   $outPath_t : Text : Absolute log folder path with trailing separator
 
 // Created by Wayne Stewart, 2026-04-07
-// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
 #DECLARE()->$outPath_t : Text

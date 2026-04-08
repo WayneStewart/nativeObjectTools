@@ -443,7 +443,7 @@ Unrecognised tokens return `2` (the `"info"` rank) as a safe default.
 
 ---
 
-### 10.7 `OTr_zLogDirectory`
+### 10.7 `OTr_z_LogDirectory`
 
 **Access:** Private (`"invisible":true`, `"shared":false`)
 

@@ -30,7 +30,7 @@ var $sequence_i : Integer
 var $size_r : Real
 
 If (Storage:C1525.OTr.logInitialised_b#True:C214)
-	OTr_zLogInit
+	OTr_z_LogInit
 End if 
 
 If (Storage:C1525.OTr.logInitialised_b#True:C214)
