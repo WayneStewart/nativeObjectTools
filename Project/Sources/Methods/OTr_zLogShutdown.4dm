@@ -15,25 +15,25 @@
 
 OTr_zInit
 
-If (Storage.OTr.logInitialised_b=True)
+If (Storage:C1525.OT_LoggingInitialised_b=True:C214)
 	var $openHandles_i : Integer
 	var $slot_i : Integer
 	
 	$openHandles_i:=0
-	For ($slot_i; 1; Size of array(<>OTR_InUse_ab))
+	For ($slot_i; 1; Size of array:C274(<>OTR_InUse_ab))
 		If (<>OTR_InUse_ab{$slot_i})
 			$openHandles_i:=$openHandles_i+1
-		End if
+		End if 
 	End for 
 	
-	If (Storage.OTr.logLevel#"off")
-		OTr_zLogWrite("info"; "env"; "ObjectTools shutdown - "+String($openHandles_i)+" handles open")
+	If (Storage:C1525.OT_LoggingLevel#"off")
+		OTr_zLogWrite("info"; "env"; "ObjectTools shutdown - "+String:C10($openHandles_i)+" handles open")
 	End if 
 	
 	LOG CLOSE LOG
 	LOG STOP LOG WRITER
-	LOG ENABLE(False)
-	Use (Storage.OTr)
-		Storage.OTr.logInitialised_b:=False
-	End use
-End if
+	LOG ENABLE(False:C215)
+	Use (Storage:C1525.OTr)
+		Storage:C1525.OT_LoggingInitialised_b:=False:C215
+	End use 
+End if 

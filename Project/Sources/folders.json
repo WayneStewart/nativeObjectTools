@@ -1,16 +1,4 @@
 {
-	"((Default Classes))": {},
-	"((Default Folder))": {
-		"groups": [
-			"((Default Classes))",
-			"((Default Forms))",
-			"((Default Project Methods))",
-			"((Default Tables))"
-		]
-	},
-	"((Default Forms))": {},
-	"((Default Project Methods))": {},
-	"((Default Tables))": {},
 	"Constants": {
 		"methods": [
 			"_DEL_OTr_CreateConstants",
@@ -225,9 +213,5 @@
 			"OTr_uTimeToText"
 		]
 	},
-	"trash": {
-		"groups": [
-			"((Default Folder))"
-		]
-	}
+	"trash": {}
 }

@@ -20,20 +20,17 @@ $resolvedLevel_t; $session_t; $summary_t; $timeText_t; $version_t : Text
 
 var $systemInfo_o : Object
 var $logEnabled_b : Boolean
-var $applicationType_i; $retainSessions_i; r$threshold_i : Integer
+var $applicationType_i; $retainSessions_i; $threshold_i : Integer
 var $utcOffset_r : Real
 var $ram_r : Real
 
-If (Storage:C1525.OTr.log=Null:C1517)
-
+If (Storage:C1525.OT_Logging=Null:C1517)
+	
 	$logDirectory_t:=OTr_z_LogDirectory
-	$dateText_t:=OTr_uDateToText(Current date:C33(*))
-	$timeText_t:=OTr_uTimeToText(Current time:C178(*))
-	$session_t:=Substring:C12($dateText_t; 3; 2)+"-"+Substring:C12($dateText_t; 6; 2)+"-"+Substring:C12($dateText_t; 9; 2)+"-"+Substring:C12($timeText_t; 1; 2)+"-"+Substring:C12($timeText_t; 4; 2)
+	$session_t:=Replace string:C233(Substring:C12(OTr_z_timestampLocal; 1; 16); ":"; "-")  // This is the file name for the log
 	$resolvedLevel_t:="info"
-	$threshold_i:=1048576
+	$threshold_i:=1024*1024
 	$retainSessions_i:=10
-	$utcOffset_r:=OTr_zComputeUTCOffset
 	
 	$logLevelFile_t:=$logDirectory_t+"log_level"
 	$legacyLevelFile_t:=$logDirectory_t+"log_debug_level"
@@ -67,17 +64,16 @@ If (Storage:C1525.OTr.log=Null:C1517)
 			
 	End case 
 	
-	Use (Storage:C1525.OTr)
-		Storage:C1525.OTr.log:=New shared object:C1526()
+	Use (Storage:C1525)
+		Storage:C1525.OT_Logging:=New shared object:C1526()
 	End use 
-	Use (Storage:C1525.OTr.log)
-		Storage:C1525.OTr.log.directory:=$logDirectory_t
-		Storage:C1525.OTr.log.session:=$session_t
-		Storage:C1525.OTr.log.sequence:=1
-		Storage:C1525.OTr.log.sizeThreshold:=$threshold_i
-		Storage:C1525.OTr.log.retainSessions:=$retainSessions_i
-		Storage:C1525.OTr.log.UTCOffset:=$utcOffset_r
-		Storage:C1525.OTr.log.level:=$resolvedLevel_t
+	Use (Storage:C1525.OT_Logging)
+		Storage:C1525.OT_Logging.directory:=$logDirectory_t  // Where the logs are saved
+		Storage:C1525.OT_Logging.session:=$session_t  // Base name of the log file
+		Storage:C1525.OT_Logging.sequence:=1  // Initial sequence for this launch
+		Storage:C1525.OT_Logging.sizeThreshold:=$threshold_i  // maximum log size in bytes
+		Storage:C1525.OT_Logging.retainSessions:=$retainSessions_i  // The numer of launches kept
+		Storage:C1525.OT_Logging.level:=$resolvedLevel_t
 	End use 
 	
 	$logFileName_t:=OTr_zLogFileName

@@ -30,11 +30,11 @@ $parametersCount_i:=Count parameters:C259
 $setLogLevel_t:=Choose:C955($parametersCount_i<1; ""; Lowercase:C14($setLogLevel_t))
 $permanent_b:=Choose:C955($parametersCount_i<2; False:C215; $permanent_b)
 
-If (Storage:C1525.OTr.logInitialised_b#True:C214)
+If (Storage:C1525.OT_LoggingInitialised_b#True:C214)
 	OTr_z_LogInit
 End if 
 
-$resolvedLevel_t:=Storage:C1525.OTr.logLevel
+$resolvedLevel_t:=Storage:C1525.OT_LoggingLevel
 
 Case of 
 	: ($setLogLevel_t="off")
@@ -53,22 +53,22 @@ Case of
 End case 
 
 Use (Storage:C1525.OTr)
-	Storage:C1525.OTr.logLevel:=$resolvedLevel_t
+	Storage:C1525.OT_LoggingLevel:=$resolvedLevel_t
 End use 
 
 If ($resolvedLevel_t="off")
 	LOG ENABLE(False:C215)
 Else 
-	Log Folder Path(Storage:C1525.OTr.logDirectory)
+	Log Folder Path(Storage:C1525.OT_LoggingDirectory)
 	Log File Name(OTr_zLogFileName)
 	LOG ENABLE(True:C214)
 End if 
 
 If ($permanent_b)
-	$logLevelFile_t:=Storage:C1525.OTr.logDirectory+"log_level"
+	$logLevelFile_t:=Storage:C1525.OT_LoggingDirectory+"log_level"
 	TEXT TO DOCUMENT:C1237($logLevelFile_t; $resolvedLevel_t; "UTF-8")
 End if 
 
-$getLogLevel_t:=Storage:C1525.OTr.logLevel
+$getLogLevel_t:=Storage:C1525.OT_LoggingLevel
 
 OTr_zRemoveFromCallStack(Current method name:C684)

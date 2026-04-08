@@ -12,12 +12,12 @@
 //    - Gets local date/time via Current date(*) and Current time(*)
 //    - Parses GMT timestamp from Timestamp command
 //    - Calculates offset in seconds: (local seconds) - (UTC seconds)
-//    - Returns offset for storage in Storage.OTr.log.UTCOffset
+//    - Returns offset for storage in Storage.OT_Logging.UTCOffset
 
 // 2. OTr_zFormatLocalTimestamp.4dm (NEW METHOD)
 //    - Takes a GMT timestamp string: "YYYY-MM-DDTHH:MM:SS.mmmZ"
 //    - Parses all components (year, month, day, hour, minute, second, millisecond)
-//    - Retrieves cached offset from Storage.OTr.log.UTCOffset
+//    - Retrieves cached offset from Storage.OT_Logging.UTCOffset
 //    - Adds offset to the UTC timestamp
 //    - Handles day/hour boundary adjustments
 //    - Returns formatted local timestamp: "YYYY-MM-DDTHH:MM:SS.mmm"
@@ -48,7 +48,7 @@
 // [ ] OTr_zLogWrite calls OTr_zFormatLocalTimestamp before logging
 // [ ] Timestamp format verification: "YYYY-MM-DDTHH:MM:SS.mmmZ" (with Z)
 // [ ] Local timestamp format: "YYYY-MM-DDTHH:MM:SS.mmm" (no Z)
-// [ ] Offset stored in Storage.OTr.log.UTCOffset as Real
+// [ ] Offset stored in Storage.OT_Logging.UTCOffset as Real
 // [ ] Offset is computed ONCE at startup, not on every write
 // [ ] Milliseconds are preserved in timestamp conversion
 // [ ] Day boundary adjustments work correctly (UTC-11 to UTC+14)

@@ -17,7 +17,7 @@
 //   UTC seconds = (18826 days × 86400) + 21675 = 1625637675
 //   Offset = 1625673675 - 1625637675 = 36000 seconds (UTC+10)
 
-// Stored in: Storage.OTr.log.UTCOffset = 36000
+// Stored in: Storage.OT_Logging.UTCOffset = 36000
 
 // On a log write (assume wall clock shows 2026-04-08 16:05:30.123):
 //   Timestamp returns: "2026-04-08T06:05:30.123Z"
@@ -101,7 +101,7 @@
 // =================
 
 // 1. Offset must be computed ONCE at startup and cached
-// 2. Offset stored as Real in Storage.OTr.log.UTCOffset
+// 2. Offset stored as Real in Storage.OT_Logging.UTCOffset
 // 3. Each log write must call Timestamp (not cached)
 // 4. Each log write must call OTr_zFormatLocalTimestamp with the GMT timestamp
 // 5. Day boundaries must be handled when offset crosses midnight

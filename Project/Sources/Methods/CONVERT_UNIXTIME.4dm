@@ -12,7 +12,7 @@ $time:=Time:C179($UNIXTIME%86400)
 
 $datetime:=String:C10($date; ISO date:K1:8; $time)+"Z"
 
-$UTC:=New object:C1471("date"; $date; "time"; $time; "datetime"; $datetime)
+//$UTC:=New object("date"; $date; "time"; $time; "datetime"; $datetime)
 
 $date:=Date:C102($datetime)
 $time:=Time:C179($datetime)
@@ -24,6 +24,6 @@ $time:=Time:C179($datetime)
 
 $LOCAL:=New object:C1471("date"; $date; "time"; $time; "datetime"; $datetime)
 
-$timeObj:=New object:C1471("UTC"; $UTC; "LOCAL"; $LOCAL)
+$timeObj:=New object:C1471("LOCAL"; $LOCAL)  // "UTC"; $UTC;
 
 $0:=$timeObj

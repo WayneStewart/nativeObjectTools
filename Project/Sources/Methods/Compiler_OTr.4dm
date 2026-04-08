@@ -518,7 +518,7 @@ If (False:C215)
 	C_PICTURE:C286(OTr_z_Wombat; $0)
 	C_PICTURE:C286(OTr_z_Koala; $0)
 	
-	OTr_z_LogInit
+	
 	
 	// Phase 10 sub-methods
 	C_BOOLEAN:C305(____Test_Phase_10; $1)
@@ -540,6 +540,8 @@ If (False:C215)
 	C_LONGINT:C283(____Test_Phase_15_OTr; $1)
 	C_LONGINT:C283(____Test_Phase_15_OT; $1)
 	
+	
+	C_TEXT:C284(OTr_z_timestampLocal; $1; $0)
 	
 	C_TEXT:C284(OTr_Info; $1; $0)
 End if 
