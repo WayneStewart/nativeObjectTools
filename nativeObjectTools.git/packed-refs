@@ -1,7 +1,0 @@
-# pack-refs with: peeled fully-peeled sorted 
-ab3f8432b88da363373007d748bcf5aa3c60947d refs/heads/Goanna
-a8019d50b642d8fbabf677f83829f2099b40b2b4 refs/heads/Koala
-dd05a26710512706be39847a26c9c307f26ac9c7 refs/pull/1/head
-35ee2f186d4cba78438068d3379a1e6433d133e6 refs/pull/2/head
-c1034c0e8f985c6ec1a91c12be3f682a32a7ce66 refs/pull/3/head
-a8019d50b642d8fbabf677f83829f2099b40b2b4 refs/pull/5/head
