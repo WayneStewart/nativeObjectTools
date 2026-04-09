@@ -163,7 +163,7 @@ While ($i_i<=Size of array($allFiles_at))
 		$oldName_t:=Substring($fileName_t; 1; Length($fileName_t)-4)  // strip .4dm
 		If (OB Is defined($mapping_o; $oldName_t))
 			$newName_t:=String(OB Get($mapping_o; $oldName_t))
-			$fileBody_t:=Replace string($fileBody_t; "// Project Method: "+$oldName_t; "// Project Method: "+$newName_t; 1)
+			$fileBody_t:=Replace string($fileBody_t; "// Project Method: "+$oldName_t; "// Project Method: "+$newName_t)
 		End if 
 		
 		// ── Compiler_ C_ declaration strip ───────────────────────────────────
@@ -260,7 +260,7 @@ If (Test path name($dbMethodsFolder_t)=Is a folder)
 			While ($k_i<$keys_ac.length)
 				$oldName_t:=$keys_ac[$k_i]
 				$newName_t:=String(OB Get($mapping_o; $oldName_t))
-				$fileBody_t:=Replace string($fileBody_t; $oldName_t; $newName_t; 0)
+				$fileBody_t:=Replace string($fileBody_t; $oldName_t; $newName_t)
 				$k_i+=1
 			End while 
 			
@@ -327,7 +327,7 @@ $k_i:=0
 While ($k_i<$keys_ac.length)
 	$oldName_t:=$keys_ac[$k_i]
 	$newName_t:=String(OB Get($mapping_o; $oldName_t))
-	$foldersBody_t:=Replace string($foldersBody_t; $oldName_t; $newName_t; 0)
+	$foldersBody_t:=Replace string($foldersBody_t; $oldName_t; $newName_t)
 	$k_i+=1
 End while 
 
