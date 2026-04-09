@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":false}
   // ----------------------------------------------------
   // Project Method: Log_Enable({enable})-->Boolean
 

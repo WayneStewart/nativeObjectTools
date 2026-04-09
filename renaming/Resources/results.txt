@@ -1,0 +1,253 @@
+DRY RUN REPORT -- Forward rename ( OTr_  ->  OT )
+Methods folder: Macintosh HD:Users:waynestewart:4D:Projects:OT Replacement:nativeObjectTools:Project:Sources:Methods:
+
+--- Methods that WOULD be renamed (98) ---
+  OTr_PutArrayTime  -->  OT PutArrayTime
+  OTr_PutArrayBoolean  -->  OT PutArrayBoolean
+  OTr_LoadFromBlob  -->  OT LoadFromBlob
+  OTr_SaveToText  -->  OT SaveToText
+  OTr_GetPicture  -->  OT GetPicture
+  OTr_SaveToClipboard  -->  OT SaveToClipboard
+  OTr_GetRecord  -->  OT GetRecord
+  OTr_ItemType  -->  OT ItemType
+  OTr_SetErrorHandler  -->  OT SetErrorHandler
+  OTr_SetOptions  -->  OT SetOptions
+  OTr_CopyItem  -->  OT CopyItem
+  OTr_PutLong  -->  OT PutLong
+  OTr_GetDate  -->  OT GetDate
+  OTr_LoadFromClipboard  -->  OT LoadFromClipboard
+  OTr_GetArrayPicture  -->  OT GetArrayPicture
+  OTr_FindInArray  -->  OT FindInArray
+  OTr_ObjectSize  -->  OT ObjectSize
+  OTr_GetBLOB  -->  OT GetBLOB
+  OTr_DeleteElement  -->  OT DeleteElement
+  OTr_Copy  -->  OT Copy
+  OTr_PutText  -->  OT PutText
+  OTr_GetArrayReal  -->  OT GetArrayReal
+  OTr_LoadFromGZIP  -->  OT LoadFromGZIP
+  OTr_PutBoolean  -->  OT PutBoolean
+  OTr_GetArrayTime  -->  OT GetArrayTime
+  OTr_ObjectToNewBLOB  -->  OT ObjectToNewBLOB
+  OTr_PutRecord  -->  OT PutRecord
+  OTr_CompiledApplication  -->  OT CompiledApplication
+  OTr_GetAllNamedProperties  -->  OT GetAllNamedProperties
+  OTr_GetText  -->  OT GetText
+  OTr_PutBLOB  -->  OT PutBLOB
+  OTr_SaveToGZIP  -->  OT SaveToGZIP
+  OTr_GetOptions  -->  OT GetOptions
+  OTr_PutDate  -->  OT PutDate
+  OTr_ItemCount  -->  OT ItemCount
+  OTr_PutPointer  -->  OT PutPointer
+  OTr_GetLong  -->  OT GetLong
+  OTr_PutArrayPointer  -->  OT PutArrayPointer
+  OTr_ResizeArray  -->  OT ResizeArray
+  OTr_LoadFromText  -->  OT LoadFromText
+  OTr_Clear  -->  OT Clear
+  OTr_SaveToBlob  -->  OT SaveToBlob
+  OTr_GetNamedProperties  -->  OT GetNamedProperties
+  OTr_ArrayType  -->  OT ArrayType
+  OTr_Startup  -->  OT Startup
+  OTr_ObjectToBLOB  -->  OT ObjectToBLOB
+  OTr_GetItemProperties  -->  OT GetItemProperties
+  OTr_GetVersion  -->  OT GetVersion
+  OTr_CompareItems  -->  OT CompareItems
+  OTr_PutArrayReal  -->  OT PutArrayReal
+  OTr_ItemExists  -->  OT ItemExists
+  OTr_GetAllProperties  -->  OT GetAllProperties
+  OTr_GetArrayLong  -->  OT GetArrayLong
+  OTr_GetPointer  -->  OT GetPointer
+  OTr_IsObject  -->  OT IsObject
+  OTr_RenameItem  -->  OT RenameItem
+  OTr_GetArrayText  -->  OT GetArrayText
+  OTr_PutReal  -->  OT PutReal
+  OTr_GetObject  -->  OT GetObject
+  OTr_Register  -->  OT Register
+  OTr_GetTime  -->  OT GetTime
+  OTr_DeleteItem  -->  OT DeleteItem
+  OTr_New  -->  OT New
+  OTr_GetArrayPointer  -->  OT GetArrayPointer
+  OTr_PutArray  -->  OT PutArray
+  OTr_GetHandleList  -->  OT GetHandleList
+  OTr_GetString  -->  OT GetString
+  OTr_SortArrays  -->  OT SortArrays
+  OTr_PutArrayBLOB  -->  OT PutArrayBLOB
+  OTr_GetRecordTable  -->  OT GetRecordTable
+  OTr_SaveToFile  -->  OT SaveToFile
+  OTr_PutVariable  -->  OT PutVariable
+  OTr_PutArrayDate  -->  OT PutArrayDate
+  OTr_PutObject  -->  OT PutObject
+  OTr_IsEmbedded  -->  OT IsEmbedded
+  OTr_GetArrayBoolean  -->  OT GetArrayBoolean
+  OTr_InsertElement  -->  OT InsertElement
+  OTr_PutArrayLong  -->  OT PutArrayLong
+  OTr_SizeOfArray  -->  OT SizeOfArray
+  OTr_Info  -->  OT Info
+  OTr_GetArray  -->  OT GetArray
+  OTr_PutPicture  -->  OT PutPicture
+  OTr_PutArrayText  -->  OT PutArrayText
+  OTr_GetArrayString  -->  OT GetArrayString
+  OTr_LoadFromFile  -->  OT LoadFromFile
+  OTr_GetBoolean  -->  OT GetBoolean
+  OTr_PutTime  -->  OT PutTime
+  OTr_ClearAll  -->  OT ClearAll
+  OTr_GetReal  -->  OT GetReal
+  OTr_PutArrayPicture  -->  OT PutArrayPicture
+  OTr_LogLevel  -->  OT LogLevel
+  OTr_GetArrayBLOB  -->  OT GetArrayBLOB
+  OTr_BLOBToObject  -->  OT BLOBToObject
+  OTr_GetNewBLOB  -->  OT GetNewBLOB
+  OTr_PutString  -->  OT PutString
+  OTr_GetVariable  -->  OT GetVariable
+  OTr_GetArrayDate  -->  OT GetArrayDate
+  OTr_PutArrayString  -->  OT PutArrayString
+
+--- Files that WOULD have contents updated ---
+  OTr_PutArrayTime.4dm
+  OTr_PutArrayBoolean.4dm
+  Compiler_OTrSortProcess.4dm
+  OTr_LoadFromBlob.4dm
+  OTr_SaveToText.4dm
+  OTr_GetPicture.4dm
+  OTr_zErrIgnore.4dm
+  Compiler_OTr.4dm
+  OTr_SaveToClipboard.4dm
+  OTr_GetRecord.4dm
+  OTr_ItemType.4dm
+  ____Test_Phase_10_OTr.4dm
+  OTr_z_LogInit.4dm
+  OTr_SetErrorHandler.4dm
+  OTr_SetOptions.4dm
+  OTr_CopyItem.4dm
+  OTr_PutLong.4dm
+  ____Test_Phase_8.4dm
+  OTr_GetDate.4dm
+  OTr_LoadFromClipboard.4dm
+  OTr_GetArrayPicture.4dm
+  OTr_FindInArray.4dm
+  OTr_ObjectSize.4dm
+  OTr_GetBLOB.4dm
+  OTr_DeleteElement.4dm
+  OTr_Copy.4dm
+  ____Test_Phase_10b_OTr.4dm
+  OTr_PutText.4dm
+  OTr_GetArrayReal.4dm
+  OTr_LoadFromGZIP.4dm
+  OTr_PutBoolean.4dm
+  ____Test_Phase_15_OT.4dm
+  OTr_GetArrayTime.4dm
+  ____Test_Phase_15.4dm
+  OTr_ObjectToNewBLOB.4dm
+  OTr_PutRecord.4dm
+  ____Test_Phase_1_5.4dm
+  OTr_CompiledApplication.4dm
+  OTr_GetAllNamedProperties.4dm
+  OTr_GetText.4dm
+  ____Test_Phase_10a_OT.4dm
+  OTr_PutBLOB.4dm
+  OTr_SaveToGZIP.4dm
+  OTr_GetOptions.4dm
+  OTr_PutDate.4dm
+  OTr_ItemCount.4dm
+  Compiler_OTrSortInterprocess.4dm
+  ____Test_Phase_4_Arrays.4dm
+  OTr_PutPointer.4dm
+  OTr_GetLong.4dm
+  OTr_PutArrayPointer.4dm
+  OTr_ResizeArray.4dm
+  ____Test_Phase_10a_OTr.4dm
+  OTr_LoadFromText.4dm
+  OTr_Clear.4dm
+  OTr_SaveToBlob.4dm
+  OTr_GetNamedProperties.4dm
+  OTr_ArrayType.4dm
+  OTr_Startup.4dm
+  ____Test_Phase_10.4dm
+  OTr_ObjectToBLOB.4dm
+  OTr_GetItemProperties.4dm
+  OTr_GetVersion.4dm
+  OTr_CompareItems.4dm
+  OTr_PutArrayReal.4dm
+  OTr_ItemExists.4dm
+  OTr_GetAllProperties.4dm
+  OTr_GetArrayLong.4dm
+  OTr_GetPointer.4dm
+  ____Test_Phase_10a.4dm
+  OTr_zSortValidatePair.4dm
+  OTr_IsObject.4dm
+  OTr_RenameItem.4dm
+  OTr_GetArrayText.4dm
+  OTr_PutReal.4dm
+  ____Test_Phase_10b.4dm
+  OTr_GetObject.4dm
+  OTr_Register.4dm
+  OTr_GetTime.4dm
+  OTr_DeleteItem.4dm
+  OTr_New.4dm
+  OTr_zMapType.4dm
+  OTr_GetArrayPointer.4dm
+  OTr_PutArray.4dm
+  OTr_GetHandleList.4dm
+  OTr_GetString.4dm
+  OTr_SortArrays.4dm
+  OTr_PutArrayBLOB.4dm
+  OTr_GetRecordTable.4dm
+  OTr_SaveToFile.4dm
+  OTr_PutVariable.4dm
+  OTr_PutArrayDate.4dm
+  OTr_PutObject.4dm
+  OTr_IsEmbedded.4dm
+  OTr_GetArrayBoolean.4dm
+  OTr_InsertElement.4dm
+  OTr_PutArrayLong.4dm
+  OTr_SizeOfArray.4dm
+  ____Test_Phase_10_OT.4dm
+  OTr_Info.4dm
+  OTr_zArrayFromObject.4dm
+  OTr_GetArray.4dm
+  ____Test_Phase_6.4dm
+  OTr_PutPicture.4dm
+  OTr_PutArrayText.4dm
+  OTr_GetArrayString.4dm
+  OTr_LoadFromFile.4dm
+  ____Test_Phase_5.4dm
+  OTr_GetBoolean.4dm
+  ____Test_Phase_15_OTr.4dm
+  ____Test_Phase_1.4dm
+  OTr_PutTime.4dm
+  OTr_ClearAll.4dm
+  OTr_GetReal.4dm
+  OTr_PutArrayPicture.4dm
+  OTr_LogLevel.4dm
+  OTr_GetArrayBLOB.4dm
+  ____Test_Phase_2.4dm
+  OTr_BLOBToObject.4dm
+  OTr_GetNewBLOB.4dm
+  OTr_PutString.4dm
+  OTr_GetVariable.4dm
+  OTr_GetArrayDate.4dm
+  OTr_PutArrayString.4dm
+  ____Test_Phase_10b_OT.4dm
+  ____Test_Phase_3.4dm
+  Total files with content changes: 126
+
+--- Anomaly inspection ---
+  [ANOMALY A] Shared but NOT in rename set: LOG USE LOG
+  [ANOMALY A] Shared but NOT in rename set: LOG ADD ENTRY
+  [ANOMALY A] Shared but NOT in rename set: LOG STOP LOG WRITER
+  [ANOMALY A] Shared but NOT in rename set: LOG DECLARE LOG
+  [ANOMALY A] Shared but NOT in rename set: LOG ENABLE
+  [ANOMALY A] Shared but NOT in rename set: Log Folder Path
+  [ANOMALY A] Shared but NOT in rename set: Log File Name
+  [ANOMALY A] Shared but NOT in rename set: Log Form Event
+  [ANOMALY B] Excluded prefix but marked shared: OTr_uEqualObjects
+  [ANOMALY A] Shared but NOT in rename set: LOG CLOSE LOG
+  [ANOMALY B] Excluded prefix but marked shared: OTr_uMapType
+  Anomaly A (shared, not renamed): 9
+  Anomaly B (excluded but shared): 2
+
+--- Summary ---
+  Methods to rename      : 98
+  Files needing rewrite  : 126
+  Anomalies found        : 11
+
+No files were modified. Run Renamer_Forward to execute.

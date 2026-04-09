@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":false}
   // ----------------------------------------------------
   // Project Method: OTr_uMapType ($nativeType_i : Integer {; $direction_i : Integer}) --> $result_i : Integer
 

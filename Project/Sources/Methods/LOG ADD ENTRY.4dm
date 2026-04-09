@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":false}
   // ----------------------------------------------------
   // Project Method: Log_AddEntry(text1{;text2..textN})
 

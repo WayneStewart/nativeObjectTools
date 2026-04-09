@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":true,"preemptive":"capable","lang":"en"}
+﻿//%attributes = {"invisible":true,"shared":false,"preemptive":"capable","lang":"en"}
 // ----------------------------------------------------
 // Project Method: OTr_uEqualObjects (Object #1; Object #2) --> Boolean
 
