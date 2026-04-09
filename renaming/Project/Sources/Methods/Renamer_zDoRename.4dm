@@ -76,6 +76,7 @@ var $keepLine_b : Boolean
 var $newNameCheck_t : Text
 var $cDeclPrefix_t : Text
 var $parenPos_i : Integer
+var $lineEnd_t : Text
 
 // ── Initialise ────────────────────────────────────────────────────────────────
 
@@ -170,21 +171,26 @@ While ($i_i <= Size of array($allFiles_at))
 		// first argument is a renamed method (i.e. now contains "OT " with a
 		// space, produced by the substitution pass above).
 		//
-		// Pattern to detect: the line starts with optional whitespace, then
-		// "C_" followed by uppercase letters, then ":C", then digits, then "(",
-		// then the new method name beginning with "OT " -- which unambiguously
-		// marks it as a renamed public method.
+		// After the substitution pass, a renamed method in a C_ call looks like:
+		//   C_LONGINT:C283(OT GetLong; $0; $1)
+		// The distinguishing mark: line begins (after optional whitespace) with
+		// "C_" and the first token inside the "(" is "OT " (3 chars).
 		//
-		// Implementation: split on LF (or CR), test each line, rejoin.
+		// Line endings: detect whether the file uses LF (Char(10)) or CR
+		// (Char(13)) and use the same separator when rejoining, so that we
+		// do not alter the line endings of the rest of the file.
 		//
 		$isCompiler_b := (Position("Compiler_"; $fileName_t) > 0)
 
 		If ($isCompiler_b)
-			$lines_ac := Split string($fileBody_t; Char(13))
-			If ($lines_ac.length <= 1)
-				// Try LF
-				$lines_ac := Split string($fileBody_t; Char(10))
+			// Detect the line-ending character used in this file
+			If (Position(Char(10); $fileBody_t) > 0)
+				$lineEnd_t := Char(10)
+			Else
+				$lineEnd_t := Char(13)
 			End if
+
+			$lines_ac := Split string($fileBody_t; $lineEnd_t)
 
 			$cleanedBody_t := ""
 			$l_i := 0
@@ -192,21 +198,10 @@ While ($i_i <= Size of array($allFiles_at))
 				$line_t := String($lines_ac[$l_i])
 				$keepLine_b := True
 
-				// Detect C_ declaration for a renamed method.
-				// After the substitution pass a renamed method in a C_ call looks like:
-				//   C_LONGINT:C283(OT GetLong; $0; $1)
-				// The distinguishing mark: "C_" near the start of the trimmed line,
-				// and "OT " appearing as the first token inside the opening parenthesis.
-				//
-				// We check: Position("C_"; Trim($line_t)) = 1   AND
-				//           the content after the "(" begins with "OT "
-				//
 				$cDeclPrefix_t := Trim($line_t)
 				If (Position("C_"; $cDeclPrefix_t) = 1)
-					// Find the opening parenthesis
 					$parenPos_i := Position("("; $cDeclPrefix_t)
 					If ($parenPos_i > 0)
-						// Extract the token immediately following "("
 						$newNameCheck_t := Substring($cDeclPrefix_t; $parenPos_i + 1; 3)
 						If ($newNameCheck_t = "OT ")
 							$keepLine_b := False
@@ -216,7 +211,7 @@ While ($i_i <= Size of array($allFiles_at))
 
 				If ($keepLine_b)
 					If (Length($cleanedBody_t) > 0)
-						$cleanedBody_t := $cleanedBody_t + Char(13)
+						$cleanedBody_t := $cleanedBody_t + $lineEnd_t
 					End if
 					$cleanedBody_t := $cleanedBody_t + $line_t
 				End if
