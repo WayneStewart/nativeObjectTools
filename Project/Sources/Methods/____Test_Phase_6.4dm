@@ -1,18 +1,18 @@
-//%attributes = {"invisible":true,"shared":false}
+﻿//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_6
 
 // Unit tests for all Phase 6 methods:
 // •  OTr_uMapType
-// •  OTr_ObjectToBLOB / OTr_ObjectToNewBLOB / OTr_BLOBToObject
+// •  OT ObjectToBLOB / OT ObjectToNewBLOB / OT BLOBToObject
 //
 // Tests cover:
 // •  OTr_uMapType — 4D→OT and OT→4D spot checks
 // •  Scalar round-trip (text, long, real, boolean, date, time)
 // •  BLOB item round-trip (binary attachment table)
 // •  Picture item round-trip (binary attachment table)
-// •  OTr_ObjectToNewBLOB — function result form
-// •  OTr_BLOBToObject — invalid data error case
+// •  OT ObjectToNewBLOB — function result form
+// •  OT BLOBToObject — invalid data error case
 
 // Access: Private
 
@@ -64,7 +64,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 	// SETUP
 	// ====================================================
-	OTr_ClearAll
+	OT ClearAll
 	$total_i:=0
 	$passed_i:=0
 	$failed_i:=0
@@ -177,17 +177,17 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	// ====================================================
-	//MARK:- OTr_ObjectToNewBLOB — scalar round-trip
+	//MARK:- OT ObjectToNewBLOB — scalar round-trip
 	// ====================================================
 
-	$h_i:=OTr_New
-	OTr_PutString($h_i; "name"; "phase6-test")
-	OTr_PutLong($h_i; "count"; 42)
-	OTr_PutReal($h_i; "ratio"; 3.14)
-	OTr_PutBoolean($h_i; "flag"; True:C214)
+	$h_i:=OT New
+	OT PutString($h_i; "name"; "phase6-test")
+	OT PutLong($h_i; "count"; 42)
+	OT PutReal($h_i; "ratio"; 3.14)
+	OT PutBoolean($h_i; "flag"; True:C214)
 
 	$total_i:=$total_i+1
-	$serialBlob_blob:=OTr_ObjectToNewBLOB($h_i)
+	$serialBlob_blob:=OT ObjectToNewBLOB($h_i)
 	If (OK=1) & (BLOB size:C605($serialBlob_blob)>0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -196,10 +196,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	// Checkpoint: inspect bytes
-	OTr_SaveToClipboard($h_i)
+	OT SaveToClipboard($h_i)
 
 	$total_i:=$total_i+1
-	$h2_i:=OTr_BLOBToObject($serialBlob_blob)
+	$h2_i:=OT BLOBToObject($serialBlob_blob)
 	If (OK=1) & ($h2_i>0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -208,7 +208,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	$gotStr_t:=OTr_GetString($h2_i; "name")
+	$gotStr_t:=OT GetString($h2_i; "name")
 	If ($gotStr_t="phase6-test")
 		$passed_i:=$passed_i+1
 	Else 
@@ -217,7 +217,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	$gotLong_i:=OTr_GetLong($h2_i; "count")
+	$gotLong_i:=OT GetLong($h2_i; "count")
 	If ($gotLong_i=42)
 		$passed_i:=$passed_i+1
 	Else 
@@ -226,7 +226,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	$gotReal_r:=OTr_GetReal($h2_i; "ratio")
+	$gotReal_r:=OT GetReal($h2_i; "ratio")
 	If ($gotReal_r=3.14)
 		$passed_i:=$passed_i+1
 	Else 
@@ -235,7 +235,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	$gotBool_i:=OTr_GetBoolean($h2_i; "flag")
+	$gotBool_i:=OT GetBoolean($h2_i; "flag")
 	If ($gotBool_i=1)
 		$passed_i:=$passed_i+1
 	Else 
@@ -244,12 +244,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	// ====================================================
-	//MARK:- OTr_BLOBToObject — invalid handle returns OK=0
+	//MARK:- OT BLOBToObject — invalid handle returns OK=0
 	// ====================================================
 
 	$total_i:=$total_i+1
 	SET BLOB SIZE:C606($serialBlob_blob; 0)  // clear the BLOB
-	OTr_ObjectToBLOB(9999; ->$serialBlob_blob)
+	OT ObjectToBLOB(9999; ->$serialBlob_blob)
 	If (OK=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -261,12 +261,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	//MARK:- BLOB item round-trip (binary attachment table)
 	// ====================================================
 
-	$h3_i:=OTr_New
+	$h3_i:=OT New
 	CONVERT FROM TEXT:C1011("hello-otr-phase6"; "UTF-8"; $testBlob_blob)
-	OTr_PutBLOB($h3_i; "bdata"; $testBlob_blob)
+	OT PutBLOB($h3_i; "bdata"; $testBlob_blob)
 
 	$total_i:=$total_i+1
-	$roundTripBlob_blob:=OTr_ObjectToNewBLOB($h3_i)
+	$roundTripBlob_blob:=OT ObjectToNewBLOB($h3_i)
 	If (OK=1) & (BLOB size:C605($roundTripBlob_blob)>0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -275,7 +275,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	$h4_i:=OTr_BLOBToObject($roundTripBlob_blob)
+	$h4_i:=OT BLOBToObject($roundTripBlob_blob)
 	If (OK=1) & ($h4_i>0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -284,7 +284,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	$gotBlob_blob:=OTr_GetNewBLOB($h4_i; "bdata")
+	$gotBlob_blob:=OT GetNewBLOB($h4_i; "bdata")
 	If (OK=1) & (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
 		$passed_i:=$passed_i+1
 	Else 
@@ -302,11 +302,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	BASE64 DECODE:C896($pngBlob_blob)
 	BLOB TO PICTURE:C682($pngBlob_blob; $testPic_pic; ".png")
 
-	$h_i:=OTr_New
-	OTr_PutPicture($h_i; "pdata"; $testPic_pic)
+	$h_i:=OT New
+	OT PutPicture($h_i; "pdata"; $testPic_pic)
 
 	$total_i:=$total_i+1
-	$roundTripBlob_blob:=OTr_ObjectToNewBLOB($h_i)
+	$roundTripBlob_blob:=OT ObjectToNewBLOB($h_i)
 	If (OK=1) & (BLOB size:C605($roundTripBlob_blob)>0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -315,7 +315,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	$h2_i:=OTr_BLOBToObject($roundTripBlob_blob)
+	$h2_i:=OT BLOBToObject($roundTripBlob_blob)
 	If (OK=1) & ($h2_i>0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -324,7 +324,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	$gotPic_pic:=OTr_GetPicture($h2_i; "pdata")
+	$gotPic_pic:=OT GetPicture($h2_i; "pdata")
 	If (OK=1) & (OTr_uEqualPictures($testPic_pic; $gotPic_pic))
 		$passed_i:=$passed_i+1
 	Else 
@@ -333,13 +333,13 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	// ====================================================
-	//MARK:- OTr_BLOBToObject — invalid data error case
+	//MARK:- OT BLOBToObject — invalid data error case
 	// ====================================================
 
 	CONVERT FROM TEXT:C1011("NOT_OTR1_DATA"; "US-ASCII"; $badBlob_blob)
 
 	$total_i:=$total_i+1
-	$h_i:=OTr_BLOBToObject($badBlob_blob)
+	$h_i:=OT BLOBToObject($badBlob_blob)
 	If (OK=0) & ($h_i=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -348,13 +348,13 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	// ====================================================
-	//MARK:- OTr_BLOBToObject — BLOB too small error case
+	//MARK:- OT BLOBToObject — BLOB too small error case
 	// ====================================================
 
 	CONVERT FROM TEXT:C1011("OTR"; "US-ASCII"; $badBlob_blob)  // only 3 bytes
 
 	$total_i:=$total_i+1
-	$h_i:=OTr_BLOBToObject($badBlob_blob)
+	$h_i:=OT BLOBToObject($badBlob_blob)
 	If (OK=0) & ($h_i=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -365,7 +365,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 	//MARK:- SUMMARY
 	// ====================================================
-	OTr_ClearAll
+	OT ClearAll
 
 	$summary_t:="Phase 6 Tests"+Char:C90(Carriage return:K15:38)
 	$summary_t:=$summary_t+"Total:  "+String:C10($total_i)+Char:C90(Carriage return:K15:38)

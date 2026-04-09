@@ -1,9 +1,9 @@
-//%attributes = {"invisible":true,"shared":false}
+﻿//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: OTr_zErrIgnore ()
 
 // Silent error handler installed temporarily by
-// OTr_LoadFromText via ON ERR CALL to suppress errors
+// OT LoadFromText via ON ERR CALL to suppress errors
 // raised during JSON Parse. The caller checks return
 // values for failure; this method intentionally does nothing.
 

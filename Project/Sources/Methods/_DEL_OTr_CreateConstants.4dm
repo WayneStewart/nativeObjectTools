@@ -18,6 +18,9 @@ Constants_AddString("OT Log Notice"; "notice")
 Constants_AddString("OT Log Warn"; "warn")
 Constants_AddString("OT Log Error"; "error")
 
+Constants_NewGroup("OT Miscellaneous")
+Constants_AddString("Log Writer"; "$Log Writer")
+
 Constants_SaveFile
 
 

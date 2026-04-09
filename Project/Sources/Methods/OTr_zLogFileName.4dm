@@ -19,4 +19,4 @@
 var $sequenceText_t : Text
 
 $sequenceText_t:=String:C10(Storage:C1525.OT_Logging.sequence; "000")
-$outFileName_t:="ObjectTools "+Storage:C1525.OT_Logging.Session+"."+$sequenceText_t+".txt"
+$outFileName_t:="ObjectTools "+Storage:C1525.OT_Logging.session+"."+$sequenceText_t+".txt"

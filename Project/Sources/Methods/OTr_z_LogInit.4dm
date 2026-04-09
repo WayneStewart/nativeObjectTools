@@ -101,7 +101,7 @@ If (Storage:C1525.OT_Logging=Null:C1517)
 	
 	If ($resolvedLevel_t#"off")
 		LOG ADD ENTRY("info"; "env"; "log level = "+$resolvedLevel_t)
-		$version_t:=OTr_GetVersion
+		$version_t:=OT GetVersion
 		If (Is compiled mode:C492)
 			$buildType_t:="release"
 		Else 

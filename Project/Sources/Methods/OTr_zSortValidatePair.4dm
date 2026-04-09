@@ -1,8 +1,8 @@
-//%attributes = {"invisible":true}
+﻿//%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project Method: OTr_zSortValidatePair ($params_o : Object) --> Boolean
 
-// Validates one tag/direction pair for OTr_SortArrays.
+// Validates one tag/direction pair for OT SortArrays.
 // The caller passes an object with the fields:
 //   handle  : Integer : OTr handle
 //   tag     : Text    : Array tag path

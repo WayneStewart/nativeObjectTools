@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":false}
+﻿//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_15_OT (accum)
 
@@ -7,7 +7,7 @@
 // same order as ____Test_Phase_15_OTr), runs the
 // legacy ObjectTools 5.0 commands and updates the
 // otCmd and otResult columns in the accumulator by
-// sequential index using OTr_PutArrayText.
+// sequential index using OT PutArrayText.
 //
 // PLATFORM REQUIREMENT: ObjectTools 5.0 must be
 // installed as a plugin. If OT New returns 0, all OT
@@ -94,10 +94,10 @@
 //If ($testOtH_i=0)
 //ALERT("ObjectTools 5.0 is not available or not registered."+Char(Carriage return)+"OT columns will be marked as skipped.")
 //$ready_b:=False
-//$count_i:=OTr_SizeOfArray($accum_i; "testNum")
+//$count_i:=OT SizeOfArray($accum_i; "testNum")
 //For ($n_i; 1; $count_i)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; "Plugin not available")
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; "Skip: plugin not available")
+//OT PutArrayText($accum_i; "otCmd"; $n_i; "Plugin not available")
+//OT PutArrayText($accum_i; "otResult"; $n_i; "Skip: plugin not available")
 //End for 
 //Else 
 //OT Clear($testOtH_i)
@@ -124,8 +124,8 @@
 //$otResult_t:="Fail: OT New returned 0"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 2. String / Text
@@ -142,8 +142,8 @@
 //$otResult_t:="Fail: got '"+$gotten_t+"'"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 3. Longint
@@ -160,8 +160,8 @@
 //$otResult_t:="Fail: got "+String($gotLong_i)
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 4. Real
@@ -178,8 +178,8 @@
 //$otResult_t:="Fail: got "+String($gotReal_r)
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 5. Boolean
@@ -196,8 +196,8 @@
 //$otResult_t:="Fail: got "+String($gotBool_i)
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 6. Date
@@ -215,8 +215,8 @@
 //$otResult_t:="Fail: got "+String($gotDate_d)
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 7. Time
@@ -234,8 +234,8 @@
 //$otResult_t:="Fail: got "+String($gotTime_h)
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 8. Pointer
@@ -257,8 +257,8 @@
 //$otResult_t:="Fail: dereference mismatch or OK=0"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 9. Picture (empty picture)
@@ -275,8 +275,8 @@
 //$otResult_t:="Fail: picture mismatch"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 9a. Picture (wombat)
@@ -297,8 +297,8 @@
 //End if 
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 10. BLOB
@@ -316,8 +316,8 @@
 //$otResult_t:="Fail: BLOB content mismatch"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 11. Variable
@@ -336,8 +336,8 @@
 //$otResult_t:="Fail: got '"+$otVarDest_t+"'"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 12. Record  (Intentional difference §4.3)
@@ -366,8 +366,8 @@
 //$otResult_t:="Fail: OT GetRecord set OK=0"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 13. Dot-path
@@ -384,8 +384,8 @@
 //$otResult_t:="Fail: got '"+$gotten_t+"'"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 14. Array Longint
@@ -406,8 +406,8 @@
 //$otResult_t:="Fail: got "+String($otArrVal_i)
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 15. Array Text
@@ -427,8 +427,8 @@
 //$otResult_t:="Fail: got '"+$otArrStr_t+"'"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 16. Array Real
@@ -448,8 +448,8 @@
 //$otResult_t:="Fail: got "+String($otArrReal_r)
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 17. Array Boolean
@@ -469,8 +469,8 @@
 //$otResult_t:="Fail: got "+String($otArrBool_i)
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 18. Array Pointer
@@ -500,8 +500,8 @@
 //$otResult_t:="Fail: OK=0"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 19. Array Picture (empty picture)
@@ -524,8 +524,8 @@
 //$otResult_t:="Fail: empty picture returned"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 19a. Array Picture (wombat)
@@ -546,8 +546,8 @@
 //End if 
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 20. Item info
@@ -563,8 +563,8 @@
 //$otResult_t:="Fail: ItemExists or ItemType mismatch"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 21. Item count
@@ -588,8 +588,8 @@
 
 //OT Clear($h3_i)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 22. Property enumeration
@@ -612,8 +612,8 @@
 
 //OT Clear($h3_i)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 23. Delete / Rename
@@ -636,8 +636,8 @@
 
 //OT Clear($h3_i)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 24. Copy
@@ -658,8 +658,8 @@
 
 //OT Clear($h3_i)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 25. Size of array
@@ -680,8 +680,8 @@
 //$otResult_t:="Fail: got "+String($otArrSize_i)
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 26. Sort arrays
@@ -707,8 +707,8 @@
 
 //OT Clear($h3_i)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 27. Object size  (Intentional difference §4.3)
@@ -725,8 +725,8 @@
 //$otResult_t:="Fail: returned 0"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 28. BLOB serialisation (Intentional diff §4.3)
@@ -750,8 +750,8 @@
 //OT Clear($h3_i)
 //OT Clear($loadedOtH_i)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 29. Version
@@ -768,8 +768,8 @@
 //$otResult_t:="Fail: empty version"
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 30. Options
@@ -789,8 +789,8 @@
 //$otResult_t:="Fail: read "+String($readOtOpts_i)+" expected "+String($testOpts_i)
 //End if 
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- TEARDOWN

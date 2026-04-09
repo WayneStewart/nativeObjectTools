@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true}
+﻿//%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project Method: OTr_zArrayFromObject ($arrayObj_o : Object; $arrayPtr : Pointer)
 
@@ -10,7 +10,7 @@
 // OTr_u utility methods for Date, Time, Pointer,
 // BLOB, and Picture types.
 //
-// Called internally by OTr_GetArray and typed element
+// Called internally by OT GetArray and typed element
 // Get methods. Callers are responsible for locking.
 
 // Access: Private

@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":false}
+﻿//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_10b_OT ($accum_i)
 
@@ -40,10 +40,10 @@
 //If ($testOtH_i=0)
 //ALERT("ObjectTools 5.0 is not available or not registered."+Char(Carriage return)+"OT columns will be marked as skipped.")
 //$ready_b:=False
-//$count_i:=OTr_SizeOfArray($accum_i; "testName")
+//$count_i:=OT SizeOfArray($accum_i; "testName")
 //For ($n_i; 1; $count_i)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; "Plugin not available")
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; "Skip: plugin not available")
+//OT PutArrayText($accum_i; "otCmd"; $n_i; "Plugin not available")
+//OT PutArrayText($accum_i; "otResult"; $n_i; "Skip: plugin not available")
 //End for 
 //Else 
 //OT Clear($testOtH_i)
@@ -59,73 +59,73 @@
 //$otCmd_t:="OT GetLong(99999; \"missing\")"
 //$gotLong_i:=OT GetLong(99999; "missing")
 //$otResult_t:="returned "+String($gotLong_i)+" OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$n_i:=$n_i+1
 //$otCmd_t:="OT GetLong($otMain_i; \"missing\")"
 //$gotLong_i:=OT GetLong($otMain_i; "missing")
 //$otResult_t:="returned "+String($gotLong_i)+" OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$n_i:=$n_i+1
 //$otCmd_t:="OT PutArrayLong($otMain_i; \"scalar\"; 1; 777)"
 //OT PutArrayLong($otMain_i; "scalar"; 1; 777)
 //$otResult_t:="OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$n_i:=$n_i+1
 //$otCmd_t:="OT GetArrayLong($otMain_i; \"scalar\"; 99)"
 //$gotLong_i:=OT GetArrayLong($otMain_i; "scalar"; 99)
 //$otResult_t:="returned "+String($gotLong_i)+" OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$n_i:=$n_i+1
 //$otCmd_t:="OT SizeOfArray($otMain_i; \"missingArray\")"
 //$size_i:=OT SizeOfArray($otMain_i; "missingArray")
 //$otResult_t:="returned "+String($size_i)+" OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$n_i:=$n_i+1
 //$otCmd_t:="OT CompareItems($otMain_i; \"scalar\"; $otMain_i; \"textItem\")"
 //$compare_i:=OT CompareItems($otMain_i; "scalar"; $otMain_i; "textItem")
 //$otResult_t:="returned "+String($compare_i)+" OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$n_i:=$n_i+1
 //$otCmd_t:="OT PutLong($otMain_i; scalar.child; 9)"
 //OT PutLong($otMain_i; "scalar.child"; 9)
 //$otResult_t:="OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$n_i:=$n_i+1
 //$otCmd_t:="OT DeleteItem($otMain_i; \"missingDelete\")"
 //OT DeleteItem($otMain_i; "missingDelete")
 //$otResult_t:="OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$n_i:=$n_i+1
 //$otCmd_t:="OT GetPointer($otMain_i; \"missingPtr\"; $ptrOut_ptr)"
 //$ptrOut_ptr:=Null
 //OT GetPointer($otMain_i; "missingPtr"; $ptrOut_ptr)
 //$otResult_t:="OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$n_i:=$n_i+1
 //$otCmd_t:="OT BLOBToObject($badBlob_blob)"
 //TEXT TO BLOB("this is not a serialised object"; $badBlob_blob)
 //$gotLong_i:=OT BLOBToObject($badBlob_blob)
 //$otResult_t:="returned "+String($gotLong_i)+" OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$n_i:=$n_i+1
 //$otCmd_t:="OT PutVariable long / OT GetVariable into text"
@@ -134,15 +134,15 @@
 //$varText_t:=""
 //OT GetVariable($otMain_i; "varMixed"; ->$varText_t)
 //$otResult_t:="text="+$varText_t+" OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$n_i:=$n_i+1
 //$otCmd_t:="OT ItemCount(99999)"
 //$size_i:=OT ItemCount(99999)
 //$otResult_t:="returned "+String($size_i)+" OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //OT Clear($otMain_i)
 //End if 

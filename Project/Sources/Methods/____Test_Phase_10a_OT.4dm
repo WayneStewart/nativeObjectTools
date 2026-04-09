@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":false}
+﻿//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_10a_OT ($accum_i)
 
@@ -69,10 +69,10 @@
 //If ($testOtH_i=0)
 //ALERT("ObjectTools 5.0 is not available or not registered."+Char(Carriage return)+"OT columns will be marked as skipped.")
 //$ready_b:=False
-//$count_i:=OTr_SizeOfArray($accum_i; "testName")
+//$count_i:=OT SizeOfArray($accum_i; "testName")
 //For ($n_i; 1; $count_i)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; "Plugin not available")
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; "Skip: plugin not available")
+//OT PutArrayText($accum_i; "otCmd"; $n_i; "Plugin not available")
+//OT PutArrayText($accum_i; "otResult"; $n_i; "Skip: plugin not available")
 //End for 
 //Else 
 //OT Clear($testOtH_i)
@@ -93,8 +93,8 @@
 //$compiled_i:=OT CompiledApplication
 //$opts_i:=OT GetOptions
 //$otResult_t:="version="+$version_t+" compiled="+String($compiled_i)+" options="+String($opts_i)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //OT PutString($otMain_i; "str"; "hello")
 //OT PutLong($otMain_i; "num"; 42)
@@ -108,8 +108,8 @@
 //$n_i:=$n_i+1
 //$otCmd_t:="OT Put/Get String Long Real Boolean Date Time"
 //$otResult_t:=OT GetString($otMain_i; "str")+" / "+String($gotLong_i)+" / "+String($gotReal_r)+" / "+String($gotBool_i)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //OT PutPointer($otMain_i; "ptr"; ->ptrTarget_t)
 //OT PutBLOB($otMain_i; "blob"; $gotBlob_blob)
@@ -121,8 +121,8 @@
 //$n_i:=$n_i+1
 //$otCmd_t:="OT Put/GetPointer GetNewBLOB Put/GetPicture"
 //$otResult_t:="ptrOK="+String(OK)+" blobSize="+String(BLOB size($roundBlob_blob))+" pic="+Choose($gotPic_pic#Null; "yes"; "no")
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$testOtH_i:=OT New
 //OT PutString($testOtH_i; "childName"; "kid")
@@ -131,8 +131,8 @@
 //$n_i:=$n_i+1
 //$otCmd_t:="OT PutObject / OT GetObject"
 //$otResult_t:="childHandle="+String($h2_i)+" childName="+OT GetString($h2_i; "childName")
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 //If ($testOtH_i#0)
 //OT Clear($testOtH_i)
 //End if 
@@ -147,8 +147,8 @@
 //$n_i:=$n_i+1
 //$otCmd_t:="OT PutVariable / OT GetVariable"
 //$otResult_t:="varLong="+String($varLong_i)+" OK="+String(OK)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //ARRAY LONGINT($longArr_ai; 3)
 //$longArr_ai{1}:=10
@@ -164,8 +164,8 @@
 //$n_i:=$n_i+1
 //$otCmd_t:="OT PutArray / PutArrayLong / InsertElement / DeleteElement / SizeOfArray / GetArrayLong"
 //$otResult_t:="size="+String($arraySize_i)+" elem2="+String($gotLong_i)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //ARRAY LONGINT(longArr_ai; 3)
 //longArr_ai{1}:=10
@@ -178,16 +178,16 @@
 //$n_i:=$n_i+1
 //$otCmd_t:="OT ResizeArray / GetArray / FindInArray"
 //$otResult_t:="size="+String(Size of array(longArr_ai))+" find555="+String($find_i)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //$itemCount_i:=OT ItemCount($otMain_i)
 //$itemType_i:=OT ItemType($otMain_i; "str")
 //$n_i:=$n_i+1
 //$otCmd_t:="OT IsObject / ItemCount / ItemType / ObjectSize"
 //$otResult_t:="isObject="+String(OT IsObject($otMain_i))+" itemCount="+String($itemCount_i)+" itemType(str)="+String($itemType_i)+" size="+String(OT ObjectSize($otMain_i))
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //ARRAY TEXT($names_at; 0)
 //ARRAY LONGINT($types_ai; 0)
@@ -197,8 +197,8 @@
 //$n_i:=$n_i+1
 //$otCmd_t:="OT GetAllProperties / ItemExists / IsEmbedded"
 //$otResult_t:="allProps="+String(Size of array($names_at))+" exists(str)="+String(OT ItemExists($otMain_i; "str"))+" embedded(child)="+String(OT IsEmbedded($otMain_i; "child"))
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //OT CopyItem($otMain_i; "str"; $otMain_i; "strCopy")
 //$compare_i:=OT CompareItems($otMain_i; "str"; $otMain_i; "strCopy")
@@ -207,16 +207,16 @@
 //$n_i:=$n_i+1
 //$otCmd_t:="OT CopyItem / CompareItems / RenameItem / DeleteItem"
 //$otResult_t:="compare="+String($compare_i)+" existsAfterDelete="+String(OT ItemExists($otMain_i; "strRenamed"))
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //OT ObjectToBLOB($otMain_i; $gotBlob_blob)
 //$testOtH_i:=OT BLOBToObject($gotBlob_blob)
 //$n_i:=$n_i+1
 //$otCmd_t:="OT ObjectToBLOB / BLOBToObject"
 //$otResult_t:="blobSize="+String(BLOB size($gotBlob_blob))+" newHandle="+String($testOtH_i)+" getStr="+OT GetString($testOtH_i; "str")
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 //If ($testOtH_i#0)
 //OT Clear($testOtH_i)
 //End if 
@@ -226,8 +226,8 @@
 //$n_i:=$n_i+1
 //$otCmd_t:="OT GetHandleList"
 //$otResult_t:="handles="+String(Size of array($longArrOut_ai))
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //OT Clear($otMain_i)
 //End if 

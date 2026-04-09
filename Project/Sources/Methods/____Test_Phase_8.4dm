@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":false}
+﻿//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_8
 
@@ -62,8 +62,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 	// SETUP
 	// ====================================================
-	OTr_ClearAll
-	$h_i:=OTr_New
+	OT ClearAll
+	$h_i:=OT New
 	$total_i:=0
 	$passed_i:=0
 	$failed_i:=0
@@ -79,21 +79,21 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$longArr_ai{3}:=300
 	$longArr_ai{4}:=400
 	$longArr_ai{5}:=500
-	OTr_PutArray($h_i; "longs"; ->$longArr_ai)
+	OT PutArray($h_i; "longs"; ->$longArr_ai)
 
 	// Real array (3 elements)
 	ARRAY REAL:C219($realArr_ar; 3)
 	$realArr_ar{1}:=1.1
 	$realArr_ar{2}:=2.2
 	$realArr_ar{3}:=3.3
-	OTr_PutArray($h_i; "reals"; ->$realArr_ar)
+	OT PutArray($h_i; "reals"; ->$realArr_ar)
 
 	// Text array (3 elements)
 	ARRAY TEXT:C222($textArr_at; 3)
 	$textArr_at{1}:="alpha"
 	$textArr_at{2}:="beta"
 	$textArr_at{3}:="gamma"
-	OTr_PutArray($h_i; "words"; ->$textArr_at)
+	OT PutArray($h_i; "words"; ->$textArr_at)
 
 	// Date array (3 elements)
 	$testDate_d:=!2026-01-15!
@@ -101,7 +101,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$dateArr_ad{1}:=!2026-01-01!
 	$dateArr_ad{2}:=!2026-06-15!
 	$dateArr_ad{3}:=!2026-12-31!
-	OTr_PutArray($h_i; "dates"; ->$dateArr_ad)
+	OT PutArray($h_i; "dates"; ->$dateArr_ad)
 
 	// Time array (3 elements)
 	$testTime_h:=?08:30:00?
@@ -109,45 +109,45 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$timeArr_ah{1}:=?08:00:00?
 	$timeArr_ah{2}:=?12:30:00?
 	$timeArr_ah{3}:=?23:59:59?
-	OTr_PutArray($h_i; "times"; ->$timeArr_ah)
+	OT PutArray($h_i; "times"; ->$timeArr_ah)
 
 	// Boolean array (3 elements)
 	ARRAY BOOLEAN:C223($boolArr_ab; 3)
 	$boolArr_ab{1}:=True:C214
 	$boolArr_ab{2}:=False:C215
 	$boolArr_ab{3}:=True:C214
-	OTr_PutArray($h_i; "flags"; ->$boolArr_ab)
+	OT PutArray($h_i; "flags"; ->$boolArr_ab)
 
 	// BLOB array (3 elements — store text bytes as BLOBs)
 	ARRAY BLOB:C1222($blobArr_ablob; 3)
 	TEXT TO BLOB:C554("hello"; $blobArr_ablob{1})
 	TEXT TO BLOB:C554("world"; $blobArr_ablob{2})
 	TEXT TO BLOB:C554("test"; $blobArr_ablob{3})
-	OTr_PutArray($h_i; "blobs"; ->$blobArr_ablob)
+	OT PutArray($h_i; "blobs"; ->$blobArr_ablob)
 
 	// Picture array (3 elements — element 1 seeded with wombat)
 	ARRAY PICTURE:C279($picArr_apic; 3)
 	$picArr_apic{1}:=$testWombat_pic
-	OTr_PutArray($h_i; "pics"; ->$picArr_apic)
+	OT PutArray($h_i; "pics"; ->$picArr_apic)
 
 	// Pointer array (3 elements — element 1 seeded with ->vtCC_Filename)
 	ARRAY POINTER:C280($ptrArr_aptr; 3)
 	$ptrArr_aptr{1}:=->vtCC_Filename
-	OTr_PutArray($h_i; "ptrs"; ->$ptrArr_aptr)
+	OT PutArray($h_i; "ptrs"; ->$ptrArr_aptr)
 
 	// Build a sub-object containing a 3-element LongInt array.
 	// Dot path: "sub.vals"
-	$subH_i:=OTr_New
+	$subH_i:=OT New
 	ARRAY LONGINT:C221($longArr_ai; 3)
 	$longArr_ai{1}:=11
 	$longArr_ai{2}:=22
 	$longArr_ai{3}:=33
-	OTr_PutArray($subH_i; "vals"; ->$longArr_ai)
-	OTr_PutObject($h_i; "sub"; $subH_i)
+	OT PutArray($subH_i; "vals"; ->$longArr_ai)
+	OT PutObject($h_i; "sub"; $subH_i)
 
-	OTr_SaveToClipboard($h_i)
+	OT SaveToClipboard($h_i)
 
-	OTr_Clear($subH_i)
+	OT Clear($subH_i)
 
 
 
@@ -156,7 +156,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	$result_i:=OTr_GetArrayLong($h_i; "longs"; 3)
+	$result_i:=OT GetArrayLong($h_i; "longs"; 3)
 	If ($result_i=300)
 		$passed_i:=$passed_i+1
 	Else 
@@ -169,7 +169,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	If (OTr_GetArrayLong($h_i; "longs"; 1)=100) & (OTr_GetArrayLong($h_i; "longs"; 5)=500)
+	If (OT GetArrayLong($h_i; "longs"; 1)=100) & (OT GetArrayLong($h_i; "longs"; 5)=500)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
@@ -181,8 +181,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_PutArrayLong($h_i; "longs"; 2; 999)
-	$result_i:=OTr_GetArrayLong($h_i; "longs"; 2)
+	OT PutArrayLong($h_i; "longs"; 2; 999)
+	$result_i:=OT GetArrayLong($h_i; "longs"; 2)
 	If ($result_i=999)
 		$passed_i:=$passed_i+1
 	Else 
@@ -195,7 +195,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	If (OTr_GetArrayLong($h_i; "longs"; 1)=100) & (OTr_GetArrayLong($h_i; "longs"; 3)=300)
+	If (OT GetArrayLong($h_i; "longs"; 1)=100) & (OT GetArrayLong($h_i; "longs"; 3)=300)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
@@ -207,7 +207,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	$result_i:=OTr_GetArrayLong($h_i; "sub.vals"; 2)
+	$result_i:=OT GetArrayLong($h_i; "sub.vals"; 2)
 	If ($result_i=22)
 		$passed_i:=$passed_i+1
 	Else 
@@ -220,8 +220,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_PutArrayLong($h_i; "sub.vals"; 1; 777)
-	$result_i:=OTr_GetArrayLong($h_i; "sub.vals"; 1)
+	OT PutArrayLong($h_i; "sub.vals"; 1; 777)
+	$result_i:=OT GetArrayLong($h_i; "sub.vals"; 1)
 	If ($result_i=777)
 		$passed_i:=$passed_i+1
 	Else 
@@ -235,7 +235,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 
 	$total_i:=$total_i+1
 	$savedOK_i:=OK
-	OTr_GetArrayLong($h_i; "longs"; 1)
+	OT GetArrayLong($h_i; "longs"; 1)
 	If (OK=$savedOK_i)
 		$passed_i:=$passed_i+1
 	Else 
@@ -248,7 +248,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_GetArrayLong(9999; "longs"; 1)
+	OT GetArrayLong(9999; "longs"; 1)
 	If (OK=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -257,7 +257,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	OTr_PutArrayLong(9999; "longs"; 1; 42)
+	OT PutArrayLong(9999; "longs"; 1; 42)
 	If (OK=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -270,7 +270,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_GetArrayLong($h_i; "nosucharray"; 1)
+	OT GetArrayLong($h_i; "nosucharray"; 1)
 	If (OK=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -284,7 +284,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 
 	// "reals" is a Real array — addressing it as LongInt should fail
 	$total_i:=$total_i+1
-	OTr_GetArrayLong($h_i; "reals"; 1)
+	OT GetArrayLong($h_i; "reals"; 1)
 	If (OK=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -293,7 +293,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	OTr_PutArrayLong($h_i; "reals"; 1; 42)
+	OT PutArrayLong($h_i; "reals"; 1; 42)
 	If (OK=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -306,7 +306,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_GetArrayLong($h_i; "longs"; 999)
+	OT GetArrayLong($h_i; "longs"; 999)
 	If (OK=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -315,7 +315,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	OTr_PutArrayLong($h_i; "longs"; 999; 42)
+	OT PutArrayLong($h_i; "longs"; 999; 42)
 	If (OK=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -323,7 +323,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failures_t:=$failures_t+"PUT out-of-range index should set OK=0"+Char:C90(Carriage return:K15:38)
 	End if 
 
-	OTr_SaveToClipboard($h_i)
+	OT SaveToClipboard($h_i)
 
 
 	// ====================================================
@@ -331,7 +331,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	$result_r:=OTr_GetArrayReal($h_i; "reals"; 2)
+	$result_r:=OT GetArrayReal($h_i; "reals"; 2)
 	If ($result_r=2.2)
 		$passed_i:=$passed_i+1
 	Else 
@@ -344,8 +344,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_PutArrayReal($h_i; "reals"; 1; 9.9)
-	$result_r:=OTr_GetArrayReal($h_i; "reals"; 1)
+	OT PutArrayReal($h_i; "reals"; 1; 9.9)
+	$result_r:=OT GetArrayReal($h_i; "reals"; 1)
 	If ($result_r=9.9)
 		$passed_i:=$passed_i+1
 	Else 
@@ -358,7 +358,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	$result_t:=OTr_GetArrayString($h_i; "words"; 1)
+	$result_t:=OT GetArrayString($h_i; "words"; 1)
 	If ($result_t="alpha")
 		$passed_i:=$passed_i+1
 	Else 
@@ -371,8 +371,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_PutArrayString($h_i; "words"; 2; "UPDATED")
-	$result_t:=OTr_GetArrayString($h_i; "words"; 2)
+	OT PutArrayString($h_i; "words"; 2; "UPDATED")
+	$result_t:=OT GetArrayString($h_i; "words"; 2)
 	If ($result_t="UPDATED")
 		$passed_i:=$passed_i+1
 	Else 
@@ -381,11 +381,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	// ====================================================
-	//MARK:- TEXT (alias) — Get via OTr_GetArrayText_New
+	//MARK:- TEXT (alias) — Get via OT GetArrayText_New
 	// ====================================================
 
 	$total_i:=$total_i+1
-	$result_t:=OTr_GetArrayText($h_i; "words"; 3)
+	$result_t:=OT GetArrayText($h_i; "words"; 3)
 	If ($result_t="gamma")
 		$passed_i:=$passed_i+1
 	Else 
@@ -394,12 +394,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	// ====================================================
-	//MARK:- TEXT (alias) — Put via OTr_PutArrayText_New
+	//MARK:- TEXT (alias) — Put via OT PutArrayText_New
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_PutArrayText($h_i; "words"; 3; "TEXTALIAS")
-	$result_t:=OTr_GetArrayText($h_i; "words"; 3)
+	OT PutArrayText($h_i; "words"; 3; "TEXTALIAS")
+	$result_t:=OT GetArrayText($h_i; "words"; 3)
 	If ($result_t="TEXTALIAS")
 		$passed_i:=$passed_i+1
 	Else 
@@ -412,7 +412,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	$result_d:=OTr_GetArrayDate($h_i; "dates"; 2)
+	$result_d:=OT GetArrayDate($h_i; "dates"; 2)
 	If ($result_d=!2026-06-15!)
 		$passed_i:=$passed_i+1
 	Else 
@@ -425,8 +425,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_PutArrayDate($h_i; "dates"; 1; !2000-07-04!)
-	$result_d:=OTr_GetArrayDate($h_i; "dates"; 1)
+	OT PutArrayDate($h_i; "dates"; 1; !2000-07-04!)
+	$result_d:=OT GetArrayDate($h_i; "dates"; 1)
 	If ($result_d=!2000-07-04!)
 		$passed_i:=$passed_i+1
 	Else 
@@ -439,7 +439,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	$result_h:=OTr_GetArrayTime($h_i; "times"; 1)
+	$result_h:=OT GetArrayTime($h_i; "times"; 1)
 	If ($result_h=?08:00:00?)
 		$passed_i:=$passed_i+1
 	Else 
@@ -452,8 +452,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_PutArrayTime($h_i; "times"; 3; ?14:45:00?)
-	$result_h:=OTr_GetArrayTime($h_i; "times"; 3)
+	OT PutArrayTime($h_i; "times"; 3; ?14:45:00?)
+	$result_h:=OT GetArrayTime($h_i; "times"; 3)
 	If ($result_h=?14:45:00?)
 		$passed_i:=$passed_i+1
 	Else 
@@ -466,7 +466,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	$result_i:=OTr_GetArrayBoolean($h_i; "flags"; 1)
+	$result_i:=OT GetArrayBoolean($h_i; "flags"; 1)
 	If ($result_i=1)
 		$passed_i:=$passed_i+1
 	Else 
@@ -479,7 +479,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	$result_i:=OTr_GetArrayBoolean($h_i; "flags"; 2)
+	$result_i:=OT GetArrayBoolean($h_i; "flags"; 2)
 	If ($result_i=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -492,8 +492,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_PutArrayBoolean($h_i; "flags"; 2; True:C214)
-	$result_i:=OTr_GetArrayBoolean($h_i; "flags"; 2)
+	OT PutArrayBoolean($h_i; "flags"; 2; True:C214)
+	$result_i:=OT GetArrayBoolean($h_i; "flags"; 2)
 	If ($result_i=1)
 		$passed_i:=$passed_i+1
 	Else 
@@ -506,10 +506,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	TEXT TO BLOB:C554("compare me"; $testBlob_blob)
-	OTr_PutArrayBLOB($h_i; "blobs"; 1; $testBlob_blob)
+	OT PutArrayBLOB($h_i; "blobs"; 1; $testBlob_blob)
 
 	$total_i:=$total_i+1
-	$result_blob:=OTr_GetArrayBLOB($h_i; "blobs"; 1)
+	$result_blob:=OT GetArrayBLOB($h_i; "blobs"; 1)
 	If (OTr_uEqualBLOBs($result_blob; $testBlob_blob))
 		$passed_i:=$passed_i+1
 	Else 
@@ -522,7 +522,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	$result_pic:=OTr_GetArrayPicture($h_i; "pics"; 1)
+	$result_pic:=OT GetArrayPicture($h_i; "pics"; 1)
 	If (OTr_uEqualPictures($result_pic; $testWombat_pic))
 		$passed_i:=$passed_i+1
 	Else 
@@ -535,8 +535,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_PutArrayPicture($h_i; "pics"; 2; $testWombat_pic)
-	$result_pic:=OTr_GetArrayPicture($h_i; "pics"; 2)
+	OT PutArrayPicture($h_i; "pics"; 2; $testWombat_pic)
+	$result_pic:=OT GetArrayPicture($h_i; "pics"; 2)
 	If (OTr_uEqualPictures($result_pic; $testWombat_pic))
 		$passed_i:=$passed_i+1
 	Else 
@@ -549,7 +549,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	$result_ptr:=OTr_GetArrayPointer($h_i; "ptrs"; 1)
+	$result_ptr:=OT GetArrayPointer($h_i; "ptrs"; 1)
 	If ($result_ptr->=vtCC_Filename)
 		$passed_i:=$passed_i+1
 	Else 
@@ -562,8 +562,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 
 	$total_i:=$total_i+1
-	OTr_PutArrayPointer($h_i; "ptrs"; 2; ->vtCC_Filename)
-	$result_ptr:=OTr_GetArrayPointer($h_i; "ptrs"; 2)
+	OT PutArrayPointer($h_i; "ptrs"; 2; ->vtCC_Filename)
+	$result_ptr:=OT GetArrayPointer($h_i; "ptrs"; 2)
 	If ($result_ptr->=vtCC_Filename)
 		$passed_i:=$passed_i+1
 	Else 
@@ -575,10 +575,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	//MARK:- SUMMARY
 	// ====================================================
 
-	OTr_SaveToClipboard($h_i)
+	OT SaveToClipboard($h_i)
 
 
-	OTr_ClearAll
+	OT ClearAll
 
 	var $summary_t : Text
 	$summary_t:="Phase 8 Tests"+Char:C90(Carriage return:K15:38)

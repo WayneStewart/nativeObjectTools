@@ -1,10 +1,10 @@
-//%attributes = {"invisible":true,"shared":false}
+﻿//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: OTr_zMapType ($parent_o : Object; $key_t : Text) \
 //   --> $otType_i : Integer
 
 // Returns the OT type constant for a given property on an object.
-// Used by OTr_ItemType and property-enumeration routines.
+// Used by OT ItemType and property-enumeration routines.
 
 // Access: Private
 

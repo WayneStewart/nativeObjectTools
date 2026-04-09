@@ -1,0 +1,187 @@
+﻿//%attributes = {"invisible":true,"shared":true}
+// ----------------------------------------------------
+// Project Method: OT GetAllNamedProperties (inObject; inTag; outNames {; outTypes {; outItemSizes {; outDataSizes}}})
+
+// Returns information about all items in the object (or embedded object).
+// $outNames_ptr must point to a Text array; the optional pointer params
+// must point to Longint arrays. Internal __otr_ properties are excluded.
+// Item names are returned in indeterminate order.
+
+// Access: Shared
+
+// Parameters:
+//   $inObject_i       : Integer : OTr inObject
+//   $inTag_t          : Text    : Tag of an embedded object; empty for root (inTag)
+//   $outNames_ptr   : Pointer : Receives item names (Text array)
+//   $outTypes_ptr   : Pointer : Receives OT type constants (Longint array)
+//                               (optional)
+//   $outItemSizes_ptr : Pointer : Receives item sizes in bytes
+//                               (Longint array) (optional)
+//   $outDataSizes_ptr : Pointer : Receives data sizes in bytes
+//                               (Longint array) (optional)
+
+// Returns: Nothing
+
+// Wayne Stewart, 2026-04-01 - Updated OB Keys usage for collection return.
+// Created by Wayne Stewart, 2026-04-01
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// ----------------------------------------------------
+
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $outNames_ptr : Pointer; \
+$outTypes_ptr : Pointer; $outItemSizes_ptr : Pointer; \
+$outDataSizes_ptr : Pointer)
+
+OTr_zAddToCallStack(Current method name:C684)
+
+
+var $target_o : Object
+var $parent_o : Object
+var $leafKey_t : Text
+var $k_i : Integer
+var $needTypes_b : Boolean
+var $needItemSizes_b : Boolean
+var $needDataSizes_b : Boolean
+var $nativeType_i : Integer
+var $dataSize_i : Integer
+var $itemSize_i : Integer
+var $valText_t : Text
+var $valObj_o : Object
+var $valCol_c : Collection
+var $keys_c : Collection
+var $thisKey_t : Text
+
+$keys_c:=New collection:C1472
+
+$needTypes_b:=(Count parameters:C259>=4)
+$needItemSizes_b:=(Count parameters:C259>=5)
+$needDataSizes_b:=(Count parameters:C259>=6)
+
+OTr_zLock
+
+If (OTr_zIsValidHandle($inObject_i))
+	
+	// Determine the target object
+	If ($inTag_t="")
+		$target_o:=<>OTR_Objects_ao{$inObject_i}
+	Else 
+		If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
+			->$parent_o; ->$leafKey_t))
+			If (OB Is defined:C1231($parent_o; $leafKey_t))
+				$target_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
+				If ($target_o=Null:C1517)
+					OTr_zError(\
+						"Tag does not reference an embedded object"; \
+						Current method name:C684)
+				End if 
+			Else 
+				OTr_zError("Item not found: "+$inTag_t; Current method name:C684)
+			End if 
+		Else 
+			OTr_zError("Invalid path: "+$inTag_t; Current method name:C684)
+		End if 
+	End if 
+	
+	If ($target_o#Null:C1517)
+		
+		// Collect property names, excluding __otr_ internal properties
+		$keys_c:=OB Keys:C1719($target_o)
+		ARRAY TEXT:C222($outNames_ptr->; 0)
+		
+		If ($needTypes_b)
+			ARRAY LONGINT:C221($outTypes_ptr->; 0)
+		End if 
+		If ($needItemSizes_b)
+			ARRAY LONGINT:C221($outItemSizes_ptr->; 0)
+		End if 
+		If ($needDataSizes_b)
+			ARRAY LONGINT:C221($outDataSizes_ptr->; 0)
+		End if 
+		
+		For each ($thisKey_t; $keys_c)
+			
+			If (Substring:C12($thisKey_t; 1; 7)#"__otr_")
+				
+				APPEND TO ARRAY:C911($outNames_ptr->; $thisKey_t)
+				
+				If ($needTypes_b)
+					APPEND TO ARRAY:C911($outTypes_ptr->; \
+						OTr_zMapType($target_o; $thisKey_t))
+				End if 
+				
+				If ($needItemSizes_b | $needDataSizes_b)
+					
+					$nativeType_i:=OB Get type:C1230($target_o; $thisKey_t)
+					$dataSize_i:=0
+					
+					Case of 
+							
+						: ($nativeType_i=Is real:K8:4)
+							$dataSize_i:=8
+							
+						: (($nativeType_i=Is longint:K8:6)\
+							 | ($nativeType_i=Is integer:K8:5))
+							$dataSize_i:=4
+							
+						: ($nativeType_i=Is boolean:K8:9)
+							$dataSize_i:=1
+							
+						: ($nativeType_i=Is object:K8:27)
+							$valObj_o:=OB Get:C1224(\
+								$target_o; $thisKey_t; Is object:K8:27)
+							$dataSize_i:=Length:C16(JSON Stringify:C1217($valObj_o))
+							
+						: ($nativeType_i=Is collection:K8:32)
+							$valCol_c:=OB Get:C1224(\
+								$target_o; $thisKey_t; Is collection:K8:32)
+							$dataSize_i:=Length:C16(JSON Stringify:C1217($valCol_c))
+							
+						: ($nativeType_i=Is text:K8:3)
+							$dataSize_i:=Length:C16(OB Get:C1224($target_o; $thisKey_t; Is text:K8:3))
+							
+						: ($nativeType_i=Is BLOB:K8:12)
+							$dataSize_i:=BLOB size:C605(OB Get:C1224($target_o; $thisKey_t; Is BLOB:K8:12))
+							
+						: ($nativeType_i=Is picture:K8:10)
+							$dataSize_i:=Picture size:C356(OB Get:C1224($target_o; $thisKey_t; Is picture:K8:10))
+							
+					End case 
+					
+					$itemSize_i:=$dataSize_i+Length:C16($thisKey_t)
+					
+					If ($needItemSizes_b)
+						APPEND TO ARRAY:C911($outItemSizes_ptr->; $itemSize_i)
+					End if 
+					If ($needDataSizes_b)
+						APPEND TO ARRAY:C911($outDataSizes_ptr->; $dataSize_i)
+					End if 
+					
+				End if 
+				
+			End if 
+			
+		End for each 
+		
+	Else 
+		// Clear outputs on error
+		ARRAY TEXT:C222($outNames_ptr->; 0)
+		If ($needTypes_b)
+			ARRAY LONGINT:C221($outTypes_ptr->; 0)
+		End if 
+		If ($needItemSizes_b)
+			ARRAY LONGINT:C221($outItemSizes_ptr->; 0)
+		End if 
+		If ($needDataSizes_b)
+			ARRAY LONGINT:C221($outDataSizes_ptr->; 0)
+		End if 
+		
+	End if 
+	
+Else 
+	OTr_zError("Invalid handle"; Current method name:C684)
+	ARRAY TEXT:C222($outNames_ptr->; 0)
+End if 
+
+OTr_zUnlock
+
+OTr_zRemoveFromCallStack(Current method name:C684)

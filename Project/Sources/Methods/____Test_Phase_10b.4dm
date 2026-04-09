@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":false}
+﻿//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_10b
 
@@ -34,9 +34,9 @@ $suppressAlert_b:=Choose:C955(Count parameters:C259=1; $suppressAlert_b; False:C
 
 
 If (Current process name:C1392=$DesiredProcessName_t)
-	OTr_ClearAll
+	OT ClearAll
 	var $accum_i : Integer
-	$accum_i:=OTr_New
+	$accum_i:=OT New
 	
 	____Test_Phase_10b_OTr($accum_i)
 	____Test_Phase_10b_OT($accum_i)
@@ -52,20 +52,20 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	$TAB:=Char:C90(Tab:K15:37)
 	$LF:=Char:C90(Line feed:K15:40)
-	$total_i:=OTr_SizeOfArray($accum_i; "testName")
+	$total_i:=OT SizeOfArray($accum_i; "testName")
 	
 	$tableText_t:="Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$LF
 	
 	For ($i_i; 1; $total_i)
-		$testName_t:=OTr_GetArrayText($accum_i; "testName"; $i_i)
-		$otCmd_t:=OTr_GetArrayText($accum_i; "otCmd"; $i_i)
-		$otResult_t:=OTr_GetArrayText($accum_i; "otResult"; $i_i)
-		$otrCmd_t:=OTr_GetArrayText($accum_i; "otrCmd"; $i_i)
-		$otrResult_t:=OTr_GetArrayText($accum_i; "otrResult"; $i_i)
+		$testName_t:=OT GetArrayText($accum_i; "testName"; $i_i)
+		$otCmd_t:=OT GetArrayText($accum_i; "otCmd"; $i_i)
+		$otResult_t:=OT GetArrayText($accum_i; "otResult"; $i_i)
+		$otrCmd_t:=OT GetArrayText($accum_i; "otrCmd"; $i_i)
+		$otrResult_t:=OT GetArrayText($accum_i; "otrResult"; $i_i)
 		$tableText_t:=$tableText_t+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF
 	End for 
 	
-	OTr_Clear($accum_i)
+	OT Clear($accum_i)
 	
 	$summaryLine_t:="Total scenarios: "+String:C10($total_i)
 	$tableText_t:=$tableText_t+$LF+$summaryLine_t

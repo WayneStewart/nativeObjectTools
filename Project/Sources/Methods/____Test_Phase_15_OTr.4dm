@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":false}
+﻿//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_15_OTr (accum)
 
@@ -18,7 +18,7 @@
 // same length) so ____Test_Phase_15_OT can update them
 // by index.
 //
-// Must NOT call OTr_ClearAll -- the accumulator handle
+// Must NOT call OT ClearAll -- the accumulator handle
 // is owned by the controller (____Test_Phase_15).
 //
 // Access: Private
@@ -88,25 +88,25 @@ ARRAY LONGINT:C221($setupSort_ai; 0)
 // Initialise OTr main handle
 // (does NOT clear all -- accumulator must survive)
 // ----------------------------------------------------
-$otrMain_i:=OTr_New
+$otrMain_i:=OT New
 $wombat_pic:=OTr_z_Wombat
 
 // ====================================================
 //MARK:- 1. Creation / Destruction
 // ====================================================
-$otrCmd_t:="OTr_New / OTr_Clear"
+$otrCmd_t:="OT New / OT Clear"
 $otrResult_t:="Fail: not run"
 
-$testOtrH_i:=OTr_New
+$testOtrH_i:=OT New
 If ($testOtrH_i#0)
-	OTr_Clear($testOtrH_i)
+	OT Clear($testOtrH_i)
 	If (OK=1)
 		$otrResult_t:="Pass"
 	Else 
-		$otrResult_t:="Fail: OTr_Clear set OK=0"
+		$otrResult_t:="Fail: OT Clear set OK=0"
 	End if 
 Else 
-	$otrResult_t:="Fail: OTr_New returned 0"
+	$otrResult_t:="Fail: OT New returned 0"
 End if 
 
 APPEND TO ARRAY:C911($testNum_at; "1")
@@ -117,11 +117,11 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 2. String / Text
 // ====================================================
-$otrCmd_t:="OTr_PutString / OTr_GetString"
+$otrCmd_t:="OT PutString / OT GetString"
 $otrResult_t:="Fail: not run"
 
-OTr_PutString($otrMain_i; "str"; "compat-str")
-$gotten_t:=OTr_GetString($otrMain_i; "str")
+OT PutString($otrMain_i; "str"; "compat-str")
+$gotten_t:=OT GetString($otrMain_i; "str")
 If ($gotten_t="compat-str")
 	$otrResult_t:="Pass"
 Else 
@@ -136,11 +136,11 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 3. Longint
 // ====================================================
-$otrCmd_t:="OTr_PutLong / OTr_GetLong"
+$otrCmd_t:="OT PutLong / OT GetLong"
 $otrResult_t:="Fail: not run"
 
-OTr_PutLong($otrMain_i; "num"; 424242)
-$gotLong_i:=OTr_GetLong($otrMain_i; "num")
+OT PutLong($otrMain_i; "num"; 424242)
+$gotLong_i:=OT GetLong($otrMain_i; "num")
 If ($gotLong_i=424242)
 	$otrResult_t:="Pass"
 Else 
@@ -155,11 +155,11 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 4. Real
 // ====================================================
-$otrCmd_t:="OTr_PutReal / OTr_GetReal"
+$otrCmd_t:="OT PutReal / OT GetReal"
 $otrResult_t:="Fail: not run"
 
-OTr_PutReal($otrMain_i; "ratio"; 3.14159)
-$gotReal_r:=OTr_GetReal($otrMain_i; "ratio")
+OT PutReal($otrMain_i; "ratio"; 3.14159)
+$gotReal_r:=OT GetReal($otrMain_i; "ratio")
 If ($gotReal_r=3.14159)
 	$otrResult_t:="Pass"
 Else 
@@ -174,11 +174,11 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 5. Boolean
 // ====================================================
-$otrCmd_t:="OTr_PutBoolean / OTr_GetBoolean"
+$otrCmd_t:="OT PutBoolean / OT GetBoolean"
 $otrResult_t:="Fail: not run"
 
-OTr_PutBoolean($otrMain_i; "flag"; True:C214)
-$gotBool_i:=OTr_GetBoolean($otrMain_i; "flag")
+OT PutBoolean($otrMain_i; "flag"; True:C214)
+$gotBool_i:=OT GetBoolean($otrMain_i; "flag")
 If ($gotBool_i=1)
 	$otrResult_t:="Pass"
 Else 
@@ -193,12 +193,12 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 6. Date
 // ====================================================
-$otrCmd_t:="OTr_PutDate / OTr_GetDate"
+$otrCmd_t:="OT PutDate / OT GetDate"
 $otrResult_t:="Fail: not run"
 $testDate_d:=!2026-04-04!
 
-OTr_PutDate($otrMain_i; "dt"; $testDate_d)
-$gotDate_d:=OTr_GetDate($otrMain_i; "dt")
+OT PutDate($otrMain_i; "dt"; $testDate_d)
+$gotDate_d:=OT GetDate($otrMain_i; "dt")
 If ($gotDate_d=$testDate_d)
 	$otrResult_t:="Pass"
 Else 
@@ -213,12 +213,12 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 7. Time
 // ====================================================
-$otrCmd_t:="OTr_PutTime / OTr_GetTime"
+$otrCmd_t:="OT PutTime / OT GetTime"
 $otrResult_t:="Fail: not run"
 $testTime_h:=?10:30:45?
 
-OTr_PutTime($otrMain_i; "tm"; $testTime_h)
-$gotTime_h:=OTr_GetTime($otrMain_i; "tm")
+OT PutTime($otrMain_i; "tm"; $testTime_h)
+$gotTime_h:=OT GetTime($otrMain_i; "tm")
 If ($gotTime_h=$testTime_h)
 	$otrResult_t:="Pass"
 Else 
@@ -233,7 +233,7 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 8. Pointer
 // ====================================================
-$otrCmd_t:="OTr_PutPointer / OTr_GetPointer"
+$otrCmd_t:="OT PutPointer / OT GetPointer"
 $otrResult_t:="Fail: not run"
 // Use a process variable (no $) so OTr_uTextToPointer can
 // reconstruct it via Get pointer. Local ($) variables cannot
@@ -241,8 +241,8 @@ $otrResult_t:="Fail: not run"
 // not an OTr defect, and matches the OT 5.0 documented limit.
 vtCC_Filename:="otr-ptr-val"
 
-OTr_PutPointer($otrMain_i; "ptr"; ->vtCC_Filename)
-OTr_GetPointer($otrMain_i; "ptr"; ->$gotPtr_ptr)
+OT PutPointer($otrMain_i; "ptr"; ->vtCC_Filename)
+OT GetPointer($otrMain_i; "ptr"; ->$gotPtr_ptr)
 If (OK=1) & ($gotPtr_ptr#Null:C1517)
 	If (($gotPtr_ptr->)=vtCC_Filename)
 		$otrResult_t:="Pass"
@@ -261,11 +261,11 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 9. Picture (empty picture)
 // ====================================================
-$otrCmd_t:="OTr_PutPicture / OTr_GetPicture"
+$otrCmd_t:="OT PutPicture / OT GetPicture"
 $otrResult_t:="Fail: not run"
 
-OTr_PutPicture($otrMain_i; "pic"; $wombat_pic)
-$gotPic_pic:=OTr_GetPicture($otrMain_i; "pic")
+OT PutPicture($otrMain_i; "pic"; $wombat_pic)
+$gotPic_pic:=OT GetPicture($otrMain_i; "pic")
 If (OTr_uEqualPictures($wombat_pic; $gotPic_pic))
 	$otrResult_t:="Pass"
 Else 
@@ -280,14 +280,14 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 9a. Picture (wombat)
 // ====================================================
-$otrCmd_t:="OTr_PutPicture / OTr_GetPicture"
+$otrCmd_t:="OT PutPicture / OT GetPicture"
 $otrResult_t:="Fail: not run"
 
 If (Picture size:C356($wombat_pic)=0)
 	$otrResult_t:="Skip: Wombat picture not loaded"
 Else 
-	OTr_PutPicture($otrMain_i; "pic9a"; $wombat_pic)
-	$gotPic_pic:=OTr_GetPicture($otrMain_i; "pic9a")
+	OT PutPicture($otrMain_i; "pic9a"; $wombat_pic)
+	$gotPic_pic:=OT GetPicture($otrMain_i; "pic9a")
 	If (OTr_uEqualPictures($wombat_pic; $gotPic_pic))
 		$otrResult_t:="Pass"
 	Else 
@@ -303,12 +303,12 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 10. BLOB
 // ====================================================
-$otrCmd_t:="OTr_PutBLOB / OTr_GetNewBLOB"
+$otrCmd_t:="OT PutBLOB / OT GetNewBLOB"
 $otrResult_t:="Fail: not run"
 CONVERT FROM TEXT:C1011("compat-blob-data"; "UTF-8"; $testBlob_blob)
 
-OTr_PutBLOB($otrMain_i; "blob"; $testBlob_blob)
-$gotBlob_blob:=OTr_GetNewBLOB($otrMain_i; "blob")
+OT PutBLOB($otrMain_i; "blob"; $testBlob_blob)
+$gotBlob_blob:=OT GetNewBLOB($otrMain_i; "blob")
 If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
 	$otrResult_t:="Pass"
 Else 
@@ -323,13 +323,13 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 11. Variable
 // ====================================================
-$otrCmd_t:="OTr_PutVariable / OTr_GetVariable"
+$otrCmd_t:="OT PutVariable / OT GetVariable"
 $otrResult_t:="Fail: not run"
 $varTarget_t:="otr-var-val"
 $varDest_t:=""
 
-OTr_PutVariable($otrMain_i; "var"; ->$varTarget_t)
-OTr_GetVariable($otrMain_i; "var"; ->$varDest_t)
+OT PutVariable($otrMain_i; "var"; ->$varTarget_t)
+OT GetVariable($otrMain_i; "var"; ->$varDest_t)
 If ($varDest_t="otr-var-val")
 	$otrResult_t:="Pass"
 Else 
@@ -344,22 +344,22 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 12. Record  (Intentional difference §4.3)
 // ====================================================
-$otrCmd_t:="OTr_PutRecord / OTr_GetRecord"
+$otrCmd_t:="OT PutRecord / OT GetRecord"
 $otrResult_t:="Fail: not run"
 
 // Create and save a record so there is a current record
-// in table 1 for OTr_PutRecord to reference.
+// in table 1 for OT PutRecord to reference.
 CREATE RECORD:C68([Table_1:1])
 [Table_1:1]Name:2:="OTr-Wayne"
 SAVE RECORD:C53([Table_1:1])
 
-OTr_PutRecord($otrMain_i; "rec"; 1)
+OT PutRecord($otrMain_i; "rec"; 1)
 CREATE RECORD:C68([Table_1:1])
-OTr_GetRecord($otrMain_i; "rec"; 1)
+OT GetRecord($otrMain_i; "rec"; 1)
 If (OK=1)
 	$otrResult_t:="Pass"
 Else 
-	$otrResult_t:="Fail: OTr_GetRecord set OK=0"
+	$otrResult_t:="Fail: OT GetRecord set OK=0"
 End if 
 // SAVE RECORD intentionally omitted -- new record is discarded.
 
@@ -371,11 +371,11 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 13. Dot-path
 // ====================================================
-$otrCmd_t:="OTr_PutString (dotted) / OTr_GetString"
+$otrCmd_t:="OT PutString (dotted) / OT GetString"
 $otrResult_t:="Fail: not run"
 
-OTr_PutString($otrMain_i; "a.b.c"; "dot-val")
-$gotten_t:=OTr_GetString($otrMain_i; "a.b.c")
+OT PutString($otrMain_i; "a.b.c"; "dot-val")
+$gotten_t:=OT GetString($otrMain_i; "a.b.c")
 If ($gotten_t="dot-val")
 	$otrResult_t:="Pass"
 Else 
@@ -390,15 +390,15 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 14. Array Longint
 // ====================================================
-$otrCmd_t:="OTr_PutArrayLong / OTr_GetArrayLong"
+$otrCmd_t:="OT PutArrayLong / OT GetArrayLong"
 $otrResult_t:="Fail: not run"
 
 // Declare a 3-element LongInt array (§25 reuses indices 2 and 3)
 ARRAY LONGINT:C221($setupAl_ai; 3)
-OTr_PutArray($otrMain_i; "al"; ->$setupAl_ai)
+OT PutArray($otrMain_i; "al"; ->$setupAl_ai)
 
-OTr_PutArrayLong($otrMain_i; "al"; 1; 100)
-$otrArrVal_i:=OTr_GetArrayLong($otrMain_i; "al"; 1)
+OT PutArrayLong($otrMain_i; "al"; 1; 100)
+$otrArrVal_i:=OT GetArrayLong($otrMain_i; "al"; 1)
 If ($otrArrVal_i=100)
 	$otrResult_t:="Pass"
 Else 
@@ -413,14 +413,14 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 15. Array Text
 // ====================================================
-$otrCmd_t:="OTr_PutArrayString / OTr_GetArrayString"
+$otrCmd_t:="OT PutArrayString / OT GetArrayString"
 $otrResult_t:="Fail: not run"
 
 ARRAY TEXT:C222($setupAs_at; 1)
-OTr_PutArray($otrMain_i; "as"; ->$setupAs_at)
+OT PutArray($otrMain_i; "as"; ->$setupAs_at)
 
-OTr_PutArrayString($otrMain_i; "as"; 1; "arr-str-val")
-$otrArrStr_t:=OTr_GetArrayString($otrMain_i; "as"; 1)
+OT PutArrayString($otrMain_i; "as"; 1; "arr-str-val")
+$otrArrStr_t:=OT GetArrayString($otrMain_i; "as"; 1)
 If ($otrArrStr_t="arr-str-val")
 	$otrResult_t:="Pass"
 Else 
@@ -435,14 +435,14 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 16. Array Real
 // ====================================================
-$otrCmd_t:="OTr_PutArrayReal / OTr_GetArrayReal"
+$otrCmd_t:="OT PutArrayReal / OT GetArrayReal"
 $otrResult_t:="Fail: not run"
 
 ARRAY REAL:C219($setupAr_arr; 1)
-OTr_PutArray($otrMain_i; "ar"; ->$setupAr_arr)
+OT PutArray($otrMain_i; "ar"; ->$setupAr_arr)
 
-OTr_PutArrayReal($otrMain_i; "ar"; 1; 9.99)
-$otrArrReal_r:=OTr_GetArrayReal($otrMain_i; "ar"; 1)
+OT PutArrayReal($otrMain_i; "ar"; 1; 9.99)
+$otrArrReal_r:=OT GetArrayReal($otrMain_i; "ar"; 1)
 If ($otrArrReal_r=9.99)
 	$otrResult_t:="Pass"
 Else 
@@ -457,14 +457,14 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 17. Array Boolean
 // ====================================================
-$otrCmd_t:="OTr_PutArrayBoolean / OTr_GetArrayBoolean"
+$otrCmd_t:="OT PutArrayBoolean / OT GetArrayBoolean"
 $otrResult_t:="Fail: not run"
 
 ARRAY BOOLEAN:C223($setupAb_ab; 1)
-OTr_PutArray($otrMain_i; "ab"; ->$setupAb_ab)
+OT PutArray($otrMain_i; "ab"; ->$setupAb_ab)
 
-OTr_PutArrayBoolean($otrMain_i; "ab"; 1; True:C214)
-$otrArrBool_i:=OTr_GetArrayBoolean($otrMain_i; "ab"; 1)
+OT PutArrayBoolean($otrMain_i; "ab"; 1; True:C214)
+$otrArrBool_i:=OT GetArrayBoolean($otrMain_i; "ab"; 1)
 If ($otrArrBool_i=1)
 	$otrResult_t:="Pass"
 Else 
@@ -479,11 +479,11 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 18. Array Pointer
 // ====================================================
-$otrCmd_t:="OTr_PutArrayPointer / OTr_GetArrayPointer"
+$otrCmd_t:="OT PutArrayPointer / OT GetArrayPointer"
 $otrResult_t:="Fail: not run"
 
 ARRAY POINTER:C280($setupAptr_aptr; 1)
-OTr_PutArray($otrMain_i; "aptr"; ->$setupAptr_aptr)
+OT PutArray($otrMain_i; "aptr"; ->$setupAptr_aptr)
 
 // NOTE: OTr pointer array round-trip for local ($) variables
 // is unreliable -- OTr_uTextToPointer reconstructs via
@@ -491,8 +491,8 @@ OTr_PutArray($otrMain_i; "aptr"; ->$setupAptr_aptr)
 // Use a process variable (no $) so Get pointer can resolve it.
 var vtCC_XMLTopLevelRef : Text
 vtCC_XMLTopLevelRef:="arr-ptr-val"
-OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->vtCC_XMLTopLevelRef)
-$gotPtr_ptr:=OTr_GetArrayPointer($otrMain_i; "aptr"; 1)
+OT PutArrayPointer($otrMain_i; "aptr"; 1; ->vtCC_XMLTopLevelRef)
+$gotPtr_ptr:=OT GetArrayPointer($otrMain_i; "aptr"; 1)
 If (OK=1) & ($gotPtr_ptr#Null:C1517)
 	If (($gotPtr_ptr->)=vtCC_XMLTopLevelRef)
 		$otrResult_t:="Pass"
@@ -511,17 +511,17 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 19. Array Picture (empty picture)
 // ====================================================
-$otrCmd_t:="OTr_PutArrayPicture / OTr_GetArrayPicture"
+$otrCmd_t:="OT PutArrayPicture / OT GetArrayPicture"
 $otrResult_t:="Fail: not run"
 
 // Intentional difference: OT re-encodes array pictures
 // internally; exact equality cannot be assumed. Test checks
 // that a non-empty picture is returned (round-trip succeeds).
 ARRAY PICTURE:C279($setupApic_apic; 1)
-OTr_PutArray($otrMain_i; "apic"; ->$setupApic_apic)
+OT PutArray($otrMain_i; "apic"; ->$setupApic_apic)
 
-OTr_PutArrayPicture($otrMain_i; "apic"; 1; $wombat_pic)
-$otrArrPicOut_pic:=OTr_GetArrayPicture($otrMain_i; "apic"; 1)
+OT PutArrayPicture($otrMain_i; "apic"; 1; $wombat_pic)
+$otrArrPicOut_pic:=OT GetArrayPicture($otrMain_i; "apic"; 1)
 If (Picture size:C356($otrArrPicOut_pic)>0)
 	$otrResult_t:="Pass"
 Else 
@@ -536,14 +536,14 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 19a. Array Picture (wombat)
 // ====================================================
-$otrCmd_t:="OTr_PutArrayPicture / OTr_GetArrayPicture"
+$otrCmd_t:="OT PutArrayPicture / OT GetArrayPicture"
 $otrResult_t:="Fail: not run"
 
 If (Picture size:C356($wombat_pic)=0)
 	$otrResult_t:="Skip: Wombat picture not loaded"
 Else 
-	OTr_PutArrayPicture($otrMain_i; "apic"; 1; $wombat_pic)
-	$otrArrPicOut_pic:=OTr_GetArrayPicture($otrMain_i; "apic"; 1)
+	OT PutArrayPicture($otrMain_i; "apic"; 1; $wombat_pic)
+	$otrArrPicOut_pic:=OT GetArrayPicture($otrMain_i; "apic"; 1)
 	If (OTr_uEqualPictures($wombat_pic; $otrArrPicOut_pic))
 		$otrResult_t:="Pass"
 	Else 
@@ -559,12 +559,12 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 20. Item info
 // ====================================================
-$otrCmd_t:="OTr_ItemExists / OTr_ItemType"
+$otrCmd_t:="OT ItemExists / OT ItemType"
 $otrResult_t:="Fail: not run"
 
 // "str" was stored in §2; OT type for String/Text is 112.
-$gotItemExists_i:=OTr_ItemExists($otrMain_i; "str")
-$gotItemType_i:=OTr_ItemType($otrMain_i; "str")
+$gotItemExists_i:=OT ItemExists($otrMain_i; "str")
+$gotItemType_i:=OT ItemType($otrMain_i; "str")
 If ($gotItemExists_i=1) & ($gotItemType_i=112)
 	$otrResult_t:="Pass"
 Else 
@@ -579,23 +579,23 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 21. Item count
 // ====================================================
-$otrCmd_t:="OTr_ItemCount"
+$otrCmd_t:="OT ItemCount"
 $otrResult_t:="Fail: not run"
 
 // Use a fresh handle with exactly 3 scalar items.
-$h4_i:=OTr_New
-OTr_PutString($h4_i; "x"; "a")
-OTr_PutString($h4_i; "y"; "b")
-OTr_PutString($h4_i; "z"; "c")
+$h4_i:=OT New
+OT PutString($h4_i; "x"; "a")
+OT PutString($h4_i; "y"; "b")
+OT PutString($h4_i; "z"; "c")
 
-$otrCount_i:=OTr_ItemCount($h4_i)
+$otrCount_i:=OT ItemCount($h4_i)
 If ($otrCount_i=3)
 	$otrResult_t:="Pass"
 Else 
 	$otrResult_t:="Fail: got "+String:C10($otrCount_i)
 End if 
 
-OTr_Clear($h4_i)
+OT Clear($h4_i)
 
 APPEND TO ARRAY:C911($testNum_at; "21")
 APPEND TO ARRAY:C911($testName_at; "Item count")
@@ -605,25 +605,25 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 22. Property enumeration
 // ====================================================
-$otrCmd_t:="OTr_GetAllProperties"
+$otrCmd_t:="OT GetAllProperties"
 $otrResult_t:="Fail: not run"
 
-$h4_i:=OTr_New
-OTr_PutString($h4_i; "p1"; "v1")
-OTr_PutString($h4_i; "p2"; "v2")
+$h4_i:=OT New
+OT PutString($h4_i; "p1"; "v1")
+OT PutString($h4_i; "p2"; "v2")
 
 ARRAY TEXT:C222($otrPropNames_at; 0)
 ARRAY LONGINT:C221($otrTypes_ai; 0)
 ARRAY LONGINT:C221($otrItemSizes_ai; 0)
 ARRAY LONGINT:C221($otrDataSizes_ai; 0)
-OTr_GetAllProperties($h4_i; ->$otrPropNames_at; ->$otrTypes_ai; ->$otrItemSizes_ai; ->$otrDataSizes_ai)
+OT GetAllProperties($h4_i; ->$otrPropNames_at; ->$otrTypes_ai; ->$otrItemSizes_ai; ->$otrDataSizes_ai)
 If (Size of array:C274($otrPropNames_at)=2)
 	$otrResult_t:="Pass"
 Else 
 	$otrResult_t:="Fail: got "+String:C10(Size of array:C274($otrPropNames_at))+" names"
 End if 
 
-OTr_Clear($h4_i)
+OT Clear($h4_i)
 
 APPEND TO ARRAY:C911($testNum_at; "22")
 APPEND TO ARRAY:C911($testName_at; "Property enumeration")
@@ -633,22 +633,22 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 23. Delete / Rename
 // ====================================================
-$otrCmd_t:="OTr_DeleteItem / OTr_RenameItem"
+$otrCmd_t:="OT DeleteItem / OT RenameItem"
 $otrResult_t:="Fail: not run"
 
-$h4_i:=OTr_New
-OTr_PutString($h4_i; "del"; "gone")
-OTr_PutString($h4_i; "ren"; "stays")
+$h4_i:=OT New
+OT PutString($h4_i; "del"; "gone")
+OT PutString($h4_i; "ren"; "stays")
 
-OTr_DeleteItem($h4_i; "del")
-OTr_RenameItem($h4_i; "ren"; "renamed")
-If (OTr_ItemExists($h4_i; "del")=0) & (OTr_ItemExists($h4_i; "renamed")=1)
+OT DeleteItem($h4_i; "del")
+OT RenameItem($h4_i; "ren"; "renamed")
+If (OT ItemExists($h4_i; "del")=0) & (OT ItemExists($h4_i; "renamed")=1)
 	$otrResult_t:="Pass"
 Else 
 	$otrResult_t:="Fail: delete or rename did not work"
 End if 
 
-OTr_Clear($h4_i)
+OT Clear($h4_i)
 
 APPEND TO ARRAY:C911($testNum_at; "23")
 APPEND TO ARRAY:C911($testName_at; "Delete / rename")
@@ -658,20 +658,20 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 24. Copy
 // ====================================================
-$otrCmd_t:="OTr_CopyItem"
+$otrCmd_t:="OT CopyItem"
 $otrResult_t:="Fail: not run"
 
-$h4_i:=OTr_New
-OTr_PutString($otrMain_i; "src"; "copy-val")
-OTr_CopyItem($otrMain_i; "src"; $h4_i; "dst")
-$gotten_t:=OTr_GetString($h4_i; "dst")
+$h4_i:=OT New
+OT PutString($otrMain_i; "src"; "copy-val")
+OT CopyItem($otrMain_i; "src"; $h4_i; "dst")
+$gotten_t:=OT GetString($h4_i; "dst")
 If ($gotten_t="copy-val")
 	$otrResult_t:="Pass"
 Else 
 	$otrResult_t:="Fail: got '"+$gotten_t+"'"
 End if 
 
-OTr_Clear($h4_i)
+OT Clear($h4_i)
 
 APPEND TO ARRAY:C911($testNum_at; "24")
 APPEND TO ARRAY:C911($testName_at; "Copy")
@@ -681,15 +681,15 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 25. Size of array
 // ====================================================
-$otrCmd_t:="OTr_SizeOfArray"
+$otrCmd_t:="OT SizeOfArray"
 $otrResult_t:="Fail: not run"
 
 // "al" was seeded in §14 with element 1 = 100.
 // Add elements 2 and 3; size should now be 3.
-OTr_PutArrayLong($otrMain_i; "al"; 2; 200)
-OTr_PutArrayLong($otrMain_i; "al"; 3; 300)
+OT PutArrayLong($otrMain_i; "al"; 2; 200)
+OT PutArrayLong($otrMain_i; "al"; 3; 300)
 
-$otrArrSize_i:=OTr_SizeOfArray($otrMain_i; "al")
+$otrArrSize_i:=OT SizeOfArray($otrMain_i; "al")
 If ($otrArrSize_i=3)
 	$otrResult_t:="Pass"
 Else 
@@ -704,25 +704,25 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 26. Sort arrays
 // ====================================================
-$otrCmd_t:="OTr_SortArrays"
+$otrCmd_t:="OT SortArrays"
 $otrResult_t:="Fail: not run"
 
-$h4_i:=OTr_New
+$h4_i:=OT New
 ARRAY LONGINT:C221($setupSort_ai; 3)
-OTr_PutArray($h4_i; "sort"; ->$setupSort_ai)
+OT PutArray($h4_i; "sort"; ->$setupSort_ai)
 
-OTr_PutArrayLong($h4_i; "sort"; 1; 30)
-OTr_PutArrayLong($h4_i; "sort"; 2; 10)
-OTr_PutArrayLong($h4_i; "sort"; 3; 20)
-OTr_SortArrays($h4_i; "sort"; ">")
-$gotLong_i:=OTr_GetArrayLong($h4_i; "sort"; 1)
+OT PutArrayLong($h4_i; "sort"; 1; 30)
+OT PutArrayLong($h4_i; "sort"; 2; 10)
+OT PutArrayLong($h4_i; "sort"; 3; 20)
+OT SortArrays($h4_i; "sort"; ">")
+$gotLong_i:=OT GetArrayLong($h4_i; "sort"; 1)
 If ($gotLong_i=10)
 	$otrResult_t:="Pass"
 Else 
 	$otrResult_t:="Fail: first element after sort = "+String:C10($gotLong_i)
 End if 
 
-OTr_Clear($h4_i)
+OT Clear($h4_i)
 
 APPEND TO ARRAY:C911($testNum_at; "26")
 APPEND TO ARRAY:C911($testName_at; "Sort arrays")
@@ -732,11 +732,11 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 27. Object size  (Intentional difference §4.3)
 // ====================================================
-$otrCmd_t:="OTr_ObjectSize"
+$otrCmd_t:="OT ObjectSize"
 $otrResult_t:="Fail: not run"
 
 // Values will not match OT (§4.3); both must be non-zero.
-$otrSize_i:=OTr_ObjectSize($otrMain_i)
+$otrSize_i:=OT ObjectSize($otrMain_i)
 If ($otrSize_i>0)
 	$otrResult_t:="Pass (size="+String:C10($otrSize_i)+")"
 Else 
@@ -751,23 +751,23 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 28. BLOB serialisation (Intentional diff §4.3)
 // ====================================================
-$otrCmd_t:="OTr_ObjectToNewBLOB / OTr_BLOBToObject"
+$otrCmd_t:="OT ObjectToNewBLOB / OT BLOBToObject"
 $otrResult_t:="Fail: not run"
 
 // Round-trip within OTr independently; do NOT cross-load
 // (OT and OTr formats are incompatible per §4.3).
-$tempH_i:=OTr_New
-OTr_PutString($tempH_i; "bser"; "blob-ser-val")
-$serialOtrBlob_blob:=OTr_ObjectToNewBLOB($tempH_i)
-$loadedH_i:=OTr_BLOBToObject($serialOtrBlob_blob)
-$gotten_t:=OTr_GetString($loadedH_i; "bser")
+$tempH_i:=OT New
+OT PutString($tempH_i; "bser"; "blob-ser-val")
+$serialOtrBlob_blob:=OT ObjectToNewBLOB($tempH_i)
+$loadedH_i:=OT BLOBToObject($serialOtrBlob_blob)
+$gotten_t:=OT GetString($loadedH_i; "bser")
 If ($gotten_t="blob-ser-val")
 	$otrResult_t:="Pass"
 Else 
 	$otrResult_t:="Fail: round-trip got '"+$gotten_t+"'"
 End if 
-OTr_Clear($tempH_i)
-OTr_Clear($loadedH_i)
+OT Clear($tempH_i)
+OT Clear($loadedH_i)
 
 APPEND TO ARRAY:C911($testNum_at; "28")
 APPEND TO ARRAY:C911($testName_at; "BLOB serialisation")
@@ -777,11 +777,11 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 29. Version
 // ====================================================
-$otrCmd_t:="OTr_GetVersion"
+$otrCmd_t:="OT GetVersion"
 $otrResult_t:="Fail: not run"
 
 // Values will differ from OT; both must be non-empty.
-$otrVer_t:=OTr_GetVersion
+$otrVer_t:=OT GetVersion
 If (Length:C16($otrVer_t)>0)
 	$otrResult_t:="Pass (v="+$otrVer_t+")"
 Else 
@@ -796,14 +796,14 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- 30. Options
 // ====================================================
-$otrCmd_t:="OTr_GetOptions / OTr_SetOptions"
+$otrCmd_t:="OT GetOptions / OT SetOptions"
 $otrResult_t:="Fail: not run"
 $testOpts_i:=1+4  // FailOnItemNotFound + AutoCreateObjects
 
-$originalOtrOpts_i:=OTr_GetOptions
-OTr_SetOptions($testOpts_i)
-$readOtrOpts_i:=OTr_GetOptions
-OTr_SetOptions($originalOtrOpts_i)
+$originalOtrOpts_i:=OT GetOptions
+OT SetOptions($testOpts_i)
+$readOtrOpts_i:=OT GetOptions
+OT SetOptions($originalOtrOpts_i)
 If ($readOtrOpts_i=$testOpts_i)
 	$otrResult_t:="Pass"
 Else 
@@ -818,18 +818,18 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 //MARK:- TEARDOWN and BULK LOAD INTO ACCUMULATOR
 // ====================================================
-OTr_Clear($otrMain_i)
+OT Clear($otrMain_i)
 
 $count_i:=Size of array:C274($testNum_at)
 
 // Load OTr result columns into accumulator
-OTr_PutArray($accum_i; "testNum"; ->$testNum_at)
-OTr_PutArray($accum_i; "testName"; ->$testName_at)
-OTr_PutArray($accum_i; "otrCmd"; ->$otrCmd_at)
-OTr_PutArray($accum_i; "otrResult"; ->$otrResult_at)
+OT PutArray($accum_i; "testNum"; ->$testNum_at)
+OT PutArray($accum_i; "testName"; ->$testName_at)
+OT PutArray($accum_i; "otrCmd"; ->$otrCmd_at)
+OT PutArray($accum_i; "otrResult"; ->$otrResult_at)
 
 // Initialise OT columns to the same length with empty strings
 // so ____Test_Phase_15_OT can update them by index.
 ARRAY TEXT:C222($emptyArr_at; $count_i)
-OTr_PutArray($accum_i; "otCmd"; ->$emptyArr_at)
-OTr_PutArray($accum_i; "otResult"; ->$emptyArr_at)
+OT PutArray($accum_i; "otCmd"; ->$emptyArr_at)
+OT PutArray($accum_i; "otResult"; ->$emptyArr_at)

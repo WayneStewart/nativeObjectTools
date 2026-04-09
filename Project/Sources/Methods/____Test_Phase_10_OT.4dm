@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":false}
+﻿//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_10_OT ($accum_i)
 
@@ -7,7 +7,7 @@
 // scenarios (in the same order as ____Test_Phase_10_OTr),
 // runs the legacy ObjectTools 5.0 command and updates the
 // otCmd and otResult columns in the accumulator by
-// sequential index using OTr_PutArrayText.
+// sequential index using OT PutArrayText.
 //
 // PLATFORM REQUIREMENT: ObjectTools 5.0 must be installed
 // as a plugin. If OT New returns 0, all OT columns are set
@@ -52,10 +52,10 @@
 //If ($testOtH_i=0)
 //ALERT("ObjectTools 5.0 is not available or not registered."+Char(Carriage return)+"OT columns will be marked as skipped.")
 //$ready_b:=False
-//$count_i:=OTr_SizeOfArray($accum_i; "testName")
+//$count_i:=OT SizeOfArray($accum_i; "testName")
 //For ($n_i; 1; $count_i)
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; "Plugin not available")
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; "Skip: plugin not available")
+//OT PutArrayText($accum_i; "otCmd"; $n_i; "Plugin not available")
+//OT PutArrayText($accum_i; "otResult"; $n_i; "Skip: plugin not available")
 //End for 
 //Else 
 //OT Clear($testOtH_i)
@@ -80,8 +80,8 @@
 //$gotLong_i:=OT GetLong(99999; "missing")
 //$otResult_t:="returned "+String($gotLong_i)+" OK="+String(OK)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 2. Missing tag on getter
@@ -93,8 +93,8 @@
 //$gotLong_i:=OT GetLong($otMain_i; "doesNotExist")
 //$otResult_t:="returned "+String($gotLong_i)+" OK="+String(OK)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 3. Array write against scalar
@@ -106,8 +106,8 @@
 //OT PutArrayLong($otMain_i; "scalar"; 1; 777)
 //$otResult_t:="OK="+String(OK)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 4. SizeOfArray on missing tag
@@ -119,8 +119,8 @@
 //$size_i:=OT SizeOfArray($otMain_i; "missingArray")
 //$otResult_t:="returned "+String($size_i)+" OK="+String(OK)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 5. CompareItems type mismatch
@@ -132,8 +132,8 @@
 //$compare_i:=OT CompareItems($otMain_i; "scalar"; $otMain_i; "textItem")
 //$otResult_t:="returned "+String($compare_i)+" OK="+String(OK)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 6. Invalid dotted path through scalar
@@ -145,8 +145,8 @@
 //OT PutLong($otMain_i; "scalar.child"; 9)
 //$otResult_t:="OK="+String(OK)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 7. Pointer getter on missing tag
@@ -159,8 +159,8 @@
 //OT GetPointer($otMain_i; "missingPtr"; $gotPtr_ptr)
 //$otResult_t:="OK="+String(OK)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 8. Delete missing tag
@@ -172,8 +172,8 @@
 //OT DeleteItem($otMain_i; "missingDelete")
 //$otResult_t:="OK="+String(OK)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- 9. Register call
@@ -185,8 +185,8 @@
 //$reg_i:=OT Register("20C9-EMQv-BJBl-D20M")
 //$otResult_t:="returned "+String($reg_i)+" OK="+String(OK)
 
-//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
-//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+//OT PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OT PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
 //// ====================================================
 ////MARK:- TEARDOWN
