@@ -1,4 +1,4 @@
-//%attributes = {"invisible":false,"shared":false}
+//%attributes = {}
 // ----------------------------------------------------
 // Project Method: Renamer_Run
 //

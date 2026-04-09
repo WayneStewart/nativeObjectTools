@@ -1,4 +1,4 @@
-//%attributes = {}
+//%attributes = {"invisible":true,"shared":false}
 var $methodsFolder_t; $msg_t; $DQ_t : Text
 
 

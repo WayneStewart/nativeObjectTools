@@ -1,4 +1,4 @@
-//%attributes = {"invisible":false,"shared":false}
+//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: Renamer_Forward
 //
