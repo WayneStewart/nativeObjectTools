@@ -49,22 +49,22 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	ARRAY LONGINT:C221($dataSizes_ai; 0)
 
 	//MARK:- setup
-	OT ClearAll
-	$h1_i:=OT New
-	$h2_i:=OT New
-	$hObj_i:=OT New
+	OTr_ClearAll
+	$h1_i:=OTr_New
+	$h2_i:=OTr_New
+	$hObj_i:=OTr_New
 
-	OT PutLong($h1_i; "a.long"; 42)
-	OT PutText($h1_i; "a.text"; "alpha")
-	OT PutBoolean($h1_i; "a.flag"; True:C214)
-	OT PutText($hObj_i; "inside"; "value")
-	OT PutObject($h1_i; "a.child"; $hObj_i)
+	OTr_PutLong($h1_i; "a.long"; 42)
+	OTr_PutText($h1_i; "a.text"; "alpha")
+	OTr_PutBoolean($h1_i; "a.flag"; True:C214)
+	OTr_PutText($hObj_i; "inside"; "value")
+	OTr_PutObject($h1_i; "a.child"; $hObj_i)
 
-	OT SaveToClipboard($h1_i)
+	OTr_SaveToClipboard($h1_i)
 
-	//MARK:- OT ItemCount
+	//MARK:- OTr_ItemCount
 	$total_i:=$total_i+1
-	$count_i:=OT ItemCount($h1_i; "a")
+	$count_i:=OTr_ItemCount($h1_i; "a")
 	If ($count_i=4)
 		$passed_i:=$passed_i+1
 	Else 
@@ -72,9 +72,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failures_t:=$failures_t+"ItemCount on embedded object failed."+Char:C90(Carriage return:K15:38)
 	End if 
 
-	//MARK:- OT ItemExists
+	//MARK:- OTr_ItemExists
 	$total_i:=$total_i+1
-	$exists_i:=OT ItemExists($h1_i; "a.long")
+	$exists_i:=OTr_ItemExists($h1_i; "a.long")
 	If ($exists_i=1)
 		$passed_i:=$passed_i+1
 	Else 
@@ -83,7 +83,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	$exists_i:=OT ItemExists($h1_i; "a.missing")
+	$exists_i:=OTr_ItemExists($h1_i; "a.missing")
 	If ($exists_i=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -91,9 +91,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failures_t:=$failures_t+"ItemExists failed for missing tag."+Char:C90(Carriage return:K15:38)
 	End if 
 
-	//MARK:- OT ItemType and OT IsEmbedded
+	//MARK:- OTr_ItemType and OTr_IsEmbedded
 	$total_i:=$total_i+1
-	$type_i:=OT ItemType($h1_i; "a.long")
+	$type_i:=OTr_ItemType($h1_i; "a.long")
 	// Numeric object properties may report as Real in some 4D versions.
 	If ($type_i=5) | ($type_i=1)
 		$passed_i:=$passed_i+1
@@ -103,7 +103,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	$total_i:=$total_i+1
-	$isEmbedded_i:=OT IsEmbedded($h1_i; "a.child")
+	$isEmbedded_i:=OTr_IsEmbedded($h1_i; "a.child")
 	If ($isEmbedded_i=1)
 		$passed_i:=$passed_i+1
 	Else 
@@ -111,8 +111,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failures_t:=$failures_t+"IsEmbedded failed for object item."+Char:C90(Carriage return:K15:38)
 	End if 
 
-	//MARK:- OT GetAllNamedProperties
-	OT GetAllNamedProperties($h1_i; "a"; ->$names_at; ->$types_ai; \
+	//MARK:- OTr_GetAllNamedProperties
+	OTr_GetAllNamedProperties($h1_i; "a"; ->$names_at; ->$types_ai; \
 	->$itemSizes_ai; ->$dataSizes_ai)
 	$total_i:=$total_i+1
 	If (Size of array:C274($names_at)=4)
@@ -122,12 +122,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failures_t:=$failures_t+"GetAllNamedProperties count failed."+Char:C90(Carriage return:K15:38)
 	End if 
 
-	//MARK:- OT GetNamedProperties
+	//MARK:- OTr_GetNamedProperties
 	$outType_i:=0
 	$itemSize_i:=0
 	$dataSize_i:=0
 	$index_i:=-1
-	OT GetNamedProperties($h1_i; "a.text"; ->$outType_i; ->$itemSize_i; \
+	OTr_GetNamedProperties($h1_i; "a.text"; ->$outType_i; ->$itemSize_i; \
 	->$dataSize_i; ->$index_i)
 	$total_i:=$total_i+1
 	If ($outType_i=112) & ($index_i=0)
@@ -137,12 +137,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failures_t:=$failures_t+"GetNamedProperties failed."+Char:C90(Carriage return:K15:38)
 	End if 
 
-	//MARK:- OT GetItemProperties (order-agnostic)
+	//MARK:- OTr_GetItemProperties (order-agnostic)
 	$name_t:=""
 	$outType_i:=0
 	$itemSize_i:=0
 	$dataSize_i:=0
-	OT GetItemProperties($h1_i; 1; ->$name_t; ->$outType_i; \
+	OTr_GetItemProperties($h1_i; 1; ->$name_t; ->$outType_i; \
 	->$itemSize_i; ->$dataSize_i)
 	$total_i:=$total_i+1
 	If ($name_t#"")
@@ -152,9 +152,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failures_t:=$failures_t+"GetItemProperties failed to return name."+Char:C90(Carriage return:K15:38)
 	End if 
 
-	//MARK:- OT CopyItem / OT CompareItems / OT RenameItem / OT DeleteItem
-	OT CopyItem($h1_i; "a.text"; $h2_i; "b.text")
-	$cmp_i:=OT CompareItems($h1_i; "a.text"; $h2_i; "b.text")
+	//MARK:- OTr_CopyItem / OTr_CompareItems / OTr_RenameItem / OTr_DeleteItem
+	OTr_CopyItem($h1_i; "a.text"; $h2_i; "b.text")
+	$cmp_i:=OTr_CompareItems($h1_i; "a.text"; $h2_i; "b.text")
 	$total_i:=$total_i+1
 	If ($cmp_i=1)
 		$passed_i:=$passed_i+1
@@ -163,27 +163,27 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failures_t:=$failures_t+"CopyItem/CompareItems failed."+Char:C90(Carriage return:K15:38)
 	End if 
 
-	OT RenameItem($h2_i; "b.text"; "renamed")
+	OTr_RenameItem($h2_i; "b.text"; "renamed")
 	$total_i:=$total_i+1
-	If (OT ItemExists($h2_i; "b.renamed")=1)
+	If (OTr_ItemExists($h2_i; "b.renamed")=1)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"RenameItem failed."+Char:C90(Carriage return:K15:38)
 	End if 
 
-	OT DeleteItem($h2_i; "b.renamed")
+	OTr_DeleteItem($h2_i; "b.renamed")
 	$total_i:=$total_i+1
-	If (OT ItemExists($h2_i; "b.renamed")=0)
+	If (OTr_ItemExists($h2_i; "b.renamed")=0)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"DeleteItem failed."+Char:C90(Carriage return:K15:38)
 	End if 
 
-	//MARK:- OT ObjectSize
+	//MARK:- OTr_ObjectSize
 	$total_i:=$total_i+1
-	$size_i:=OT ObjectSize($h1_i)
+	$size_i:=OTr_ObjectSize($h1_i)
 	If ($size_i>0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -192,7 +192,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 
 	//MARK:- done
-	OT ClearAll
+	OTr_ClearAll
 
 	var $result_t : Text
 

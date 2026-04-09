@@ -48,9 +48,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 	// INIT ACCUMULATOR
 	// ====================================================
-	OT ClearAll
+	OTr_ClearAll
 	var $accum_i : Integer
-	$accum_i:=OT New
+	$accum_i:=OTr_New
 	
 	// ====================================================
 	// EXECUTE SUB-METHODS
@@ -77,25 +77,25 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$TAB:=Char:C90(Tab:K15:37)
 	$LF:=Char:C90(Line feed:K15:40)
 	
-	$total_i:=OT SizeOfArray($accum_i; "testName")
+	$total_i:=OTr_SizeOfArray($accum_i; "testName")
 	
 	// Header row
 	$tableText_t:="Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$LF
 	
 	// Data rows
 	For ($i_i; 1; $total_i)
-		$testName_t:=OT GetArrayText($accum_i; "testName"; $i_i)
-		$otCmd_t:=OT GetArrayText($accum_i; "otCmd"; $i_i)
-		$otResult_t:=OT GetArrayText($accum_i; "otResult"; $i_i)
-		$otrCmd_t:=OT GetArrayText($accum_i; "otrCmd"; $i_i)
-		$otrResult_t:=OT GetArrayText($accum_i; "otrResult"; $i_i)
+		$testName_t:=OTr_GetArrayText($accum_i; "testName"; $i_i)
+		$otCmd_t:=OTr_GetArrayText($accum_i; "otCmd"; $i_i)
+		$otResult_t:=OTr_GetArrayText($accum_i; "otResult"; $i_i)
+		$otrCmd_t:=OTr_GetArrayText($accum_i; "otrCmd"; $i_i)
+		$otrResult_t:=OTr_GetArrayText($accum_i; "otrResult"; $i_i)
 		$tableText_t:=$tableText_t+$testName_t+$TAB+$otCmd_t+$TAB+$otResult_t+$TAB+$otrCmd_t+$TAB+$otrResult_t+$LF
 	End for 
 	
 	// ====================================================
 	// TEARDOWN ACCUMULATOR
 	// ====================================================
-	OT Clear($accum_i)
+	OTr_Clear($accum_i)
 	
 	// ====================================================
 	// ASSEMBLE SUMMARY AND WRITE FILE

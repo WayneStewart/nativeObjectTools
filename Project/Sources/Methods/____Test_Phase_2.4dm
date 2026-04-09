@@ -38,13 +38,13 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $bool_i : Integer
 
 	//MARK:- baseline
-	OT ClearAll
-	$hRoot_i:=OT New
-	$hObj_i:=OT New
+	OTr_ClearAll
+	$hRoot_i:=OTr_New
+	$hObj_i:=OTr_New
 
 	//MARK:- scalar put/get
-	OT PutLong($hRoot_i; "long.value"; 42)
-	$long_i:=OT GetLong($hRoot_i; "long.value")
+	OTr_PutLong($hRoot_i; "long.value"; 42)
+	$long_i:=OTr_GetLong($hRoot_i; "long.value")
 	$total_i:=$total_i+1
 	If ($long_i=42)
 		$passed_i:=$passed_i+1
@@ -53,8 +53,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failures_t:=$failures_t+"Put/GetLong failed."+Char(Carriage return)
 	End if
 
-	OT PutReal($hRoot_i; "real.value"; 3.14)
-	$real_r:=OT GetReal($hRoot_i; "real.value")
+	OTr_PutReal($hRoot_i; "real.value"; 3.14)
+	$real_r:=OTr_GetReal($hRoot_i; "real.value")
 	$total_i:=$total_i+1
 	If ($real_r=3.14)
 		$passed_i:=$passed_i+1
@@ -63,8 +63,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failures_t:=$failures_t+"Put/GetReal failed."+Char(Carriage return)
 	End if
 
-	OT PutString($hRoot_i; "text.string"; "alpha")
-	$text_t:=OT GetString($hRoot_i; "text.string")
+	OTr_PutString($hRoot_i; "text.string"; "alpha")
+	$text_t:=OTr_GetString($hRoot_i; "text.string")
 	$total_i:=$total_i+1
 	If ($text_t="alpha")
 		$passed_i:=$passed_i+1
@@ -73,8 +73,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failures_t:=$failures_t+"Put/GetString failed."+Char(Carriage return)
 	End if
 
-	OT PutText($hRoot_i; "text.text"; "beta")
-	$text_t:=OT GetText($hRoot_i; "text.text")
+	OTr_PutText($hRoot_i; "text.text"; "beta")
+	$text_t:=OTr_GetText($hRoot_i; "text.text")
 	$total_i:=$total_i+1
 	If ($text_t="beta")
 		$passed_i:=$passed_i+1
@@ -84,9 +84,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if
 
 	$date_d:=Current date
-	OT PutDate($hRoot_i; "date.value"; $date_d)
+	OTr_PutDate($hRoot_i; "date.value"; $date_d)
 	$total_i:=$total_i+1
-	If (OT GetDate($hRoot_i; "date.value")=$date_d)
+	If (OTr_GetDate($hRoot_i; "date.value")=$date_d)
 		$passed_i:=$passed_i+1
 	Else
 		$failed_i:=$failed_i+1
@@ -94,17 +94,17 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if
 
 	$time_h:=Current time
-	OT PutTime($hRoot_i; "time.value"; $time_h)
+	OTr_PutTime($hRoot_i; "time.value"; $time_h)
 	$total_i:=$total_i+1
-	If (OT GetTime($hRoot_i; "time.value")=$time_h)
+	If (OTr_GetTime($hRoot_i; "time.value")=$time_h)
 		$passed_i:=$passed_i+1
 	Else
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"Put/GetTime failed."+Char(Carriage return)
 	End if
 
-	OT PutBoolean($hRoot_i; "bool.value"; True)
-	$bool_i:=OT GetBoolean($hRoot_i; "bool.value")
+	OTr_PutBoolean($hRoot_i; "bool.value"; True)
+	$bool_i:=OTr_GetBoolean($hRoot_i; "bool.value")
 	$total_i:=$total_i+1
 	If ($bool_i=1)
 		$passed_i:=$passed_i+1
@@ -113,8 +113,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failures_t:=$failures_t+"Put/GetBoolean failed for True."+Char(Carriage return)
 	End if
 
-	OT PutBoolean($hRoot_i; "bool.value"; False)
-	$bool_i:=OT GetBoolean($hRoot_i; "bool.value")
+	OTr_PutBoolean($hRoot_i; "bool.value"; False)
+	$bool_i:=OTr_GetBoolean($hRoot_i; "bool.value")
 	$total_i:=$total_i+1
 	If ($bool_i=0)
 		$passed_i:=$passed_i+1
@@ -124,10 +124,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if
 
 	//MARK:- object put/get
-	OT PutText($hObj_i; "inside"; "value")
-	OT PutObject($hRoot_i; "obj.child"; $hObj_i)
+	OTr_PutText($hObj_i; "inside"; "value")
+	OTr_PutObject($hRoot_i; "obj.child"; $hObj_i)
 
-	$hObjOut_i:=OT GetObject($hRoot_i; "obj.child")
+	$hObjOut_i:=OTr_GetObject($hRoot_i; "obj.child")
 	$total_i:=$total_i+1
 	If ($hObjOut_i>0)
 		$passed_i:=$passed_i+1
@@ -137,16 +137,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if
 
 	$total_i:=$total_i+1
-	If (OT GetText($hObjOut_i; "inside")="value")
+	If (OTr_GetText($hObjOut_i; "inside")="value")
 		$passed_i:=$passed_i+1
 	Else
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"Put/GetObject content check failed."+Char(Carriage return)
 	End if
 
-	OT PutText($hObj_i; "inside"; "changed")
+	OTr_PutText($hObj_i; "inside"; "changed")
 	$total_i:=$total_i+1
-	If (OT GetText($hObjOut_i; "inside")="value")
+	If (OTr_GetText($hObjOut_i; "inside")="value")
 		$passed_i:=$passed_i+1
 	Else
 		$failed_i:=$failed_i+1
@@ -155,7 +155,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 
 	//MARK:- missing-path defaults
 	$total_i:=$total_i+1
-	If (OT GetLong($hRoot_i; "missing.path")=0)
+	If (OTr_GetLong($hRoot_i; "missing.path")=0)
 		$passed_i:=$passed_i+1
 	Else
 		$failed_i:=$failed_i+1
@@ -163,7 +163,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if
 
 	$total_i:=$total_i+1
-	If (OT GetText($hRoot_i; "missing.path")="")
+	If (OTr_GetText($hRoot_i; "missing.path")="")
 		$passed_i:=$passed_i+1
 	Else
 		$failed_i:=$failed_i+1
@@ -171,7 +171,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if
 
 	//MARK:- done
-	OT ClearAll
+	OTr_ClearAll
 
 	If ($failed_i=0)
 		ALERT(Current method name+" - all tests passed ("+String($passed_i)+"/"+String($total_i)+").")

@@ -166,62 +166,6 @@ While ($i_i<=Size of array($allFiles_at))
 			$fileBody_t:=Replace string($fileBody_t; "// Project Method: "+$oldName_t; "// Project Method: "+$newName_t)
 		End if 
 		
-		// ── Compiler_ C_ declaration strip ───────────────────────────────────
-		// If this is a Compiler_ file, remove any C_ declaration lines whose
-		// first argument is a renamed method (i.e. now contains "OT " with a
-		// space, produced by the substitution pass above).
-		//
-		// After the substitution pass, a renamed method in a C_ call looks like:
-		//   C_LONGINT:C283(OT GetLong; $0; $1)
-		// The distinguishing mark: line begins (after optional whitespace) with
-		// "C_" and the first token inside the "(" is "OT " (3 chars).
-		//
-		// Line endings: detect whether the file uses LF (Char(10)) or CR
-		// (Char(13)) and use the same separator when rejoining, so that we
-		// do not alter the line endings of the rest of the file.
-		//
-		//$isCompiler_b:=(Position("Compiler_"; $fileName_t)>0)
-		
-		//If ($isCompiler_b)
-		//// Detect the line-ending character used in this file
-		//If (Position(Char(10); $fileBody_t)>0)
-		//$lineEnd_t:=Char(10)
-		//Else 
-		//$lineEnd_t:=Char(13)
-		//End if 
-		
-		//$lines_ac:=Split string($fileBody_t; $lineEnd_t)
-		
-		//$cleanedBody_t:=""
-		//$l_i:=0
-		//While ($l_i<$lines_ac.length)
-		//$line_t:=String($lines_ac[$l_i])
-		//$keepLine_b:=True
-		
-		//$cDeclPrefix_t:=Trim($line_t)
-		//If (Position("C_"; $cDeclPrefix_t)=1)
-		//$parenPos_i:=Position("("; $cDeclPrefix_t)
-		//If ($parenPos_i>0)
-		//$newNameCheck_t:=Substring($cDeclPrefix_t; $parenPos_i+1; 3)
-		//If ($newNameCheck_t="OT ")
-		//$keepLine_b:=False
-		//End if 
-		//End if 
-		//End if 
-		
-		//If ($keepLine_b)
-		//If (Length($cleanedBody_t)>0)
-		//$cleanedBody_t:=$cleanedBody_t+$lineEnd_t
-		//End if 
-		//$cleanedBody_t:=$cleanedBody_t+$line_t
-		//End if 
-		
-		//$l_i+=1
-		//End while 
-		
-		//$fileBody_t:=$cleanedBody_t
-		//End if 
-		
 		// Only rewrite if something actually changed
 		If ($fileBody_t#$originalBody_t)
 			TEXT TO DOCUMENT($filePath_t; $fileBody_t; "UTF-8")

@@ -4,7 +4,7 @@
 //   --> $otType_i : Integer
 
 // Returns the OT type constant for a given property on an object.
-// Used by OT ItemType and property-enumeration routines.
+// Used by OTr_ItemType and property-enumeration routines.
 
 // Access: Private
 

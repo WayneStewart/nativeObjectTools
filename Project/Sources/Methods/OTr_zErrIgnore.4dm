@@ -3,7 +3,7 @@
 // Project Method: OTr_zErrIgnore ()
 
 // Silent error handler installed temporarily by
-// OT LoadFromText via ON ERR CALL to suppress errors
+// OTr_LoadFromText via ON ERR CALL to suppress errors
 // raised during JSON Parse. The caller checks return
 // values for failure; this method intentionally does nothing.
 

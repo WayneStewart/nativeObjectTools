@@ -19,7 +19,7 @@
 
 Case of 
 	: ($event_i=1)
-		OT Startup
+		OTr_Startup
 		
 	: ($event_i=3)
 		OTr_zLogShutdown

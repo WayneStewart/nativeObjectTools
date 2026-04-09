@@ -3,7 +3,7 @@
 // Project Method: Compiler_OTrSortProcess
 
 // Declares interprocess-scope scratch arrays used by
-// OT SortArrays (MULTI SORT ARRAY approach).
+// OTr_SortArrays (MULTI SORT ARRAY approach).
 // One shared copy across all processes.
 // Disabled currently
 
