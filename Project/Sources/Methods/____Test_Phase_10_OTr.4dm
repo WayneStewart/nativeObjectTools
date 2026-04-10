@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":false}
+//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_10_OTr ($accum_i)
 
@@ -41,6 +41,7 @@ var $reg_i : Integer
 var $otrCmd_t : Text
 var $otrResult_t : Text
 var $count_i : Integer
+// ==== BEGIN OTr BLOCK — comment out when renamed to OT  ====
 
 ARRAY TEXT($testName_at; 0)
 ARRAY TEXT($otrCmd_at; 0)
@@ -192,3 +193,4 @@ OTr_PutArray($accum_i; "otrResult"; ->$otrResult_at)
 ARRAY TEXT($emptyArr_at; $count_i)
 OTr_PutArray($accum_i; "otCmd"; ->$emptyArr_at)
 OTr_PutArray($accum_i; "otResult"; ->$emptyArr_at)
+// ==== END OTr BLOCK ====

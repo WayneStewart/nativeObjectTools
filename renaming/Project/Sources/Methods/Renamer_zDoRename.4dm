@@ -77,6 +77,12 @@ var $newNameCheck_t : Text
 var $cDeclPrefix_t : Text
 var $parenPos_i : Integer
 var $lineEnd_t : Text
+var $isForward_b : Boolean
+var $inBlock_b : Boolean
+var $trimmed_t : Text
+var $pass4_count_i : Integer
+var $firstKey_t : Text
+var $slashPos_i : Integer
 
 // ── Initialise ────────────────────────────────────────────────────────────────
 
@@ -284,6 +290,112 @@ Else
 End if 
 
 // ═════════════════════════════════════════════════════════════════════════════
+// PASS 4 — Comment / uncomment OTr BLOCK sentinels in _OTr test files
+//
+// Files named ____Test_*_OTr.4dm contain a sentinel block:
+//   // ==== BEGIN OTr BLOCK — comment out when renamed to OT  ====
+//   ... code ...
+//   // ==== END OTr BLOCK ====
+//
+// Forward pass (OTr_ -> OT ): prefix every non-blank, non-comment line
+//   inside the block with "//" so the renamed project compiles cleanly.
+//
+// Reverse pass (OT  -> OTr_): strip the leading "//" from those same lines
+//   so the OTr_ calls are active again.
+//
+// Direction is detected from the first key in the mapping:
+//   starts with "OTr_" -> forward; starts with "OT " -> reverse.
+// ═════════════════════════════════════════════════════════════════════════════
+
+APPEND TO ARRAY($log_at; "")
+APPEND TO ARRAY($log_at; "=== PASS 4: OTr BLOCK comment toggle (_OTr files) ===")
+
+$pass4_count_i := 0
+
+// Determine direction from the first mapping key
+$firstKey_t := String($keys_ac[0])
+$isForward_b := (Substring($firstKey_t; 1; 4) = "OTr_")
+
+ARRAY TEXT($allFiles4_at; 0)
+DOCUMENT LIST($methodsFolder_t; $allFiles4_at)
+
+$i_i := 1
+While ($i_i <= Size of array($allFiles4_at))
+	$fileName_t := $allFiles4_at{$i_i}
+
+	// Only process files ending in _OTr.4dm
+	If (Position("_OTr.4dm"; $fileName_t) = (Length($fileName_t) - 7))
+		$filePath_t := $methodsFolder_t + $fileName_t
+		$fileBody_t := Document to text($filePath_t; "UTF-8")
+		$originalBody_t := $fileBody_t
+
+		// Detect line ending
+		If (Position(Char(10); $fileBody_t) > 0)
+			$lineEnd_t := Char(10)
+		Else
+			$lineEnd_t := Char(13)
+		End if
+
+		$lines_ac := Split string($fileBody_t; $lineEnd_t)
+		$cleanedBody_t := ""
+		$inBlock_b := False
+
+		$l_i := 0
+		While ($l_i < $lines_ac.length)
+			$line_t := String($lines_ac[$l_i])
+			$trimmed_t := Trim($line_t)
+
+			// Detect block boundaries
+			If (Position("BEGIN OTr BLOCK"; $trimmed_t) > 0)
+				$inBlock_b := True
+			End if
+			If (Position("END OTr BLOCK"; $trimmed_t) > 0)
+				$inBlock_b := False
+			End if
+
+			// Transform lines inside the block (excluding the sentinel lines themselves)
+			If ($inBlock_b & (Position("BEGIN OTr BLOCK"; $trimmed_t) = 0))
+				If ($isForward_b)
+					// Forward: comment out non-blank, non-already-commented lines
+					If ((Length($trimmed_t) > 0) & (Substring($trimmed_t; 1; 2) # "//"))
+						$line_t := "//" + $line_t
+					End if
+				Else
+					// Reverse: strip leading "//" from commented lines
+					If (Substring($trimmed_t; 1; 2) = "//")
+						// Find position of "//" in the original (possibly indented) line
+						// and remove exactly those two characters
+						$slashPos_i := Position("//"; $line_t)
+						$line_t := Substring($line_t; 1; $slashPos_i - 1) + Substring($line_t; $slashPos_i + 2)
+					End if
+				End if
+			End if
+
+			If (Length($cleanedBody_t) > 0)
+				$cleanedBody_t := $cleanedBody_t + $lineEnd_t
+			End if
+			$cleanedBody_t := $cleanedBody_t + $line_t
+
+			$l_i += 1
+		End while
+
+		$fileBody_t := $cleanedBody_t
+
+		If ($fileBody_t # $originalBody_t)
+			TEXT TO DOCUMENT($filePath_t; $fileBody_t; "UTF-8")
+			$pass4_count_i += 1
+			APPEND TO ARRAY($log_at; "  [PASS 4] Toggled OTr BLOCK in: " + $fileName_t)
+		End if
+	End if
+
+	$i_i += 1
+End while
+
+If ($pass4_count_i = 0)
+	APPEND TO ARRAY($log_at; "  [PASS 4] No _OTr files with sentinel blocks found.")
+End if
+
+// ═════════════════════════════════════════════════════════════════════════════
 // CLEANUP — Delete methodAttributes.json
 // 4D will regenerate this from the //%attributes headers on next launch.
 // ═════════════════════════════════════════════════════════════════════════════
@@ -317,6 +429,7 @@ APPEND TO ARRAY($log_at; "=== SUMMARY ===")
 APPEND TO ARRAY($log_at; "  Files with updated content : "+String($pass1_count_i))
 APPEND TO ARRAY($log_at; "  Files renamed              : "+String($pass2_count_i))
 APPEND TO ARRAY($log_at; "  folders.json updated       : "+String($pass3_count_i))
+APPEND TO ARRAY($log_at; "  OTr BLOCK files toggled    : "+String($pass4_count_i))
 APPEND TO ARRAY($log_at; "")
 APPEND TO ARRAY($log_at; "Operation complete.")
 
