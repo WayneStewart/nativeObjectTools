@@ -1,0 +1,7 @@
+2026-04-10T13:30:29.371	info	env	*****************************************************************
+2026-04-10T13:30:29.397	info	env	  ObjectTools
+2026-04-10T13:30:29.397	info	env	*****************************************************************
+2026-04-10T13:30:29.397	info	env	checking log level path: Macintosh HD:Users:waynestewart:4D:Projects:nativeObjectTools:Data:Logs:ObjectTools:log_level
+2026-04-10T13:30:29.397	info	env	checking log level path: Macintosh HD:Users:waynestewart:4D:Projects:nativeObjectTools:Data:Logs:ObjectTools:log_debug_level
+2026-04-10T13:30:29.397	info	env	found log level file: Macintosh HD:Users:waynestewart:4D:Projects:nativeObjectTools:Data:Logs:ObjectTools:log_level
+2026-04-10T13:30:29.398	info	env	read log level: "off"

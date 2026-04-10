@@ -1,6 +1,6 @@
-Apr 10 13:17:59 ObjectTools: [info] *****************************************************************
-Apr 10 13:17:59 ObjectTools: [info]   ObjectTools
-Apr 10 13:17:59 ObjectTools: [info] *****************************************************************
-Apr 10 13:17:59 ObjectTools: [info] env: checking log level path: /Users/waynestewart/4D/Projects/nativeObjectTools/Logs/ObjectTools/log_level
-Apr 10 13:17:59 ObjectTools: [info] env: found log level file: /Users/waynestewart/4D/Projects/nativeObjectTools/Logs/ObjectTools/log_level
-Apr 10 13:17:59 ObjectTools: [info] env: read log level: "off"
+Apr 10 13:30:29 ObjectTools: [info] *****************************************************************
+Apr 10 13:30:29 ObjectTools: [info]   ObjectTools
+Apr 10 13:30:29 ObjectTools: [info] *****************************************************************
+Apr 10 13:30:29 ObjectTools: [info] env: checking log level path: /Users/waynestewart/4D/Projects/nativeObjectTools/Logs/ObjectTools/log_level
+Apr 10 13:30:29 ObjectTools: [info] env: found log level file: /Users/waynestewart/4D/Projects/nativeObjectTools/Logs/ObjectTools/log_level
+Apr 10 13:30:29 ObjectTools: [info] env: read log level: "off"
