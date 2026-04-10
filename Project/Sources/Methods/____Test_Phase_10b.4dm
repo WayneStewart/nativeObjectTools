@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":false}
+//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_10b
 
@@ -82,7 +82,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$filePath_t:=$folderPath_t+$fileName_t
 	
 	TEXT TO DOCUMENT:C1237($filePath_t; $tableText_t; "UTF-8")
-	SHOW ON DISK:C922($filePath_t)
+	// show on disk($filePath_t)
 	If ($suppressAlert_b)
 	Else 
 		ALERT:C41($summaryLine_t+Char:C90(Carriage return:K15:38)+"Results written to: "+$fileName_t)
