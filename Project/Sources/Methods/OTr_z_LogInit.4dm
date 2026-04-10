@@ -23,6 +23,8 @@ var $logEnabled_b : Boolean
 var $applicationType_i; $retainSessions_i; $threshold_i : Integer
 var $utcOffset_r : Real
 var $ram_r : Real
+var $fileIndex_i; $retainIndex_i; $prefixCount_i : Integer
+var $filePrefix_t : Text
 
 If (Storage:C1525.OT_Logging=Null:C1517)
 	
@@ -75,6 +77,32 @@ If (Storage:C1525.OT_Logging=Null:C1517)
 		Storage:C1525.OT_Logging.retainSessions:=$retainSessions_i  // The numer of launches kept
 		Storage:C1525.OT_Logging.level:=$resolvedLevel_t
 	End use 
+	
+	ARRAY TEXT($logFiles_at; 0)
+	ARRAY TEXT($sessionPrefixes_at; 0)
+	DOCUMENT LIST($logDirectory_t; $logFiles_at)
+	For ($fileIndex_i; Size of array($logFiles_at); 1; -1)
+		If (Substring($logFiles_at{$fileIndex_i}; 1; 12)="ObjectTools ")
+			$filePrefix_t:=Substring($logFiles_at{$fileIndex_i}; 13; 16)
+			If (Find in array($sessionPrefixes_at; $filePrefix_t)=-1)
+				APPEND TO ARRAY($sessionPrefixes_at; $filePrefix_t)
+			End if 
+		Else 
+			DELETE FROM ARRAY($logFiles_at; $fileIndex_i)
+		End if 
+	End for 
+	SORT ARRAY($sessionPrefixes_at; >)
+	$prefixCount_i:=Size of array($sessionPrefixes_at)
+	If ($prefixCount_i>$retainSessions_i)
+		For ($retainIndex_i; 1; $prefixCount_i-$retainSessions_i)
+			$filePrefix_t:=$sessionPrefixes_at{$retainIndex_i}
+			For ($fileIndex_i; 1; Size of array($logFiles_at))
+				If (Substring($logFiles_at{$fileIndex_i}; 13; 16)=$filePrefix_t)
+					DELETE DOCUMENT($logDirectory_t+$logFiles_at{$fileIndex_i})
+				End if 
+			End for 
+		End for 
+	End if 
 	
 	$logFileName_t:=OTr_zLogFileName
 	Log Folder Path($logDirectory_t)

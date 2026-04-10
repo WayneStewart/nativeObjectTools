@@ -18,10 +18,10 @@
 #DECLARE($event_i : Integer)
 
 Case of 
-	: ($event_i=1)
+	: ($event_i=On before host database startup)
 		OTr_onStartup
 		
-	: ($event_i=3)
-		OTr_zLogShutdown
+	: ($event_i=On before host database exit)
+		OTr_onExit
 		
 End case 

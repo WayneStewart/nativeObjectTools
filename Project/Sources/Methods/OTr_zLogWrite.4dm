@@ -22,6 +22,7 @@
 #DECLARE($inLevel_t : Text; $inSource_t : Text; $inMessage_t : Text)
 
 var $activeLevel_t : Text
+var $callStack_t : Text
 var $currentFileName_t : Text
 var $currentFilePath_t : Text
 var $levelRank_i : Integer
@@ -61,6 +62,10 @@ If ($activeLevel_t#"off")
 		Log Folder Path(Storage:C1525.OT_Logging.directory)
 		Log File Name($currentFileName_t)
 		LOG ENABLE(True:C214)
-		LOG ADD ENTRY($inLevel_t; $inSource_t; $inMessage_t)
+		$callStack_t:=""
+		If ($inLevel_t="error")
+			$callStack_t:=OTr_zLogGetCallStack($inSource_t)
+		End if 
+		LOG ADD ENTRY($inLevel_t; $inSource_t; $inMessage_t; $callStack_t)
 	End if 
 End if 

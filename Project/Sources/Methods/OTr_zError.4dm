@@ -22,34 +22,12 @@
 
 var $handler_t : Text
 var $logMessage_t : Text
-var $stack_t : Text
-var $stackSize_i : Integer
-var $index_i : Integer
 
 $handled_b:=False:C215
 
 OTr_zInit
 
 $logMessage_t:=$message_t
-$stack_t:=""
-$stackSize_i:=Size of array(OTR_callStack_at)
-If ($source_t#"")
-	$stack_t:=$source_t
-End if
-
-For ($index_i; $stackSize_i; 1; -1)
-	If (OTR_callStack_at{$index_i}#$source_t)
-		If ($stack_t="")
-			$stack_t:=OTR_callStack_at{$index_i}
-		Else 
-			$stack_t:=$stack_t+" < "+OTR_callStack_at{$index_i}
-		End if
-	End if
-End for 
-
-If ($stack_t#"")
-	$logMessage_t:=$logMessage_t+" ["+$stack_t+"]"
-End if
 
 OTr_zLogWrite("error"; $source_t; $logMessage_t)
 

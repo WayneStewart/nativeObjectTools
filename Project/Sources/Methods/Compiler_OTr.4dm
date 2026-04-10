@@ -213,6 +213,7 @@ If (False:C215)
 	C_LONGINT:C283(OTr; $0)
 	
 	C_POINTER:C301(OTr_GetHandleList; $1)
+	C_LONGINT:C283(OTr_GetActiveHandleCount; $0)
 	
 	C_BOOLEAN:C305(OTr_uEqualBLOBs; $0)
 	C_BLOB:C604(OTr_uEqualBLOBs; $1; $2)
@@ -484,6 +485,7 @@ If (False:C215)
 	C_TEXT:C284(OTr_zLogFileName; $0)
 	OTr_zLogShutdown
 	C_TEXT:C284(OTr_zLogWrite; $1; $2; $3)
+	C_TEXT:C284(OTr_zLogGetCallStack; $0; $1)
 	C_TEXT:C284(OTr_zAddToCallStack; $1)
 	C_TEXT:C284(OTr_zRemoveFromCallStack; $1)
 	

@@ -56,8 +56,7 @@ If (Not:C34(<>OTR_Initialised_b))
 	<>OTR_Initialised_b:=True:C214
 End if 
 
-If (OTR_Initialised_b)
-Else 
+If (Not:C34(OTR_Initialised_b))
 	ARRAY TEXT:C222(OTR_callStack_at; 0)
 	OTR_Initialised_b:=True:C214
 End if 

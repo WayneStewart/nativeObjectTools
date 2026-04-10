@@ -229,6 +229,12 @@
 //OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 //OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 
+//$n_i:=$n_i+1
+//$otCmd_t:="No equivalent function"
+//$otResult_t:="Pass: no equivalent function"
+//OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
+//OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
+
 //OTr_Clear($otMain_i)
 //End if 
 

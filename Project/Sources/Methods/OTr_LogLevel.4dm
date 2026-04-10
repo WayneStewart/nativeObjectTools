@@ -39,6 +39,19 @@ Case of
 		
 End case 
 
+$setLogLevel_t:=Lowercase:C14($setLogLevel_t)
+Case of 
+	: (($setLogLevel_t="off") | ($setLogLevel_t="info") | ($setLogLevel_t="debug"))
+		// Valid token
+		
+	: (Length:C16($setLogLevel_t)=0)
+		// Getter call
+		
+	Else 
+		$setLogLevel_t:=""
+		
+End case 
+
 $currentLoggingLevel_t:=Storage:C1525.OT_Logging.level
 $initialLoggingLevel_t:=$currentLoggingLevel_t
 

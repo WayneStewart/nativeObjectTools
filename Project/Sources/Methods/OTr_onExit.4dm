@@ -1,10 +1,17 @@
-//%attributes = {}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_onExit
 
-// Closes the log
+// Shuts down the OTr logging subsystem cleanly.
+// Call from the host On Exit database method when the
+// On Host Database Event security setting is disabled.
 
-// Created by Wayne Stewart (2026-04-10)
-// ---------------------------------------------------
+// Access: Shared
 
-LOG CLOSE LOG
+// Returns: Nothing
+
+// Created by Wayne Stewart, 2026-04-10
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
+// ----------------------------------------------------
+
+OTr_zLogShutdown

@@ -247,6 +247,15 @@ APPEND TO ARRAY:C911($testName_at; "Handle list")
 APPEND TO ARRAY:C911($otrCmd_at; $otrCmd_t)
 APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 
+// ====================================================
+// 13. Active handle count
+// ====================================================
+$otrCmd_t:="OTr_GetActiveHandleCount"
+$otrResult_t:="count="+String:C10(OTr_GetActiveHandleCount)
+APPEND TO ARRAY:C911($testName_at; "Active handle count")
+APPEND TO ARRAY:C911($otrCmd_at; $otrCmd_t)
+APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
+
 OTr_Clear($otrMain_i)
 
 $count_i:=Size of array:C274($testName_at)
