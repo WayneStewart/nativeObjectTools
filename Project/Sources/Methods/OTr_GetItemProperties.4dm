@@ -26,6 +26,10 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-10 - Filters sibling shadow-type keys
+//   (leafKey$type) via OTr_zIsShadowKey so the 1-based index
+//   reflects logical items only. Added Date and Time data-size
+//   cases.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inIndex_i : Integer; \
@@ -64,9 +68,9 @@ If (OTr_zIsValidHandle($inObject_i))
 	
 	// Filter out __otr_ internal properties
 	For each ($thisKey_t; $allKeys_c)
-		If (Substring:C12($thisKey_t; 1; 7)#"__otr_")
+		If ((Substring:C12($thisKey_t; 1; 7)#"__otr_") & (Not:C34(OTr_zIsShadowKey($thisKey_t))))
 			APPEND TO ARRAY:C911($keys_at; $thisKey_t)
-		End if 
+		End if
 	End for each 
 	
 	If (($inIndex_i>=1) & ($inIndex_i<=Size of array:C274($keys_at)))
@@ -110,8 +114,14 @@ If (OTr_zIsValidHandle($inObject_i))
 					
 				: ($nativeType_i=Is picture:K8:10)
 					$dataSize_i:=Picture size:C356(OB Get:C1224(<>OTR_Objects_ao{$inObject_i}; $keys_at{$inIndex_i}; Is picture:K8:10))
-					
-			End case 
+
+				: ($nativeType_i=Is date:K8:7)
+					$dataSize_i:=8
+
+				: ($nativeType_i=Is time:K8:8)
+					$dataSize_i:=8
+
+			End case
 			
 			$itemSize_i:=$dataSize_i+Length:C16($keys_at{$inIndex_i})
 			

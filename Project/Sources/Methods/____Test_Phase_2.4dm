@@ -24,7 +24,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $total_i : Integer
 	var $passed_i : Integer
 	var $failed_i : Integer
-	var $failures_t : Text
+	var $failures_t; $message_t : Text
 	
 	var $hRoot_i : Integer
 	var $hObj_i : Integer

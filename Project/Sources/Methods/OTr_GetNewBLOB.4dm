@@ -3,10 +3,11 @@
 // Project Method: OTr_GetNewBLOB (inObject; inTag) --> Blob
 
 // Retrieves a BLOB value from the specified tag path as
-// a function result. The property is expected to be an
-// inline base64 text with a "blob:" prefix, decoded via
-// OTr_uTextToBlob. Returns an empty BLOB on any error or
-// missing tag.
+// a function result. When Storage.OTr.nativeBlobInObject is
+// True (4D v19 R2 and later), the property is read as a
+// native BLOB via OB Get; otherwise it is read as plain
+// base64 text and decoded via OTr_uTextToBlob. Returns an
+// empty BLOB on any error or missing tag.
 
 // **ORIGINAL DOCUMENTATION**
 // 
@@ -42,6 +43,9 @@
 // Wayne Stewart, 2026-04-03 - Branches on Storage.OTr.nativeBlobInObject;
 //     native OB Get used when True, else base64 decode.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-10 - Actually honours
+//   Storage.OTr.nativeBlobInObject (previously only claimed to in
+//   the changelog; the body always decoded base64 text).
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_blob : Blob
@@ -56,7 +60,11 @@ OTr_zLock
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			$result_blob:=OTr_uTextToBlob(OB Get($parent_o; $leafKey_t; Is text))
+			If (Storage:C1525.OTr.nativeBlobInObject)
+				$result_blob:=OB Get($parent_o; $leafKey_t; Is BLOB)
+			Else
+				$result_blob:=OTr_uTextToBlob(OB Get($parent_o; $leafKey_t; Is text))
+			End if
 		End if
 	End if
 Else

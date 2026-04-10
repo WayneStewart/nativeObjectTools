@@ -46,7 +46,9 @@
 // Wayne Stewart, 2026-04-03 - Rewritten: VARIABLE TO BLOB + GZIP compression;
 //       dropped OTR1 envelope and parallel-array expansion.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
-// ----------------------------------------------------
+  // Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+  //   success path (see OTr-OK0-Conditions specification).
+  // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $ioBLOB_ptr : Pointer; $inAppend_i : Integer)
 

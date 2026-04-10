@@ -5,6 +5,12 @@
 // Sets a single element of a Blob array item.
 // The BLOB is encoded to base64 text via OTr_uBlobToText for storage.
 // OK is unchanged on success; set to 0 on any failure.
+//
+// NOTE (2026-04-10): Unlike scalar BLOB storage, BLOB array elements
+// are always base64-encoded regardless of Storage.OTr.nativeBlobInObject.
+// Native BLOB array-element storage is deferred pending Phase 10c; it
+// requires a refactor of OTr_u_AccessArrayElement and the array
+// element serialisation contract.
 
 // Access: Shared
 

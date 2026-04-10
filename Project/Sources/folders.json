@@ -68,6 +68,7 @@
 			"OTr_GetBoolean",
 			"OTr_GetDate",
 			"OTr_GetHandleList",
+			"OTr_IncludeShadowKey",
 			"OTr_GetItemProperties",
 			"OTr_GetLong",
 			"OTr_GetNamedProperties",
@@ -96,6 +97,8 @@
 			"OTr_LoadFromFile",
 			"OTr_LoadFromGZIP",
 			"OTr_LoadFromText",
+			"OTr_LoadFromXML",
+			"OTr_LoadFromXMLFile",
 			"OTr_LogLevel",
 			"OTr_New",
 			"OTr_ObjectSize",
@@ -133,6 +136,8 @@
 			"OTr_SaveToFile",
 			"OTr_SaveToGZIP",
 			"OTr_SaveToText",
+			"OTr_SaveToXML",
+			"OTr_SaveToXMLFile",
 			"OTr_SetErrorHandler",
 			"OTr_SetOptions",
 			"OTr_SizeOfArray",
@@ -152,6 +157,7 @@
 			"OTr_zErrIgnore",
 			"OTr_zError",
 			"OTr_zInit",
+			"OTr_zIsShadowKey",
 			"OTr_zIsValidHandle",
 			"OTr_zLock",
 			"OTr_zLogFileName",
@@ -162,10 +168,13 @@
 			"OTr_zRemoveFromCallStack",
 			"OTr_zResolvePath",
 			"OTr_zSetOK",
+			"OTr_zShadowKey",
 			"OTr_zSortFillSlot",
 			"OTr_zSortSlotPointer",
 			"OTr_zSortValidatePair",
-			"OTr_zUnlock"
+			"OTr_zUnlock",
+			"OTr_zXMLReadObject",
+			"OTr_zXMLWriteObject"
 		]
 	},
 	"OT Testing": {

@@ -22,6 +22,8 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-10 - Added Date and Time data-size cases
+//   (8 bytes each — matches 4D's internal representation).
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outType_ptr : Pointer; \
@@ -90,8 +92,14 @@ If (OTr_zIsValidHandle($inObject_i))
 						
 					: ($nativeType_i=Is picture:K8:10)
 						$dataSize_i:=Picture size:C356(OB Get:C1224($parent_o; $leafKey_t; Is picture:K8:10))
-						
-				End case 
+
+					: ($nativeType_i=Is date:K8:7)
+						$dataSize_i:=8
+
+					: ($nativeType_i=Is time:K8:8)
+						$dataSize_i:=8
+
+				End case
 				
 				$itemSize_i:=$dataSize_i+Length:C16($leafKey_t)
 				

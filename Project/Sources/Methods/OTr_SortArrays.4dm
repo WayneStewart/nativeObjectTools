@@ -35,6 +35,8 @@
 // Based on work by himself, Rob Laveaux, and Cannon
 // Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+//   success path (see OTr-OK0-Conditions specification).
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag1_t : Text; $inDirection1_t : Text; $inTag2_t : Text; $inDirection2_t : Text; $inTag3_t : Text; $inDirection3_t : Text; $inTag4_t : Text; $inDirection4_t : Text; $inTag5_t : Text; $inDirection5_t : Text; $inTag6_t : Text; $inDirection6_t : Text; $inTag7_t : Text; $inDirection7_t : Text)
@@ -216,8 +218,7 @@ If ($continue_b)
 			$slotObj_o[String:C10($j_i)]:=\
 				$temp_o[String:C10(<>OTR_SortIdx_ai{$j_i})]
 		End for 
-	End for 
-	OTr_zSetOK(1)
+	End for
 	OTr_zUnlock
 End if
 

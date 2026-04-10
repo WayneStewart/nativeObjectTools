@@ -17,6 +17,8 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-04 - Added OTr_zSetOK(1) on success.
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+//   success path (see OTr-OK0-Conditions specification).
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_t : Text
@@ -35,7 +37,6 @@ If (OTr_zIsValidHandle($inObject_i))
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
 			$result_t:=OB Get($parent_o; $leafKey_t)
-			OTr_zSetOK(1)
 		End if
 	End if
 End if

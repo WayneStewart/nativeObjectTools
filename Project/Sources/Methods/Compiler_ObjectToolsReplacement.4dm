@@ -134,7 +134,30 @@ If (False:C215)
 	
 	C_BLOB:C604(OTr_LoadFromGZIP; $1)
 	C_LONGINT:C283(OTr_LoadFromGZIP; $0)
-	
+
+	C_TEXT:C284(OTr_SaveToXML; $0)
+	C_LONGINT:C283(OTr_SaveToXML; $1)
+	C_BOOLEAN:C305(OTr_SaveToXML; $2)
+
+	C_LONGINT:C283(OTr_SaveToXMLFile; $1)
+	C_TEXT:C284(OTr_SaveToXMLFile; $2)
+	C_BOOLEAN:C305(OTr_SaveToXMLFile; $3)
+
+	C_TEXT:C284(OTr_LoadFromXML; $1)
+	C_LONGINT:C283(OTr_LoadFromXML; $0)
+
+	C_TEXT:C284(OTr_LoadFromXMLFile; $1)
+	C_LONGINT:C283(OTr_LoadFromXMLFile; $0)
+
+	C_BOOLEAN:C305(OTr_IncludeShadowKey; $0; $1)
+
+	C_TEXT:C284(OTr_zXMLWriteObject; $1)
+	C_OBJECT:C1216(OTr_zXMLWriteObject; $2)
+	C_BOOLEAN:C305(OTr_zXMLWriteObject; $3)
+
+	C_OBJECT:C1216(OTr_zXMLReadObject; $0)
+	C_TEXT:C284(OTr_zXMLReadObject; $1)
+
 	C_LONGINT:C283(OTr_SetOptions; $1)
 	
 	C_LONGINT:C283(OTr_Copy; $0)
@@ -457,6 +480,11 @@ If (False:C215)
 	
 	C_LONGINT:C283(OTr_zArrayType; $0)
 	C_OBJECT:C1216(OTr_zArrayType; $1)
+
+	C_TEXT:C284(OTr_zShadowKey; $0; $1)
+
+	C_BOOLEAN:C305(OTr_zIsShadowKey; $0)
+	C_TEXT:C284(OTr_zIsShadowKey; $1)
 	
 	C_LONGINT:C283(OTr_ArrayType; $0; $1)
 	C_TEXT:C284(OTr_ArrayType; $2)

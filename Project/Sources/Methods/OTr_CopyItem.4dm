@@ -19,7 +19,13 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
-// Wayne Stewart, 2026-04-04 - Added OTr_zSetOK(1) on success.
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+//   success path (see OTr-OK0-Conditions specification).
+// Wayne Stewart, 2026-04-10 - Added native Date and Time branches
+//   (previously missing). Copies any sibling shadow-type key
+//   (srcLeafKey$type -> destLeafKey$type) so that OTr_zMapType
+//   reports the correct OT type at the destination; if the source
+//   has no shadow, any stale shadow at the destination is removed.
 // ----------------------------------------------------
 
 #DECLARE($inSourceObject_i : Integer; $inSourceTag_t : Text; $inDestObject_i : Integer; $inDestTag_t : Text)
@@ -33,6 +39,7 @@ var $destParent_o : Object
 var $destLeafKey_t : Text
 var $nativeType_i : Integer
 var $textVal_t : Text
+var $srcShadow_t; $destShadow_t : Text
 
 OTr_zLock
 
@@ -83,9 +90,29 @@ If (OTr_zIsValidHandle($inSourceObject_i)\
 					: ($nativeType_i=Is picture:K8:10)
 						OB SET:C1220($destParent_o; $destLeafKey_t; \
 							OB Get:C1224($srcParent_o; $srcLeafKey_t; Is picture:K8:10))
-				End case 
-				OTr_zSetOK(1)
-			End if 
+
+					: ($nativeType_i=Is date:K8:7)
+						OB SET:C1220($destParent_o; $destLeafKey_t; \
+							OB Get:C1224($srcParent_o; $srcLeafKey_t; Is date:K8:7))
+
+					: ($nativeType_i=Is time:K8:8)
+						OB SET:C1220($destParent_o; $destLeafKey_t; \
+							OB Get:C1224($srcParent_o; $srcLeafKey_t; Is time:K8:8))
+
+				End case
+
+				// Shadow-type key: copy alongside if present at
+				// the source; otherwise clear any stale shadow at
+				// the destination to keep the leaf self-consistent.
+				$srcShadow_t:=OTr_zShadowKey($srcLeafKey_t)
+				$destShadow_t:=OTr_zShadowKey($destLeafKey_t)
+				If (OB Is defined:C1231($srcParent_o; $srcShadow_t))
+					OB SET:C1220($destParent_o; $destShadow_t; \
+						OB Get:C1224($srcParent_o; $srcShadow_t; Is longint:K8:6))
+				Else
+					OB REMOVE:C1226($destParent_o; $destShadow_t)
+				End if
+			End if
 			
 		Else 
 			OTr_zError("Source item not found: "+$inSourceTag_t; \

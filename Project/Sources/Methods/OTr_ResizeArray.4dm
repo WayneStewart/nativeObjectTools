@@ -19,6 +19,8 @@
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+//   success path (see OTr-OK0-Conditions specification).
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inSize_i : Integer)
@@ -56,8 +58,7 @@ If (OTr_zIsValidHandle($inObject_i))
 				End if 
 				
 				$arrayObj_o.numElements:=$inSize_i
-				OTr_zSetOK(1)
-			End if 
+			End if
 		End if 
 	End if 
 Else 

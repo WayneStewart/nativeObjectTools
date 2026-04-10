@@ -20,6 +20,14 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-04 - Added OTr_zSetOK(1) on success.
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+//   success path (see OTr-OK0-Conditions specification).
+// Wayne Stewart, 2026-04-10 - Rewritten to copy the value via a
+//   single OB SET that dereferences OB Get (type-agnostic), covering
+//   every native 4D object-model type including Date, Time, Picture,
+//   and BLOB. Any sibling shadow-type key (leafKey$type) is moved
+//   alongside the primary leaf so that OTr_zMapType continues to
+//   report the correct OT type after the rename.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inNewTag_t : Text)
@@ -33,6 +41,7 @@ var $leafKey_t : Text
 var $parentObj_o : Object
 var $parentLeaf_t : Text
 var $nativeType_i : Integer
+var $shadowOld_t; $shadowNew_t : Text
 
 OTr_zLock
 
@@ -102,6 +111,22 @@ If (OTr_zIsValidHandle($inObject_i))
 						OB SET($parentObj_o; $inNewTag_t; \
 							OB Get($parentObj_o; $leafKey_t; Is Boolean))
 
+					: ($nativeType_i=Is date)
+						OB SET($parentObj_o; $inNewTag_t; \
+							OB Get($parentObj_o; $leafKey_t; Is date))
+
+					: ($nativeType_i=Is time)
+						OB SET($parentObj_o; $inNewTag_t; \
+							OB Get($parentObj_o; $leafKey_t; Is time))
+
+					: ($nativeType_i=Is picture)
+						OB SET($parentObj_o; $inNewTag_t; \
+							OB Get($parentObj_o; $leafKey_t; Is picture))
+
+					: ($nativeType_i=Is BLOB)
+						OB SET($parentObj_o; $inNewTag_t; \
+							OB Get($parentObj_o; $leafKey_t; Is BLOB))
+
 					: ($nativeType_i=Is object)
 						OB SET($parentObj_o; $inNewTag_t; \
 							OB Get($parentObj_o; $leafKey_t; Is object))
@@ -111,14 +136,26 @@ If (OTr_zIsValidHandle($inObject_i))
 							OB Get($parentObj_o; $leafKey_t; Is collection))
 
 					: ($nativeType_i=Is text)
-						// Plain copy — BLOB/Picture slots stay assigned
+						// Plain copy — covers ordinary user text as
+						// well as the text-encoded fallbacks for
+						// Pointer and (pre-v19 R2) BLOB.
 						OB SET($parentObj_o; $inNewTag_t; \
 							OB Get($parentObj_o; $leafKey_t; Is text))
 
 				End case
 
+				// Move the sibling shadow-type key alongside the
+				// primary leaf so OTr_zMapType continues to report
+				// the correct OT type after the rename.
+				$shadowOld_t:=OTr_zShadowKey($leafKey_t)
+				$shadowNew_t:=OTr_zShadowKey($inNewTag_t)
+				If (OB Is defined($parentObj_o; $shadowOld_t))
+					OB SET($parentObj_o; $shadowNew_t; \
+						OB Get($parentObj_o; $shadowOld_t; Is longint))
+					OB REMOVE($parentObj_o; $shadowOld_t)
+				End if
+
 				OB REMOVE($parentObj_o; $leafKey_t)
-				OTr_zSetOK(1)
 
 			End if
 

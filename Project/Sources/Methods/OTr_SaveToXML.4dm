@@ -1,0 +1,97 @@
+//%attributes = {"invisible":true,"shared":true}
+// ----------------------------------------------------
+// Project Method: OTr_SaveToXML (inObject {; inPrettyPrint}) --> Text
+
+// Serialises the stored object as an XML string using DOM output.
+// Returns empty text if the handle is invalid.
+//
+// The XML schema is:
+//   <OTrObject>
+//     <item key="leafName" type="<OT type constant>">value</item>
+//     <item key="embeddedObj" type="114">
+//       <object>
+//         <item key="..." type="...">...</item>
+//       </object>
+//     </item>
+//     <item key="myArray" type="<element OT type>">
+//       <array arrayType="<4D array-type constant>">
+//         <element index="0">value</element>
+//         ...
+//       </array>
+//     </item>
+//   </OTrObject>
+//
+// BLOB and Picture values are Base64-encoded in the element body.
+// Date values are emitted in ISO 8601 format (YYYY-MM-DD).
+// Time values are emitted as HH:MM:SS.
+//
+// Shadow-type keys (leafKey$type) are included or excluded
+// according to OTr_IncludeShadowKey (default: True).
+//
+// When inPrettyPrint is True (the default), DOM EXPORT TO VAR
+// produces indented output.  Pass False for compact single-line output.
+//
+// Use OTr_SaveToXMLFile to write directly to a file.
+
+// Access: Shared
+
+// Parameters:
+//   $inObject_i      : Integer : OTr inObject
+//   $inPrettyPrint_b : Boolean : True for indented output; default True (optional)
+
+// Returns:
+//   $xml_t : Text : XML string, or empty text if handle is invalid
+
+// Created by Wayne Stewart, 2026-04-11
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
+// ----------------------------------------------------
+
+#DECLARE($inObject_i : Integer; $inPrettyPrint_b : Boolean)->$xml_t : Text
+
+OTr_zAddToCallStack(Current method name)
+
+var $snapshot_o : Object
+var $domRef_t : Text
+var $valid_b : Boolean
+var $includeShadow_b : Boolean
+
+If (Count parameters < 2)
+	$inPrettyPrint_b:=True
+End if
+
+$xml_t:=""
+$valid_b:=False
+
+OTr_zLock
+
+If (OTr_zIsValidHandle($inObject_i))
+	$snapshot_o:=OB Copy(<>OTR_Objects_ao{$inObject_i})
+	$valid_b:=True
+End if
+
+OTr_zUnlock
+
+If ($valid_b)
+
+	$includeShadow_b:=OTr_IncludeShadowKey  // read current setting
+
+	// Build DOM tree.
+	// DOM Create XML Ref returns a reference to the root element directly.
+	$domRef_t:=DOM Create XML Ref("OTrObject")
+
+	OTr_zXMLWriteObject($domRef_t; $snapshot_o; $includeShadow_b)
+
+	// Export to text variable
+	DOM EXPORT TO VAR($domRef_t; $xml_t)
+
+	If (Not($inPrettyPrint_b))
+		// Compact: strip newlines and redundant whitespace between tags
+		$xml_t:=Replace string($xml_t; Char(10); "")
+		$xml_t:=Replace string($xml_t; Char(9); "")
+	End if
+
+	DOM CLOSE XML($domRef_t)
+
+End if
+
+OTr_zRemoveFromCallStack(Current method name)

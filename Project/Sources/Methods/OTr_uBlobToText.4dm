@@ -2,9 +2,10 @@
 // ----------------------------------------------------
 // Project Method: OTr_uBlobToText ($theBlob_x : Blob) --> Text
 
-// Base64-encodes a BLOB to a Text string with a "blob:" prefix
-// for inline storage in an OTr Object property. Returns empty
-// text if the BLOB is empty.
+// Base64-encodes a BLOB to a plain Text string for inline storage
+// in an OTr Object property on 4D versions prior to v19 R2 (that is,
+// where Storage.OTr.nativeBlobInObject is False). Returns empty text
+// if the BLOB is empty. No sentinel prefix is produced.
 
 // Access: Private
 

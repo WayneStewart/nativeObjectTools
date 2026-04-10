@@ -46,6 +46,9 @@
 // Created by Wayne Stewart, 2026-04-03
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-10 - Writes a shadow-type key
+//     (leafKey$type := 23) so OTr_zMapType can distinguish a
+//     serialised pointer from ordinary user text.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_ptr : Pointer)
@@ -60,6 +63,7 @@ OTr_zLock
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; ->$parent_o; ->$leafKey_t))
 		OB SET($parent_o; $leafKey_t; OTr_uPointerToText($inValue_ptr))
+		OB SET($parent_o; OTr_zShadowKey($leafKey_t); 23)  // OT Pointer
 	End if
 Else
 	OTr_zError("Invalid handle"; Current method name)

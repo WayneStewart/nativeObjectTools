@@ -19,6 +19,11 @@
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-04 - Fixed: missing OB REMOVE call (item was
 //   never deleted). Added OTr_zSetOK(1) on success.
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+//   success path (see OTr-OK0-Conditions specification).
+// Wayne Stewart, 2026-04-10 - Also removes any sibling shadow-type
+//   key (leafKey$type) so that a subsequent Put of an unrelated
+//   value at the same leaf is not misreported by OTr_zMapType.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)
@@ -37,10 +42,10 @@ If (OTr_zIsValidHandle($inObject_i))
 		
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			OB REMOVE:C1226($parent_o; $leafKey_t)
-			OTr_zSetOK(1)
-		Else 
+			OB REMOVE:C1226($parent_o; OTr_zShadowKey($leafKey_t))
+		Else
 			OTr_zError("Item not found: "+$inTag_t; Current method name:C684)
-		End if 
+		End if
 		
 	Else 
 		OTr_zError("Invalid path: "+$inTag_t; Current method name:C684)

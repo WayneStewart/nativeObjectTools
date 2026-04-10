@@ -30,6 +30,8 @@
   // Wayne Stewart, 2026-04-03 - Simplified: dropped ioOffset parameter and
   //       OTR1 envelope. Now uses EXPAND BLOB + BLOB TO VARIABLE.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+  // Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+  //   success path (see OTr-OK0-Conditions specification).
   // ----------------------------------------------------
 
 #DECLARE($inBLOB_blob : Blob)->$handle_i : Integer
@@ -73,7 +75,6 @@ Else
 		<>OTR_InUse_ab{$handle_i} := True
 		<>OTR_Objects_ao{$handle_i} := $obj_o
 
-		OTr_zSetOK(1)
 		OTr_zUnlock
 
 	End if

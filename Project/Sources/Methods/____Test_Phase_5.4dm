@@ -3,19 +3,15 @@
 // Project Method: ____Test_Phase_5
 
 // Unit tests for all Phase 5 methods:
-//   OTr_PutBLOB / OTr_GetBLOB (stub) / OTr_GetNewBLOB
+//   OTr_PutBLOB / OTr_GetBLOB / OTr_GetNewBLOB
 //   OTr_PutPicture / OTr_GetPicture
 //   OTr_PutPointer / OTr_GetPointer
 //   OTr_PutRecord / OTr_GetRecord / OTr_GetRecordTable
 //   OTr_PutVariable / OTr_GetVariable
-//   OTr_uExpandBinaries / OTr_uCollapseBinaries
 //
 // Skipped (require live record or external resource):
 //   OTr_PutRecord / OTr_GetRecord full round-trip
 //     (no suitable test table in this project)
-//   OTr_GetPointer output verification
-//     (method assigns local param copy, not caller var;
-//      flagged for implementation review)
 //
 // Access: Private
 
@@ -24,6 +20,13 @@
 
 // Created by Wayne Stewart, 2026-04-03
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-10 — Removed spurious If (OK=1) assertions
+//     on happy paths (the legacy OTr contract sets OK=0 on error only
+//     and does not guarantee OK=1 on success; see OTr-OK0-Conditions).
+//     Replaced with semantic post-condition checks (OTr_ItemExists /
+//     round-trip equality). Rewrote the obsolete GetBLOB stub test as
+//     a proper pointer-parameter round-trip. Added a cross-idiom
+//     Pointer round-trip via PutVariable/GetVariable.
 // ----------------------------------------------------
 var $ProcessID_i; $StackSize_i : Integer
 var $DesiredProcessName_t : Text
@@ -91,28 +94,26 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	CONVERT FROM TEXT:C1011("hello-otr-blob-test"; "UTF-8"; $testBlob_blob)
 	$total_i:=$total_i+1
 	OTr_PutBLOB($h_i; "blobval"; $testBlob_blob)
-	If (OK=1)
+	If (OTr_ItemExists($h_i; "blobval")=1)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
-		$failures_t:=$failures_t+"PutBLOB basic store"+Char:C90(Carriage return:K15:38)
+		$failures_t:=$failures_t+"PutBLOB store — tag not created"+Char:C90(Carriage return:K15:38)
 	End if 
 	
 	// ====================================================
-	//MARK:- OTr_GetBLOB — stub returns OK=0
+	//MARK:- OTr_GetBLOB — pointer-parameter round-trip
 	// ====================================================
 	
 	$total_i:=$total_i+1
 	CLEAR VARIABLE:C89($gotBlob_blob)
-	var $blob_ptr : Pointer
-	$blob_ptr:=->$gotBlob_blob
-	OTr_GetBLOB($h_i; "blobval"; $blob_ptr)
+	OTr_GetBLOB($h_i; "blobval"; ->$gotBlob_blob)
 	
-	If (OK=0)
+	If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
-		$failures_t:=$failures_t+"GetBLOB stub should set OK=0"+Char:C90(Carriage return:K15:38)
+		$failures_t:=$failures_t+"GetBLOB pointer-parameter round-trip"+Char:C90(Carriage return:K15:38)
 	End if 
 	
 	// ====================================================
@@ -123,7 +124,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	CONVERT FROM TEXT:C1011("hello-otr-blob-test"; "UTF-8"; $testBlob_blob)
 	OTr_PutBLOB($h_i; "blobval2"; $testBlob_blob)
 	$gotBlob_blob:=OTr_GetNewBLOB($h_i; "blobval2")
-	If (OK=1) & (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
+	If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
@@ -158,16 +159,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	$total_i:=$total_i+1
 	OTr_PutPicture($h_i; "picval"; $testPic_pic)
-	If (OK=1)
+	If (OTr_ItemExists($h_i; "picval")=1)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
-		$failures_t:=$failures_t+"PutPicture store"+Char:C90(Carriage return:K15:38)
+		$failures_t:=$failures_t+"PutPicture store — tag not created"+Char:C90(Carriage return:K15:38)
 	End if 
 	
 	$total_i:=$total_i+1
 	$gotPic_pic:=OTr_GetPicture($h_i; "picval")
-	If (OK=1) & (OTr_uEqualPictures($testPic_pic; $gotPic_pic))
+	If (OTr_uEqualPictures($testPic_pic; $gotPic_pic))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
@@ -191,37 +192,31 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	
 	// ====================================================
-	//MARK:- OTr_PutPointer — store
+	//MARK:- OTr_PutPointer — store creates the tag
 	// ====================================================
 	
 	$targetVal_t:="pointer-round-trip"
 	$total_i:=$total_i+1
 	OTr_PutPointer($h_i; "ptrval"; ->$targetVal_t)
-	If (OK=1)
+	If (OTr_ItemExists($h_i; "ptrval")=1)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
-		$failures_t:=$failures_t+"PutPointer store"+Char:C90(Carriage return:K15:38)
+		$failures_t:=$failures_t+"PutPointer store — tag not created"+Char:C90(Carriage return:K15:38)
 	End if 
 	
 	// ====================================================
-	//MARK:- OTr_GetPointer — call succeeds (OK=1)
-	//
-	// NOTE: Current implementation assigns the retrieved
-	// pointer to the local parameter copy only. The caller
-	// variable is NOT updated. Full output verification
-	// requires the method body to use $outPointer_ptr->:=
-	// instead of $outPointer_ptr:=, and the caller to pass
-	// ->$dest_ptr. This is flagged as a known issue.
+	//MARK:- OTr_GetPointer — pointer-parameter round-trip
 	// ====================================================
 	
+	$ptrVar_ptr:=Null:C1517
 	$total_i:=$total_i+1
 	OTr_GetPointer($h_i; "ptrval"; ->$ptrVar_ptr)
-	If (OK=1)
+	If (($ptrVar_ptr#Null:C1517) & ($ptrVar_ptr->="pointer-round-trip"))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
-		$failures_t:=$failures_t+"GetPointer OK should be 1"+Char:C90(Carriage return:K15:38)
+		$failures_t:=$failures_t+"GetPointer round-trip"+Char:C90(Carriage return:K15:38)
 	End if 
 	
 	// ====================================================
@@ -444,19 +439,20 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	
 	// ====================================================
-	//MARK:- OTr_PutVariable — Pointer (check OK=1)
-	//
-	// Full round-trip verification requires OTr_GetPointer
-	// write-back fix (see GetPointer note above).
+	//MARK:- OTr_PutVariable / OTr_GetVariable — Pointer round-trip
 	// ====================================================
 	
+	$ptrVar_ptr:=->$targetVal_t
+	OTr_PutVariable($h_i; "vptr"; ->$ptrVar_ptr)
+	$ptrVar_ptr:=Null:C1517
+	OTr_GetVariable($h_i; "vptr"; ->$ptrVar_ptr)
+	
 	$total_i:=$total_i+1
-	OTr_PutVariable($h_i; "vptr"; ->$targetVal_t)
-	If (OK=1)
+	If (($ptrVar_ptr#Null:C1517) & ($ptrVar_ptr->="pointer-round-trip"))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
-		$failures_t:=$failures_t+"PutVariable Pointer store"+Char:C90(Carriage return:K15:38)
+		$failures_t:=$failures_t+"PutVariable/GetVariable Pointer round-trip"+Char:C90(Carriage return:K15:38)
 	End if 
 	
 	// ====================================================
@@ -467,18 +463,18 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_PutVariable($h_i; "vblob"; ->$testBlob_blob)
 	
 	$total_i:=$total_i+1
-	If (OK=1)
+	If (OTr_ItemExists($h_i; "vblob")=1)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
-		$failures_t:=$failures_t+"PutVariable BLOB store"+Char:C90(Carriage return:K15:38)
+		$failures_t:=$failures_t+"PutVariable BLOB store — tag not created"+Char:C90(Carriage return:K15:38)
 	End if 
 	
 	CLEAR VARIABLE:C89($gotBlob_blob)
 	OTr_GetVariable($h_i; "vblob"; ->$gotBlob_blob)
 	
 	$total_i:=$total_i+1
-	If (OK=1) & (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
+	If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
@@ -492,17 +488,17 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_PutVariable($h_i; "vpic"; ->$testPic_pic)
 	
 	$total_i:=$total_i+1
-	If (OK=1)
+	If (OTr_ItemExists($h_i; "vpic")=1)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
-		$failures_t:=$failures_t+"PutVariable Picture store"+Char:C90(Carriage return:K15:38)
+		$failures_t:=$failures_t+"PutVariable Picture store — tag not created"+Char:C90(Carriage return:K15:38)
 	End if 
 	
 	OTr_GetVariable($h_i; "vpic"; ->$gotPic_pic)
 	
 	$total_i:=$total_i+1
-	If (OK=1) & (OTr_uEqualPictures($testPic_pic; $gotPic_pic))
+	If (OTr_uEqualPictures($testPic_pic; $gotPic_pic))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
@@ -520,7 +516,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_PutVariable($h_i; "varr"; ->$longArr_ai)
 	
 	$total_i:=$total_i+1
-	If (OK=1) & (OTr_ArrayType($h_i; "varr")=LongInt array:K8:19)
+	If (OTr_ArrayType($h_i; "varr")=LongInt array:K8:19)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1

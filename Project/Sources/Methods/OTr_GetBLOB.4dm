@@ -4,9 +4,11 @@
 
 // Retrieves a BLOB value from the specified tag path and
 // writes it back to the caller's variable via the outBLOB
-// pointer parameter. The stored base64 text is decoded via
-// OTr_uTextToBlob. Writes an empty BLOB on any error or
-// missing tag.
+// pointer parameter. When Storage.OTr.nativeBlobInObject is
+// True (4D v19 R2 and later), the property is read as a
+// native BLOB via OB Get; otherwise it is read as plain
+// base64 text and decoded via OTr_uTextToBlob. Writes an
+// empty BLOB on any error or missing tag.
 
 // **IMPLEMENTATION NOTE**
 // In native 4D, BLOB parameters are passed by value, so a
@@ -69,6 +71,7 @@
 // Wayne Stewart, 2026-04-10 - Implemented using Pointer parameter
 //     (replaces stub). Mirrors OTr_GetNewBLOB logic; writes result
 //     back via $outBLOB_ptr->:= dereference.
+// Wayne Stewart, 2026-04-10 - Honours Storage.OTr.nativeBlobInObject.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outBLOB_ptr : Pointer)
@@ -84,7 +87,11 @@ OTr_zLock
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
-			$result_blob:=OTr_uTextToBlob(OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3))
+			If (Storage:C1525.OTr.nativeBlobInObject)
+				$result_blob:=OB Get:C1224($parent_o; $leafKey_t; Is BLOB:K8:12)
+			Else
+				$result_blob:=OTr_uTextToBlob(OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3))
+			End if
 		End if
 	End if
 Else

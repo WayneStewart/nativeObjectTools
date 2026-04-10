@@ -16,9 +16,10 @@
   // Returns 0 for any type with no known mapping.
   // 
   // Note: This method handles structural type mapping only.
-  // It does not inspect stored values or prefix strings.
-  // For prefix-based type disambiguation (blob:N, pic:N,
-  // ptr:, rec:, var:) see OTr_zMapType.
+  // It does not inspect stored values. For value-level
+  // discrimination of text properties that encode a date or
+  // time (the only surviving text-encoded scalars under the
+  // native-storage architecture) see OTr_zMapType.
 
   // Access: Private
 
@@ -31,6 +32,11 @@
 
   // Created by Wayne Stewart, 2026-04-03
   // Based on work by himself, Rob Laveaux, and Cannon Smith.
+  // Wayne Stewart, 2026-04-10 - Added array-type mappings (4D → OT).
+  //   Under the legacy plugin, OT ItemType returns the element type
+  //   (1, 4, 5, 6, 11, 3, 30, 23) for non-character arrays, and 113
+  //   for String/Text arrays. Used by OTr_zMapType when descending
+  //   into an OTr array-container sub-object.
   // ----------------------------------------------------
 
 #DECLARE($nativeType_i : Integer; $direction_i : Integer)->$result_i : Integer
@@ -77,6 +83,36 @@ If ($dir_i = 0)
 
 		: ($nativeType_i = Is collection)
 			$result_i := 113  // OT Array Character
+
+			// Array element types: under ObjectTools 5, OT ItemType
+			// reports the element type for non-character arrays, and
+			// 113 (OT Character array) for String / Text arrays.
+		: ($nativeType_i = String array) | ($nativeType_i = Text array)
+			$result_i := 113  // OT Character array
+
+		: ($nativeType_i = Real array)
+			$result_i := 1  // OT Real
+
+		: ($nativeType_i = Integer array) | ($nativeType_i = LongInt array)
+			$result_i := 5  // OT Longint
+
+		: ($nativeType_i = Date array)
+			$result_i := 4  // OT Date
+
+		: ($nativeType_i = Time array)
+			$result_i := 11  // OT Time
+
+		: ($nativeType_i = Boolean array)
+			$result_i := 6  // OT Boolean
+
+		: ($nativeType_i = Picture array)
+			$result_i := 3  // OT Picture
+
+		: ($nativeType_i = Blob array)
+			$result_i := 30  // OT BLOB
+
+		: ($nativeType_i = Pointer array)
+			$result_i := 23  // OT Pointer
 
 	End case
 

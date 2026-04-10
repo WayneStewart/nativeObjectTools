@@ -23,10 +23,11 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
-// Wayne Stewart, 2026-04-04 - Added OTr_zSetOK(1) on success.
 // Wayne Stewart, 2026-04-05 - Removed erroneous per-key BLOB/Picture
 //   size loop. BLOBs and Pictures are embedded in the Object; no
 //   external accumulation is required or correct.
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+//   success path (see OTr-OK0-Conditions specification).
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer)->$size_i : Integer
@@ -41,7 +42,6 @@ OTr_zInit
 
 If (OTr_zIsValidHandle($inObject_i))
 	$size_i:=Length:C16(JSON Stringify:C1217(<>OTR_Objects_ao{$inObject_i}))
-	OTr_zSetOK(1)
 
 Else
 	OTr_zError("Invalid handle"; Current method name:C684)

@@ -11,6 +11,9 @@
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-05 - Added OTr_z_CheckHostMethods call for host propagation setup.
+// Wayne Stewart, 2026-04-11 - Added includeShadowKeys flag (default True) to
+//   Storage.OTr so OTr_IncludeShadowKey and the XML/JSON export methods can
+//   read it from any process or preemptive worker.
 // ----------------------------------------------------
 
 
@@ -29,7 +32,8 @@ If (Storage:C1525.OTr=Null:C1517)
 	Use (Storage:C1525)
 		Storage:C1525.OTr:=New shared object:C1526("structureName"; $name; \
 			"nativeBlobInObject"; ($ApplicationVersion_i>=1920); \
-			"mechanism"; OTR IP Arrays)
+			"mechanism"; OTR IP Arrays; \
+			"includeShadowKeys"; True:C214)
 	End use 
 	OTr_z_CheckHostMethods
 	
