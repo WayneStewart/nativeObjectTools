@@ -24,6 +24,9 @@
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-11 - OB Get now uses Is object type argument
+//     to avoid "Argument types are incompatible" crash when the tag
+//     holds a scalar. OTr_zArrayType handles Null by returning -1.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outArray_ptr : Pointer)
@@ -38,7 +41,7 @@ var $storedType_i : Integer
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
-			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
+			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
 			$storedType_i:=OTr_zArrayType($arrayObj_o)
 			If ($storedType_i=-1)
 				OTr_zError("Tag does not reference an array"; Current method name:C684)

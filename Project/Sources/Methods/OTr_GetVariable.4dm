@@ -44,6 +44,16 @@
 // If the stored type cannot be rendered into the
 // destination type, an error is generated and OK
 // is set to zero.
+//
+// **Divergence from OT — type coercion on mismatch:**
+// When 4D can coerce the stored value to the destination
+// type (e.g. a stored LongInt retrieved into a Text
+// variable), OTr writes the coerced value into the
+// destination variable and sets OK=0. OT, by contrast,
+// leaves the destination variable empty/unchanged and
+// sets OK=0. Code that relies on an empty result as a
+// sentinel for a type mismatch will behave differently
+// under OTr.
 
 // Access: Shared
 
@@ -67,6 +77,8 @@
 // Wayne Stewart, 2026-04-10 - Date and Time destinations now read
 //     natively via OB Get (was OTr_uTextToDate / OTr_uTextToTime),
 //     matching the native-write side in OTr_PutVariable.
+// Wayne Stewart, 2026-04-11 - Documented coercion-on-mismatch
+//     divergence from OT (coerced value returned; OK=0 preserved).
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outVarPointer_ptr : Pointer)

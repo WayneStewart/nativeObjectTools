@@ -46,6 +46,9 @@
 // Wayne Stewart, 2026-04-10 - Actually honours
 //   Storage.OTr.nativeBlobInObject (previously only claimed to in
 //   the changelog; the body always decoded base64 text).
+// Wayne Stewart, 2026-04-11 - Added type-mismatch guard via OTr_zMapType: if the tag
+//   exists but its stored OT type is not 30 (BLOB), an error is generated and OK is
+//   set to zero, matching the documented original behaviour.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_blob : Blob
@@ -60,10 +63,14 @@ OTr_zLock
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			If (Storage:C1525.OTr.nativeBlobInObject)
-				$result_blob:=OB Get($parent_o; $leafKey_t; Is BLOB)
+			If (OTr_zMapType($parent_o; $leafKey_t)=30)
+				If (Storage:C1525.OTr.nativeBlobInObject)
+					$result_blob:=OB Get($parent_o; $leafKey_t; Is BLOB)
+				Else
+					$result_blob:=OTr_uTextToBlob(OB Get($parent_o; $leafKey_t; Is text))
+				End if
 			Else
-				$result_blob:=OTr_uTextToBlob(OB Get($parent_o; $leafKey_t; Is text))
+				OTr_zError("Type mismatch"; Current method name)
 			End if
 		End if
 	End if

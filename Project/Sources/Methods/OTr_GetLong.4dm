@@ -16,6 +16,8 @@
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-11 - OB Get now uses Is longint type argument
+//     to prevent crash when stored value is a non-Integer type.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_i : Integer
@@ -33,7 +35,7 @@ If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; \
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			$result_i:=OB Get($parent_o; $leafKey_t)
+			$result_i:=OB Get:C1224($parent_o; $leafKey_t; Is longint:K8:6)
 		End if
 	End if
 End if

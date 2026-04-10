@@ -962,6 +962,25 @@ APPEND TO ARRAY:C911($testName_at; "OT GetString — invalid handle")
 APPEND TO ARRAY:C911($otrCmd_at; $otrCmd_t)
 APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 
+// ----------------------------------------------------
+// Refresh: restore known initial state before getter
+// type-mismatch tests — prior scenarios have mutated
+// $h_i through multiple type-changing Put calls.
+// ----------------------------------------------------
+OTr_Clear($h_i)
+$h_i:=OTr_New
+OTr_PutLong($h_i; "scalar"; 123)
+OTr_PutString($h_i; "textItem"; "abc")
+ARRAY LONGINT:C221($longArr_ai; 3)
+$longArr_ai{1}:=10
+$longArr_ai{2}:=20
+$longArr_ai{3}:=30
+OTr_PutArray($h_i; "longArr"; ->$longArr_ai)
+ARRAY TEXT:C222($textArr_at; 2)
+$textArr_at{1}:="x"
+$textArr_at{2}:="y"
+OTr_PutArray($h_i; "textArr"; ->$textArr_at)
+
 // C) Type mismatch (scalar is Long, not String)
 $otrCmd_t:="OTr_GetString($h_i; \"scalar\")"
 $r_t:=OTr_GetString($h_i; "scalar")

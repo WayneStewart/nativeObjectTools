@@ -30,6 +30,8 @@
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-11 - OB Get now uses Is object type argument
+//     to prevent crash when tag holds a scalar rather than an array.
 // ----------------------------------------------------
 
 #DECLARE($params_o : Object)->$ok_b : Boolean
@@ -50,7 +52,7 @@ $dir_t:=$params_o.dir
 If (OTr_zResolvePath(<>OTR_Objects_ao{$handle_i}; \
 $tag_t; False:C215; ->$parent_o; ->$leafKey_t))
 	If (OB Is defined:C1231($parent_o; $leafKey_t))
-		$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
+		$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
 		$type_i:=OTr_zArrayType($arrayObj_o)
 		
 		$isSortable_b:=(($type_i=Text array:K8:16) | ($type_i=String array:K8:15))

@@ -72,6 +72,9 @@
 //     (replaces stub). Mirrors OTr_GetNewBLOB logic; writes result
 //     back via $outBLOB_ptr->:= dereference.
 // Wayne Stewart, 2026-04-10 - Honours Storage.OTr.nativeBlobInObject.
+// Wayne Stewart, 2026-04-11 - Added type-mismatch guard via OTr_zMapType: if the tag
+//   exists but its stored OT type is not 30 (BLOB), an error is generated and OK is
+//   set to zero, matching the documented original behaviour.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outBLOB_ptr : Pointer)
@@ -87,10 +90,14 @@ OTr_zLock
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
-			If (Storage:C1525.OTr.nativeBlobInObject)
-				$result_blob:=OB Get:C1224($parent_o; $leafKey_t; Is BLOB:K8:12)
+			If (OTr_zMapType($parent_o; $leafKey_t)=30)
+				If (Storage:C1525.OTr.nativeBlobInObject)
+					$result_blob:=OB Get:C1224($parent_o; $leafKey_t; Is BLOB:K8:12)
+				Else
+					$result_blob:=OTr_uTextToBlob(OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3))
+				End if
 			Else
-				$result_blob:=OTr_uTextToBlob(OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3))
+				OTr_zError("Type mismatch"; Current method name:C684)
 			End if
 		End if
 	End if

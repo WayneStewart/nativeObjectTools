@@ -4,7 +4,8 @@
 
 // Returns the number of top-level items in the referenced object.
 // When the optional $inTag_t is provided, counts items in that embedded
-// object instead. Internal __otr_ properties are excluded.
+// object instead. Internal __otr_ properties and shadow keys (keys ending
+// in the $type suffix) are excluded from the count.
 
 // Access: Shared
 
@@ -13,7 +14,7 @@
 //   $inTag_t    : Text    : Tag of an embedded object (optional) (inTag)
 
 // Returns:
-//   $count_i : Integer : Item count (excluding internal __otr_ properties), or 0
+//   $count_i : Integer : Item count (excluding internal __otr_ properties and shadow keys), or 0
 
 // Wayne Stewart, 2026-04-01 - Updated OB Keys usage for collection return.
 // Created by Wayne Stewart, 2026-04-01
@@ -21,6 +22,7 @@
 // Guy Algot, 2026-04-03 - Zoom session. Changed optional param init
 //   to Choose pattern. Added :Cxxx command codes throughout.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-11 - Exclude shadow keys ($type suffix) from count.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$count_i : Integer
@@ -54,10 +56,10 @@ If (OTr_zIsValidHandle($inObject_i))
 				If ($target_o#Null:C1517)
 					$keys_c:=OB Keys:C1719($target_o)
 					For each ($thisKey_t; $keys_c)
-						If (Substring:C12($thisKey_t; 1; 7)#"__otr_")
+						If (Substring:C12($thisKey_t; 1; 7)#"__otr_") & (Not:C34(OTr_zIsShadowKey($thisKey_t)))
 							$count_i:=$count_i+1
-						End if 
-					End for each 
+						End if
+					End for each
 				Else 
 					OTr_zError(\
 						"Tag does not reference an embedded object"; \
@@ -74,10 +76,10 @@ If (OTr_zIsValidHandle($inObject_i))
 		
 		$keys_c:=OB Keys:C1719(<>OTR_Objects_ao{$inObject_i})
 		For each ($thisKey_t; $keys_c)
-			If (Substring:C12($thisKey_t; 1; 7)#"__otr_")
+			If (Substring:C12($thisKey_t; 1; 7)#"__otr_") & (Not:C34(OTr_zIsShadowKey($thisKey_t)))
 				$count_i:=$count_i+1
-			End if 
-		End for each 
+			End if
+		End for each
 		
 	End if 
 	

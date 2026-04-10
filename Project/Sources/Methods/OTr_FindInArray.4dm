@@ -11,9 +11,10 @@
 // True; any other value is treated as False.
 //
 // Not supported for Pointer, BLOB, or Picture arrays.
-// If the array type does not support searching, or if
-// the handle or tag are invalid, an error is generated,
-// OK is set to zero, and -1 is returned.
+// If inObject is not a valid object handle, if no item in
+// the object has the given tag, or if the item's type is not
+// an array type, an error is generated, OK is set to zero,
+// and -1 is returned.
 //
 // The result matches the native Find in array command:
 // the 1-based index of the first matching element, or
@@ -33,6 +34,8 @@
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-11 - OB Get now uses Is object type argument
+//     to prevent crash when tag holds a scalar rather than an array.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_t : Text; $inStart_i : Integer)->$result_i : Integer
@@ -63,7 +66,7 @@ $result_i:=-1
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
-			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
+			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
 			$type_i:=OTr_zArrayType($arrayObj_o)
 			If ($type_i=-1)
 				OTr_zError("Tag does not reference an array"; Current method name:C684)
@@ -131,7 +134,7 @@ If (OTr_zIsValidHandle($inObject_i))
 			OTr_zSetOK(0)
 		End if 
 	End if 
-Else 
+Else
 	OTr_zError("Invalid handle"; Current method name:C684)
 	OTr_zSetOK(0)
 End if

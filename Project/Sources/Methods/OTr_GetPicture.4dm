@@ -40,6 +40,10 @@
 // Wayne Stewart, 2026-04-03 - Removed proxy string; Picture now
 //     retrieved natively via OB Get with Is picture.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-11 - Added OB Get type pre-check before
+//     retrieving as picture. OB Get with Is picture on a non-picture
+//     property throws error 64; the type check intercepts this and
+//     routes to OTr_zError instead.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_pic : Picture
@@ -54,7 +58,11 @@ OTr_zLock
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			$result_pic:=OB Get($parent_o; $leafKey_t; Is picture)
+			If (OB Get type:C1230($parent_o; $leafKey_t)=Is picture:K8:10)
+				$result_pic:=OB Get:C1224($parent_o; $leafKey_t; Is picture:K8:10)
+			Else
+				OTr_zError("Type mismatch: tag does not reference a Picture"; Current method name:C684)
+			End if
 		End if
 	End if
 Else

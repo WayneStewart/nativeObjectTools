@@ -19,6 +19,8 @@
 // Wayne Stewart, 2026-04-04 - Added OTr_zSetOK(1) on success.
 // Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
 //   success path (see OTr-OK0-Conditions specification).
+// Wayne Stewart, 2026-04-11 - OB Get now uses Is text type argument
+//     to prevent crash when stored value is a non-Text type.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_t : Text
@@ -36,7 +38,7 @@ If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; \
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			$result_t:=OB Get($parent_o; $leafKey_t)
+			$result_t:=OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3)
 		End if
 	End if
 End if

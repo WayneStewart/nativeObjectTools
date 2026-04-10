@@ -31,6 +31,9 @@
 
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-11 - Added type-consistency guard implementing the documented
+//   OT behaviour: refuses to overwrite an existing item whose stored type differs from
+//   Text/String (OK=0, value unchanged). Applies when OT VariantItems option is not set.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_t : Text)
@@ -45,11 +48,16 @@ OTr_zLock
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; \
 		->$parent_o; ->$leafKey_t))
-		OB SET:C1220($parent_o; $leafKey_t; $inValue_t)
-	End if 
-Else 
+		If (OB Is defined:C1231($parent_o; $leafKey_t) \
+			& (OB Get type:C1230($parent_o; $leafKey_t)#Is text:K8:3))
+			OTr_zError("Type mismatch"; Current method name:C684)
+		Else
+			OB SET:C1220($parent_o; $leafKey_t; $inValue_t)
+		End if
+	End if
+Else
 	OTr_zError("Invalid inObject"; Current method name:C684)
-End if 
+End if
 
 OTr_zUnlock
 

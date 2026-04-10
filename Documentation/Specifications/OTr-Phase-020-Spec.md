@@ -55,6 +55,7 @@
 - [ ] Write test method `____Test_Phase_6` covering BLOB serialisation round-trips
 - [ ] Write test method `____Test_OT_Compatibility` per [OTr-Phase-015-Spec.md](OTr-Phase-015-Spec.md); register in `Test Methods` group in `folders.json`
 - [ ] Confirm side-by-side testing performed on a compatible platform — see [OTr-Phase-015-Spec.md §2](OTr-Phase-015-Spec.md)
+- [ ] Review whether `OTr_uDateToText`, `OTr_uTextToDate`, `OTr_uTimeToText`, and `OTr_uTextToTime` are still required. Scalar put/get methods (`OTr_PutDate`, `OTr_GetDate`, `OTr_PutTime`, `OTr_GetTime`) use native `OB SET`/`OB Get` and do not call these utilities. Current callers are the array path (`OTr_PutArrayDate`, `OTr_GetArrayDate`, `OTr_PutArrayTime`, `OTr_GetArrayTime`, `OTr_PutArray`, `OTr_zArrayFromObject`, `OTr_FindInArray`) and the record path (`OTr_PutRecord`, `OTr_GetRecord`). If the array and record storage strategies were unified with the scalar native approach, all four methods could be retired.
 
 ---
 
