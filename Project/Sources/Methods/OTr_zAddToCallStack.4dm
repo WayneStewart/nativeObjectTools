@@ -20,6 +20,6 @@
 
 OTr_zInit
 
-If (Storage:C1525.OT_LoggingLevel#"off")
+If (Storage:C1525.OT_Logging.level#"off")
 	APPEND TO ARRAY:C911(OTR_callStack_at; $inMethodName_t)
 End if 

@@ -20,6 +20,8 @@ Constants_AddString("OT Log Error"; "error")
 
 Constants_NewGroup("OT Miscellaneous")
 Constants_AddString("Log Writer"; "$Log Writer")
+Constants_AddString("OT Right Arrow"; "→")
+
 
 Constants_SaveFile
 

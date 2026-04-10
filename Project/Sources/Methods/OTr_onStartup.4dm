@@ -17,6 +17,7 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-//OTr_zInit  // Initialise the system
+OTr_zInit  // Initialise the system
+OTr_z_LogInit  // Initialise the logging
 
 

@@ -26,7 +26,7 @@ If (Storage:C1525.OT_LoggingInitialised_b=True:C214)
 		End if 
 	End for 
 	
-	If (Storage:C1525.OT_LoggingLevel#"off")
+	If (Storage:C1525.OT_Logging.level#"off")
 		OTr_zLogWrite("info"; "env"; "ObjectTools shutdown - "+String:C10($openHandles_i)+" handles open")
 	End if 
 	

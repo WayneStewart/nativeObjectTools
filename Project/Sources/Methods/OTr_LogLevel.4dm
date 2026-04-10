@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_LogLevel (setLogLevel {; permanent}) --> Text
 
@@ -23,52 +23,52 @@
 OTr_zAddToCallStack(Current method name:C684)
 
 var $parametersCount_i : Integer
-var $resolvedLevel_t : Text
+var $currentLoggingLevel_t; $initialLoggingLevel_t : Text
 var $logLevelFile_t : Text
 
 $parametersCount_i:=Count parameters:C259
-$setLogLevel_t:=Choose:C955($parametersCount_i<1; ""; Lowercase:C14($setLogLevel_t))
-$permanent_b:=Choose:C955($parametersCount_i<2; False:C215; $permanent_b)
-
-If (Storage:C1525.OT_LoggingInitialised_b#True:C214)
-	OTr_z_LogInit
-End if 
-
-$resolvedLevel_t:=Storage:C1525.OT_LoggingLevel
 
 Case of 
-	: ($setLogLevel_t="off")
-		$resolvedLevel_t:="off"
+	: ($parametersCount_i=0)
+		$setLogLevel_t:=""
+		$permanent_b:=False:C215
 		
-	: ($setLogLevel_t="debug")
-		$resolvedLevel_t:="debug"
+	: ($parametersCount_i=1)
+		$permanent_b:=False:C215
 		
-	: ($setLogLevel_t="info")
-		$resolvedLevel_t:="info"
-		
-	: ($setLogLevel_t="")
-		
-	Else 
 		
 End case 
 
-Use (Storage:C1525.OTr)
-	Storage:C1525.OT_LoggingLevel:=$resolvedLevel_t
-End use 
+$currentLoggingLevel_t:=Storage:C1525.OT_Logging.level
+$initialLoggingLevel_t:=$currentLoggingLevel_t
 
-If ($resolvedLevel_t="off")
+Case of 
+	: (Length:C16($setLogLevel_t)=0)
+		// Do nothing
+		
+	: ($currentLoggingLevel_t=$setLogLevel_t)
+		// Do Nothing
+		
+	Else 
+		Use (Storage:C1525.OT_Logging)
+			Storage:C1525.OT_Logging.level:=$setLogLevel_t
+		End use 
+		
+End case 
+
+$currentLoggingLevel_t:=Storage:C1525.OT_Logging.level  // It may have changed
+
+If ($currentLoggingLevel_t="off")
 	LOG ENABLE(False:C215)
 Else 
-	Log Folder Path(Storage:C1525.OT_LoggingDirectory)
-	Log File Name(OTr_zLogFileName)
 	LOG ENABLE(True:C214)
 End if 
 
-If ($permanent_b)
-	$logLevelFile_t:=Storage:C1525.OT_LoggingDirectory+"log_level"
-	TEXT TO DOCUMENT:C1237($logLevelFile_t; $resolvedLevel_t; "UTF-8")
+If ($permanent_b) & ($initialLoggingLevel_t#$currentLoggingLevel_t)  // Write the changes (if there were any)
+	$logLevelFile_t:=Storage:C1525.OT_Logging.directory+"log_level"
+	TEXT TO DOCUMENT:C1237($logLevelFile_t; $currentLoggingLevel_t; "UTF-8")
 End if 
 
-$getLogLevel_t:=Storage:C1525.OT_LoggingLevel
+$getLogLevel_t:=Storage:C1525.OT_Logging.level
 
 OTr_zRemoveFromCallStack(Current method name:C684)

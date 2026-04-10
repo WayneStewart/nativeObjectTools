@@ -1,4 +1,4 @@
-﻿// ----------------------------------------------------
+// ----------------------------------------------------
 // Project Method: On Host Database Event ($event_i : Integer)
 
 // Handles host database lifecycle events for the OTr component.
@@ -19,7 +19,7 @@
 
 Case of 
 	: ($event_i=1)
-		OTr_Startup
+		OTr_onStartup
 		
 	: ($event_i=3)
 		OTr_zLogShutdown

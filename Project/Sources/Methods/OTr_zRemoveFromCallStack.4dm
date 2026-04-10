@@ -22,7 +22,7 @@ var $stackSize_i : Integer
 
 OTr_zInit
 
-If (Storage:C1525.OT_LoggingLevel#"off")
+If (Storage:C1525.OT_Logging.level#"off")
 	$stackSize_i:=Size of array:C274(OTR_callStack_at)
 	If ($stackSize_i>0)
 		DELETE FROM ARRAY:C228(OTR_callStack_at; $stackSize_i)

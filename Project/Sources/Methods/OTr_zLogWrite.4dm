@@ -29,41 +29,38 @@ var $activeRank_i : Integer
 var $sequence_i : Integer
 var $size_r : Real
 
-If (Storage:C1525.OT_LoggingInitialised_b#True:C214)
+If (Storage:C1525.OT_Logging=Null:C1517)
 	OTr_z_LogInit
 End if 
 
-If (Storage:C1525.OT_LoggingInitialised_b#True:C214)
+
+$activeLevel_t:=Storage:C1525.OT_Logging.level
+If ($activeLevel_t#"off")
+	$activeRank_i:=OTr_zLogLevelToInt($activeLevel_t)
+	If ($inLevel_t="debug")
+		$levelRank_i:=2
+	Else 
+		$levelRank_i:=1
+	End if 
 	
-Else 
-	$activeLevel_t:=Storage:C1525.OT_LoggingLevel
-	If ($activeLevel_t#"off")
-		$activeRank_i:=OTr_zLogLevelToInt($activeLevel_t)
-		If ($inLevel_t="debug")
-			$levelRank_i:=2
-		Else 
-			$levelRank_i:=1
+	If ($levelRank_i<=$activeRank_i)
+		$currentFileName_t:=OTr_zLogFileName
+		$currentFilePath_t:=Storage:C1525.OT_Logging.directory+$currentFileName_t
+		If (Test path name:C476($currentFilePath_t)=Is a document:K24:1)
+			$size_r:=Get document size:C479($currentFilePath_t)
+			If ($size_r>=Storage:C1525.OT_Logging.sizeThreshold)
+				LOG CLOSE LOG
+				Use (Storage:C1525.OTr)
+					Storage:C1525.OT_Logging.sequence:=Storage:C1525.OT_Logging.sequence+1
+					$sequence_i:=Storage:C1525.OT_Logging.sequence
+				End use 
+				$currentFileName_t:=OTr_zLogFileName
+			End if 
 		End if 
 		
-		If ($levelRank_i<=$activeRank_i)
-			$currentFileName_t:=OTr_zLogFileName
-			$currentFilePath_t:=Storage:C1525.OT_LoggingDirectory+$currentFileName_t
-			If (Test path name:C476($currentFilePath_t)=Is a document:K24:1)
-				$size_r:=Get document size:C479($currentFilePath_t)
-				If ($size_r>=Storage:C1525.OT_LoggingSizeThreshold)
-					LOG CLOSE LOG
-					Use (Storage:C1525.OTr)
-						Storage:C1525.OT_Logging.sequence:=Storage:C1525.OT_Logging.sequence+1
-						$sequence_i:=Storage:C1525.OT_Logging.sequence
-					End use 
-					$currentFileName_t:=OTr_zLogFileName
-				End if 
-			End if 
-			
-			Log Folder Path(Storage:C1525.OT_LoggingDirectory)
-			Log File Name($currentFileName_t)
-			LOG ENABLE(True:C214)
-			LOG ADD ENTRY($inLevel_t; $inSource_t; $inMessage_t)
-		End if 
+		Log Folder Path(Storage:C1525.OT_Logging.directory)
+		Log File Name($currentFileName_t)
+		LOG ENABLE(True:C214)
+		LOG ADD ENTRY($inLevel_t; $inSource_t; $inMessage_t)
 	End if 
 End if 

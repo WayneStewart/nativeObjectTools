@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true}
+//%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project Method: Compiler_OTr
 
@@ -544,4 +544,7 @@ If (False:C215)
 	C_TEXT:C284(OTr_z_timestampLocal; $1; $0)
 	
 	C_TEXT:C284(OTr_Info; $1; $0)
+	
+	C_TEXT:C284(OTr_z_Get4DVersion; $0)
+	
 End if 

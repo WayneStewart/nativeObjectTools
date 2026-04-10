@@ -1,7 +1,7 @@
 # OTr Phase 10 — Logging Subsystem
 
-**Version:** 0.4
-**Date:** 2026-04-10
+**Version:** 0.3
+**Date:** 2026-04-07
 **Author:** Wayne Stewart / Claude
 **Parent Document:** [OTr-Specification.md](OTr-Specification.md)
 
@@ -52,11 +52,11 @@ Get 4D folder(Logs folder; *) + "ObjectTools" + Folder separator
 
 The `*` parameter resolves to the **host database's** Logs folder rather than the component's own folder, ensuring OTr logs sit alongside the host's 4D application logs in a recognisable location. The `ObjectTools` subdirectory is created on first use if it does not already exist.
 
-The resolved path is cached at startup in `Storage.OT_Logging.directory`. Routines that need the sentinel file derive it by appending `log_level` (or `log_debug_level`) to this directory path.
+The resolved path is cached at startup in `Storage.OTr.logDirectory`. Routines that need the sentinel file derive it by appending `log_level` (or `log_debug_level`) to this directory path.
 
 ### 2.2 File Naming Convention
 
-Each application session produces its own log file series. The session timestamp is captured once at startup (during `OTr_z_LogInit`) and stored in `Storage.OT_Logging.session` as a text string of the form `YY-MM-DD-HH-MM`.
+Each application session produces its own log file series. The session timestamp is captured once at startup (during `OTr_zLogInit`) and stored in `Storage.OTr.logSession` as a text string of the form `YY-MM-DD-HH-MM`.
 
 Log files within a session are named:
 
@@ -81,13 +81,13 @@ This naming convention ensures that:
 
 ### 2.3 Within-Session Size Rollover
 
-When the current log file reaches or exceeds the configured size threshold, the OTr integration layer closes the current session log, increments the sequence counter stored in `Storage.OT_Logging.sequence`, and switches the helper logging routines to the next file in the session series. The session timestamp prefix is unchanged.
+When the current log file reaches or exceeds the configured size threshold, the OTr integration layer closes the current session log, increments the sequence counter stored in `Storage.OTr.logSequence`, and switches the helper logging routines to the next file in the session series. The session timestamp prefix is unchanged.
 
-> **Workshop item:** The exact size threshold is subject to review. The value is stored in `Storage.OT_Logging.sizeThreshold` (Integer, bytes) and set to a default during `OTr_z_LogInit`, making it straightforward to adjust without code changes.
+> **Workshop item:** The exact size threshold is subject to review. The value is stored in `Storage.OTr.logSizeThreshold` (Integer, bytes) and set to a default during `OTr_zLogInit`, making it straightforward to adjust without code changes.
 
 ### 2.4 Session Retention Policy
 
-At startup, `OTr_z_LogInit` enumerates all files in the log directory matching the pattern `ObjectTools *.txt`, extracts the unique `YY-MM-DD-HH-MM` session prefixes, sorts them lexicographically (equivalent to chronological order given the format), and deletes all files belonging to sessions beyond the most recent N, where N is stored in `Storage.OT_Logging.retainSessions` (Integer, default `10`).
+At startup, `OTr_zLogInit` enumerates all files in the log directory matching the pattern `ObjectTools *.txt`, extracts the unique `YY-MM-DD-HH-MM` session prefixes, sorts them lexicographically (equivalent to chronological order given the format), and deletes all files belonging to sessions beyond the most recent N, where N is stored in `Storage.OTr.logRetainSessions` (Integer, default `10`).
 
 Deletion applies to all files in the session series (i.e., all files sharing the same timestamp prefix).
 
@@ -97,22 +97,14 @@ Deletion applies to all files in the session series (i.e., all files sharing the
 
 ### 3.1 Column Structure
 
-Each log entry occupies a single logical line with five tab-delimited columns:
+Each log entry occupies a single logical line with four tab-delimited columns:
 
 | Column | Content | Example |
 |---|---|---|
-| C1 | Timestamp (GMT, ISO-style) | `2026-04-07T16:01:01.347Z` |
+| C1 | Timestamp (local time, ISO-style) | `2026-04-07T16:01:01.347` |
 | C2 | Severity level (plain, no brackets) | `info` |
 | C3 | Message source | `env`, `plugin`, or OTr method name e.g. `OTr_DeleteItem` |
 | C4 | Message text | `log level = info` |
-| C5 | Call stack (errors only) | `OTr_DeleteItem → OTr_zValidateHandle` |
-
-**Key characteristics:**
-- All entries have exactly five tab-delimited columns for spreadsheet compatibility.
-- C5 is populated only for entries with severity `error`.
-- C5 uses the `OT Right Arrow` constant (`→`) as the delimiter between stack frames.
-- For non-error entries, C5 contains an empty string (the tab is present, but no content follows).
-- Call stack in C5 reads left-to-right from outermost (oldest) caller to innermost (newest) callee, representing the call hierarchy depth.
 
 The entry is terminated by a single LF character (`Char(10)`) on all platforms. Files are written in binary mode to prevent 4D on Windows from performing any automatic CRLF translation. LF-only files are handled correctly by all modern text editors including Notepad on Windows 10 and later.
 
@@ -120,40 +112,33 @@ Any tab characters within C4 message text must be escaped to `\t` before the ent
 
 ### 3.2 Timestamp Construction (C1)
 
-The `Timestamp` command returns a GMT ISO 8601 string of the form `"YYYY-MM-DDTHH:MM:SS.mmmZ"`. Current implementation uses GMT timestamps directly (with trailing `Z`).
+The `Timestamp` command returns a GMT ISO 8601 string of the form `"YYYY-MM-DDTHH:MM:SS.mmmZ"`. Converting this to local time on every write via `Current date(*)` and `Current time(*)` would incur significant overhead as those calls with the `*` parameter are substantially slower than `Timestamp`. Instead, the UTC offset is computed **once at startup** and cached:
 
-**Future enhancement:** Converting to local time on every write via `Current date(*)` and `Current time(*)` would incur significant overhead, as those calls with the `*` parameter are substantially slower than `Timestamp`. A future phase may cache the UTC offset **once at startup** for efficient local-time conversion:
-
-1. During `OTr_z_LogInit`, call `Current date(*)` and `Current time(*)` to obtain the local wall-clock values, and parse a single `Timestamp` call to obtain the UTC values.
+1. During `OTr_zLogInit`, call `Current date(*)` and `Current time(*)` to obtain the local wall-clock values, and parse a single `Timestamp` call to obtain the UTC values.
 2. Compute the offset in seconds: `$offset_r := (local date/time as seconds) - (UTC date/time as seconds)`.
-3. Store as `Storage.OT_Logging.utcOffset` (Real, e.g. `36000` for UTC+10, `-12600` for UTC-3.5).
+3. Store as `Storage.OTr.logUTCOffset` (Real, e.g. `36000` for UTC+10, `-12600` for UTC-3.5).
 
-On every subsequent write, add the cached offset to the numeric time components, adjust for overflow/underflow at hour and day boundaries, and format C1 as `YYYY-MM-DDTHH:MM:SS.mmm` without the trailing `Z`.
+On every subsequent write, the active logging path calls `Timestamp`, strips the trailing `Z`, adds `Storage.OTr.logUTCOffset` seconds to the numeric time components, adjusts for overflow/underflow at hour and day boundaries, and formats C1 as `YYYY-MM-DDTHH:MM:SS.mmm`.
 
-> **Known limitation:** If a daylight saving time boundary is crossed during a long-running session, the cached offset would be stale and log timestamps would diverge from wall-clock time by one hour. Refreshing the offset periodically is noted as a future enhancement (see Appendix C).
+> **Known limitation:** If a daylight saving time boundary is crossed during a long-running session, the cached offset will be stale and log timestamps will diverge from wall-clock time by one hour. Refreshing the offset periodically is noted as a future enhancement (see Appendix C).
 
 ### 3.3 Example Entries
 
-Default (`info`) level startup entry (non-error, C5 empty):
+Default (`info`) level startup entry:
 ```
-2026-04-07T16:01:01.347Z	info	env	log level = info	
-```
-
-Error entry with call stack in C5:
-```
-2026-04-07T16:01:05.112Z	error	OTr_DeleteItem	Invalid handle	OTr_DeleteItem → OTr_zValidateHandle
+2026-04-07T16:01:01.347	info	env	log level = info
 ```
 
-Error entry with deeper call stack:
+Error entry with call stack:
 ```
-2026-04-07T16:01:05.150Z	error	OTr_PutArrayLong	Array type mismatch	OTr_PutArrayLong → OTr_u_AccessArrayElement → OTr_ValidateArrayTarget
+2026-04-07T16:01:05.112	error	OTr_DeleteItem	Invalid handle [OTr_zValidateHandle < OTr_DeleteItem]
 ```
 
 ---
 
 ## 4. Log Control Levels
 
-Phase 10 uses three log control levels. `Storage.OT_Logging.level` stores the active control level as Text:
+Phase 10 uses three log control levels. `Storage.OTr.logLevel` stores the active control level as Text:
 
 | Control token | Constant | Meaning |
 |---|---|---|
@@ -198,7 +183,7 @@ To change the log level via file:
 3. Save the document as `log_level` in the OTr log directory.
 4. Restart 4D.
 
-The file is read once during `OTr_z_LogInit`. The resolved level is stored in `Storage.OT_Logging.level`. Changes to the file take effect only after 4D is restarted.
+The file is read once during `OTr_zLogInit`. The resolved level is stored in `Storage.OTr.logLevel`. Changes to the file take effect only after 4D is restarted.
 
 For backward compatibility, the legacy filename `log_debug_level` is recognised with identical semantics. If both files are present, `log_level` takes precedence.
 
@@ -306,7 +291,7 @@ This requirement must be clearly documented in the OTr integration guide. Failur
 
 ## 8. Startup Log Entries
 
-`OTr_z_LogInit` writes the following entries at startup. These entries aim to stay close to the legacy ObjectTools startup behaviour while using the installed helper logging routines for low-level file dispatch.
+`OTr_zLogInit` writes the following entries at startup. These entries aim to stay close to the legacy ObjectTools startup behaviour while using the installed helper logging routines for low-level file dispatch.
 
 ### 8.1 Banner (written on launch, including `off`)
 
@@ -326,7 +311,7 @@ no log level file found
 log level = info
 ```
 
-**When the file is found with level `debug` or `info`:**
+**When the file is found:**
 ```
 checking log level path: <fullPath>/log_level
 found log level file: <fullPath>/log_level
@@ -334,14 +319,7 @@ read log level: "debug"
 log level = debug
 ```
 
-**When the file is found with level `off`:**
-```
-checking log level path: <fullPath>/log_level
-found log level file: <fullPath>/log_level
-read log level: "off"
-```
-
-> **`off` behaviour:** When the resolved level is `"off"`, the banner and probe entries (lines 1–6 above) are still written. The final `log level = off` entry is **not** written. All subsequent logging — including the environment blocks, `checked`, errors, and the shutdown entry — is suppressed.
+> **`off` behaviour:** When the resolved level is `"off"`, launch is still registered by the banner and probe entries. All subsequent logging — including the environment blocks, `checked`, errors, and the shutdown entry — is suppressed.
 
 ### 8.3 OTr Info Block (all levels except `off`)
 
@@ -361,47 +339,54 @@ OTr 0.5.0 [release, 64-bit]
 
 ### 8.4 OS Info Block (all levels except `off`)
 
-The following values are gathered from `Get system info` and `Get database localization` and written as a single `info`/`env` log entry with a composite bracket-enclosed message:
-
-**Data collected:**
-- Model identifier from `Get system info`
-- OS version from `Get system info`
-- Processor from `Get system info` (with `(Rosetta)` appended if `macRosetta = True`)
-- Core count and thread count from `Get system info`
-- RAM converted from kilobytes to GB, rounded to nearest whole number: `$physicalMemory / 1048576`
-- Locale from `Get database localization`
-
-**Emitted message text (C4):**
+The following values are gathered from `Get system info` and `Get database localization` and then emitted as a single `info` / `env` summary line.
 
 ```
-[<model>, <osVersion>, <processor>, <cores> cores, <cpuThreads> threads, <ram> GB, <locale>]
+model: <model>
+OS: <osVersion>
+processor: <processor>
+cores: <cores>  threads: <cpuThreads>
+RAM: <N> GB
+locale: <Get database localization>
 ```
 
-Example:
+Examples:
 ```
-[Mac16,11, macOS 26.5.0 (25F5042g), Apple M4 Pro, 14 cores, 14 threads, 64 GB, en-au]
+model: iMac12,2
+OS: macOS Version 15.7.4 (Build 24G517)
+processor: Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz
+cores: 4  threads: 8
+RAM: 16 GB
+locale: en-au
+```
+
+- RAM is converted from kilobytes to GB, rounded to the nearest whole number: `$physicalMemory / 1048576`.
+- `(Rosetta)` is appended to the processor line if `macRosetta = True`.
+
+Emitted message text example:
+
+```
+[Mac 16,11 _Mac mini (2024, M4 Pro), macOS 26.4 Beta (25E5207k), Apple M4 Pro @ 4.41 GHz, 14 cores, 14 threads, 64 GB, en-au]
 ```
 
 ### 8.5 4D Info Block (all levels except `off`)
 
-**Data sources:**
-- Version and build number: `Application version` (via `OTr_z_Get4DVersion`)
-- Process mode: `Application type` → `"Mono"`, `"Server"`, or `"Remote"`
-- Execution mode: `Is compiled` → `"release"` / `"interpreted"`
-- Unicode mode: constant `"Unicode mode"` on v19+
-- OS version: `Get system info.osVersion`
-- CPU architecture: inferred from `Get system info.processor` and `macRosetta` flag
-
-**Emitted message text (C4):**
+Emitted message text:
 
 ```
-4D v<version> build <build> [<processMode>, <execMode>, Unicode mode, <osVersion> (<cpuArch>)]
+4D v<version> build <build> [<processMode>, <execMode>, Unicode mode, <osVersion> (<cpuArch>, 64-bit)]
 ```
 
 Example:
 ```
-4D v19.0.8 build 17 [Mono, interpreted, Unicode mode, macOS Version 15.7.4 (Build 24G517) (Intel)]
+4D v19.0.8 build 17 [Mono, interpreted, Unicode mode, macOS Version 15.7.4 (Build 24G517) (Intel, 64-bit)]
 ```
+
+- Version and build number from `Application version`.
+- Process mode from `Application type` → `"Mono"`, `"Server"`, or `"Remote"`.
+- Execution mode: `Is compiled` → `"release"` / `"interpreted"`.
+- Unicode mode: constant `"Unicode mode"` on v19+.
+- CPU architecture inferred from `Get system info.processor` and `macRosetta`.
 
 ### 8.6 `debug`-Only Additions
 
@@ -435,19 +420,19 @@ checked
 
 `OTr_zLogShutdown` writes a single entry before shutting down logging. As an OTr enhancement beyond the legacy behaviour, the count of currently open handles is appended to assist memory leak detection:
 
-Message text (C4):
+Message text:
 
 ```
-ObjectTools shutdown - <N> handles open
+ObjectTools shutdown — <N> handles open
 ```
 
 Examples:
 ```
-ObjectTools shutdown - 0 handles open
-ObjectTools shutdown - 3 handles open
+ObjectTools shutdown — 0 handles open
+ObjectTools shutdown — 3 handles open
 ```
 
-A non-zero count indicates that `OTr_Clear` was not called for all allocated handles before exit. This entry is not written when the level is `"off"`. C5 is empty for this entry (non-error).
+A non-zero count indicates that `OTr_Clear` was not called for all allocated handles before exit. This entry is not written when the level is `"off"`.
 
 ---
 
@@ -481,32 +466,25 @@ OTr_zError("Invalid path: " + $inTag_t; Current method name)
 
 To provide traceback context in error entries, OTr maintains a per-process LIFO call stack as a process variable Text array (`OTR_callStack_at`).
 
-Every OTr public method calls `OTr_zAddToCallStack(Current method name)` as its first statement (immediately below the #DECLARE line if one is present) and `OTr_zRemoveFromCallStack(Current method name)` as its last statement. Since 4D v19 LTS does not support early returns, every method runs to completion — there is no risk of an unmatched push/pop.
+Every OTr public method calls `OTr_zAddToCallStack(Current method name)` as its first statement, (immediately below the #DECLARE line if one is present) and `OTr_zRemoveFromCallStack(Current method name)` as its last statement. Since 4D v19 LTS does not support early returns, every method runs to completion — there is no risk of an unmatched push/pop.
 
 The stack is initialised by `OTr_zInit` when it first runs in each new process, consistent with the existing guard pattern for process variables.
 
-**Performance gate:** `OTr_zAddToCallStack` and `OTr_zRemoveFromCallStack` return immediately without touching the array if `Storage.OT_Logging.level` is `"off"`, eliminating all stack maintenance overhead when logging is disabled.
+**Performance gate:** `OTr_zAddToCallStack` and `OTr_zRemoveFromCallStack` return immediately without touching the array if `Storage.OTr.logLevel` is `"off"`, eliminating all stack maintenance overhead when logging is disabled.
 
 ### 11.3 Error Entry Format
 
-Error entries use the five-column structure with the error message in C4 and the call stack in C5:
+Error entries use the four-column structure with the call stack appended to C4:
 
 ```
-<C1>	error	<callingMethodName>	<errorMessage>	<stack>
+<C1>	error	<callingMethodName>	<errorMessage> [<stack>]
 ```
 
-The stack in C5 is formatted as a `→`-separated list from outermost (oldest) caller to innermost (newest) callee:
+The stack is formatted as a bracket-enclosed, ` < `-separated list from innermost to outermost frame:
 
 ```
-2026-04-07T16:01:05.112Z	error	OTr_DeleteItem	Invalid handle	OTr_DeleteItem → OTr_zValidateHandle
+2026-04-07T16:01:05.112	error	OTr_DeleteItem	Invalid handle [OTr_zValidateHandle < OTr_DeleteItem]
 ```
-
-Deeper stack example:
-```
-2026-04-07T16:01:05.150Z	error	OTr_u_AccessArrayElement	Array type mismatch	OTr_PutArrayLong → OTr_u_AccessArrayElement → OTr_ValidateArrayTarget
-```
-
-This five-column structure facilitates spreadsheet-based log analysis by separating error details (C4) from call context (C5), allowing independent filtering and sorting on each column.
 
 ### 11.4 Error Message Patterns
 
@@ -526,7 +504,7 @@ The following message patterns are used by `OTr_zError`, derived from the legacy
 
 ## 12. Internal Methods
 
-### 12.1 `OTr_z_LogInit`
+### 12.1 `OTr_zLogInit`
 
 **Access:** Private (`"invisible":true`, `"shared":false`)
 
@@ -534,11 +512,11 @@ The following message patterns are used by `OTr_zError`, derived from the legacy
 
 **Responsibilities:**
 
-1. Resolve and create the log directory. Cache in `Storage.OT_Logging.directory`.
+1. Resolve and create the log directory. Cache in `Storage.OTr.logDirectory`.
 2. Configure the installed helper logging routines to use the OTr log folder and current session log file.
 3. Apply any agreed session retention and session-file naming policy.
-4. Compute and cache UTC offset in `Storage.OT_Logging.utcOffset` if/when local-time conversion is implemented (future enhancement, §3.2).
-5. Read `log_level` or `log_debug_level` file; set `Storage.OT_Logging.level`; fall back to `"info"`.
+4. Compute and cache UTC offset in `Storage.OTr.logUTCOffset` if required by the chosen timestamp format (§3.2).
+5. Read `log_level` or `log_debug_level` file; set `Storage.OTr.logLevel`; fall back to `"info"`.
 6. Write the startup log block (§8).
 
 ---
@@ -550,8 +528,6 @@ The following message patterns are used by `OTr_zError`, derived from the legacy
 **Signature:** `#DECLARE`
 
 **Responsibilities:** Write the shutdown entry including open handle count (§9); then use the installed helper shutdown routines to close log files and stop the helper log writer cleanly.
-
-**Implementation note:** The shutdown method guards against multiple invocations by checking `Storage.OT_Logging=Null` before proceeding. This check confirms that logging was initialised; if called twice (which should not happen in normal usage), the second call returns early without error.
 
 ---
 
@@ -575,11 +551,9 @@ The following message patterns are used by `OTr_zError`, derived from the legacy
 
 **Behaviour:**
 
-1. If logging has not yet been initialised (`Storage.OT_Logging=Null`), automatically call `OTr_z_LogInit` to ensure logging is available. This defensive safeguard handles cases where external code or early error handling calls `OTr_zLogWrite` before the normal lifecycle initialisation has run.
-2. Read `Storage.OT_Logging.level`.
-3. Apply the current control-level rules: `off` suppresses all non-launch output; `info` writes normal and error output; `debug` also writes extra diagnostic output.
-4. Dispatch qualifying entries through the installed helper logging routines rather than implementing direct worker/file I/O in OTr.
-5. For error entries (severity `error`), construct C5 call stack from the process variable array `OTR_callStack_at` using the `OT Right Arrow` constant as delimiter.
+1. Read `Storage.OTr.logLevel`.
+2. Apply the current control-level rules: `off` suppresses all non-launch output; `info` writes normal and error output; `debug` also writes extra diagnostic output.
+3. Dispatch qualifying entries through the installed helper logging routines rather than implementing direct worker/file I/O in OTr.
 
 ---
 
@@ -666,19 +640,17 @@ These methods are dependency methods, not OTr-prefixed Phase 10 design targets. 
 
 ## 13. Storage Schema
 
-### 13.1 Interprocess (`Storage.OT_Logging`)
-
-The logging subsystem stores its state in a separate shared object `Storage.OT_Logging` rather than as properties of `Storage.OTr`. This architectural choice prevents locking contention on the parent OTr object during frequent logging operations, which may occur concurrently on the main process whilst other OTr subsystems access `Storage.OTr`.
+### 13.1 Interprocess (`Storage.OTr`)
 
 | Property | Type | Description |
 |---|---|---|
-| `Storage.OT_Logging.level` | Text | Active log control level token (`"off"`, `"info"`, `"debug"`) |
-| `Storage.OT_Logging.directory` | Text | Resolved absolute path to the log directory with trailing separator |
-| `Storage.OT_Logging.session` | Text | Session timestamp prefix `YY-MM-DD-HH-MM` (immutable within a session) |
-| `Storage.OT_Logging.sequence` | Integer | Current within-session file sequence number (incremented on size rollover) |
-| `Storage.OT_Logging.sizeThreshold` | Integer | File size rollover threshold in bytes (default `1048576` / 1 MB) |
-| `Storage.OT_Logging.retainSessions` | Integer | Number of sessions to retain at startup (default `10`) |
-| `Storage.OT_Logging.utcOffset` | Real | *(Future)* UTC offset in seconds, computed once at startup for local-time conversion |
+| `Storage.OTr.logLevel` | Text | Active minimum severity token (`"info"`, `"debug"`, etc.) |
+| `Storage.OTr.logDirectory` | Text | Resolved absolute path to the log directory |
+| `Storage.OTr.logSession` | Text | Session timestamp prefix `YY-MM-DD-HH-MM` |
+| `Storage.OTr.logSequence` | Integer | Current within-session file sequence number |
+| `Storage.OTr.logSizeThreshold` | Integer | File size rollover threshold in bytes (default TBD — workshop item) |
+| `Storage.OTr.logRetainSessions` | Integer | Number of sessions to retain (default `10`) |
+| `Storage.OTr.logUTCOffset` | Real | UTC offset in seconds, computed once at startup |
 
 ### 13.2 Process Variables
 
@@ -806,19 +778,8 @@ The helper logging routines are now installed in the project and used as the low
 
 ## Appendix C — Future Enhancements
 
-**Local-time timestamp conversion.** Currently, C1 timestamps are written in GMT with trailing `Z`. A future phase may implement the cached UTC offset mechanism (§3.2) to convert timestamps to local time at log write time. This requires minimal overhead when offset is cached at startup but provides better alignment with system logs on regional machines.
-
 **Log archiving.** When a session is purged by the retention policy, all `.txt` files in the session series could be combined into a single ZIP archive (`ObjectTools YY-MM-DD-HH-MM.zip`) using `ZIP Create archive` with the `files` collection syntax, with source files deleted on success. Reference: `ZIP Create archive` (4D v19 documentation).
 
-**DST offset refresh.** The cached `Storage.OT_Logging.utcOffset` could be refreshed at a daily boundary to handle daylight saving time transitions in long-running servers, eliminating the known one-hour divergence limitation documented in §3.2.
+**DST offset refresh.** The cached `Storage.OTr.logUTCOffset` could be refreshed at a daily boundary to handle daylight saving time transitions in long-running servers.
 
-**Configurable thresholds.** The `retainSessions` and `sizeThreshold` values could be exposed via a separate `OTr_LogConfig` method for runtime tuning without code changes.
-
-**Full Mode Logging.** In future phases, a "full" or "trace" logging mode could be introduced to provide comprehensive visibility into all OTr method calls, not just errors:
-
-- **Scope:** Log entry and exit for every OTr public method call (in addition to existing error and environment logging).
-- **Content:** Include parameter values (where non-sensitive), execution duration per method, and call stack context on every entry.
-- **Column C5 usage:** Populate C5 with the call stack on every entry when full mode is active, not just errors, providing complete execution trace.
-- **Activation:** Could be controlled via a new log level constant (e.g., `"full"` or `"trace"`), a separate sentinel file (e.g., `log_full_mode`), or a parameter to the `OTr_LogLevel` method.
-- **Performance:** Full mode incurs significant overhead (one log entry per method call, plus C5 stack construction on every entry) and should only be enabled during active diagnostics, not in production steady state.
-- **Analysis:** The five-column format facilitates filtering and sorting on both error details (C4) and call context (C5), enabling forensic-level debugging of complex object hierarchies and performance analysis.
+**Configurable thresholds.** The `logRetainSessions` and `logSizeThreshold` values could be exposed via a separate `OTr_LogConfig` method.
