@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":false}
+//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_5
 
@@ -34,28 +34,28 @@ $StackSize_i:=0
 $DesiredProcessName_t:=Current method name:C684
 
 If (Current process name:C1392=$DesiredProcessName_t)
-
+	
 	var $h_i : Integer
 	var $total_i; $passed_i; $failed_i : Integer
 	var $failures_t : Text
 	var $summary_t : Text
-
+	
 	// BLOB test vars
 	var $testBlob_blob : Blob
 	var $gotBlob_blob : Blob
-
+	
 	// Picture test vars
 	var $pngB64_t : Text
 	var $pngBlob_blob : Blob
 	var $testPic_pic : Picture
 	var $gotPic_pic : Picture
-
+	
 	// Pointer test vars
 	var $targetVal_t : Text
-
+	
 	// Record test vars
 	var $snapObj_o : Object
-
+	
 	// Variable test vars
 	var $longVar_i : Integer
 	var $realVar_r : Real
@@ -70,10 +70,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $boolVarOut_b : Boolean
 	var $dateVarOut_d : Date
 	var $timeVarOut_h : Time
-
+	
 	// Expand/Collapse tests removed — OTr_uExpandBinaries/OTr_uCollapseBinaries
 	// retired in Phase 6; binary data now stored natively in 4D Objects.
-
+	
 	// ====================================================
 	// SETUP
 	// ====================================================
@@ -83,11 +83,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$passed_i:=0
 	$failed_i:=0
 	$failures_t:=""
-
+	
 	// ====================================================
 	//MARK:- OTr_PutBLOB — basic store
 	// ====================================================
-
+	
 	CONVERT FROM TEXT:C1011("hello-otr-blob-test"; "UTF-8"; $testBlob_blob)
 	$total_i:=$total_i+1
 	OTr_PutBLOB($h_i; "blobval"; $testBlob_blob)
@@ -97,25 +97,28 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutBLOB basic store"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_GetBLOB — stub returns OK=0
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	CLEAR VARIABLE:C89($gotBlob_blob)
-	OTr_GetBLOB($h_i; "blobval"; $gotBlob_blob)
+	var $blob_ptr : Pointer
+	$blob_ptr:=->$gotBlob_blob
+	OTr_GetBLOB($h_i; "blobval"; $blob_ptr)
+	
 	If (OK=0)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"GetBLOB stub should set OK=0"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_GetNewBLOB — round-trip equality
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	CONVERT FROM TEXT:C1011("hello-otr-blob-test"; "UTF-8"; $testBlob_blob)
 	OTr_PutBLOB($h_i; "blobval2"; $testBlob_blob)
@@ -126,11 +129,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"GetNewBLOB round-trip"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutBLOB — invalid handle
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	OTr_PutBLOB(9999; "blobval"; $testBlob_blob)
 	If (OK=0)
@@ -139,7 +142,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutBLOB invalid handle should set OK=0"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutPicture / OTr_GetPicture — round-trip
 	//
@@ -147,12 +150,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// Base64. If PutPicture fails (OK=0), the Base64 may
 	// need replacing with a path to a real image resource.
 	// ====================================================
-
+	
 	$pngB64_t:="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
 	CONVERT FROM TEXT:C1011($pngB64_t; "US-ASCII"; $pngBlob_blob)
 	BASE64 DECODE:C896($pngBlob_blob)
 	BLOB TO PICTURE:C682($pngBlob_blob; $testPic_pic; ".png")
-
+	
 	$total_i:=$total_i+1
 	OTr_PutPicture($h_i; "picval"; $testPic_pic)
 	If (OK=1)
@@ -161,7 +164,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutPicture store"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	$total_i:=$total_i+1
 	$gotPic_pic:=OTr_GetPicture($h_i; "picval")
 	If (OK=1) & (OTr_uEqualPictures($testPic_pic; $gotPic_pic))
@@ -170,14 +173,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"GetPicture round-trip"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// Checkpoint: inspect the stored "picval" raw value
 	OTr_SaveToClipboard($h_i)
-
+	
 	// ====================================================
 	//MARK:- OTr_PutPicture — invalid handle
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	OTr_PutPicture(9999; "picval"; $testPic_pic)
 	If (OK=0)
@@ -186,11 +189,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutPicture invalid handle should set OK=0"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutPointer — store
 	// ====================================================
-
+	
 	$targetVal_t:="pointer-round-trip"
 	$total_i:=$total_i+1
 	OTr_PutPointer($h_i; "ptrval"; ->$targetVal_t)
@@ -200,7 +203,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutPointer store"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_GetPointer — call succeeds (OK=1)
 	//
@@ -211,7 +214,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// instead of $outPointer_ptr:=, and the caller to pass
 	// ->$dest_ptr. This is flagged as a known issue.
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	OTr_GetPointer($h_i; "ptrval"; ->$ptrVar_ptr)
 	If (OK=1)
@@ -220,11 +223,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"GetPointer OK should be 1"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_GetPointer — invalid handle
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	OTr_GetPointer(9999; "ptrval"; ->$ptrVar_ptr)
 	If (OK=0)
@@ -233,11 +236,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"GetPointer invalid handle should set OK=0"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutRecord — invalid handle
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	OTr_PutRecord(9999; "rec"; 1)
 	If (OK=0)
@@ -246,11 +249,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutRecord invalid handle should set OK=0"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutRecord — invalid table number
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	OTr_PutRecord($h_i; "rec"; -1)
 	If (OK=0)
@@ -259,11 +262,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutRecord invalid table should set OK=0"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_GetRecord — invalid handle
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	OTr_GetRecord(9999; "rec"; 1)
 	If (OK=0)
@@ -272,11 +275,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"GetRecord invalid handle should set OK=0"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_GetRecord — invalid table number
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	OTr_GetRecord($h_i; "rec"; -1)
 	If (OK=0)
@@ -285,7 +288,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"GetRecord invalid table should set OK=0"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_GetRecordTable — hand-crafted snapshot
 	//
@@ -293,11 +296,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// live OTr object (under the registry lock), then
 	// verify OTr_GetRecordTable returns the __tableNum.
 	// ====================================================
-
+	
 	OTr_zLock
 	OB SET:C1220(<>OTR_Objects_ao{$h_i}; "snaptag"; New object:C1471("__tableNum"; 7; "SomeField"; "test-value"))
 	OTr_zUnlock
-
+	
 	$total_i:=$total_i+1
 	If (OTr_GetRecordTable($h_i; "snaptag")=7)
 		$passed_i:=$passed_i+1
@@ -305,11 +308,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"GetRecordTable hand-crafted snapshot"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_GetRecordTable — missing __tableNum
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	OTr_zLock
 	OB SET:C1220(<>OTR_Objects_ao{$h_i}; "notasnap"; New object:C1471("x"; "y"))
@@ -320,16 +323,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"GetRecordTable missing __tableNum should return 0"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutVariable / OTr_GetVariable — LongInt
 	// ====================================================
-
+	
 	$longVar_i:=12345
 	OTr_PutVariable($h_i; "vlong"; ->$longVar_i)
 	$longVarOut_i:=0
 	OTr_GetVariable($h_i; "vlong"; ->$longVarOut_i)
-
+	
 	$total_i:=$total_i+1
 	If ($longVarOut_i=12345)
 		$passed_i:=$passed_i+1
@@ -337,16 +340,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutVariable/GetVariable LongInt"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutVariable / OTr_GetVariable — Real
 	// ====================================================
-
+	
 	$realVar_r:=3.14159
 	OTr_PutVariable($h_i; "vreal"; ->$realVar_r)
 	$realVarOut_r:=0
 	OTr_GetVariable($h_i; "vreal"; ->$realVarOut_r)
-
+	
 	$total_i:=$total_i+1
 	If ($realVarOut_r>3.1415) & ($realVarOut_r<3.1417)
 		$passed_i:=$passed_i+1
@@ -354,16 +357,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutVariable/GetVariable Real"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutVariable / OTr_GetVariable — Text
 	// ====================================================
-
+	
 	$textVar_t:="hello-variable"
 	OTr_PutVariable($h_i; "vtext"; ->$textVar_t)
 	$textVarOut_t:=""
 	OTr_GetVariable($h_i; "vtext"; ->$textVarOut_t)
-
+	
 	$total_i:=$total_i+1
 	If ($textVarOut_t="hello-variable")
 		$passed_i:=$passed_i+1
@@ -371,16 +374,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutVariable/GetVariable Text"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutVariable / OTr_GetVariable — Boolean True
 	// ====================================================
-
+	
 	$boolVar_b:=True:C214
 	OTr_PutVariable($h_i; "vboolt"; ->$boolVar_b)
 	$boolVarOut_b:=False:C215
 	OTr_GetVariable($h_i; "vboolt"; ->$boolVarOut_b)
-
+	
 	$total_i:=$total_i+1
 	If ($boolVarOut_b=True:C214)
 		$passed_i:=$passed_i+1
@@ -388,16 +391,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutVariable/GetVariable Boolean True"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutVariable / OTr_GetVariable — Boolean False
 	// ====================================================
-
+	
 	$boolVar_b:=False:C215
 	OTr_PutVariable($h_i; "vboolf"; ->$boolVar_b)
 	$boolVarOut_b:=True:C214
 	OTr_GetVariable($h_i; "vboolf"; ->$boolVarOut_b)
-
+	
 	$total_i:=$total_i+1
 	If ($boolVarOut_b=False:C215)
 		$passed_i:=$passed_i+1
@@ -405,16 +408,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutVariable/GetVariable Boolean False"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutVariable / OTr_GetVariable — Date
 	// ====================================================
-
+	
 	$dateVar_d:=!2026-04-03!
 	OTr_PutVariable($h_i; "vdate"; ->$dateVar_d)
 	$dateVarOut_d:=!1900-01-01!
 	OTr_GetVariable($h_i; "vdate"; ->$dateVarOut_d)
-
+	
 	$total_i:=$total_i+1
 	If ($dateVarOut_d=!2026-04-03!)
 		$passed_i:=$passed_i+1
@@ -422,16 +425,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutVariable/GetVariable Date"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutVariable / OTr_GetVariable — Time
 	// ====================================================
-
+	
 	$timeVar_h:=?14:35:00?
 	OTr_PutVariable($h_i; "vtime"; ->$timeVar_h)
 	$timeVarOut_h:=?00:00:00?
 	OTr_GetVariable($h_i; "vtime"; ->$timeVarOut_h)
-
+	
 	$total_i:=$total_i+1
 	If ($timeVarOut_h=?14:35:00?)
 		$passed_i:=$passed_i+1
@@ -439,14 +442,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutVariable/GetVariable Time"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutVariable — Pointer (check OK=1)
 	//
 	// Full round-trip verification requires OTr_GetPointer
 	// write-back fix (see GetPointer note above).
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	OTr_PutVariable($h_i; "vptr"; ->$targetVal_t)
 	If (OK=1)
@@ -455,14 +458,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutVariable Pointer store"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutVariable — BLOB round-trip via GetVariable
 	// ====================================================
-
+	
 	CONVERT FROM TEXT:C1011("blob-via-putvariable"; "UTF-8"; $testBlob_blob)
 	OTr_PutVariable($h_i; "vblob"; ->$testBlob_blob)
-
+	
 	$total_i:=$total_i+1
 	If (OK=1)
 		$passed_i:=$passed_i+1
@@ -470,10 +473,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutVariable BLOB store"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	CLEAR VARIABLE:C89($gotBlob_blob)
 	OTr_GetVariable($h_i; "vblob"; ->$gotBlob_blob)
-
+	
 	$total_i:=$total_i+1
 	If (OK=1) & (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
 		$passed_i:=$passed_i+1
@@ -481,13 +484,13 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"GetVariable BLOB round-trip"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutVariable — Picture round-trip via GetVariable
 	// ====================================================
-
+	
 	OTr_PutVariable($h_i; "vpic"; ->$testPic_pic)
-
+	
 	$total_i:=$total_i+1
 	If (OK=1)
 		$passed_i:=$passed_i+1
@@ -495,9 +498,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutVariable Picture store"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	OTr_GetVariable($h_i; "vpic"; ->$gotPic_pic)
-
+	
 	$total_i:=$total_i+1
 	If (OK=1) & (OTr_uEqualPictures($testPic_pic; $gotPic_pic))
 		$passed_i:=$passed_i+1
@@ -505,17 +508,17 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"GetVariable Picture round-trip"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_PutVariable — LongInt array delegation
 	// ====================================================
-
+	
 	ARRAY LONGINT:C221($longArr_ai; 3)
 	$longArr_ai{1}:=11
 	$longArr_ai{2}:=22
 	$longArr_ai{3}:=33
 	OTr_PutVariable($h_i; "varr"; ->$longArr_ai)
-
+	
 	$total_i:=$total_i+1
 	If (OK=1) & (OTr_ArrayType($h_i; "varr")=LongInt array:K8:19)
 		$passed_i:=$passed_i+1
@@ -523,14 +526,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutVariable LongInt array delegation"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_GetVariable — LongInt array delegation
 	// ====================================================
-
+	
 	ARRAY LONGINT:C221($longArr_ai; 0)
 	OTr_GetVariable($h_i; "varr"; ->$longArr_ai)
-
+	
 	$total_i:=$total_i+1
 	If (Size of array:C274($longArr_ai)=3) & ($longArr_ai{1}=11) & ($longArr_ai{3}=33)
 		$passed_i:=$passed_i+1
@@ -538,14 +541,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"GetVariable LongInt array delegation"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// Checkpoint: inspect all variable tag values
 	OTr_SaveToClipboard($h_i)
-
+	
 	// ====================================================
 	//MARK:- OTr_PutVariable — invalid handle
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	OTr_PutVariable(9999; "vlong"; ->$longVar_i)
 	If (OK=0)
@@ -554,11 +557,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$failed_i:=$failed_i+1
 		$failures_t:=$failures_t+"PutVariable invalid handle should set OK=0"+Char:C90(Carriage return:K15:38)
 	End if 
-
+	
 	// ====================================================
 	//MARK:- OTr_GetVariable — invalid handle
 	// ====================================================
-
+	
 	$total_i:=$total_i+1
 	OTr_GetVariable(9999; "vlong"; ->$longVarOut_i)
 	If (OK=0)
@@ -571,16 +574,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	//MARK:- SUMMARY
 	// ====================================================
 	OTr_ClearAll
-
+	
 	$summary_t:="Phase 5 Tests"+Char:C90(Carriage return:K15:38)
 	$summary_t:=$summary_t+"Total:  "+String:C10($total_i)+Char:C90(Carriage return:K15:38)
 	$summary_t:=$summary_t+"Passed: "+String:C10($passed_i)+Char:C90(Carriage return:K15:38)
 	$summary_t:=$summary_t+"Failed: "+String:C10($failed_i)
-
+	
 	If ($failed_i>0)
 		$summary_t:=$summary_t+Char:C90(Carriage return:K15:38)+Char:C90(Carriage return:K15:38)+"Failures:"+Char:C90(Carriage return:K15:38)+$failures_t
 	End if 
-
+	
 	ALERT:C41($summary_t)
 	SET TEXT TO PASTEBOARD:C523($summary_t)
 Else 

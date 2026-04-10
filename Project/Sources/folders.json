@@ -141,7 +141,7 @@
 	},
 	"OT Private Methods": {
 		"methods": [
-			"Compiler_OTr",
+			"Compiler_ObjectToolsReplacement",
 			"Compiler_OTrSortInterprocess",
 			"Compiler_OTrSortProcess",
 			"OTr_z_Koala",

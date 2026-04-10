@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetPointer (inObject; inTag; outPointer)
 
@@ -73,7 +73,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outPointer_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name)
+OTr_zAddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -88,9 +88,9 @@ If (OTr_zIsValidHandle($inObject_i))
 	End if 
 Else 
 	OTr_zError("Invalid handle"; Current method name:C684)
-	OTr_zSetOK(0)
+	
 End if 
 
 OTr_zUnlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

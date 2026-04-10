@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: Compiler_OTr
+// Project Method: Compiler_ObjectToolsReplacement
 
 // Declares all variables and parameters for the
 // Object Tools Replacement component
@@ -294,7 +294,7 @@ If (False:C215)
 	
 	C_LONGINT:C283(OTr_GetBLOB; $1)
 	C_TEXT:C284(OTr_GetBLOB; $2)
-	C_BLOB:C604(OTr_GetBLOB; $3)
+	C_POINTER:C301(OTr_GetBLOB; $3)
 	
 	C_BLOB:C604(OTr_GetNewBLOB; $0)
 	C_LONGINT:C283(OTr_GetNewBLOB; $1)
@@ -536,6 +536,11 @@ If (False:C215)
 	C_BOOLEAN:C305(____Test_Phase_10b; $1)
 	C_LONGINT:C283(____Test_Phase_10b_OTr; $1)
 	C_LONGINT:C283(____Test_Phase_10b_OT; $1)
+	
+	// Phase 10c sub-methods
+	C_BOOLEAN:C305(____Test_Phase_10c; $1)
+	C_LONGINT:C283(____Test_Phase_10c_OTr; $1)
+	C_LONGINT:C283(____Test_Phase_10c_OT; $1)
 	
 	// Phase 15 sub-methods
 	C_BOOLEAN:C305(____Test_Phase_15; $1)

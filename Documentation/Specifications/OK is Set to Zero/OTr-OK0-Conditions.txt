@@ -1,0 +1,147 @@
+OT Command	Page	Error Condition
+OT Copy	24	memory cannot be allocated for the copy
+OT PutArray	26	inObject is not a valid object handle
+OT PutArray	26	an item with the given tag exists and has any other type
+OT PutArrayBLOB	27	the object is not a valid object handle, if no item in the object has the given tag, or if the 4D version is not v14 or later
+OT PutArrayBLOB	27	an item with the given tag exists and has any other type, or if the index is out of range
+OT PutArrayBoolean	28	the object is not a valid object handle or if no item in the object has the given tag
+OT PutArrayBoolean	28	an item with the given tag exists and has any other type, or if the index is out of range
+OT PutArrayDate	29	the object is not a valid object handle or if no item in the object has the given tag
+OT PutArrayDate	29	an item with the given tag exists and has any other type, or if the index is out of range
+OT PutArrayLong	30	the object is not a valid object handle or if no item in the object has the given tag
+OT PutArrayLong	30	an item with the given tag exists and has any other type, or if the index is out of range
+OT PutArrayPicture	31	the object is not a valid object handle or if no item in the object has the given tag
+OT PutArrayPicture	31	an item with the given tag exists and has any other type, or if the index is out of range
+OT PutArrayPointer	32	the object is not a valid object handle or if no item in the object has the given tag
+OT PutArrayPointer	32	an item with the given tag exists and has any other type, or if the index is out of range
+OT PutArrayReal	33	the object is not a valid object handle or if no item in the object has the given tag
+OT PutArrayReal	33	an item with the given tag exists and has any other type, or if the index is out of range
+OT PutArrayString	34	the object is not a valid object handle or if no item in the object has the given tag
+OT PutArrayString	34	an item with the given tag exists and has any other type, or if the index is out of range
+OT PutArrayText	35	the object is not a valid object handle or if no item in the object has the given tag
+OT PutArrayText	35	an item with the given tag exists and has any other type, or if the index is out of range
+OT PutArrayTime	36	the object is not a valid object handle, if no item in the object has the given tag, or if the 4D version is not v14 or later
+OT PutArrayTime	36	an item with the given tag exists and has any other type, or if the index is out of range
+OT PutBLOB	37	inObject is not a valid object handle
+OT PutBLOB	37	an item with the given tag exists and has any other type
+OT PutBoolean	38	inObject is not a valid object handle
+OT PutBoolean	38	an item with the given tag exists and has any other type
+OT PutDate	39	inObject is not a valid object handle
+OT PutDate	39	an item with the given tag exists and has any other type
+OT PutLong	40	inObject is not a valid object handle
+OT PutLong	40	an item with the given tag exists and has any other type
+OT PutObject	41	inObject is not a valid object handle
+OT PutObject	41	an item with the given tag exists and has any other type
+OT PutPicture	42	inObject is not a valid object handle
+OT PutPicture	42	an item with the given tag exists and has any other type
+OT PutPointer	43	inObject is not a valid object handle
+OT PutPointer	43	an item with the given tag exists and has any other type
+OT PutReal	44	inObject is not a valid object handle
+OT PutReal	44	an item with the given tag exists and has any other type
+OT PutRecord	45	inObject is not a valid object handle
+OT PutRecord	45	table is not a valid table or field pointer, or if there is no current record for the given table
+OT PutString	46	inObject is not a valid object handle
+OT PutString	46	an item with the given tag exists and has any other type
+OT PutText	47	inObject is not a valid object handle
+OT PutText	47	an item with the given tag exists and has any other type
+OT PutTime	48	inObject is not a valid object handle
+OT PutTime	48	an item with the given tag exists and has any other type
+OT GetArray	51	invalid object handle
+OT GetArray	51	FailOnNoItem option set
+OT GetArray	51	an item with the given tag exists and has any other type
+OT GetArrayBLOB	52	invalid object handle
+OT GetArrayBLOB	52	FailOnNoItem option set
+OT GetArrayBLOB	52	an item with the given tag exists and has any other type, or if the index is out of range
+OT GetArrayBoolean	53	invalid object handle
+OT GetArrayBoolean	53	FailOnNoItem option set
+OT GetArrayBoolean	53	an item with the given tag exists and has any other type, or if the index is out of range
+OT GetArrayDate	54	invalid object handle
+OT GetArrayDate	54	FailOnNoItem option set
+OT GetArrayDate	54	an item with the given tag exists and has any other type, or if the index is out of range
+OT GetArrayLong	55	invalid object handle
+OT GetArrayLong	55	FailOnNoItem option set
+OT GetArrayLong	55	an item with the given tag exists and has any other type, or if the index is out of range
+OT GetArrayPicture	56	invalid object handle
+OT GetArrayPicture	56	FailOnNoItem option set
+OT GetArrayPicture	56	an item with the given tag exists and has any other type, or if the index is out of range
+OT GetArrayPointer	57	invalid object handle
+OT GetArrayPointer	57	FailOnNoItem option set
+OT GetArrayPointer	57	an item with the given tag exists and has any other type, or if the index is out of range
+OT GetArrayReal	58	invalid object handle
+OT GetArrayReal	58	FailOnNoItem option set
+OT GetArrayReal	58	an item with the given tag exists and has any other type, or if the index is out of range
+OT GetArrayString	59	invalid object handle
+OT GetArrayString	59	FailOnNoItem option set
+OT GetArrayString	59	an item with the given tag exists and has any other type, or if the index is out of range
+OT GetArrayText	60	invalid object handle
+OT GetArrayText	60	FailOnNoItem option set
+OT GetArrayText	60	an item with the given tag exists and has any other type, or if the index is out of range
+OT GetArrayTime	61	the 4D version is not v14 or later
+OT GetArrayTime	61	FailOnNoItem option set
+OT GetArrayTime	61	an item with the given tag exists and has any other type, or if the index is out of range
+OT GetBLOB	62	invalid object handle
+OT GetBLOB	62	FailOnNoItem option set
+OT GetBLOB	62	an item with the given tag exists and has any other type
+OT GetBoolean	63	invalid object handle
+OT GetBoolean	63	FailOnNoItem option set
+OT GetBoolean	63	an item with the given tag exists and has any other type
+OT GetDate	64	invalid object handle
+OT GetDate	64	FailOnNoItem option set
+OT GetDate	64	an item with the given tag exists and has any other type
+OT GetLong	65	invalid object handle
+OT GetLong	65	FailOnNoItem option set
+OT GetLong	65	an item with the given tag exists and has any other type
+OT GetNewBLOB	66	invalid object handle
+OT GetNewBLOB	66	FailOnNoItem option set
+OT GetNewBLOB	66	an item with the given tag exists and has any other type
+OT GetObject	67	invalid object handle
+OT GetObject	67	an item with the given tag exists and has any other type
+OT GetPicture	68	invalid object handle
+OT GetPicture	68	FailOnNoItem option set
+OT GetPicture	68	an item with the given tag exists and has any other type
+OT GetPointer	69	invalid object handle
+OT GetPointer	69	FailOnNoItem option set
+OT GetPointer	69	an item with the given tag exists and has any other type
+OT GetReal	70	invalid object handle
+OT GetReal	70	FailOnNoItem option set
+OT GetReal	70	an item with the given tag exists and has any other type
+OT GetRecord	71	object is not a valid object handle
+OT GetRecord	71	there is no current record for the item’s table or the current record is locked
+OT GetRecordTable	72	the object is not a valid object handle, or no item in object has the given tag, zero is returned
+OT GetRecordTable	72	an item with the given tag exists and has any other type, zero is returned
+OT GetString	73	invalid object handle
+OT GetString	73	FailOnNoItem option set
+OT GetString	73	an item with the given tag exists and has any other type
+OT GetText	74	invalid object handle
+OT GetText	74	FailOnNoItem option set
+OT GetText	74	an item with the given tag exists and has any other type
+OT GetTime	75	invalid object handle
+OT GetTime	75	FailOnNoItem option set
+OT GetTime	75	an item with the given tag exists and has any other type
+OT GetVariable	76	inObject is not a valid object handle
+OT GetVariable	76	an item with the given tag exists and has any other type
+OT GetVariable	76	the object is not a valid object handle
+OT GetVariable	76	an item with the given tag exists and has a type other than the type of the destination variable
+OT DeleteElement	78	inObject is not a valid object handle, if no item in the object has the given tag, or if the item’s type is not an array type
+OT FindInArray	79	inObject is not a valid object handle, if no item in the object has the given tag, or if the item’s type is not an array type
+OT InsertElement	80	inObject is not a valid object handle, if no item in the object has the given tag, or if the item’s type is not an array type
+OT ResizeArray	81	inObject is not a valid object handle, if no item in the object has the given tag, or if the item’s type is not an array type
+OT SizeOfArray	82	inObject is not a valid object handle, if no item in the object has the given tag, or if the item’s type is not an array type
+OT SortArrays	83	inObject is not a valid object handle, if no item in the object has the given tag, if the item’s type is not a sortable array type, if all of the arrays do not have the same number of elements, or if a direction is not valid
+OT ItemCount	86	invalid object handle
+OT ItemCount	86	non-empty inTag passed (reserved parameter must be empty string)
+OT ObjectSize	87	invalid object handle
+OT GetAllNamedProperties	89	the object is not a valid object handle, inTag is non-empty and does not reference an embedded object, or if the arrays are not of the type specified, arrays are cleared
+OT GetAllProperties	90	the object is not a valid object handle or if the arrays are not of the type specified, arrays are cleared
+OT GetItemProperties	91	inObject is not a valid object handle or inIndex is out of range
+OT GetNamedProperties	92	invalid object handle
+OT IsEmbedded	93	invalid object handle
+OT ItemExists	94	invalid object handle
+OT ItemType	95	invalid object handle
+OT CompareItems	97	inSourceObject or inCompareObject is not a valid object handle, if either of the two items do not exist, or if the two items do not have the same type
+OT RenameItem	98	the object handle is invalid, or if the item does not exist, or if an existing item has the same name as inNewTag
+OT CopyItem	99	either object handle is not valid, or if the source item does not exist, or if the source item and destination item do not have the same type
+OT DeleteItem	100	invalid object handle
+OT ObjectToBLOB	103	the serialized object contains BLOB or Time arrays and the version of 4D is not v14 or later
+OT ObjectToBLOB	103	inObject is not a valid object handle, if ioBLOB is not a valid BLOB, or if memory cannot be allocated to copy the object
+OT ObjectToNewBLOB	104	invalid object handle

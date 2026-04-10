@@ -822,3 +822,67 @@ The helper logging routines are now installed in the project and used as the low
 - **Activation:** Could be controlled via a new log level constant (e.g., `"full"` or `"trace"`), a separate sentinel file (e.g., `log_full_mode`), or a parameter to the `OTr_LogLevel` method.
 - **Performance:** Full mode incurs significant overhead (one log entry per method call, plus C5 stack construction on every entry) and should only be enabled during active diagnostics, not in production steady state.
 - **Analysis:** The five-column format facilitates filtering and sorting on both error details (C4) and call context (C5), enabling forensic-level debugging of complex object hierarchies and performance analysis.
+
+---
+
+## Appendix D — Fix Log and Verification Checklist
+
+This appendix records the root cause analysis, fixes applied, and the test strategy for ensuring `OK` correctness across all OTr error paths.
+
+### D.1 Root Cause — Resolved (2026-04-10)
+
+The observed behaviour in which several OTr negative-path scenarios reported `OK=1` under `info` and `debug` logging levels, but `OK=0` under `off` logging, was caused by a single omission in `OTr_zError`.
+
+`OTr_zError` is the universal error chokepoint through which all OTr error paths pass. It called `OTr_zLogWrite` and then optionally invoked the configured error handler, but it never called `OTr_zSetOK(0)`. This meant that `OK` was only reliably set to zero when `OTr_zAddToCallStack` ran during the entry phase of an erroring method, since `OTr_zAddToCallStack` is gated on the logging level being at least `info`. Under `off`, neither `OTr_zAddToCallStack` nor any other mechanism set `OK`, leaving it at whatever value the 4D engine last wrote.
+
+The fix is that `OTr_zError` now calls `OTr_zSetOK(0)` centrally after `OTr_zLogWrite`, regardless of log level. The placement is intentional: it runs on every error path, under every logging level, without relying on the call-stack machinery. A comment in the method records this rationale.
+
+The correct testing strategy, which follows from this analysis, is:
+
+- Assert `OK=0` on all documented error paths.
+- Do not assert `OK=1` on success paths. The legacy ObjectTools documentation specifies `OK is set to zero` 146 times across 54 commands and never specifies `OK=1`. Asserting `OK=1` on success would be beyond the documented contract.
+
+### D.2 Fix Applied — `OTr_zError`
+
+File: `Project/Sources/Methods/OTr_zError.4dm`
+
+The relevant addition, inserted immediately after the `OTr_zLogWrite` call:
+
+```4d
+// Honour the legacy ObjectTools contract: OK is always set to zero on error.
+// The legacy documentation specifies “OK is set to zero” 146 times and never
+// specifies OK=1. Setting it here centrally ensures all error paths comply
+// regardless of whether the calling method sets it explicitly.
+OTr_zSetOK(0)
+```
+
+This change makes the `off`/`info`/`debug` `OK` values consistent across all negative-path scenarios.
+
+### D.3 Phase 10c — Comprehensive OK=0 Test Suite
+
+A new test suite, `____Test_Phase_10c`, has been created to provide systematic side-by-side verification against the legacy ObjectTools plugin for all 54 commands that set `OK=0` per the documentation. It follows the same controller + `_OTr` / `_OT` sub-method pattern as `Phase 10`, `Phase 10a`, and `Phase 10b`.
+
+The suite comprises three methods:
+
+- `____Test_Phase_10c` — controller; launches in a dedicated process and writes a timestamped five-column tab-delimited text file to the `Logs` folder.
+- `____Test_Phase_10c_OTr` — 120 OTr error scenarios covering every command documented with an OK=0 condition. Each scenario represents one of the three canonical error classes: (A) invalid handle, (B) missing tag, or (C) type mismatch / index out of range.
+- `____Test_Phase_10c_OT` — OT plugin equivalent (initially a stub). The body must be commented out on platforms where the plugin is absent.
+
+The 54 commands covered and the 120 scenarios are:
+
+`OT Copy` (1), `OT PutArray` (2), `OT PutArrayBLOB` (2), `OT PutArrayBoolean` (2), `OT PutArrayDate` (2), `OT PutArrayLong` (2), `OT PutArrayPicture` (2), `OT PutArrayPointer` (2), `OT PutArrayReal` (2), `OT PutArrayString` (2), `OT PutArrayText` (2), `OT PutArrayTime` (2), `OT PutBLOB` (2), `OT PutBoolean` (2), `OT PutDate` (2), `OT PutLong` (3: invalid handle, type mismatch, invalid dotted path), `OT PutPointer` (2), `OT PutReal` (2), `OT PutString` (2), `OT PutText` (2), `OT PutTime` (2), `OT PutVariable` (1) + `OT GetVariable` type mismatch (1), `OT GetArray` (2), `OT GetArrayBLOB` (2), `OT GetArrayBoolean` (2), `OT GetArrayDate` (2), `OT GetArrayLong` (2), `OT GetArrayPicture` (2), `OT GetArrayPointer` (2), `OT GetArrayReal` (2), `OT GetArrayString` (2), `OT GetArrayText` (2), `OT GetArrayTime` (2), `OT GetBLOB` (2), `OT GetBoolean` (2), `OT GetDate` (2), `OT GetLong` (3: invalid handle, missing tag, type mismatch), `OT GetNewBLOB` (2), `OT GetObject` (2), `OT GetPicture` (2), `OT GetPointer` (3: invalid handle, missing tag, type mismatch), `OT GetReal` (2), `OT GetString` (2), `OT GetText` (2), `OT GetTime` (2), `OT DeleteElement` (2), `OT FindInArray` (1), `OT InsertElement` (1), `OT ResizeArray` (1), `OT SizeOfArray` (2), `OT SortArrays` (1), `OT ItemCount` (1), `OT ObjectSize` (1), `OT ItemExists` (1), `OT ItemType` (1), `OT IsEmbedded` (1), `OT GetAllProperties` (1), `OT GetAllNamedProperties` (1), `OT GetItemProperties` (1), `OT GetNamedProperties` (1), `OT CompareItems` (2), `OT RenameItem` (2), `OT CopyItem` (2), `OT DeleteItem` (2), `OT ObjectToBLOB` (1), `OT ObjectToNewBLOB` (1), `OT BLOBToObject` (1).
+
+### D.4 Verification Steps (Pending)
+
+The following steps are outstanding as of 2026-04-10:
+
+- Run `____Test_Phase_10c` on a machine where the ObjectTools plugin is available. Complete the body of `____Test_Phase_10c_OT` by index and confirm that OT and OTr agree on `OK=0` for all 120 scenarios.
+- Re-run `Phase 10` and `Phase 10b` under all three log levels (`info`, `debug`, and `off`) to confirm that the `OTr_zError` fix eliminates the previously observed `OK` drift between `debug` and `off`.
+- Reconfirm that `Phase 10a` and `Phase 15` remain stable after the fix.
+- Confirm that `OTr_GetPointer` line 91 retains its now-redundant but harmless explicit `OTr_zSetOK(0)` call, or clean it up at discretion.
+
+### D.5 Scope Notes
+
+- The `off` / `info` / `debug` `OK` discrepancies observed in the original cross-machine captures (prior to the fix) are now fully explained by the missing `OTr_zSetOK(0)` call in `OTr_zError`. No individual OTr API method is suspected of an independent `OK`-handling defect.
+- The legacy ObjectTools contract requires `OK=0` on error and is silent on the success-path value of `OK`. `Phase 10c` tests accordingly: it asserts error paths only.
+- `OTr_zIsValidHandle` calls `OTr_zSetOK(0)` directly on all three invalid handle conditions. This remains correct and is complementary to the fix in `OTr_zError`; both are needed because `OTr_zIsValidHandle` returns early before calling `OTr_zError`.

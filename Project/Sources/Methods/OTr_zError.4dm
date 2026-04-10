@@ -31,9 +31,15 @@ $logMessage_t:=$message_t
 
 OTr_zLogWrite("error"; $source_t; $logMessage_t)
 
+// Honour the legacy ObjectTools contract: OK is always set to zero on error.
+// The legacy documentation specifies "OK is set to zero" 146 times and never
+// specifies OK=1. Setting it here centrally ensures all error paths comply
+// regardless of whether the calling method sets it explicitly.
+OTr_zSetOK(0)
+
 $handler_t:=<>OTR_ErrorHandler_t
 If ($handler_t#"")
 	EXECUTE METHOD:C1007($handler_t)
 	$handled_b:=True:C214
-End if 
+End if
 

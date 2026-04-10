@@ -1,6 +1,5 @@
 //%attributes = {"invisible":true}
-var $theLevel_t; $theLevel_2_t : Text
+#DECLARE($inObject_i : Integer; $inTag_t : Text; $outVarPointer_ptr : Pointer)
 
-$theLevel_t:=OTr_z_Get4DVersion
-
-
+$varType_i:=Type:C295($outVarPointer_ptr)  // Returns is pointer
+$returnType_i:=Value type:C1509($outVarPointer_ptr->)  // Returns whatever it is pointing to

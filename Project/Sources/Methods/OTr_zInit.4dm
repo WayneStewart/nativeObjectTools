@@ -39,10 +39,9 @@ End if
 
 
 
-
 C_BOOLEAN:C305(<>OTR_Initialised_b; OTR_Initialised_b)
 
-Compiler_OTr
+Compiler_ObjectToolsReplacement
 
 
 If (Not:C34(<>OTR_Initialised_b))
