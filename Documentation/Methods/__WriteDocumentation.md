@@ -1,1 +1,0 @@
-<!-- Does not require any parameters -->## \_\_WriteDocumentation| Parameters || --- || Does not require any parameters |

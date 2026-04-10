@@ -1,1 +1,0 @@
-<!--Compiler_Log Does not require any parameters -->## Compiler\_Log/* ---------------------------------------------------- Project Method: Compiler\_LogCompiler variables related to the Foundation Log routines.Access: PrivateParameters: NoneReturns: Nothing| Parameters || --- || Does not require any parameters |

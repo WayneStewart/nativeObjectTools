@@ -1,1 +1,0 @@
-<!--Compiler_LogMethods Does not require any parameters -->## Compiler\_LogMethodsCompiler\_LogMethodsJust the methodsAttributes: Private, Invisible, Preemptive indifferent/| Parameters || --- || Does not require any parameters |

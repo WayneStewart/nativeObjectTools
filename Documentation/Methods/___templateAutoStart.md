@@ -1,1 +1,0 @@
-<!--___templateAutoStart Does not require any parameters -->## \_\_\_templateAutoStart\_\_\_templateAutoStartThis is a template method of an autostart type for the AI to useAccess: ???/| Parameters || --- || Does not require any parameters |

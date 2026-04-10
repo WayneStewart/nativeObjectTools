@@ -1,1 +1,0 @@
-<!--OTr_zLock Does not require any parameters -->## OTr\_zLockOTr\_zLockAcquires the OTr registry semaphore.Attributes: Private, Invisible, Preemptive indifferent| Parameters || --- || Does not require any parameters |

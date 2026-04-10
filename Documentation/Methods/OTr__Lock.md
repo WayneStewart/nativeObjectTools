@@ -1,1 +1,0 @@
-<!--OTr__Lock Does not require any parameters -->## OTr\_\_LockOTr\_\_LockAcquires the OTr registry semaphore.Attributes: Private, Invisible, Preemptive indifferent| Parameters || --- || Does not require any parameters |
