@@ -1,4 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
+/*
+
 // ----------------------------------------------------
 // Project Method: OTr_zError ($message_t : Text; $source_t : Text) --> \
 //   $handled_b : Boolean
@@ -17,6 +19,8 @@
 // Created by Wayne Stewart, 2026-03-31
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
+
+*/
 
 #DECLARE($message_t : Text; $source_t : Text)->$handled_b : Boolean
 
@@ -41,5 +45,5 @@ $handler_t:=<>OTR_ErrorHandler_t
 If ($handler_t#"")
 	EXECUTE METHOD:C1007($handler_t)
 	$handled_b:=True:C214
-End if
+End if 
 
