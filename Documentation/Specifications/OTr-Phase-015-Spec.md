@@ -58,7 +58,7 @@ These methods are implemented in OTr, but their calling signature differs from t
 | OT Method | OTr Method | Change | Notes |
 |---|---|---|---|
 | `OT ObjectToBLOB(inObject; ioBLOB)` | `OTr_ObjectToBLOB` | `ioBLOB` cannot be an in/out BLOB parameter in a component; the OTr method uses a function result instead | See `OTr-Phase-006-Spec.md` for the revised signature |
-| `OT BLOBToObject(inBLOB; ioOffset)` | `OTr_BLOBToObject` | `ioOffset` parameter removed; `OTr_BLOBToObject` takes only `$inBLOB_blob` and always reads from offset 0 — signature: `#DECLARE($inBLOB_blob : Blob)->$handle_i : Integer` | Resolved — offset parameter definitively dropped (2026-04-11) |
+| `OT BLOBToObject(inBLOB; ioOffset)` | `OTr_BLOBToObject` | `ioOffset` parameter not implemented in current release; `OTr_BLOBToObject` takes only `$inBLOB_blob` and reads from offset 0 — signature: `#DECLARE($inBLOB_blob : Blob)->$handle_i : Integer`. The parameter may be added in a future release pending user demand. |
 | `OT GetBLOB(inObject; inTag; outBLOB)` | `OTr_GetNewBLOB(inObject; inTag)` | Returns BLOB as function result rather than writing to an output parameter | Replaces `OT GetBLOB` entirely; see §4.1 |
 
 ### 4.3 Methods Implemented with Different Behaviour

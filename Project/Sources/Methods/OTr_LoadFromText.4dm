@@ -21,6 +21,8 @@
 
 // Created by Wayne Stewart, 2026-04-05
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-12 - Added OTr_zError on JSON parse failure so that
+//     callers can detect the error via OK=0; empty input remains a silent no-op.
 // ----------------------------------------------------
 
 #DECLARE($inJSON_t : Text)->$handle_i : Integer
@@ -68,6 +70,8 @@ If ($inJSON_t#"")
 
 		$handle_i:=$slot_i
 
+	Else
+		OTr_zError("JSON parse failed"; Current method name)
 	End if
 
 End if
