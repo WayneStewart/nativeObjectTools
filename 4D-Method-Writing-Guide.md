@@ -137,7 +137,7 @@ The second line acknowledges the three contributors whose prior work (Fnd_Dict, 
 
 ### 3.3 Methods with No Parameters
 
-For methods that take no parameters, the signature line uses empty parentheses and the Parameters block is omitted:
+For methods that take no parameters, the signature line uses empty parentheses and the Parameters block is omitted. `#DECLARE()` is **optional** for parameter-free methods — 4D does not require it when there are no parameters and no return value. It may be added for explicitness but its absence is not a violation:
 
 ```4d
   // ----------------------------------------------------
@@ -152,8 +152,10 @@ For methods that take no parameters, the signature line uses empty parentheses a
   // Created by Dave Batton, 2004-04-28
   // ----------------------------------------------------
 
-#DECLARE()
+// #DECLARE() is optional here; the method body may follow directly
 ```
+
+Automated audits should not flag the absence of `#DECLARE()` as a defect when a method has no parameters and no return value.
 
 ### 3.4 Methods with No Return Value
 

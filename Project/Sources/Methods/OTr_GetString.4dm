@@ -21,6 +21,8 @@
 //   success path (see OTr-OK0-Conditions specification).
 // Wayne Stewart, 2026-04-11 - OB Get now uses Is text type argument
 //     to prevent crash when stored value is a non-Text type.
+// Wayne Stewart, 2026-04-12 - Added OTr_zError on invalid handle to match
+//     the error-logging pattern of all other scalar Get methods.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_t : Text
@@ -41,6 +43,8 @@ If (OTr_zIsValidHandle($inObject_i))
 			$result_t:=OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3)
 		End if
 	End if
+Else
+	OTr_zError("Invalid handle"; Current method name)
 End if
 
 OTr_zUnlock

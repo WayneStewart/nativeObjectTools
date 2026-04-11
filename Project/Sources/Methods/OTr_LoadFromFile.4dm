@@ -21,19 +21,23 @@
 
 // Created by Wayne Stewart, 2026-04-05
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-12 - Added OTr_zError on file-not-found so that
+//     callers can detect the error via OK=0.
 // ----------------------------------------------------
 
 #DECLARE($inFilePath_t : Text)->$handle_i : Integer
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_zAddToCallStack(Current method name)
 
 var $json_t : Text
 
 $handle_i:=0
 
-If (Test path name:C476($inFilePath_t)=Is a document:K24:1)
-	$json_t:=Document to text:C1236($inFilePath_t; "UTF-8")
+If (Test path name($inFilePath_t)=Is a document)
+	$json_t:=Document to text($inFilePath_t; "UTF-8")
 	$handle_i:=OTr_LoadFromText($json_t)
-End if 
+Else
+	OTr_zError("File not found: "+$inFilePath_t; Current method name)
+End if
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_zRemoveFromCallStack(Current method name)
