@@ -1,12 +1,11 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: OTr_zSortSlotPointer
-//   ($slot_i : Integer; $type_i : Integer) --> Pointer
+// Project Method: OTr_zSortSlotPointer ($slot_i : Integer; $type_i : Integer) --> Pointer
 
-// Returns a pointer to the interprocess scratch array
+// Returns a pointer to the process-scope scratch array
 // for the given sort slot number and OTr array type.
 //
-// Slot 1..7 maps to <>OTR_Sort1_* .. <>OTR_Sort7_*.
+// Slot 1..7 maps to OTR_Sort1_* .. OTR_Sort7_*.
 // Type suffix mapping:
 //   Text/String   -> _at   LongInt/Integer -> _ai
 //   Real          -> _ar   Date            -> _ad
@@ -25,7 +24,7 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-#DECLARE($slot_i : Integer; $type_i : Integer)->$ptr_p : Pointer
+#DECLARE($slot_i : Integer; $type_i : Integer)->$ptr_ptr : Pointer
 
 var $suffix_t : Text
 
@@ -44,4 +43,4 @@ Case of
 		$suffix_t:="b"
 End case 
 
-$ptr_p:=Get pointer:C304("<>OTR_Sort"+String:C10($slot_i)+"_a"+$suffix_t)
+$ptr_ptr:=Get pointer:C304("OTR_Sort"+String:C10($slot_i)+"_a"+$suffix_t)

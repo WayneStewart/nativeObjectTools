@@ -46,9 +46,10 @@ These methods exist in ObjectTools 5.0 but have no equivalent in OTr. The fundam
 |---|---|---|
 | `OT GetBLOB(inObject; inTag; outBLOB)` | *(none)* | `outBLOB` is a BLOB output parameter; a component cannot materialise data into the caller's variable |
 | `OT GetArrayBLOB(inObject; inTag; inIndex; outValue)` | *(none)* | Same BLOB output-parameter constraint |
-| `OT GetArrayPicture(inObject; inTag; inIndex; outValue)` | *(none)* | Same Picture output-parameter constraint |
 
-Recommended migration path: replace calls to these methods with `OTr_GetNewBLOB` and `OTr_GetPicture`, which return their values as function results.
+Recommended migration path: replace calls to these methods with `OTr_GetNewBLOB`, which returns its value as a function result.
+
+> **Correction (2026-04-11, see §7.7):** `OT GetArrayPicture` was previously listed in this table as unimplementable due to the output-parameter constraint. This was incorrect — the ObjectTools plugin exposes `OT GetArrayPicture` as a **function** returning Picture, not as a statement with an output parameter. `OTr_GetArrayPicture` is therefore a complete equivalent and is fully implemented. It does not belong in this table.
 
 ### 4.2 Methods Implemented with a Changed API
 
@@ -57,7 +58,7 @@ These methods are implemented in OTr, but their calling signature differs from t
 | OT Method | OTr Method | Change | Notes |
 |---|---|---|---|
 | `OT ObjectToBLOB(inObject; ioBLOB)` | `OTr_ObjectToBLOB` | `ioBLOB` cannot be an in/out BLOB parameter in a component; the OTr method uses a function result instead | See `OTr-Phase-006-Spec.md` for the revised signature |
-| `OT BLOBToObject(inBLOB; ioOffset)` | `OTr_BLOBToObject` | `ioOffset` in/out semantics may require a pointer workaround; to be finalised in Phase 6 | Provisional |
+| `OT BLOBToObject(inBLOB; ioOffset)` | `OTr_BLOBToObject` | `ioOffset` parameter removed; `OTr_BLOBToObject` takes only `$inBLOB_blob` and always reads from offset 0 — signature: `#DECLARE($inBLOB_blob : Blob)->$handle_i : Integer` | Resolved — offset parameter definitively dropped (2026-04-11) |
 | `OT GetBLOB(inObject; inTag; outBLOB)` | `OTr_GetNewBLOB(inObject; inTag)` | Returns BLOB as function result rather than writing to an output parameter | Replaces `OT GetBLOB` entirely; see §4.1 |
 
 ### 4.3 Methods Implemented with Different Behaviour
@@ -72,6 +73,7 @@ These methods share the same or similar API, but their runtime behaviour or outp
 | `OTr_SaveToText` / `OTr_SaveToFile` / `OTr_SaveToClipboard` | `OT SaveToText` / `OT SaveToFile` / `OT SaveToClipboard` | OTr stores binary data natively in 4D Objects; the resulting text representation differs structurally from the legacy format. Round-tripping within each system is safe; loading legacy OT text exports is not supported. |
 | `OTr_GetBoolean` | `OT GetBoolean` | Returns an Integer (`0` or `1`) rather than a native 4D Boolean. This matches the legacy plugin's behaviour but may surprise callers expecting a Boolean expression. |
 | `OTr_PutObject` / `OTr_GetObject` | `OT PutObject` / `OT GetObject` | OTr always **deep-copies** the object at storage and retrieval time. The legacy plugin used reference semantics for sub-objects in some configurations. Callers that relied on shared-reference mutation will need to use explicit `OTr_PutObject` calls to commit changes. |
+| `OTr_GetArrayPicture` | `OT GetArrayPicture` | Implemented as a **function** returning Picture, rather than writing to an output parameter. This resolves the component boundary limitation that prevented direct BLOB/Picture output parameters. Callers must update their call site to receive the return value. |
 
 ---
 

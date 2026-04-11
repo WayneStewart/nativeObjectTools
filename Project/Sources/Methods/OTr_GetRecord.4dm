@@ -46,6 +46,11 @@
 // Created by Wayne Stewart, 2026-04-03
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-11 - Applied dual-path Date/Time retrieval to match
+//   OTr_PutRecord. When the stored property type is Is date / Is time (native
+//   path), OB Get is used directly. When it is Is text (text path, or legacy
+//   snapshot), OTr_uTextToDate / OTr_uTextToTime are used. This prevents
+//   silent data corruption when Storage.OTr.nativeDateInObject is True.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inTable_i : Integer)
@@ -62,6 +67,7 @@ var $fieldType_i : Integer
 var $lastField_i : Integer
 var $x_i : Integer
 var $tempBlob_blob : Blob
+var $storedPropType_i : Integer
 
 OTr_zLock
 
@@ -102,10 +108,24 @@ If (OTr_zIsValidHandle($inObject_i))
 								Case of 
 										
 									: ($fieldType_i=Is date:K8:7)
-										$fieldPtr_ptr->:=OTr_uTextToDate(OB Get:C1224($snapshot_o; $fieldName_t; Is text:K8:3))
-										
+										// Dual-path: inspect stored property type to handle both
+										// native (Is date) and text-serialised ("YYYY-MM-DD") snapshots.
+										$storedPropType_i:=OB Get type:C1220($snapshot_o; $fieldName_t)
+										If ($storedPropType_i=Is date:K8:7)
+											$fieldPtr_ptr->:=OB Get:C1224($snapshot_o; $fieldName_t; Is date:K8:7)
+										Else
+											$fieldPtr_ptr->:=OTr_uTextToDate(OB Get:C1224($snapshot_o; $fieldName_t; Is text:K8:3))
+										End if
+
 									: ($fieldType_i=Is time:K8:8)
-										$fieldPtr_ptr->:=OTr_uTextToTime(OB Get:C1224($snapshot_o; $fieldName_t; Is text:K8:3))
+										// Dual-path: inspect stored property type to handle both
+										// native (Is time) and text-serialised ("HH:MM:SS") snapshots.
+										$storedPropType_i:=OB Get type:C1220($snapshot_o; $fieldName_t)
+										If ($storedPropType_i=Is time:K8:8)
+											$fieldPtr_ptr->:=OB Get:C1224($snapshot_o; $fieldName_t; Is time:K8:8)
+										Else
+											$fieldPtr_ptr->:=OTr_uTextToTime(OB Get:C1224($snapshot_o; $fieldName_t; Is text:K8:3))
+										End if
 										
 									: ($fieldType_i=Is picture:K8:10)
 										CONVERT FROM TEXT:C1011(OB Get:C1224($snapshot_o; $fieldName_t; Is text:K8:3); "US-ASCII"; $tempBlob_blob)

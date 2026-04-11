@@ -34,6 +34,10 @@ End if
 
 If (Not:C34(OTR_Initialised_b))
 	ARRAY TEXT:C222(OTR_callStack_at; 0)
+	var OTR_LockCount_i : Integer
+	
+	Compiler_OTrSortProcess  // These are the arrays used in the sorting routines
+	
 	
 End if 
 
@@ -134,42 +138,42 @@ If (False:C215)
 	
 	C_BLOB:C604(OTr_LoadFromGZIP; $1)
 	C_LONGINT:C283(OTr_LoadFromGZIP; $0)
-
+	
 	C_TEXT:C284(OTr_SaveToXML; $0)
 	C_LONGINT:C283(OTr_SaveToXML; $1)
 	C_BOOLEAN:C305(OTr_SaveToXML; $2)
-
+	
 	C_LONGINT:C283(OTr_SaveToXMLFile; $1)
 	C_TEXT:C284(OTr_SaveToXMLFile; $2)
 	C_BOOLEAN:C305(OTr_SaveToXMLFile; $3)
-
+	
 	C_TEXT:C284(OTr_LoadFromXML; $1)
 	C_LONGINT:C283(OTr_LoadFromXML; $0)
-
+	
 	C_TEXT:C284(OTr_LoadFromXMLFile; $1)
 	C_LONGINT:C283(OTr_LoadFromXMLFile; $0)
-
+	
 	C_BOOLEAN:C305(OTr_IncludeShadowKey; $0; $1)
-
+	
 	C_TEXT:C284(OTr_zXMLWriteObject; $1)
 	C_OBJECT:C1216(OTr_zXMLWriteObject; $2)
 	C_BOOLEAN:C305(OTr_zXMLWriteObject; $3)
-
+	
 	C_OBJECT:C1216(OTr_zXMLReadObject; $0)
 	C_TEXT:C284(OTr_zXMLReadObject; $1)
-
+	
 	C_TEXT:C284(OTr_SaveToXMLSAX; $0)
 	C_LONGINT:C283(OTr_SaveToXMLSAX; $1)
 	C_BOOLEAN:C305(OTr_SaveToXMLSAX; $2)
-
+	
 	C_LONGINT:C283(OTr_SaveToXMLFileSAX; $1)
 	C_TEXT:C284(OTr_SaveToXMLFileSAX; $2)
 	C_BOOLEAN:C305(OTr_SaveToXMLFileSAX; $3)
-
+	
 	C_TIME:C306(OTr_zXMLWriteObjectSAX; $1)
 	C_OBJECT:C1216(OTr_zXMLWriteObjectSAX; $2)
 	C_BOOLEAN:C305(OTr_zXMLWriteObjectSAX; $3)
-
+	
 	C_LONGINT:C283(OTr_SetOptions; $1)
 	
 	C_LONGINT:C283(OTr_Copy; $0)
@@ -469,6 +473,10 @@ If (False:C215)
 	C_TEXT:C284(OTr_uTextToDate; $1)
 	C_DATE:C307(OTr_uTextToDate; $0)
 	
+	C_BOOLEAN:C305(OTr_uNativeDateInObject; $0)
+	
+	C_TEXT:C284(OTr_SetDateMode; $1; $0)
+	
 	C_POINTER:C301(OTr_uPointerToText; $1)
 	C_TEXT:C284(OTr_uPointerToText; $0)
 	
@@ -492,9 +500,9 @@ If (False:C215)
 	
 	C_LONGINT:C283(OTr_zArrayType; $0)
 	C_OBJECT:C1216(OTr_zArrayType; $1)
-
+	
 	C_TEXT:C284(OTr_zShadowKey; $0; $1)
-
+	
 	C_BOOLEAN:C305(OTr_zIsShadowKey; $0)
 	C_TEXT:C284(OTr_zIsShadowKey; $1)
 	
@@ -594,4 +602,6 @@ If (False:C215)
 	
 	C_TEXT:C284(OTr_z_Get4DVersion; $0)
 	
+	C_TEXT:C284(Is a method; $1)
+	C_BOOLEAN:C305(Is a method; $0)
 End if 

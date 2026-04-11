@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_SortArrays (inObject; inTag1; inDirection1 {; inTag2; inDirection2 {; inTag3; inDirection3 {; inTag4; inDirection4 {; inTag5; inDirection5 {; inTag6; inDirection6 {; inTag7; inDirection7}}}}}})
 //
@@ -11,11 +11,11 @@
 // including slave).
 //
 // Each pair is validated via OTr_zSortValidatePair.
-// Key arrays are loaded into interprocess scratch
+// Key arrays are loaded into process-scope scratch
 // arrays via OTr_zSortFillSlot. Pointers to those
 // arrays are built with OTr_zSortSlotPointer and
 // passed to MULTI SORT ARRAY. The resulting sorted
-// index (<>OTR_SortIdx_ai) drives write-back for all
+// index (OTR_SortIdx_ai) drives write-back for all
 // pairs (keys and slaves). OTr_zLock is held only
 // during the write-back phase.
 //
@@ -41,7 +41,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag1_t : Text; $inDirection1_t : Text; $inTag2_t : Text; $inDirection2_t : Text; $inTag3_t : Text; $inDirection3_t : Text; $inTag4_t : Text; $inDirection4_t : Text; $inTag5_t : Text; $inDirection5_t : Text; $inTag6_t : Text; $inDirection6_t : Text; $inTag7_t : Text; $inDirection7_t : Text)
 
-OTr_zAddToCallStack(Current method name)
+OTr_zAddToCallStack(Current method name:C684)
 
 var $pairCount_i; $keyCount_i; $ptrIdx_i : Integer
 var $n_i; $j_i; $slot_i : Integer
@@ -176,24 +176,24 @@ End if
 // Last slot is always the tracked index array.
 // ------------------------------------------------
 If ($continue_b)
-	ARRAY LONGINT:C221(<>OTR_SortIdx_ai; $n_i)
+	ARRAY LONGINT:C221(OTR_SortIdx_ai; $n_i)
 	For ($j_i; 1; $n_i)
-		<>OTR_SortIdx_ai{$j_i}:=$j_i
+		OTR_SortIdx_ai{$j_i}:=$j_i
 	End for 
 	
-	ARRAY POINTER:C280($ptrs_ap; $keyCount_i+1)
+	ARRAY POINTER:C280($ptrs_aptr; $keyCount_i+1)
 	ARRAY LONGINT:C221($sortOrd_ai; $keyCount_i+1)
 	$ptrIdx_i:=0
 	
 	For ($slot_i; 1; $pairCount_i)
 		If ($dirs_at{$slot_i}#"*")
 			$ptrIdx_i:=$ptrIdx_i+1
-			$ptrs_ap{$ptrIdx_i}:=OTr_zSortSlotPointer($slot_i; $types_ai{$slot_i})
+			$ptrs_aptr{$ptrIdx_i}:=OTr_zSortSlotPointer($slot_i; $types_ai{$slot_i})
 			$sortOrd_ai{$ptrIdx_i}:=Choose:C955($dirs_at{$slot_i}=">"; 1; -1)
 		End if 
 	End for 
 	
-	$ptrs_ap{$keyCount_i+1}:=-><>OTR_SortIdx_ai
+	$ptrs_aptr{$keyCount_i+1}:=->OTR_SortIdx_ai
 	$sortOrd_ai{$keyCount_i+1}:=0
 End if 
 
@@ -201,12 +201,12 @@ End if
 // Phase 7 — Execute sort
 // ------------------------------------------------
 If ($continue_b)
-	MULTI SORT ARRAY:C718($ptrs_ap; $sortOrd_ai)
+	MULTI SORT ARRAY:C718($ptrs_aptr; $sortOrd_ai)
 End if 
 
 // ------------------------------------------------
 // Phase 8 — Write sorted order back (under lock)
-// All pairs reordered via <>OTR_SortIdx_ai.
+// All pairs reordered via OTR_SortIdx_ai.
 // Element 0 is not touched.
 // ------------------------------------------------
 If ($continue_b)
@@ -216,10 +216,10 @@ If ($continue_b)
 		$temp_o:=OB Copy:C1225($slotObj_o)
 		For ($j_i; 1; $n_i)
 			$slotObj_o[String:C10($j_i)]:=\
-				$temp_o[String:C10(<>OTR_SortIdx_ai{$j_i})]
+				$temp_o[String:C10(OTR_SortIdx_ai{$j_i})]
 		End for 
-	End for
+	End for 
 	OTr_zUnlock
-End if
+End if 
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

@@ -46,9 +46,9 @@
 // Wayne Stewart, 2026-04-03 - Rewritten: VARIABLE TO BLOB + GZIP compression;
 //       dropped OTR1 envelope and parallel-array expansion.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
-  // Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
-  //   success path (see OTr-OK0-Conditions specification).
-  // ----------------------------------------------------
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+//   success path (see OTr-OK0-Conditions specification).
+// ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $ioBLOB_ptr : Pointer; $inAppend_i : Integer)
 
@@ -61,7 +61,9 @@ var $serialised_blob : Blob
 var $doAppend_i : Integer
 
 If (Count parameters:C259=3)
-	$doAppend_i:=Choose:C955(Count parameters:C259<3; 0; $inAppend_i)
+	$doAppend_i:=$inAppend_i
+Else 
+	$doAppend_i:=0
 End if 
 
 If ($ioBLOB_ptr=Null:C1517)
@@ -85,8 +87,6 @@ Else
 		Else 
 			COPY BLOB:C558($serialised_blob; $ioBLOB_ptr->; 0; BLOB size:C605($ioBLOB_ptr->); BLOB size:C605($serialised_blob))
 		End if 
-		
-		OTr_zSetOK(1)
 		
 	Else 
 		OTr_zError("Invalid inObject"; Current method name:C684)

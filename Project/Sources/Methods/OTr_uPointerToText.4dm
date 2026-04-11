@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: OTr_uPointerToText ($thePointer_p : Pointer) --> Text
+// Project Method: OTr_uPointerToText ($thePointer_ptr : Pointer) --> Text
 
 // Serialises a Pointer to a storable text string.
 // Format: "variableName;tableNum;fieldNum"
@@ -12,7 +12,7 @@
 // Access: Private
 
 // Parameters:
-//   $thePointer_p : Pointer : Pointer to serialise
+//   $thePointer_ptr : Pointer : Pointer to serialise
 
 // Returns:
 //   $pointerAsText_t : Text : Serialised text
@@ -21,10 +21,10 @@
 // Based on Dict_SetPointer by Rob Laveaux
 // ----------------------------------------------------
 
-#DECLARE($thePointer_p : Pointer)->$pointerAsText_t : Text
+#DECLARE($thePointer_ptr : Pointer)->$pointerAsText_t : Text
 
 var $variableName_t : Text
 var $tableNum_i; $fieldNum_i : Integer
 
-RESOLVE POINTER:C394($thePointer_p; $variableName_t; $tableNum_i; $fieldNum_i)
+RESOLVE POINTER:C394($thePointer_ptr; $variableName_t; $tableNum_i; $fieldNum_i)
 $pointerAsText_t:=$variableName_t+";"+String:C10($tableNum_i)+";"+String:C10($fieldNum_i)

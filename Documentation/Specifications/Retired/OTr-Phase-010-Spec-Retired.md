@@ -1,3 +1,7 @@
+> **RETIRED — SUPERSEDED**  
+> This document has been superseded by **OTr-Phase-010-Spec.md** and is retained for historical reference only. Do not edit. Do not use as an implementation reference.
+
+
 # OTr Phase 10 — Logging Subsystem
 
 **Version:** 0.3, 

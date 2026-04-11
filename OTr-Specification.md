@@ -71,17 +71,16 @@ Optionally, trailing unused slots may be trimmed (as `Fnd_Dict_Release` does), t
 
 ### 3.4 Thread Safety
 
-Multiple processes may call OTr methods concurrently. All operations that read or mutate the interprocess arrays must be protected by a named semaphore:
+Multiple processes may call OTr methods concurrently. All operations that read or mutate the interprocess arrays are protected by the named semaphore `<>OTR_Semaphore_t`, acquired and released exclusively via `OTr_zLock` and `OTr_zUnlock`.
 
-```4d
-Semaphore("OTr_Registry")
-// ... perform operation ...
-CLEAR SEMAPHORE("OTr_Registry")
-```
+**Reentrancy:** OTr implements a reentrant (nested) locking strategy using the process variable `OTR_LockCount_i` (Integer, initialised to 0). This resolves the design decision previously noted here.
 
-The `Fnd_Dict` library in this codebase provides a proven pattern for this, including a reentrant lock count via `Fnd_Dict_LockInternalState`. OTr should implement an equivalent `OTr_zLock` / `OTr_zUnlock` internal method pair (or a single `OTr_zLockRegistry` method accepting a Boolean parameter).
+- `OTr_zLock`: if `OTR_LockCount_i = 0`, spins on `Semaphore(<>OTR_Semaphore_t; 10)` until acquired, then increments the counter to 1. If `OTR_LockCount_i > 0` (already locked by this process), the semaphore call is bypassed and the counter is incremented only.
+- `OTr_zUnlock`: decrements `OTR_LockCount_i`. When the counter reaches 0, `CLEAR SEMAPHORE(<>OTR_Semaphore_t)` is called to release the lock. While the counter remains above 0, the semaphore is left in place.
 
-**Design decision required:** Whether reentrancy (nested locking from the same process) is needed for OTr. If an OTr method internally calls another OTr method that also acquires the lock, reentrancy is essential. The `Fnd_Dict` pattern (lock count + semaphore) handles this cleanly.
+This means that a public OTr method may safely call another OTr method that also calls `OTr_zLock` / `OTr_zUnlock` without deadlocking. The semaphore is acquired exactly once per outermost lock/unlock pair, regardless of nesting depth.
+
+Every `OTr_zLock` call must be paired with exactly one `OTr_zUnlock` call on every exit path, including all error paths.
 
 ### 3.5 Tag-to-Property Mapping
 
@@ -420,14 +419,17 @@ These methods have no counterpart in the legacy ObjectTools plugin. They are OTr
 | `OTr_LoadFromFile` | Read a JSON file (previously saved by `OTr_SaveToFile`) and load it into a new OTr object; returns the new handle |
 | `OTr_LoadFromClipboard` | Parse JSON from the clipboard (previously saved by `OTr_SaveToClipboard`) into a new OTr object; returns the new handle |
 
+### 6.13 Date Mode (OTr addition — no legacy equivalent)
+
+*Detailed specification:* [OTr-Phase-002-Spec.md](Documentation/Specifications/OTr-Phase-002-Spec.md) (§Date/Time Storage Strategy)
+
+Controls how the current process stores Date and Time values in 4D Object properties. Wraps `SET DATABASE PARAMETER (Dates inside objects; ...)`, which is a per-process setting.
+
+| OTr Method | Notes |
+|---|---|
+| `OTr_SetDateMode` | Gets or sets the current process's Date/Time storage mode. Token: `"native"` (default since v17), `"iso"` (ISO text without timezone), `"iso-tz"` (ISO text with timezone). Call with no argument to query the current mode. Returns the current mode token. |
+
 ---
-
-## 7. Type Constant Mapping
-
-The legacy plugin defines its own type constants. OTr must map between these and native 4D type constants for backward compatibility in methods such as `OTr_ItemType`.
-
-The authoritative reference for all 4D type constants, variable name suffixes, and the legacy OT → 4D mapping table is maintained in **[OTr-Types-Reference.md](OTr-Types-Reference.md)**.
-
 
 ## 7. Command Reference by Phase
 

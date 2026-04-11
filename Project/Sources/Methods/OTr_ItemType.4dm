@@ -20,12 +20,13 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
-// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
-//   success path. Per the canonical OTr contract (OTr-OK0-Conditions),
-//   OK is pulled to zero on error only and is never guaranteed to be
-//   one on success. The earlier addition was a misreading of the
-//   specification; call sites must not rely on OK=1 as a positive
-//   indicator.
+// Wayne Stewart, 2026-04-10 - Removed OTr_zSetOK(1) on success path.
+//   The legacy ObjectTools plugin has no documented instances of setting
+//   OK to 1; OTr matches that behaviour. OK is pulled to zero on error
+//   (invalid handle, missing tag) and is not modified on success.
+//   OT ItemType reference (p. 95): if inObject is not valid or if no item
+//   has the given tag, an error is generated, OK is set to zero, and zero
+//   is returned. This implementation is therefore correct.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$otType_i : Integer

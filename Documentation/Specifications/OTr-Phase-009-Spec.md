@@ -265,13 +265,31 @@ The following items from the Release Checklist §3 require implementation work, 
 
 ### 4.1 `OTr_zSetOK` — Component Host Propagation
 
-The `OTr_zSetOK` method currently contains a placeholder comment: `// Alert HOST database — Still to be written`. For deployment as a component, `OK` must be propagated to the host database's process `OK` variable. This is the primary outstanding infrastructure gap. The propagation mechanism must be implemented and tested before release.
+**Status: Implemented (2026-04-05). This section is retained as documentation of the mechanism.**
 
-**Approach:** When running as a component (`Is compiled` may not be the correct test — check whether the method is executing in a component context), execute a method named `OTr_zSetOK_Host` (or equivalent twin) in the host database via `EXECUTE METHOD`. The host twin simply does `OK:=$newOK`. This is the standard 4D component pattern for propagating `OK`.
+Host-database `OK` propagation is implemented in `OTr_zSetOK.4dm`. When `$newOK` is supplied, the method sets the local `OK` system variable and then checks whether the running database is the component itself (detected by `Storage.OTr.structureName = "nativeObjectTools"`). If not — that is, when executing as a deployed component inside a host database — it calls:
+
+```4d
+EXECUTE METHOD("OT Host CheckVariable"; *; "OK"; String($newOK))
+```
+
+`EXECUTE METHOD` with the `*` operator targets the **host database**, so `OT Host CheckVariable` is a host-side twin method that the host must provide. That twin receives the new OK value as a text string and applies `OK := Num($1)` in the host process.
+
+**Detection strategy:** The component context is identified by comparing `Storage.OTr.structureName` to the known component project name `"nativeObjectTools"`. When the structure name differs, execution is inside a host, and propagation is triggered.
+
+**Host twin contract:** The host database must contain a method named `OT Host CheckVariable` with the signature:
+
+```4d
+#DECLARE($variableName_t : Text; $value_t : Text)
+```
+
+For the `"OK"` case, the twin sets `OK := Num($value_t)`. The method may handle other variable names in future; the `"OK"` case is the only one currently invoked by OTr.
+
+**Testing:** This propagation path is exercised only when OTr is installed as a component. Unit tests running within the `nativeObjectTools` project itself do not exercise this path (the structureName guard short-circuits). Integration testing in a host database is required to verify propagation.
 
 ### 4.2 Phase 1.5 Load Methods
 
-Confirm that `OTr_LoadFromText`, `OTr_LoadFromFile`, and `OTr_LoadFromClipboard` are fully implemented. The source file listing confirms they exist; their correctness must be verified against the Phase 1.5 specification in [OTr-Phase-001-Spec.md](OTr-Phase-001-Spec.md).
+**Status: Confirmed implemented (2026-04-11).** `OTr_LoadFromText`, `OTr_LoadFromFile`, and `OTr_LoadFromClipboard` are all present as `.4dm` files with correct `#DECLARE` signatures and are registered in the `"OT API Methods"` group in `folders.json`. Phase 20 checklist item updated accordingly.
 
 ### 4.3 Test Methods
 
@@ -344,6 +362,41 @@ The following is the working checklist for Phase 9 implementation. Each item mus
 ### 5.6 Semaphore Discipline
 
 - [ ] Confirm the semaphore is released on every exit path in all public methods — including error paths that call `OTr_zSetOK(0)` before `OTr_zUnlock`. Note: `OTr_ObjectToBLOB` was observed to call `OTr_zSetOK(0)` and `OTr_zUnlock` in a specific order on the error path — verify this pattern is applied consistently
+
+### 5.7 Reentrant Locking — `OTR_LockCount_i` (Implemented 2026-04-11)
+
+**Design decision resolved.** OTr implements reentrant locking via the process variable `OTR_LockCount_i : Integer` (declared in `Compiler_ObjectToolsReplacement.4dm`).
+
+**`OTr_zLock` behaviour:**
+
+```4d
+If (OTR_LockCount_i = 0)
+    While (Semaphore(<>OTR_Semaphore_t; 10))
+        IDLE
+    End while
+End if
+OTR_LockCount_i := OTR_LockCount_i + 1
+```
+
+**`OTr_zUnlock` behaviour:**
+
+```4d
+If (OTR_LockCount_i > 0)
+    OTR_LockCount_i := OTR_LockCount_i - 1
+End if
+If (OTR_LockCount_i = 0)
+    CLEAR SEMAPHORE(<>OTR_Semaphore_t)
+End if
+```
+
+**Invariants:**
+- `OTR_LockCount_i` is a process variable; it is per-process by definition, so no interprocess coordination is needed for the counter itself.
+- The counter begins at 0 (uninitialised process variable default). `OTr_zInit` does not reset it, since a reset mid-call-stack would corrupt the nesting depth.
+- A public method that calls `OTr_zLock`, then calls an internal method that also calls `OTr_zLock`, will hold the semaphore through both calls and release it only when the outermost `OTr_zUnlock` is reached.
+- Unmatched `OTr_zUnlock` calls (i.e., calling unlock when the counter is already 0) are safe: the `If (OTR_LockCount_i > 0)` guard prevents counter underflow and the `CLEAR SEMAPHORE` guard prevents spurious releases.
+
+**Checklist item:**
+- [x] Reentrant lock count implemented via `OTR_LockCount_i` (2026-04-11)
 
 ---
 

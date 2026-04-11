@@ -51,6 +51,10 @@
 //   call: removed erroneous -> dereference (it takes a pointer, not
 //   the table value). Added :Cxxx command codes throughout.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
+// Wayne Stewart, 2026-04-11 - Added If/Else native/text storage guard for
+//   date and time fields, matching the OTr_PutDate/OTr_PutTime strategy.
+//   OTr_uNativeDateInObject() probed once before the field loop (per-process,
+//   per-call). True → OB SET native; False → text via OTr_uDateToText/OTr_uTimeToText.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inTable_i : Integer)
@@ -68,6 +72,7 @@ var $lastField_i : Integer
 var $x_i : Integer
 var $recordNum_i : Integer
 var $tempBlob_blob : Blob
+var $nativeDate_b : Boolean
 
 OTr_zLock
 
@@ -89,6 +94,10 @@ If (OTr_zIsValidHandle($inObject_i))
 			
 		Else 
 			
+			// Probe once before the field loop — the setting is per-process and
+			// constant for the duration of this call.
+			$nativeDate_b:=OTr_uNativeDateInObject
+
 			$snapshot_o:=New object:C1471
 			$snapshot_o.__tableNum:=$inTable_i
 			
@@ -105,10 +114,18 @@ If (OTr_zIsValidHandle($inObject_i))
 					Case of 
 							
 						: ($fieldType_i=Is date:K8:7)
-							OB SET:C1220($snapshot_o; $fieldName_t; OTr_uDateToText($fieldPtr_ptr->))
-							
+							If ($nativeDate_b)
+								OB SET:C1220($snapshot_o; $fieldName_t; $fieldPtr_ptr->)
+							Else
+								OB SET:C1220($snapshot_o; $fieldName_t; OTr_uDateToText($fieldPtr_ptr->))
+							End if
+
 						: ($fieldType_i=Is time:K8:8)
-							OB SET:C1220($snapshot_o; $fieldName_t; OTr_uTimeToText($fieldPtr_ptr->))
+							If ($nativeDate_b)
+								OB SET:C1220($snapshot_o; $fieldName_t; $fieldPtr_ptr->)
+							Else
+								OB SET:C1220($snapshot_o; $fieldName_t; OTr_uTimeToText($fieldPtr_ptr->))
+							End if
 							
 						: ($fieldType_i=Is picture:K8:10)
 							PICTURE TO BLOB:C692($fieldPtr_ptr->; $tempBlob_blob; ".png")

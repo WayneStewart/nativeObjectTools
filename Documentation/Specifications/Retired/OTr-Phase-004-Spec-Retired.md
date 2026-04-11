@@ -1,3 +1,7 @@
+> **RETIRED — SUPERSEDED**  
+> This document has been superseded by **OTr-Phase-004-Spec.md** and is retained for historical reference only. Do not edit. Do not use as an implementation reference.
+
+
 # OTr Phase 4 — Array Operations: Detailed Command Specification
 
 **Version:** 0.2

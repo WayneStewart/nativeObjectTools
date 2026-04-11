@@ -2,10 +2,24 @@
 //// ----------------------------------------------------
 //// Project Method: OTr_zTogglePluginBlocks
 ////
-//// Developer utility: comments out or uncomments the
-//// plugin-dependent code blocks in the side-by-side test
-//// methods, based on whether the ObjectTools plugin is
-//// present in the Plugins folder.
+//// **STATUS: PARTIAL STUB — NON-FUNCTIONAL. DO NOT CALL.**
+////
+//// The entire method body is commented out pending a rewrite.
+//// Known bugs were found in the initial implementation before
+//// it was ever used; the method was commented out in place to
+//// preserve the design intent for when development resumes.
+////
+//// **Intended purpose (not yet working):**
+////
+//// Internal developer utility — NOT part of the public or
+//// private OTr API. Intended solely for use by contributors
+//// working on the OTr component itself.
+////
+//// When complete, this method will comment out or uncomment
+//// the plugin-dependent code blocks in the side-by-side test
+//// methods (_OT and _OTr variants), based on whether the
+//// ObjectTools plugin is present in the Plugins folder and
+//// whether the public API is in the OTr_ or OT  state.
 ////
 //// Two sentinel block types are managed:
 ////
@@ -23,7 +37,7 @@
 ////             State is detected by checking whether OTr_New exists
 ////             as a compiled method.
 ////
-//// Process:
+//// Intended process (when complete):
 ////   1. Check for ObjectTools.bundle in the Plugins folder.
 ////   2. Detect current OTr_/OT  API state via method existence.
 ////   3. Scan all _OT and _OTr methods; determine what changes
@@ -35,6 +49,8 @@
 //// Returns:    Nothing
 ////
 //// Created by Wayne Stewart, 2026-04-11
+//// Wayne Stewart, 2026-04-11 — Commented out entire body: multiple
+////   bugs found before first use. Stub retained for design reference.
 //// ----------------------------------------------------
 
 //var $methodsFolder_t : Text

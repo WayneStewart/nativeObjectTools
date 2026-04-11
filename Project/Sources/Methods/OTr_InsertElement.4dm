@@ -70,4 +70,6 @@ Else
 	OTr_zError("Invalid handle"; Current method name:C684)
 End if
 
+OTr_zUnlock
+
 OTr_zRemoveFromCallStack(Current method name)

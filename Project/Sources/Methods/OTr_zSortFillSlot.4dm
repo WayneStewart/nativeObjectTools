@@ -4,7 +4,7 @@
 //   ($slot_i : Integer; $arrayObj_o : Object;
 //    $type_i : Integer)
 
-// Fills the interprocess scratch array for one sort
+// Fills the process-scope scratch array for one sort
 // slot from an OTr array object. The target array is
 // addressed via OTr_zSortSlotPointer using the slot
 // number and type. OTr_zArrayFromObject handles

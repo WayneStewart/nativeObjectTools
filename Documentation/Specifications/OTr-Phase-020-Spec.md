@@ -20,6 +20,7 @@
 | ✅ | ✅ | Phase 6 — Import/Export | [OTr-Phase-006-Spec.md](OTr-Phase-006-Spec.md) |
 | ✅ | ✅ | Phase 7 — API Naming Alignment | [OTr-Phase-007-Spec.md](OTr-Phase-007-Spec.md) |
 | ✅ | ✅ | Phase 8 — Unified Array Element Accessor | [OTr-Phase-008-Spec.md](OTr-Phase-008-Spec.md) |
+| n/a | n/a | Phase 9 — *(reserved)* — intentionally omitted; phase numbers were not assigned sequentially so that unanticipated implementation issues could be accommodated without renumbering. No spec, no implementation, no test method. Not a release blocker. | — |
 | ✅ | ✅ | Phase 15 — Side-by-Side Compatibility Testing | [OTr-Phase-015-Spec.md](OTr-Phase-015-Spec.md) |
 |    |    | Phase 100 — Dual Storage Mechanism and Three-Layer Architecture *(post-release)* | [OTr-Phase-100-Spec.md](OTr-Phase-100-Spec.md) |
 
@@ -50,12 +51,12 @@
 - [ ] Confirm all public API methods are `"shared":true`; all `OTr_z*`, `OTr_u*`, and `Test_OTr_*` are `"shared":false`
 - [ ] Confirm semaphore is released on every exit path (including error paths) in all public methods
 - [ ] Confirm `OTr_zInit` is called (lazily) at the top of every public method
-- [ ] Confirm Phase 1.5 Load methods (`OTr_LoadFromText`, `OTr_LoadFromFile`, `OTr_LoadFromClipboard`) are implemented
+- [x] Confirm Phase 1.5 Load methods (`OTr_LoadFromText`, `OTr_LoadFromFile`, `OTr_LoadFromClipboard`) are implemented — all three `.4dm` files confirmed present; `#DECLARE` signatures verified; all three registered in `folders.json` "OT API Methods" group (S2 audit, 2026-04-11)
 - [ ] Write test method `____Test_Phase_5` covering all complex type round-trips
 - [ ] Write test method `____Test_Phase_6` covering BLOB serialisation round-trips
 - [ ] Write test method `____Test_OT_Compatibility` per [OTr-Phase-015-Spec.md](OTr-Phase-015-Spec.md); register in `Test Methods` group in `folders.json`
 - [ ] Confirm side-by-side testing performed on a compatible platform — see [OTr-Phase-015-Spec.md §2](OTr-Phase-015-Spec.md)
-- [ ] Review whether `OTr_uDateToText`, `OTr_uTextToDate`, `OTr_uTimeToText`, and `OTr_uTextToTime` are still required. Scalar put/get methods (`OTr_PutDate`, `OTr_GetDate`, `OTr_PutTime`, `OTr_GetTime`) use native `OB SET`/`OB Get` and do not call these utilities. Current callers are the array path (`OTr_PutArrayDate`, `OTr_GetArrayDate`, `OTr_PutArrayTime`, `OTr_GetArrayTime`, `OTr_PutArray`, `OTr_zArrayFromObject`, `OTr_FindInArray`) and the record path (`OTr_PutRecord`, `OTr_GetRecord`). If the array and record storage strategies were unified with the scalar native approach, all four methods could be retired.
+- [x] Review whether `OTr_uDateToText`, `OTr_uTextToDate`, `OTr_uTimeToText`, and `OTr_uTextToTime` are still required — **Resolved: retain all four.** Caller audit (S2, 2026-04-11) confirmed each has 6–7 active callers across the array path (`OTr_PutArrayDate`, `OTr_GetArrayDate`, `OTr_PutArrayTime`, `OTr_GetArrayTime`, `OTr_PutArray`, `OTr_zArrayFromObject`, `OTr_FindInArray`) and the record path (`OTr_PutRecord`, `OTr_GetRecord`). These utilities are the canonical implementation of the `YYYY-MM-DD` / `HH:MM:SS` text storage strategy for Date and Time in array and record contexts. They must not be retired unless that storage strategy is changed (see Cross-Cutting Issue #1 in `00-Review-Index.md`).
 
 ---
 

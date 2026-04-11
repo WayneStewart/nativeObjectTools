@@ -3,8 +3,12 @@
 // Project Method: OTr_PutArrayDate (inObject; inTag; inIndex; inValue)
 
 // Sets a single element of a Date array item.
-// Dates are encoded to text via OTr_uDateToText for storage.
 // OK is unchanged on success; set to 0 on any failure.
+
+// Storage strategy mirrors OTr_PutDate:
+//   Storage.OTr.nativeDateInObject = True  → element stored as native Date
+//   Storage.OTr.nativeDateInObject = False → element stored as "YYYY-MM-DD" text
+//                                            via OTr_uDateToText (default)
 
 // Access: Shared
 
@@ -18,17 +22,24 @@
 
 // Created by Wayne Stewart, 2026-04-05
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-11 - Added If/Else native/text storage guard to
+//   match OTr_PutDate strategy. See OTr_uNativeDateInObject for probe details.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_d : Date)
 
 OTr_zAddToCallStack(Current method name:C684)
 
-var $encoded_t : Text
+var $encoded_v : Variant
 
-$encoded_t:=OTr_uDateToText($inValue_d)
+If (OTr_uNativeDateInObject)
+	$encoded_v:=$inValue_d
+Else
+	$encoded_v:=OTr_uDateToText($inValue_d)
+End if
+
 OTr_zLock
-OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Date array:K8:20; $encoded_t)
+OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Date array:K8:20; $encoded_v)
 OTr_zUnlock
 
 OTr_zRemoveFromCallStack(Current method name:C684)

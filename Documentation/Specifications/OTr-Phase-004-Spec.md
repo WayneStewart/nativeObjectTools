@@ -179,12 +179,12 @@ Uses `Time($timeAsText_t)` which accepts the `HH:MM:SS` format directly.
 ### OTr_uPointerToText
 
 ```
-OTr_uPointerToText ($thePointer_p : Pointer) → Text
+OTr_uPointerToText ($thePointer_ptr : Pointer) → Text
 ```
 
 | Parameter | Type | | Description |
 |---|---|---|---|
-| $thePointer_p | Pointer | → | The pointer to serialise |
+| $thePointer_ptr | Pointer | → | The pointer to serialise |
 | Function result | Text | ← | Serialised string: `variableName;tableNum;fieldNum` |
 
 #### Discussion
@@ -862,7 +862,7 @@ Stores or retrieves a single Picture element. Pictures are stored natively as Ob
 **Legacy:** `OT PutArrayPointer` / `OT GetArrayPointer` — version 1
 
 ```
-OTr_PutArrayPointer ($handle_i : Integer; $tag_t : Text; $index_i : Integer; $value_p : Pointer)
+OTr_PutArrayPointer ($handle_i : Integer; $tag_t : Text; $index_i : Integer; $value_ptr : Pointer)
 OTr_GetArrayPointer ($handle_i : Integer; $tag_t : Text; $index_i : Integer) → Pointer
 ```
 
@@ -871,7 +871,7 @@ OTr_GetArrayPointer ($handle_i : Integer; $tag_t : Text; $index_i : Integer) →
 | $handle_i | Integer | → | A handle to an object |
 | $tag_t | Text | → | Tag of the array item |
 | $index_i | Integer | → | 1-based element index |
-| $value_p | Pointer | → / ← | Value to store / retrieved value |
+| $value_ptr | Pointer | → / ← | Value to store / retrieved value |
 
 #### Discussion
 

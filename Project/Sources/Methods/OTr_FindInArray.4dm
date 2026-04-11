@@ -99,35 +99,37 @@ If (OTr_zIsValidHandle($inObject_i))
 				
 				If ($workPtr#Null)
 					OTr_zArrayFromObject($arrayObj_o; $workPtr)
-					
-					// Search using native Find in array with type conversion
-					Case of 
+
+					// Search using native Find in array with type conversion.
+					// A result of -1 means "not found" — that is a valid search
+					// outcome, not an error. OK is not modified on the search path;
+					// it is only set to 0 on genuine error paths above.
+					Case of
 						: (($type_i=Text array:K8:16) | ($type_i=String array:K8:15))
 							$result_i:=Find in array:C230($Work_at; $inValue_t; $inStart_i)
-							
+
 						: ($type_i=LongInt array:K8:19)
 							$result_i:=Find in array:C230($Work_ai; Num:C11($inValue_t); $inStart_i)
-							
+
 						: ($type_i=Integer array:K8:18)
 							$result_i:=Find in array:C230($Work_ai; Num:C11($inValue_t); $inStart_i)
-							
+
 						: ($type_i=Real array:K8:17)
 							$result_i:=Find in array:C230($Work_ar; Num:C11($inValue_t); $inStart_i)
-							
+
 						: ($type_i=Boolean array:K8:21)
 							$searchBool_b:=(($inValue_t="true") | ($inValue_t="1"))
 							$result_i:=Find in array:C230($Work_ab; $searchBool_b; $inStart_i)
-							
+
 						: ($type_i=Date array:K8:20)
 							$searchDate_d:=OTr_uTextToDate($inValue_t)
 							$result_i:=Find in array:C230($Work_ad; $searchDate_d; $inStart_i)
-							
+
 						: ($type_i=Time array:K8:29)
 							$search_h:=OTr_uTextToTime($inValue_t)
 							$result_i:=Find in array:C230($Work_ah; $search_h; $inStart_i)
-							
-					End case 
-					OTr_zSetOK(Num($result_i>=0))
+
+					End case
 				End if 
 			End if 
 		Else 

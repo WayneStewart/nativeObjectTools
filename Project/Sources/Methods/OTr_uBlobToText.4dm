@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: OTr_uBlobToText ($theBlob_x : Blob) --> Text
+// Project Method: OTr_uBlobToText ($theBlob_blob : Blob) --> Text
 
 // Base64-encodes a BLOB to a plain Text string for inline storage
 // in an OTr Object property on 4D versions prior to v19 R2 (that is,
@@ -10,7 +10,7 @@
 // Access: Private
 
 // Parameters:
-//   $theBlob_x : Blob : The BLOB to encode
+//   $theBlob_blob : Blob : The BLOB to encode
 
 // Returns:
 //   $blobRef_t : Text : Base64-encoded representation
@@ -21,10 +21,10 @@
 //     no parallel array slot management.
 // ----------------------------------------------------
 
-#DECLARE($theBlob_x : Blob)->$blobRef_t : Text
+#DECLARE($theBlob_blob : Blob)->$blobRef_t : Text
 
-If (BLOB size:C605($theBlob_x)>0)
-	BASE64 ENCODE:C895($theBlob_x)
-	$blobRef_t:=Convert to text:C1012($theBlob_x; "US-ASCII")
+If (BLOB size:C605($theBlob_blob)>0)
+	BASE64 ENCODE:C895($theBlob_blob)
+	$blobRef_t:=Convert to text:C1012($theBlob_blob; "US-ASCII")
 End if 
 

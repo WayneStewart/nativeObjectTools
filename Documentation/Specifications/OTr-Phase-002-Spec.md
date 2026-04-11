@@ -1,7 +1,7 @@
 # OTr Phase 2: Scalar Put/Get and Basic Object Navigation
 
-**Version:** 1.0
-**Date:** 2026-04-07
+**Version:** 1.1
+**Date:** 2026-04-11
 **Status:** Complete
 **Scope:** Fundamental data storage and retrieval; dotted-path object navigation; type conversions
 
@@ -30,8 +30,8 @@ The phase covers:
 | `OT PutReal` | `OTr_PutReal` | Real (native) | Direct `OB SET` with Real value |
 | `OT PutString` | `OTr_PutString` | Text (native) | Direct `OB SET` with Text value |
 | `OT PutText` | `OTr_PutText` | Text (native) | Identical to PutString (legacy compat) |
-| `OT PutDate` | `OTr_PutDate` | Date (native) | Direct `OB SET` with Date value |
-| `OT PutTime` | `OTr_PutTime` | Time (native) | Direct `OB SET` with Time value |
+| `OT PutDate` | `OTr_PutDate` | Date | See §Date/Time Storage Strategy below |
+| `OT PutTime` | `OTr_PutTime` | Time | See §Date/Time Storage Strategy below |
 | `OT PutBoolean` | `OTr_PutBoolean` | Boolean (native) | Direct `OB SET` with Boolean value |
 
 ### Scalar Get Methods
@@ -42,8 +42,8 @@ The phase covers:
 | `OT GetReal` | `OTr_GetReal` | Real | `OB Get` with type coercion; default 0.0 |
 | `OT GetString` | `OTr_GetString` | Text | `OB Get` returning Text; default "" |
 | `OT GetText` | `OTr_GetText` | Text | Identical to GetString (legacy compat) |
-| `OT GetDate` | `OTr_GetDate` | Date | `OB Get` returning Date; default !00-00-00! |
-| `OT GetTime` | `OTr_GetTime` | Time | `OB Get` returning Time; default ?00:00:00? |
+| `OT GetDate` | `OTr_GetDate` | Date | See §Date/Time Storage Strategy below; default !00-00-00! |
+| `OT GetTime` | `OTr_GetTime` | Time | See §Date/Time Storage Strategy below; default ?00:00:00? |
 | `OT GetBoolean` | `OTr_GetBoolean` | Integer | `OB Get` returning Integer (0 or 1); default 0 |
 
 ### Object Put/Get
@@ -154,6 +154,72 @@ The phase covers:
 - When `OTr_GetObject` is called, the nested object is **copied** to a new handle
 - The returned handle is independent and can be modified without affecting the original
 - When done with the retrieved object, caller should invoke `OTr_Clear` to deallocate its handle
+
+---
+
+## Date/Time Storage Strategy
+
+4D's behaviour when storing a Date or Time value via `OB SET` into an Object property is controlled by the **`Dates inside objects`** setting, which has two mechanisms:
+
+1. **Project-level default** — Structure Settings → Compatibility → Database → "Use date type instead of ISO date format in objects". When **checked** (ON), native Date is the default for new processes. This checkbox reflects the pre-v17 legacy; since 4D v17 native Date storage is the default and the checkbox is OFF by default for new projects.
+
+2. **Per-process runtime override** — `SET DATABASE PARAMETER (Dates inside objects; ...)` with three possible values: `String type without time zone` (0), `String type with time zone` (1), or `Date type` (2, the default since v17). **This setting is scoped to the current process.** Any process may override it independently of any other process.
+
+The consequence is that two concurrent processes in the same 4D application may store Date values differently in the same OTr object, if one has called `SET DATABASE PARAMETER` and the other has not.
+
+Reference: [4D KB 78256 — Tech Tip: Store Date as ISO format String in Object](https://kb.4d.com/assetid=78256)
+
+### Per-call probe — `OTr_uNativeDateInObject`
+
+Because the current setting cannot be read back via `GET DATABASE PARAMETER`, OTr probes it directly: `OTr_uNativeDateInObject` writes `Current date` to a temporary object and checks the resulting property type via `OB Get type`. Returns `True` if native, `False` if text.
+
+The probe is **per-call**, not cached. Caching in a process variable or in `Storage` would produce stale results for any process that changes its setting after initialisation. The cost is negligible (one `New object` + one `OB Get type`).
+
+### Put behaviour
+
+```
+If (OTr_uNativeDateInObject)
+    OB SET($parent_o; $leafKey_t; $inValue_d)           // native Date/Time
+Else
+    OB SET($parent_o; $leafKey_t; OTr_uDateToText(...))  // "YYYY-MM-DD" / "HH:MM:SS"
+End if
+```
+
+The same guard is applied in `OTr_PutArrayDate`, `OTr_PutArrayTime`, and `OTr_PutRecord` (for date and time fields). In `OTr_PutRecord` the probe is called once before the field loop as an optimisation.
+
+### Get behaviour
+
+Retrieval inspects the stored property type directly, making it transparent to whichever storage path was used — including any legacy data or data written by a different process using a different setting:
+
+```
+$storedType_i := OB Get type($parent_o; $leafKey_t)
+If ($storedType_i = Is text)
+    $result := OTr_uTextToDate / OTr_uTextToTime(OB Get(...; Is text))
+Else
+    $result := OB Get(...; Is date / Is time)
+End if
+```
+
+### Type-consistency guard on Put
+
+If a property already exists at the given tag and its stored type is neither the target type (`Is date`/`Is time`) nor `Is text` (which the ISO-string path produces), the put is rejected and `OK` is set to 0. The `Is text` check is necessary because a legitimately stored date may appear as `Is text` when the ISO-string path was used.
+
+### Public setter — `OTr_SetDateMode`
+
+Callers who need to control the Date/Time storage mode explicitly should use `OTr_SetDateMode`. This is a public API method (no legacy equivalent) that wraps `SET DATABASE PARAMETER (Dates inside objects; ...)` with a readable token interface:
+
+```4d
+OTr_SetDateMode("native")   // native 4D Date/Time (default since v17)
+OTr_SetDateMode("iso")      // "YYYY-MM-DD" / "HH:MM:SS" text, no timezone
+OTr_SetDateMode("iso-tz")   // ISO text with timezone offset
+$mode := OTr_SetDateMode()  // getter — returns current mode token
+```
+
+Typical use: call `OTr_SetDateMode("iso")` once during process startup if the host database is a pre-v17 project that uses legacy ISO-string storage. All subsequent OTr Date/Time puts in that process will use the text path automatically.
+
+### Relationship to utility methods
+
+`OTr_uDateToText`, `OTr_uTextToDate`, `OTr_uTimeToText`, and `OTr_uTextToTime` are retained regardless of the current process's setting. They are also used by `OTr_PutArrayDate`, `OTr_GetArrayDate`, `OTr_PutArrayTime`, `OTr_GetArrayTime`, and `OTr_PutRecord`. They should not be removed until testing confirms the native path is fully correct under all conditions.
 
 ---
 

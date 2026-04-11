@@ -68,7 +68,6 @@
 			"OTr_GetBoolean",
 			"OTr_GetDate",
 			"OTr_GetHandleList",
-			"OTr_IncludeShadowKey",
 			"OTr_GetItemProperties",
 			"OTr_GetLong",
 			"OTr_GetNamedProperties",
@@ -85,6 +84,7 @@
 			"OTr_GetTime",
 			"OTr_GetVariable",
 			"OTr_GetVersion",
+			"OTr_IncludeShadowKey",
 			"OTr_Info",
 			"OTr_InsertElement",
 			"OTr_IsEmbedded",
@@ -149,7 +149,12 @@
 			"Compiler_ObjectToolsReplacement",
 			"Compiler_OTrSortInterprocess",
 			"Compiler_OTrSortProcess",
+			"OTr_z_CheckHostMethods",
+			"OTr_z_Get4DVersion",
 			"OTr_z_Koala",
+			"OTr_z_LogDirectory",
+			"OTr_z_LogInit",
+			"OTr_z_timestampLocal",
 			"OTr_z_Wombat",
 			"OTr_zAddToCallStack",
 			"OTr_zArrayFromObject",
@@ -161,6 +166,7 @@
 			"OTr_zIsValidHandle",
 			"OTr_zLock",
 			"OTr_zLogFileName",
+			"OTr_zLogGetCallStack",
 			"OTr_zLogLevelToInt",
 			"OTr_zLogShutdown",
 			"OTr_zLogWrite",
@@ -172,9 +178,11 @@
 			"OTr_zSortFillSlot",
 			"OTr_zSortSlotPointer",
 			"OTr_zSortValidatePair",
+			"OTr_zTogglePluginBlocks",
 			"OTr_zUnlock",
 			"OTr_zXMLReadObject",
-			"OTr_zXMLWriteObject"
+			"OTr_zXMLWriteObject",
+			"OTr_zXMLWriteObjectSAX"
 		]
 	},
 	"OT Testing": {
@@ -223,11 +231,7 @@
 			"OTr_uTextToDate",
 			"OTr_uTextToPointer",
 			"OTr_uTextToTime",
-			"OTr_uTimeToText",
-			"OTr_z_CheckHostMethods",
-			"OTr_z_LogDirectory",
-			"OTr_z_LogInit",
-			"OTr_z_timestampLocal"
+			"OTr_uTimeToText"
 		]
 	},
 	"trash": {}

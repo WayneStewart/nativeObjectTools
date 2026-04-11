@@ -1,23 +1,22 @@
 ﻿//%attributes = {"invisible":true,"shared":false,"preemptive":"capable","lang":"en"}
 // ----------------------------------------------------
-// Project Method: OTr_uEqualObjects (Object #1; Object #2) --> Boolean
+// Project Method: OTr_uEqualObjects ($First_o : Object; $Second_o : Object) --> $IsEqual_b : Boolean
 
-//  Compares two objects. If they are the same
-//    (ie. they have exactly the same elements and values),
-//  the method returns true.
+// Compares two objects for deep equality. Returns True if both objects
+// contain exactly the same properties, types, and values (including
+// nested objects and object arrays). Property order is not significant.
 
-// Access: Shared
+// Access: Private
 
-// Parameters: 
-//   $1 : Object : The Objects
-//   $2 : Object : to compare
+// Parameters:
+//   $First_o  : Object : First object to compare
+//   $Second_o : Object : Second object to compare
 
-// Returns: 
-//   $0 : Boolean : True if objects are identical
+// Returns:
+//   $IsEqual_b : Boolean : True if the objects are identical in structure and value
 
-// Cannon Smith
-//  Thanks to Vincent de Lachaux for the original code which has been changed
-//  slightly to more closely match my style.
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Thanks to Vincent de Lachaux for the original code.
 
 // ----------------------------------------------------
 

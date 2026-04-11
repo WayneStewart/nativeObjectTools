@@ -16,7 +16,7 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-#DECLARE($inSource_t : Text) -> $outCallStack_t : Text
+#DECLARE($inSource_t : Text)->$outCallStack_t : Text
 
 var $arrow_t : Text
 var $frame_t : Text
@@ -25,11 +25,8 @@ var $stackSize_i : Integer
 
 $outCallStack_t:=""
 $arrow_t:=OT Right Arrow
-If ($arrow_t="")
-	$arrow_t:="->"
-End if 
 
-$stackSize_i:=Size of array(OTR_callStack_at)
+$stackSize_i:=Size of array:C274(OTR_callStack_at)
 For ($index_i; 1; $stackSize_i)
 	$frame_t:=OTR_callStack_at{$index_i}
 	If ($outCallStack_t="")

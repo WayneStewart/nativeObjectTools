@@ -1,3 +1,7 @@
+> **RETIRED — SUPERSEDED**  
+> This document has been superseded by **OTr-Phase-006-Spec.md** and is retained for historical reference only. Do not edit. Do not use as an implementation reference.
+
+
 # OTr Phase 6 — Import/Export: Detailed Command Specification
 
 **Version:** 0.1

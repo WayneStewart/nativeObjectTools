@@ -323,8 +323,98 @@ See `____Test_Phase_1_5.4dm` for unit tests covering:
 
 ---
 
+## Addendum: Phase 1.5b — Binary Export / Import
+
+Phase 1.5b provides two complementary binary serialisation strategies for OTr objects. Both are implemented and confirmed present as `.4dm` files.
+
+### Phase 1.5b Commands Implemented
+
+| Command | Method | Returns | Purpose |
+|---------|--------|---------|---------|
+| (new) | `OTr_SaveToBlob` | Blob | Serialise to 4D-native compressed BLOB (`VARIABLE TO BLOB` + GZIP) |
+| (new) | `OTr_LoadFromBlob` | Longint | Load from 4D-native BLOB into new handle |
+| (new) | `OTr_SaveToGZIP` | Blob | Serialise to GZIPed UTF-8 JSON BLOB (portable) |
+| (new) | `OTr_LoadFromGZIP` | Longint | Load from GZIPed JSON BLOB into new handle |
+
+### `OTr_SaveToBlob`
+
+```4d
+#DECLARE ($inObject_i : Integer) -> $outBlob_blob : Blob
+```
+
+Serialises the object using `VARIABLE TO BLOB` followed by GZIP compression (`GZIP best compression mode`). The resulting BLOB is 4D-internal and **not** portable outside 4D. Use `OTr_SaveToGZIP` when portability is required.
+
+Returns an empty BLOB if the handle is invalid.
+
+### `OTr_LoadFromBlob`
+
+```4d
+#DECLARE ($inBlob_blob : Blob) -> $handle_i : Integer
+```
+
+Loads a 4D-native BLOB produced by `OTr_SaveToBlob` into a new OTr handle. Expands the BLOB automatically if it is compressed before calling `BLOB TO VARIABLE`. Returns `0` if the BLOB is empty or cannot be decoded.
+
+### `OTr_SaveToGZIP`
+
+```4d
+#DECLARE ($inObject_i : Integer; $inPrettyPrint_b : Boolean) -> $outBlob_blob : Blob
+```
+
+Serialises the object to a UTF-8 JSON string (`JSON Stringify`), then compresses it with GZIP. Suitable for network transmission or file storage where portability outside 4D is required. The optional `$inPrettyPrint_b` parameter (default `False`) controls indented formatting.
+
+Returns an empty BLOB if the handle is invalid.
+
+### `OTr_LoadFromGZIP`
+
+```4d
+#DECLARE ($inBlob_blob : Blob) -> $handle_i : Integer
+```
+
+Loads a GZIPed JSON BLOB produced by `OTr_SaveToGZIP` into a new OTr handle. Expands the BLOB, converts the result to UTF-8 text, then delegates parsing to `OTr_LoadFromText`. Returns `0` if the BLOB is empty or cannot be decoded.
+
+### Format Comparison
+
+| Method pair | Format | Portable outside 4D | Round-trip safe |
+|---|---|---|---|
+| `OTr_SaveToBlob` / `OTr_LoadFromBlob` | 4D-native VARIABLE BLOB + GZIP | No | Yes (same 4D version) |
+| `OTr_SaveToGZIP` / `OTr_LoadFromGZIP` | GZIPed UTF-8 JSON | Yes | Yes (JSON type limitations apply) |
+
+---
+
+## Addendum: Phase 1.5c — XML Export / Import (SAX Variants)
+
+Phase 1.5c documents the XML serialisation methods, including two SAX-based variants introduced alongside the DOM variants. All four methods are implemented and present as `.4dm` files.
+
+### Phase 1.5c Commands Implemented
+
+| Command | Method | Returns | Purpose |
+|---------|--------|---------|---------|
+| (new) | `OTr_SaveToXML` | Text | Serialise object to XML text (DOM) |
+| (new) | `OTr_SaveToXMLFile` | — | Serialise object to XML file (DOM) |
+| (new) | `OTr_SaveToXMLSAX` | Text | Serialise object to XML text (SAX) |
+| (new) | `OTr_SaveToXMLFileSAX` | — | Serialise object to XML file (SAX) |
+| (new) | `OTr_LoadFromXML` | Longint | Load from XML text into new handle |
+| (new) | `OTr_LoadFromXMLFile` | Longint | Load from XML file into new handle |
+
+### Signatures
+
+```4d
+#DECLARE($inObject_i : Integer; $inPrettyPrint_b : Boolean)->$xml_t : Text        // OTr_SaveToXML, OTr_SaveToXMLSAX
+#DECLARE($inObject_i : Integer; $inFilePath_t : Text; $inPrettyPrint_b : Boolean) // OTr_SaveToXMLFile, OTr_SaveToXMLFileSAX
+#DECLARE($inXML_t : Text)->$handle_i : Integer                                    // OTr_LoadFromXML
+#DECLARE($inFilePath_t : Text)->$handle_i : Integer                               // OTr_LoadFromXMLFile
+```
+
+### DOM vs SAX Variants
+
+The SAX variants (`OTr_SaveToXMLSAX`, `OTr_SaveToXMLFileSAX`) produce output equivalent to the DOM variants but use 4D's SAX XML writing commands rather than the DOM tree API. The two approaches are interchangeable at the call site; the choice is an implementation detail. Both variants accept the same parameters and return the same types.
+
+> **Internal use note:** The SAX variants exist because the DOM and SAX approaches were both explored during development. Both are retained. Either may be called; the output format is identical.
+
+---
+
 ## Next Steps
 
-Phase 1 (with 1.5 addendum) provides the foundation for all subsequent phases:
+Phase 1 (with 1.5, 1.5b, and 1.5c addenda) provides the foundation for all subsequent phases:
 - **Phase 2** adds scalar put/get and basic object navigation
 - **Phase 3+** add object inspection, array operations, complex types, import/export

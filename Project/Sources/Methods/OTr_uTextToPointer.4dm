@@ -20,8 +20,8 @@
 //   $pointerAsText_t : Text : Serialised pointer text
 
 // Returns:
-//   $thePointer_p : Pointer : Reconstructed pointer,
-//                             or Null if unresolvable
+//   $thePointer_ptr : Pointer : Reconstructed pointer,
+//                               or Null if unresolvable
 
 // Created by Wayne Stewart, 2026-04-01
 // Based on Dict_GetPointer by Rob Laveaux

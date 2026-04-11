@@ -14,6 +14,12 @@
 // Wayne Stewart, 2026-04-11 - Added includeShadowKeys flag (default True) to
 //   Storage.OTr so OTr_IncludeShadowKey and the XML/JSON export methods can
 //   read it from any process or preemptive worker.
+// Wayne Stewart, 2026-04-11 - NOTE: An earlier revision added a global nativeDateInObject
+//   probe to Storage.OTr. This has been removed. The "Dates inside objects" setting
+//   (SET DATABASE PARAMETER) is per-process scope; a global flag stored in Storage
+//   would reflect the main process's state at startup and would be wrong for any
+//   process that has overridden the default. Date/Time storage now uses a per-call
+//   probe via OTr_uNativeDateInObject. See OTr_uNativeDateInObject and Phase 2 spec.
 // ----------------------------------------------------
 
 
@@ -29,6 +35,7 @@ If (Storage:C1525.OTr=Null:C1517)
 	End if 
 	
 	$ApplicationVersion_i:=Num:C11(Application version:C493)
+	
 	Use (Storage:C1525)
 		Storage:C1525.OTr:=New shared object:C1526("structureName"; $name; \
 			"nativeBlobInObject"; ($ApplicationVersion_i>=1920); \
@@ -61,5 +68,9 @@ End if
 
 If (Not:C34(OTR_Initialised_b))
 	ARRAY TEXT:C222(OTR_callStack_at; 0)
+	
+	OTR_LockCount_i:=0
+	
 	OTR_Initialised_b:=True:C214
+	
 End if 
