@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetRecord (inObject; inTag; inTable)
 
@@ -55,7 +55,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inTable_i : Integer)
 
-OTr_zAddToCallStack(Current method name)
+OTr_zAddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -110,22 +110,22 @@ If (OTr_zIsValidHandle($inObject_i))
 									: ($fieldType_i=Is date:K8:7)
 										// Dual-path: inspect stored property type to handle both
 										// native (Is date) and text-serialised ("YYYY-MM-DD") snapshots.
-										$storedPropType_i:=OB Get type:C1220($snapshot_o; $fieldName_t)
+										$storedPropType_i:=OB Get:C1224($snapshot_o; $fieldName_t)
 										If ($storedPropType_i=Is date:K8:7)
 											$fieldPtr_ptr->:=OB Get:C1224($snapshot_o; $fieldName_t; Is date:K8:7)
-										Else
+										Else 
 											$fieldPtr_ptr->:=OTr_uTextToDate(OB Get:C1224($snapshot_o; $fieldName_t; Is text:K8:3))
-										End if
-
+										End if 
+										
 									: ($fieldType_i=Is time:K8:8)
 										// Dual-path: inspect stored property type to handle both
 										// native (Is time) and text-serialised ("HH:MM:SS") snapshots.
-										$storedPropType_i:=OB Get type:C1220($snapshot_o; $fieldName_t)
+										$storedPropType_i:=OB Get:C1224($snapshot_o; $fieldName_t)
 										If ($storedPropType_i=Is time:K8:8)
 											$fieldPtr_ptr->:=OB Get:C1224($snapshot_o; $fieldName_t; Is time:K8:8)
-										Else
+										Else 
 											$fieldPtr_ptr->:=OTr_uTextToTime(OB Get:C1224($snapshot_o; $fieldName_t; Is text:K8:3))
-										End if
+										End if 
 										
 									: ($fieldType_i=Is picture:K8:10)
 										CONVERT FROM TEXT:C1011(OB Get:C1224($snapshot_o; $fieldName_t; Is text:K8:3); "US-ASCII"; $tempBlob_blob)
@@ -178,4 +178,4 @@ End if
 
 OTr_zUnlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_LoadFromFile (inFilePath) --> Longint
 
@@ -16,7 +16,7 @@
 //   $inFilePath_t : Text : Full path of the source file
 
 // Returns:
-//   $handle_i : Integer : New OTr handle, \
+//   $handle_i : Integer : New OTr handle, 
 //                         or 0 if loading failed
 
 // Created by Wayne Stewart, 2026-04-05
@@ -25,15 +25,15 @@
 
 #DECLARE($inFilePath_t : Text)->$handle_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_zAddToCallStack(Current method name:C684)
 
 var $json_t : Text
 
 $handle_i:=0
 
-If (Test path name($inFilePath_t)=Is a document)
-	$json_t:=Document to text($inFilePath_t; "UTF-8")
+If (Test path name:C476($inFilePath_t)=Is a document:K24:1)
+	$json_t:=Document to text:C1236($inFilePath_t; "UTF-8")
 	$handle_i:=OTr_LoadFromText($json_t)
-End if
+End if 
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

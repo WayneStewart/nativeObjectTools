@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_ItemType (inObject; inTag) --> Longint
 
@@ -31,7 +31,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$otType_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_zAddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -41,22 +41,21 @@ $otType_i:=0
 OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
-
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; \
-		->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
+	
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$otType_i:=OTr_zMapType($parent_o; $leafKey_t)
-		Else
-			OTr_zError("Item not found: "+$inTag_t; Current method name)
-		End if
-	Else
-		OTr_zError("Invalid path: "+$inTag_t; Current method name)
-	End if
-
-Else
-	OTr_zError("Invalid handle"; Current method name)
-End if
+		Else 
+			OTr_zError("Item not found: "+$inTag_t; Current method name:C684)
+		End if 
+	Else 
+		OTr_zError("Invalid path: "+$inTag_t; Current method name:C684)
+	End if 
+	
+Else 
+	OTr_zError("Invalid handle"; Current method name:C684)
+End if 
 
 OTr_zUnlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

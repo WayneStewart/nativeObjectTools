@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_LoadFromClipboard () --> Longint
 
@@ -11,7 +11,7 @@
 // Access: Shared
 
 // Returns:
-//   $handle_i : Integer : New OTr handle, \
+//   $handle_i : Integer : New OTr handle, 
 //                         or 0 if loading failed
 
 // Created by Wayne Stewart, 2026-04-05
@@ -20,11 +20,11 @@
 
 #DECLARE()->$handle_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_zAddToCallStack(Current method name:C684)
 
 var $json_t : Text
 
-$json_t:=Get text from pasteboard
+$json_t:=Get text from pasteboard:C524
 $handle_i:=OTr_LoadFromText($json_t)
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

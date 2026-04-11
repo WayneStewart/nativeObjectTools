@@ -49,10 +49,13 @@ Confirm the status of each phase per Phase 20 §1:
 - [ ] Phase 6 — Import/Export: ✅
 - [ ] Phase 7 — API Naming Alignment: ✅ (confirm with S2 findings)
 - [ ] Phase 8 — Unified Array Element Accessor: ✅
-- [ ] Phase 9 — (confirm scope and status — Phase 9 spec exists but is not in Phase 20 table)
+- [ ] Phase 9 -  Pre-Release Audit and Corrections
 - [ ] Phase 10 — Logging Subsystem: confirm whether complete or still in progress
+- [ ] Phase 11 — 14 - open slots
 - [ ] Phase 15 — Side-by-Side Compatibility Testing: confirm whether complete
-- [ ] Phase 100 — Dual Storage Architecture: confirmed post-release, not blocking
+- [ ] Phase 16 - 19 - open slots
+- [ ] Phase 20 - (see below)
+- [ ] Phase 100 — version 2.0; Dual Storage Architecture: confirmed post-release, not blocking
 
 ### Section 2 — TODOs (from Phase 20 §3)
 

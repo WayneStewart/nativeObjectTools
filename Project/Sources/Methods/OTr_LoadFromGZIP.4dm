@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_LoadFromGZIP (inBlob) --> Longint
 
@@ -15,25 +15,25 @@
 //                         (from OTr_SaveToGZIP)
 
 // Returns:
-//   $handle_i : Integer : New OTr handle, \
+//   $handle_i : Integer : New OTr handle, 
 //                         or 0 if loading failed
 
 // Created by Wayne Stewart, 2026-04-05
-// Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Written by Cannon Smith, unknown date
 // ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob)->$handle_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_zAddToCallStack(Current method name:C684)
 
 var $json_t : Text
 
 $handle_i:=0
 
-If (BLOB size($inBlob_blob)>0)
-	EXPAND BLOB($inBlob_blob)
-	$json_t:=Convert to text($inBlob_blob; UTF8 text without length)
+If (BLOB size:C605($inBlob_blob)>0)
+	EXPAND BLOB:C535($inBlob_blob)
+	$json_t:=Convert to text:C1012($inBlob_blob; UTF8 text without length:K22:17)
 	$handle_i:=OTr_LoadFromText($json_t)
-End if
+End if 
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

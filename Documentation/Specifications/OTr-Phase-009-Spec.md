@@ -85,7 +85,7 @@ Methods with no legacy OT counterpart (OTr additions) follow the convention of s
 | `OTr_GetHandleList` | `OT GetHandleList` | — | — | Always succeeds |
 | `OTr_IsObject` | `OT IsObject` | — | — | Returns 0/1; never errors |
 | `OTr_ItemCount` | `OT ItemCount` | — | ✅ | Error on invalid handle |
-| `OTr_ObjectSize` | `OT ObjectSize` | ✅ | ✅ | Documented as setting OK; already fixed |
+| `OTr_ObjectSize` | `OT ObjectSize` | — | ✅ | Documented as setting OK; already fixed |
 | `OTr_PutLong` | `OT PutLong` | — | ✅ | Error on invalid handle only |
 | `OTr_PutReal` | `OT PutReal` | — | ✅ | As above |
 | `OTr_PutString` | `OT PutString` | — | ✅ | As above |
@@ -101,8 +101,8 @@ Methods with no legacy OT counterpart (OTr additions) follow the convention of s
 | `OTr_PutVariable` | `OT PutVariable` | — | ✅ | As above; already calls `OTr_zSetOK(0)` |
 | `OTr_GetLong` | `OT GetLong` | — | ✅ | Error on invalid handle; silent on missing tag |
 | `OTr_GetReal` | `OT GetReal` | — | ✅ | As above |
-| `OTr_GetString` | `OT GetString` | ✅ | ✅ | Sets OK 1 on success — confirmed per source comment |
-| `OTr_GetText` | `OT GetText` | ✅ | ✅ | Delegates to `OTr_GetString`; inherits its OK behaviour |
+| `OTr_GetString` | `OT GetString` | — | ✅ | Sets OK 1 on success — confirmed per source comment |
+| `OTr_GetText` | `OT GetText` | — | ✅ | Delegates to `OTr_GetString`; inherits its OK behaviour |
 | `OTr_GetDate` | `OT GetDate` | — | ✅ | Error on invalid handle; silent on missing tag |
 | `OTr_GetTime` | `OT GetTime` | — | ✅ | As above |
 | `OTr_GetBoolean` | `OT GetBoolean` | — | ✅ | As above |
@@ -115,16 +115,16 @@ Methods with no legacy OT counterpart (OTr additions) follow the convention of s
 | `OTr_GetRecordTable` | `OT GetRecordTable` | — | ✅ | Already calls `OTr_zSetOK(0)` |
 | `OTr_GetVariable` | `OT GetVariable` | — | ✅ | Already calls `OTr_zSetOK(0)` |
 | `OTr_ItemExists` | `OT ItemExists` | — | ✅ | Error on invalid handle; no error on missing tag (query) |
-| `OTr_ItemType` | `OT ItemType` | ✅ | ✅ | Already fixed; sets OK 1 on success |
+| `OTr_ItemType` | `OT ItemType` | — | ✅ | Already fixed; sets OK 1 on success |
 | `OTr_IsEmbedded` | `OT IsEmbedded` | — | ✅ | Error on invalid handle |
 | `OTr_GetItemProperties` | `OT GetItemProperties` | — | ✅ | Error on invalid handle |
 | `OTr_GetNamedProperties` | `OT GetNamedProperties` | — | ✅ | Error on invalid handle |
 | `OTr_GetAllProperties` | `OT GetAllProperties` | — | ✅ | Error on invalid handle |
 | `OTr_GetAllNamedProperties` | `OT GetAllNamedProperties` | — | ✅ | Error on invalid handle |
-| `OTr_CopyItem` | `OT CopyItem` | ✅ | ✅ | Already fixed; sets OK 1 on success |
+| `OTr_CopyItem` | `OT CopyItem` | — | ✅ | Already fixed; sets OK 1 on success |
 | `OTr_CompareItems` | `OT CompareItems` | — | ✅ | Returns –1 on error; no explicit OK 1 needed |
 | `OTr_RenameItem` | `OT RenameItem` | — | ✅ | Error on invalid handle |
-| `OTr_DeleteItem` | `OT DeleteItem` | ✅ | ✅ | Already fixed; sets OK 1 on success |
+| `OTr_DeleteItem` | `OT DeleteItem` | — | ✅ | Already fixed; sets OK 1 on success |
 | `OTr_PutArray` | `OT PutArray` | — | ✅ | Error on invalid handle |
 | `OTr_GetArray` | `OT GetArray` | — | ✅ | Error on invalid handle |
 | `OTr_PutArrayLong` | `OT PutArrayLong` | — | ✅ | Error only |
@@ -153,9 +153,9 @@ Methods with no legacy OT counterpart (OTr additions) follow the convention of s
 | `OTr_DeleteElement` | `OT DeleteElement` | — | ✅ | Error on invalid handle |
 | `OTr_FindInArray` | `OT FindInArray` | — | ✅ | Sets OK to 0 on error; 1 when found (–1 result is not an error) |
 | `OTr_SortArrays` | `OT SortArrays` | — | ✅ | Already calls `OTr_zSetOK(0)` on error |
-| `OTr_ObjectToBLOB` | `OT ObjectToBLOB` | ✅ | ✅ | Already calls both; confirmed |
+| `OTr_ObjectToBLOB` | `OT ObjectToBLOB` | — | ✅ | Already calls both; confirmed |
 | `OTr_ObjectToNewBLOB` | `OT ObjectToNewBLOB` | — | ✅ | Error on invalid handle |
-| `OTr_BLOBToObject` | `OT BLOBToObject` | ✅ | ✅ | Already calls both; confirmed |
+| `OTr_BLOBToObject` | `OT BLOBToObject` | — | ✅ | Already calls both; confirmed |
 | `OTr_ArrayType` | *(OTr addition)* | — | ✅ | Returns –1 on error; no explicit OK needed |
 | `OTr_SaveToText` | *(OTr addition)* | — | — | Always succeeds if handle valid; error returns empty |
 | `OTr_SaveToFile` | *(OTr addition)* | — | ✅ | File I/O can fail |
