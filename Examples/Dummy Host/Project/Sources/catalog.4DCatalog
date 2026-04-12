@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE base SYSTEM "http://www.4d.com/dtd/2007/base.dtd" >
+<base name="Dummy Host" uuid="E43436F0934B4BE1A5F8CFA7EE8E4A48" collation_locale="en-au">
+	<schema name="DEFAULT_SCHEMA"/>
+	<table name="Demo" uuid="DFA7FF3A7A0E4D0085AD6A2FA87ACB63" id="1">
+		<field name="ID" uuid="351BA0BDE93E435895DF93529D2BB9FB" type="4" unique="true" autosequence="true" not_null="true" id="1"/>
+		<field name="demoField" uuid="3E43C8D4D733471AB571F06D7E854720" type="10" limiting_length="255" never_null="true" id="2"/>
+		<primary_key field_name="ID" field_uuid="351BA0BDE93E435895DF93529D2BB9FB"/>
+		<table_extra>
+			<editor_table_info displayable_fields_count="6">
+				<color red="255" green="255" blue="255" alpha="0"/>
+				<coordinates left="44.75390625" top="13.0703125" width="120" height="167.33203125"/>
+			</editor_table_info>
+		</table_extra>
+	</table>
+	<index kind="regular" unique_keys="true" uuid="CBB0BF3FF07C4D7185B66C28BA177E9A" type="7">
+		<field_ref uuid="351BA0BDE93E435895DF93529D2BB9FB" name="ID">
+			<table_ref uuid="DFA7FF3A7A0E4D0085AD6A2FA87ACB63" name="Demo"/>
+		</field_ref>
+	</index>
+	<base_extra __stringCompHash="icu:68.1.0" __keywordBuildingHash="icu:68.1.0">
+		<journal_file journal_file_enabled="true"/>
+	</base_extra>
+</base>

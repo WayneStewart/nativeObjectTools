@@ -1,0 +1,127 @@
+OTr - OK Variable Behaviour Reference
+=======================================
+Generated: 2026-04-11
+Source: OTr-Phase-009-Spec.md §2.2
+
+This file records, for every public OTr method, whether the legacy OT
+counterpart sets the OK system variable, and how OTr replicates that
+behaviour. The table is the definitive implementation reference for all
+OTr_zSetOK() call sites.
+
+Column key:
+  OK=1 success   Y = yes, set explicitly. — = no (OT never did).
+  OK=0 error     Y = yes, OTr_zSetOK(0) required on every error path.
+                 — = no error path exists.
+
+Where the legacy documentation is silent, the 4D convention is applied:
+commands that can fail due to an invalid handle or missing item set OK
+to 0 on error; pure query functions that never error (or always return
+a sentinel value) do not.
+
+Methods with no legacy OT counterpart (OTr additions) follow the
+convention of setting OK to 0 when they have a meaningful failure mode.
+
+OTr Method                    | Legacy Command               | OK=1 | OK=0 | Notes
+------------------------------|------------------------------|:----:|:----:|------
+OTr_New                       | OT New                       |  —   |  —   | No documented OK behaviour; OTr_New always succeeds
+OTr_Clear                     | OT Clear                     |  —   |  Y   | Error on invalid handle; OK on error only
+OTr_ClearAll                  | OT ClearAll                  |  —   |  —   | Always succeeds
+OTr_Copy                      | OT Copy                      |  —   |  Y   | Returns 0 on error; should set OK to 0
+OTr_GetVersion                | OT GetVersion                |  —   |  —   | Always succeeds
+OTr_Register                  | OT Register                  |  —   |  —   | No-op; always succeeds
+OTr_CompiledApplication       | OT CompiledApplication       |  —   |  —   | Always succeeds
+OTr_SetErrorHandler           | OT SetErrorHandler           |  —   |  —   | Always succeeds
+OTr_GetOptions                | OT GetOptions                |  —   |  —   | Always succeeds
+OTr_SetOptions                | OT SetOptions                |  —   |  —   | Always succeeds
+OTr_GetHandleList             | OT GetHandleList             |  —   |  —   | Always succeeds
+OTr_IsObject                  | OT IsObject                  |  —   |  —   | Returns 0/1; never errors
+OTr_ItemCount                 | OT ItemCount                 |  —   |  Y   | Error on invalid handle
+OTr_ObjectSize                | OT ObjectSize                |  —   |  Y   | Legacy OT never sets OK=1; OTr matches
+OTr_PutLong                   | OT PutLong                   |  —   |  Y   | Error on invalid handle only
+OTr_PutReal                   | OT PutReal                   |  —   |  Y   | As above
+OTr_PutString                 | OT PutString                 |  —   |  Y   | As above
+OTr_PutText                   | OT PutText                   |  —   |  Y   | As above
+OTr_PutDate                   | OT PutDate                   |  —   |  Y   | As above
+OTr_PutTime                   | OT PutTime                   |  —   |  Y   | As above
+OTr_PutBoolean                | OT PutBoolean                |  —   |  Y   | As above
+OTr_PutObject                 | OT PutObject                 |  —   |  Y   | As above
+OTr_PutPointer                | OT PutPointer                |  —   |  Y   | As above; already calls OTr_zSetOK(0)
+OTr_PutBLOB                   | OT PutBLOB                   |  —   |  Y   | As above; already calls OTr_zSetOK(0)
+OTr_PutPicture                | OT PutPicture                |  —   |  Y   | As above; already calls OTr_zSetOK(0)
+OTr_PutRecord                 | OT PutRecord                 |  —   |  Y   | As above; already calls OTr_zSetOK(0)
+OTr_PutVariable               | OT PutVariable               |  —   |  Y   | As above; already calls OTr_zSetOK(0)
+OTr_GetLong                   | OT GetLong                   |  —   |  Y   | Error on invalid handle; silent on missing tag
+OTr_GetReal                   | OT GetReal                   |  —   |  Y   | As above
+OTr_GetString                 | OT GetString                 |  —   |  Y   | Legacy OT never sets OK=1; OTr matches
+OTr_GetText                   | OT GetText                   |  —   |  Y   | Delegates to OTr_GetString; inherits its OK behaviour
+OTr_GetDate                   | OT GetDate                   |  —   |  Y   | Error on invalid handle; silent on missing tag
+OTr_GetTime                   | OT GetTime                   |  —   |  Y   | As above
+OTr_GetBoolean                | OT GetBoolean                |  —   |  Y   | As above
+OTr_GetObject                 | OT GetObject                 |  —   |  Y   | Returns 0 on error
+OTr_GetPointer                | OT GetPointer                |  —   |  Y   | Already calls OTr_zSetOK(0) on error
+OTr_GetBLOB                   | OT GetBLOB                   |  —   |  Y   | Implemented with Pointer output parameter (->outBLOB); sets OK=0 on error
+OTr_GetNewBLOB                | OT GetNewBLOB                |  —   |  Y   | Already calls OTr_zSetOK(0)
+OTr_GetPicture                | OT GetPicture                |  —   |  Y   | Already calls OTr_zSetOK(0)
+OTr_GetRecord                 | OT GetRecord                 |  —   |  Y   | Already calls OTr_zSetOK(0)
+OTr_GetRecordTable            | OT GetRecordTable            |  —   |  Y   | Already calls OTr_zSetOK(0)
+OTr_GetVariable               | OT GetVariable               |  —   |  Y   | Already calls OTr_zSetOK(0)
+OTr_ItemExists                | OT ItemExists                |  —   |  Y   | Error on invalid handle; no error on missing tag (query)
+OTr_ItemType                  | OT ItemType                  |  —   |  Y   | Legacy OT never sets OK=1; OTr matches. Error on invalid handle or missing tag (p.95)
+OTr_IsEmbedded                | OT IsEmbedded                |  —   |  Y   | Error on invalid handle
+OTr_GetItemProperties         | OT GetItemProperties         |  —   |  Y   | Error on invalid handle
+OTr_GetNamedProperties        | OT GetNamedProperties        |  —   |  Y   | Error on invalid handle
+OTr_GetAllProperties          | OT GetAllProperties          |  —   |  Y   | Error on invalid handle
+OTr_GetAllNamedProperties     | OT GetAllNamedProperties     |  —   |  Y   | Error on invalid handle
+OTr_CopyItem                  | OT CopyItem                  |  —   |  Y   | Legacy OT never sets OK=1; OTr matches
+OTr_CompareItems              | OT CompareItems              |  —   |  Y   | Returns -1 on error; no explicit OK 1 needed
+OTr_RenameItem                | OT RenameItem                |  —   |  Y   | Error on invalid handle
+OTr_DeleteItem                | OT DeleteItem                |  —   |  Y   | Legacy OT never sets OK=1; OTr matches
+OTr_PutArray                  | OT PutArray                  |  —   |  Y   | Error on invalid handle
+OTr_GetArray                  | OT GetArray                  |  —   |  Y   | Error on invalid handle
+OTr_PutArrayLong              | OT PutArrayLong              |  —   |  Y   | Error only
+OTr_GetArrayLong              | OT GetArrayLong              |  —   |  Y   | Error only
+OTr_PutArrayReal              | OT PutArrayReal              |  —   |  Y   | Error only
+OTr_GetArrayReal              | OT GetArrayReal              |  —   |  Y   | Error only
+OTr_PutArrayString            | OT PutArrayString            |  —   |  Y   | Error only
+OTr_GetArrayString            | OT GetArrayString            |  —   |  Y   | Error only
+OTr_PutArrayText              | OT PutArrayText              |  —   |  Y   | Error only
+OTr_GetArrayText              | OT GetArrayText              |  —   |  Y   | Error only
+OTr_PutArrayDate              | OT PutArrayDate              |  —   |  Y   | Error only
+OTr_GetArrayDate              | OT GetArrayDate              |  —   |  Y   | Error only
+OTr_PutArrayTime              | OT PutArrayTime              |  —   |  Y   | Error only
+OTr_GetArrayTime              | OT GetArrayTime              |  —   |  Y   | Error only
+OTr_PutArrayBoolean           | OT PutArrayBoolean           |  —   |  Y   | Error only
+OTr_GetArrayBoolean           | OT GetArrayBoolean           |  —   |  Y   | Error only
+OTr_PutArrayBLOB              | OT PutArrayBLOB              |  —   |  Y   | Error only
+OTr_GetArrayBLOB              | OT GetArrayBLOB              |  —   |  Y   | Error only
+OTr_PutArrayPicture           | OT PutArrayPicture           |  —   |  Y   | Error only
+OTr_GetArrayPicture           | OT GetArrayPicture           |  —   |  Y   | Error only
+OTr_PutArrayPointer           | OT PutArrayPointer           |  —   |  Y   | Error only
+OTr_GetArrayPointer           | OT GetArrayPointer           |  —   |  Y   | Error only
+OTr_SizeOfArray               | OT SizeOfArray               |  —   |  Y   | Error on invalid handle or non-array tag
+OTr_ResizeArray               | OT ResizeArray               |  —   |  Y   | Already calls OTr_zSetOK(0) on error
+OTr_InsertElement             | OT InsertElement             |  —   |  Y   | Error on invalid handle
+OTr_DeleteElement             | OT DeleteElement             |  —   |  Y   | Error on invalid handle
+OTr_FindInArray               | OT FindInArray               |  —   |  Y   | Sets OK to 0 on error; 1 when found (-1 result is not an error)
+OTr_SortArrays                | OT SortArrays                |  —   |  Y   | Already calls OTr_zSetOK(0) on error
+OTr_ObjectToBLOB              | OT ObjectToBLOB              |  Y   |  Y   | Already calls both; confirmed
+OTr_ObjectToNewBLOB           | OT ObjectToNewBLOB           |  —   |  Y   | Error on invalid handle
+OTr_BLOBToObject              | OT BLOBToObject              |  Y   |  Y   | Already calls both; confirmed
+OTr_ArrayType                 | (OTr addition)               |  —   |  Y   | Returns -1 on error; no explicit OK 1 needed
+OTr_SaveToText                | (OTr addition)               |  —   |  —   | Always succeeds if handle valid; error returns empty
+OTr_SaveToFile                | (OTr addition)               |  —   |  Y   | File I/O can fail
+OTr_SaveToClipboard           | (OTr addition)               |  —   |  —   | Always succeeds
+OTr_SaveToBlob                | (OTr addition)               |  —   |  —   | Returns empty BLOB on failure; no OK signal needed
+OTr_SaveToGZIP                | (OTr addition)               |  —   |  —   | Returns empty BLOB on failure; no OK signal needed
+OTr_LoadFromText              | (OTr addition)               |  —   |  Y   | Returns 0 on parse failure
+OTr_LoadFromFile              | (OTr addition)               |  —   |  Y   | File I/O can fail
+OTr_LoadFromClipboard         | (OTr addition)               |  —   |  Y   | Returns 0 on parse failure
+OTr_LoadFromBlob              | (OTr addition)               |  —   |  Y   | Returns 0 on failure
+OTr_LoadFromGZIP              | (OTr addition)               |  —   |  Y   | Returns 0 on failure
+OTr_SetDateMode               | (OTr addition)               |  —   |  —   | Always succeeds; no failure mode
+OTr_SaveToXML                 | (OTr addition)               |  —   |  Y   | XML serialisation can fail (invalid handle or DOM error)
+OTr_SaveToXMLFile             | (OTr addition)               |  —   |  Y   | File I/O and XML serialisation can fail
+OTr_SaveToXMLSAX              | (OTr addition)               |  —   |  Y   | SAX serialisation can fail (invalid handle)
+OTr_SaveToXMLFileSAX          | (OTr addition)               |  —   |  Y   | File I/O and SAX serialisation can fail
+OTr_LoadFromXML               | (OTr addition)               |  —   |  Y   | Returns 0 on parse failure
+OTr_LoadFromXMLFile           | (OTr addition)               |  —   |  Y   | File I/O and parse failure possible

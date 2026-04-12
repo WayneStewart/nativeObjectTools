@@ -1,0 +1,1 @@
+<!--OTr_GetVersion () -> TextResult : Text : ⬅️ : OTr version string-->## OTr\_GetVersionOTr\_GetVersion () --> TextReturns the OTr implementation version string.Attributes: Shared, Invisible, Preemptive indifferent| Parameter | Type |  | Description || --- | --- | --- | --- ||Result|Text|⬅️|OTr version string|

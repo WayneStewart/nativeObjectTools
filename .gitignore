@@ -37,10 +37,10 @@
 ##############
 **/Data
 
-# Helpers #
-########
-**/Helpers or Examples
-**/Helpers or Examples/**
+# Helpers (ignored) and Examples (tracked) #
+#############################################
+Helpers/
+!Examples/
 
 # 4D Data files 
 *.4dd
