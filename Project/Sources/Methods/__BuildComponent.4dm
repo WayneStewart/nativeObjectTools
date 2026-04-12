@@ -1,4 +1,4 @@
-//%attributes = {"shared":false}
+//%attributes = {}
 // Access: Private
 
 var $build_t; $buildVersion_t; $version_t : Text

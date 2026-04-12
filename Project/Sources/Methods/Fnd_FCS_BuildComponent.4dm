@@ -16,10 +16,10 @@
 #DECLARE($versionNumber_t : Text)
 
 var $templatePath_t; $json_t; $date_t; $year_t; $enteredValue_t; $archive_t : Text
-var $buildSettingsPath_t; $buildFolderPath_t; $LF; $strings_t; $builtComponent_t; $newName_t : Text
+var $buildSettingsPath_t; $buildFolderPath_t; $LF; $strings_t; $builtComponent_t; $newName_t; $templateSettings_t : Text
 var $info_o : Object
 
-
+//MARK: Update the version info
 $templatePath_t:=Get 4D folder:C485(Current resources folder:K5:16)+"InfoPlist.json"
 If (Test path name:C476($templatePath_t)=Is a document:K24:1)
 	$LF:=Char:C90(Line feed:K15:40)
@@ -45,6 +45,7 @@ Else
 	
 End if 
 
+//MARK: Build the InfoPlist.strings
 If (OK=1)
 	// Update the json
 	$info_o.CFBundleShortVersionString:=$versionNumber_t
@@ -73,8 +74,25 @@ If (OK=1)
 	
 End if 
 
-If (OK=1)  // If any of the previous steps failed OK will be 0
+//MARK: Verify the Build application settings are in place
+If (OK=1)
 	$buildSettingsPath_t:=Get 4D file:C1418(Build application settings file:K5:60)
+	If (Length:C16($buildSettingsPath_t)=0)
+		$templateSettings_t:=Get 4D folder:C485(Current resources folder:K5:16)+"templatebuildApp.xml"
+		If (Test path name:C476($templateSettings_t)=Is a document:K24:1)
+			$buildSettingsPath_t:=Get 4D folder:C485(Database folder:K5:14)+"Settings"+Folder separator:K24:12
+			CREATE FOLDER:C475($buildSettingsPath_t; *)
+			$buildSettingsPath_t:=$buildSettingsPath_t+"buildApp.4DSettings"
+			COPY DOCUMENT:C541($templateSettings_t; $buildSettingsPath_t)
+			OK:=0  // So it won't keep going automatically
+			ALERT:C41("I've created a template settings document for you, please now go to\nDesign>Build Application…\n To confirm the default settings.\n\nAlternatively edit the XML directly.")
+		End if 
+	End if 
+	
+End if 
+
+If (OK=1)  // If any of the previous steps failed OK will be 0
+	
 	$buildFolderPath_t:=Get 4D folder:C485(Database folder:K5:14)+"Builds"+Folder separator:K24:12+"Components"+Folder separator:K24:12
 	
 	Fnd_FCS_WriteDocumentation(""; True:C214; True:C214; True:C214)  // Rewrite the documentation, eliminating the private methods

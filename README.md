@@ -21,9 +21,15 @@ For decades, ObjectTools has been a critical component in many 4D applications�
 - **Provides a clear migration path** — Detailed specifications and comprehensive test coverage ensure reliable porting of ObjectTools-dependent code
 
 ## Ch-ch-ch-ch-changes
+
+### API Changes
 Some Object Tools plugin commands can't be matched exactly to a native 4D component. To see a list of API differences, look at this document.
 
 **[OTr-API-Differences.md](OTr-API-Differences.md)**
+
+### I Really Hate OTr_
+If you don't like seeing OTr_ everywhere, check out the folder renaming. This contains a 4D project that will rename all the **'OTr_'**, prefixes to **'OT '**. If you run this and then quit and restart nativeObjectTools you should see all is correct.  
+
 
 ## Key Features
 
@@ -86,69 +92,41 @@ If your code uses the legacy ObjectTools plugin, migration is straightforward:
 
 4. **Test thoroughly** — Run your application's test suite to verify behaviour matches the original
 
+## Building the Component
+
+OTr can be built as a 4D component either manually or via an automated build method.
+
+**Manual build:** Use the 4D Design menu option **Build Application…** at any time. Note that the method documentation will not be automatically updated when building this way.
+
+**Automated build:** Run the method `__BuildComponent`. This updates the method documentation and includes it in the component before building. The process is:
+
+1. Run `__BuildComponent`.
+2. If all settings are in place, the component is built and revealed on disk.
+3. If no settings document exists yet, a template is written to the correct location — proceed to step 4.
+4. Edit the settings document either via **Design > Build Application…** or by editing the XML directly.
+5. On macOS with 4D 20 or later, add your Apple Developer ID to the settings so the component is correctly signed.
+6. Save the settings and return to step 1.
+
 ## Project Structure
 
 ```
 OTr/
 ├── README.md                              (this file)
+├── 4D-Method-Writing-Guide.md             (coding standard for OTr methods)
 ├── OTr-Specification.md                   (master specification; start here)
 ├── OTr-Types-Reference.md                 (type constant mapping)
-├── 4D-Method-Writing-Guide.md             (coding standard for OTr methods)
-├── Documentation/
-│   └── Specifications/
-│       ├── OTr-Phase-001-Spec.md          (core infrastructure + simple export)
-│       ├── OTr-Phase-002-Spec.md          (scalar put/get and object navigation)
-│       ├── OTr-Phase-003-Spec.md          (object inspection and item utilities)
-│       ├── OTr-Phase-004-Spec.md          (array operations)
-│       ├── OTr-Phase-005-Spec.md          (complex types: BLOB, Picture, Pointer, Record, Variable)
-│       ├── OTr-Phase-006-Spec.md          (full import/export with type preservation)
-│       ├── OTr-Phase-007-020-Spec.md      (future extensions)
-│       └── Retired/                       (historical specification versions)
-├── Project/
-│   └── Sources/Methods/
-│       ├── OTr_New.4dm                    (public API methods)
-│       ├── OTr_PutText.4dm
-│       ├── OTr_GetText.4dm
-│       ├── ... (all OTr_ methods)
-│       ├── OTr_z*.4dm                     (private infrastructure methods)
-│       ├── OTr_u*.4dm                     (utility methods)
-│       └── ____Test_Phase_*.4dm           (comprehensive unit tests)
-└── LegacyDocumentation/
-    └── ObjectTools 5 Reference.pdf        (original ObjectTools documentation)
+├── Documentation/                         (phase specifications & explorer method documentation)
+├── Examples/                              (An example host database for running tests)
+├── LegacyDocumentation/                   (original ObjectTools documentation in various formats)
+├── Project/                               (4D source methods)
+├── Renaming/                              (a 4D project to rename methods from Otr to 'OT ' and vice versa)
 ```
 
-## Specifications
-
-OTr is organised into implementation phases, each with detailed specifications:
-
-- **Phase 1–1.5:** Core infrastructure and handle management; simple JSON export
-- **Phase 2:** Scalar put/get and dotted-path object navigation
-- **Phase 3:** Object inspection, property enumeration, item utilities
-- **Phase 4:** Array storage and manipulation
-- **Phase 5:** Complex types (BLOB, Picture, Pointer, Record, Variable)
-- **Phase 6:** Full import/export with type metadata preservation
-- **Phase 7+:** Future extensions and optimisations
-
-See **[OTr-Specification.md](OTr-Specification.md)** for the master overview and command reference, or jump directly to a phase specification for detailed method signatures, behaviour, and examples.
+See **[OTr-Specification.md](OTr-Specification.md)** for the master overview and command reference.
 
 ## Testing
 
-Comprehensive unit tests are provided for all implemented phases:
-
-```4d
-____Test_Phase_1         // Core infrastructure, handle lifecycle, options
-____Test_Phase_2         // Scalar put/get, dotted paths, object embedding
-____Test_Phase_3         // Object inspection, property enumeration
-____Test_Phase_4         // Array operations
-____Test_Phase_5         // Complex types
-____Test_Phase_6         // Import/export round-trip
-```
-
-Run any test method to verify the implementation:
-
-```4d
-____Test_Phase_1  // Displays "all tests passed" or "FAILED" with details
-```
+Comprehensive unit tests are provided for all implemented phases. Test methods are named `____Test_Phase_*` and can be run directly from the 4D Method Editor.
 
 ## Coding Standard
 
@@ -181,17 +159,6 @@ OTr builds on substantial prior work in the 4D community:
 - **2013 4D Summit Listbox Session** — Further refinement of object handling patterns, this time based on the Fnd_Dict concept.
 
 OTr represents the evolution of these design patterns into a modern, native 4D implementation.
-
-## Status
-
-OTr v1.0 Beta 1 is feature-complete and in final pre-release verification:
-
-**Completed:**
-- **Phases 1–9** — Fully implemented and tested
-- **Phase 10** — Logging and diagnostic support — implemented
-- **Phase 15** — Parallel OT vs OTr side-by-side testing — 30/30 pass
-
-A public release is imminent. The implementation reproduces the ObjectTools API with high fidelity, enabling reliable migration from the legacy plugin.
 
 ## Support & Contribution
 
