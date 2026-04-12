@@ -49,7 +49,15 @@
 //   success path (see OTr-OK0-Conditions specification).
 // ----------------------------------------------------
 
-#DECLARE($inObject_i : Integer; $inTag1_t : Text; $inDirection1_t : Text; $inTag2_t : Text; $inDirection2_t : Text; $inTag3_t : Text; $inDirection3_t : Text; $inTag4_t : Text; $inDirection4_t : Text; $inTag5_t : Text; $inDirection5_t : Text; $inTag6_t : Text; $inDirection6_t : Text; $inTag7_t : Text; $inDirection7_t : Text)
+#DECLARE($inObject_i : Integer; \
+$inTag1_t : Text; $inDirection1_t : Text; \
+$inTag2_t : Text; $inDirection2_t : Text; \
+$inTag3_t : Text; $inDirection3_t : Text; \
+$inTag4_t : Text; $inDirection4_t : Text; \
+$inTag5_t : Text; $inDirection5_t : Text; \
+$inTag6_t : Text; $inDirection6_t : Text; \
+$inTag7_t : Text; $inDirection7_t : Text)
+
 
 OTr_zAddToCallStack(Current method name:C684)
 

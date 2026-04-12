@@ -450,7 +450,7 @@ If (False:C215)
 	C_POINTER:C301(OTr_GetPointer; $3)
 	
 	C_LONGINT:C283(OTr_SortArrays; $1)
-	C_TEXT:C284(OTr_SortArrays; $2; $3; $4; $5; $6; $7; $8; $9; $10; $11; $12; $13; $14; $15)
+	C_TEXT:C284(OTr_SortArrays; ${2})
 	
 	C_BOOLEAN:C305(OTr_zSortValidatePair; $0)
 	C_OBJECT:C1216(OTr_zSortValidatePair; $1)

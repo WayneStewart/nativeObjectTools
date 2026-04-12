@@ -1,0 +1,1 @@
+<!--Fnd_FCS_BuildComponentversionNumber : Text : ➡️ : Version Number-->## Fnd\_FCS\_BuildComponentFnd\_FCS\_BuildComponentBuilds the Foundation componentAttributes: Private, Invisible, Preemptive indifferent| Parameter | Type |  | Description || --- | --- | --- | --- ||versionNumber|Text|➡️|Version Number|

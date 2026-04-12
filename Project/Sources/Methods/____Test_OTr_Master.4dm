@@ -689,11 +689,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if
 
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_ItemType for long = 5 or 1"
+	$testName_t:="OTr_ItemType for long = Is longint (shadow key)"
 	$type3_i:=OTr_ItemType($h1_3_i; "a.long")
-	$expected_t:="5 or 1"
+	$expected_t:=String:C10(Is longint:K8:6)
 	$actual_t:=String:C10($type3_i)
-	$pass_b:=($type3_i=5) | ($type3_i=1)
+	$pass_b:=($type3_i=Is longint:K8:6)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -1524,38 +1524,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $gotLong6_i : Integer
 	var $gotBool6_i : Integer
 
-	// uMapType 4D→OT: Is longint → 5
+	// uMapType 4D→OT: Is longint → Is longint:K8:6 (shadow-key currency)
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is longint → 5"
+	$testName_t:="OTr_uMapType Is longint 4D→OT → Is longint:K8:6"
 	$mapResult6_i:=OTr_uMapType(Is longint:K8:6; 0)
-	$expected_t:="5"
-	$actual_t:=String:C10($mapResult6_i)
-	$pass_b:=($mapResult6_i=5)
-	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
-	If ($pass_b)
-		$totalPass_i:=$totalPass_i+1
-	Else
-		$totalFail_i:=$totalFail_i+1
-	End if
-
-	// uMapType 4D→OT: Is text → 112
-	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is text → 112"
-	$mapResult6_i:=OTr_uMapType(Is text:K8:3; 0)
-	$expected_t:="112"
-	$actual_t:=String:C10($mapResult6_i)
-	$pass_b:=($mapResult6_i=112)
-	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
-	If ($pass_b)
-		$totalPass_i:=$totalPass_i+1
-	Else
-		$totalFail_i:=$totalFail_i+1
-	End if
-
-	// uMapType OT→4D: 5 → Is longint
-	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType OT 5 → Is longint"
-	$mapResult6_i:=OTr_uMapType(5; 1)
 	$expected_t:=String:C10(Is longint:K8:6)
 	$actual_t:=String:C10($mapResult6_i)
 	$pass_b:=($mapResult6_i=Is longint:K8:6)
@@ -1566,13 +1538,41 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$totalFail_i:=$totalFail_i+1
 	End if
 
-	// uMapType 4D→OT: Is real → 1
+	// uMapType 4D→OT: Is text → OT Is Character (112)
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is real → 1"
+	$testName_t:="OTr_uMapType Is text 4D→OT → OT Is Character (112)"
+	$mapResult6_i:=OTr_uMapType(Is text:K8:3; 0)
+	$expected_t:=String:C10(OT Is Character)
+	$actual_t:=String:C10($mapResult6_i)
+	$pass_b:=($mapResult6_i=OT Is Character)
+	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
+	If ($pass_b)
+		$totalPass_i:=$totalPass_i+1
+	Else
+		$totalFail_i:=$totalFail_i+1
+	End if
+
+	// uMapType OT→4D: Is longint:K8:6 → Is longint
+	$rowNum_i:=$rowNum_i+1
+	$testName_t:="OTr_uMapType Is longint:K8:6 OT→4D → Is longint"
+	$mapResult6_i:=OTr_uMapType(Is longint:K8:6; 1)
+	$expected_t:=String:C10(Is longint)
+	$actual_t:=String:C10($mapResult6_i)
+	$pass_b:=($mapResult6_i=Is longint)
+	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
+	If ($pass_b)
+		$totalPass_i:=$totalPass_i+1
+	Else
+		$totalFail_i:=$totalFail_i+1
+	End if
+
+	// uMapType 4D→OT: Is real → Is real:K8:4 (shadow-key currency)
+	$rowNum_i:=$rowNum_i+1
+	$testName_t:="OTr_uMapType Is real 4D→OT → Is real:K8:4"
 	$mapResult6_i:=OTr_uMapType(Is real:K8:4; 0)
-	$expected_t:="1"
+	$expected_t:=String:C10(Is real:K8:4)
 	$actual_t:=String:C10($mapResult6_i)
-	$pass_b:=($mapResult6_i=1)
+	$pass_b:=($mapResult6_i=Is real:K8:4)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -1580,13 +1580,13 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$totalFail_i:=$totalFail_i+1
 	End if
 
-	// uMapType 4D→OT: Is picture → 3
+	// uMapType 4D→OT: Is picture → Is picture:K8:10 (shadow-key currency)
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is picture → 3"
+	$testName_t:="OTr_uMapType Is picture 4D→OT → Is picture:K8:10"
 	$mapResult6_i:=OTr_uMapType(Is picture:K8:10; 0)
-	$expected_t:="3"
+	$expected_t:=String:C10(Is picture:K8:10)
 	$actual_t:=String:C10($mapResult6_i)
-	$pass_b:=($mapResult6_i=3)
+	$pass_b:=($mapResult6_i=Is picture:K8:10)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -1594,13 +1594,13 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$totalFail_i:=$totalFail_i+1
 	End if
 
-	// uMapType 4D→OT: Is collection → 113
+	// uMapType 4D→OT: Is collection → OT Character array (113)
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is collection → 113"
+	$testName_t:="OTr_uMapType Is collection 4D→OT → OT Character array (113)"
 	$mapResult6_i:=OTr_uMapType(Is collection:K8:32; 0)
-	$expected_t:="113"
+	$expected_t:=String:C10(OT Character array)
 	$actual_t:=String:C10($mapResult6_i)
-	$pass_b:=($mapResult6_i=113)
+	$pass_b:=($mapResult6_i=OT Character array)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -1608,13 +1608,13 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$totalFail_i:=$totalFail_i+1
 	End if
 
-	// uMapType OT→4D: 115 → Is text
+	// uMapType OT→4D: OT Is Record (115) → Is text
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType OT 115 (Record) → Is text"
-	$mapResult6_i:=OTr_uMapType(115; 1)
-	$expected_t:=String:C10(Is text:K8:3)
+	$testName_t:="OTr_uMapType OT Is Record (115) OT→4D → Is text"
+	$mapResult6_i:=OTr_uMapType(OT Is Record; 1)
+	$expected_t:=String:C10(Is text)
 	$actual_t:=String:C10($mapResult6_i)
-	$pass_b:=($mapResult6_i=Is text:K8:3)
+	$pass_b:=($mapResult6_i=Is text)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -1622,13 +1622,13 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$totalFail_i:=$totalFail_i+1
 	End if
 
-	// uMapType OT→4D: 24 → Is text
+	// uMapType OT→4D: 24 (legacy Variable) → Is text
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType OT 24 (Variable) → Is text"
+	$testName_t:="OTr_uMapType 24 (legacy Variable) OT→4D → Is text"
 	$mapResult6_i:=OTr_uMapType(24; 1)
-	$expected_t:=String:C10(Is text:K8:3)
+	$expected_t:=String:C10(Is text)
 	$actual_t:=String:C10($mapResult6_i)
-	$pass_b:=($mapResult6_i=Is text:K8:3)
+	$pass_b:=($mapResult6_i=Is text)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -1636,13 +1636,13 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$totalFail_i:=$totalFail_i+1
 	End if
 
-	// uMapType 4D→OT: Is boolean (default direction) → 6
+	// uMapType 4D→OT: Is Boolean → Is Boolean:K8:9 (shadow-key currency; default direction)
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is boolean (default dir) → 6"
-	$mapResult6_i:=OTr_uMapType(Is boolean:K8:9)
-	$expected_t:="6"
+	$testName_t:="OTr_uMapType Is Boolean 4D→OT (default dir) → Is Boolean:K8:9"
+	$mapResult6_i:=OTr_uMapType(Is Boolean:K8:9)
+	$expected_t:=String:C10(Is Boolean:K8:9)
 	$actual_t:=String:C10($mapResult6_i)
-	$pass_b:=($mapResult6_i=6)
+	$pass_b:=($mapResult6_i=Is Boolean:K8:9)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -1670,6 +1670,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$h6_i:=OTr_New
 	OTr_PutString($h6_i; "name"; "phase6-test")
 	OTr_PutLong($h6_i; "count"; 42)
+	OTr_PutReal($h6_i; "ratio"; 3.14)
 	OTr_PutBoolean($h6_i; "flag"; True:C214)
 	$serialBlob6_blob:=OTr_ObjectToNewBLOB($h6_i)
 	$expected_t:="OK=1; size>0"

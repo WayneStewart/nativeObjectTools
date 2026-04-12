@@ -57,7 +57,7 @@ var $valLong_i : Integer
 var $valBool_b : Boolean
 var $valDate_d : Date
 var $valBlob_x : Blob
-var $subObj_o; $result_o : Object
+var $subObj_o : Object
 var $attrValue_t : Text
 var $attrName_t : Text
 var $errSave_t : Text
@@ -85,15 +85,15 @@ While ($itemRef_t#"")
 		: ($otType_i=Is real:K8:4)
 			OB SET:C1220($result_o; $key_t; Num:C11($body_t))
 			OB SET:C1220($result_o; OTr_zShadowKey($key_t); Is real:K8:4)
-
+			
 		: ($otType_i=Is longint:K8:6)
 			OB SET:C1220($result_o; $key_t; Num:C11($body_t))
 			OB SET:C1220($result_o; OTr_zShadowKey($key_t); Is longint:K8:6)
-
-		: ($otType_i=Is Boolean:K8:9)
+			
+		: ($otType_i=Is boolean:K8:9)
 			OB SET:C1220($result_o; $key_t; ($body_t="true"))
-			OB SET:C1220($result_o; OTr_zShadowKey($key_t); Is Boolean:K8:9)
-
+			OB SET:C1220($result_o; OTr_zShadowKey($key_t); Is boolean:K8:9)
+			
 		: ($otType_i=Is date:K8:7)
 			// ISO 8601 body
 			$errSave_t:=Method called on error:C704
@@ -102,7 +102,7 @@ While ($itemRef_t#"")
 			ON ERR CALL:C155($errSave_t)
 			OB SET:C1220($result_o; $key_t; $valDate_d)
 			OB SET:C1220($result_o; OTr_zShadowKey($key_t); Is date:K8:7)
-
+			
 		: ($otType_i=Is time:K8:8)
 			// HH:MM:SS body
 			$hh_i:=Num:C11(Substring:C12($body_t; 1; 2))
@@ -110,17 +110,17 @@ While ($itemRef_t#"")
 			$ss_i:=Num:C11(Substring:C12($body_t; 7; 2))
 			OB SET:C1220($result_o; $key_t; ?00:00:00?+($hh_i*3600+$mm_i*60+$ss_i))
 			OB SET:C1220($result_o; OTr_zShadowKey($key_t); Is time:K8:8)
-
+			
 		: ($otType_i=OT Is Character)
 			// Text — body as-is
 			OB SET:C1220($result_o; $key_t; $body_t)
 			OB SET:C1220($result_o; OTr_zShadowKey($key_t); OT Is Character)
-
+			
 		: ($otType_i=Is pointer:K8:14)
 			// Body is the text-encoded pointer; restore shadow key
 			OB SET:C1220($result_o; $key_t; $body_t)
 			OB SET:C1220($result_o; OTr_zShadowKey($key_t); Is pointer:K8:14)
-
+			
 		: ($otType_i=Is BLOB:K8:12)
 			// Base64 body; storage path depends on version flag
 			CONVERT FROM TEXT:C1011($body_t; "US-ASCII"; $valBlob_x)
@@ -128,29 +128,29 @@ While ($itemRef_t#"")
 			If (Storage:C1525.OTr.nativeBlobInObject)
 				OB SET:C1220($result_o; $key_t; $valBlob_x)
 				OB SET:C1220($result_o; OTr_zShadowKey($key_t); Is BLOB:K8:12)
-			Else
+			Else 
 				// Re-encode as text for pre-v19 R2 storage and restore shadow
 				BASE64 ENCODE:C895($valBlob_x)
 				OB SET:C1220($result_o; $key_t; Convert to text:C1012($valBlob_x; "US-ASCII"))
 				OB SET:C1220($result_o; OTr_zShadowKey($key_t); Is BLOB:K8:12)
-			End if
-
+			End if 
+			
 		: ($otType_i=Is picture:K8:10)
 			// Base64 PNG body
 			CONVERT FROM TEXT:C1011($body_t; "US-ASCII"; $valBlob_x)
 			BASE64 DECODE:C896($valBlob_x)
 			BLOB TO PICTURE:C682($valBlob_x; $result_o[$key_t])
 			OB SET:C1220($result_o; OTr_zShadowKey($key_t); Is picture:K8:10)
-
+			
 		: ($otType_i=OT Is Object)
 			// Find the <object> child and recurse
 			$objectChildRef_t:=DOM Find XML element:C864($itemRef_t; "object")
 			If ($objectChildRef_t#"")
 				$subObj_o:=OTr_zXMLReadObject($objectChildRef_t)
 				OB SET:C1220($result_o; $key_t; $subObj_o)
-			Else
+			Else 
 				OB SET:C1220($result_o; $key_t; New object:C1471)
-			End if
+			End if 
 			OB SET:C1220($result_o; OTr_zShadowKey($key_t); OT Is Object)
 			
 		Else 

@@ -60,7 +60,7 @@
 
 OTr_zAddToCallStack(Current method name:C684)
 
-var $inAppend_i : Integer
+//var $inAppend_i : Integer
 
 var $obj_o : Object
 var $serialised_blob : Blob

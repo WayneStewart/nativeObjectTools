@@ -39,7 +39,7 @@ If (False:C215)
 	C_TEXT:C284(Fnd_FCS_WriteDocumentation; $1)
 	C_BOOLEAN:C305(Fnd_FCS_WriteDocumentation; ${2})
 	
-	
+	C_TEXT:C284(Fnd_FCS_BuildComponent; $1)
 	
 	
 	
