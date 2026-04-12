@@ -1,8 +1,29 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutObject (inObject; inTag; inObject)
 
 // Stores a deep copy of another handle's object at the given tag path.
+
+// **ORIGINAL DOCUMENTATION**
+
+// OT PutObject puts * *inObject into inObject* *.
+
+// If *inObject* is not a valid object handle, an error is generated and *OK* is set to
+// zero. If no item in the object has the given tag, a new item is created.
+
+// If an item with the given tag exists and has the type *OT Is Object (114)*, its value
+// is replaced.
+
+// If an item with the given tag exists and has any other type, an error is generated and
+// *OK* is set to zero if the *OT VariantItems* option is not set, otherwise the existing
+// item is deleted and a new item is created.
+
+// Note: An object put into another object still remains in memory. It is still your
+// responsibility to clear it when you no longer need it by calling *OT Clear*. Do not do
+// the following: *OT* PutObject ($object;"bad thing!"; *OT* New)
+
+// The handle which is created by *OT New* and passed to OT *PutObject* is forever
+// lost and is an instant leak. See Also
 
 // Access: Shared
 

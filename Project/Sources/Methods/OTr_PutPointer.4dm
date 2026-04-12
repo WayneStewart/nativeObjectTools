@@ -10,29 +10,22 @@
 // This command must *NOT* be used with pointers to local variables.
 
 // **ORIGINAL DOCUMENTATION**
-// 
-// *OTr_PutPointer* puts *inValue* into *inObject*.
-// 
-// If *inObject* is not a valid object handle, an error
-// is generated and OK is set to zero.
-// 
-// If no item in the object has the given inTag, a new
-// item is created.
-// 
-// If an item with the given inTag exists and has the
-// type *Is Pointer*, its value is replaced.
-// 
-// If an item with the given inTag exists and has any
-// other type, an error is generated and OK is set to
-// zero if the _OT VariantItems_ option is not set,
-// otherwise the existing item is deleted and a new
-// item is created.
-// 
-// Warning: Under no circumstances should you attempt to
-// store a pointer to a local or process variable in a
-// compiled database and then try to retrieve that pointer
-// in another process. Variable addresses differ between
-// processes in compiled mode.
+
+// OT PutPointer puts *inValue* into *inObject*.
+
+// If *inObject* is not a valid object handle, an error is generated and *OK* is set to
+// zero. If no item in the object has the given tag, a new item is created.
+
+// If an item with the given tag exists and has the type Is Pointer, its value is
+// replaced.
+
+// If an item with the given tag exists and has any other type, an error is generated and
+// *OK* is set to zero if the *OT VariantItems* option is not set, otherwise the existing
+// item is deleted and a new item is created.
+
+// Warning: Under no circumstances should you attempt to store a pointer to a local or
+// process variable in a compiled database and then try to retrieve that pointer in
+// another process.
 
 // Access: Shared
 

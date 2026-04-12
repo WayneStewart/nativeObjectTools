@@ -10,6 +10,29 @@
 // are stored as ISO text via OTr_uDateToText and
 // OTr_uTimeToText.
 
+// **ORIGINAL DOCUMENTATION**
+
+// *OT PutArray* puts *inArray* into *inObject*. The element count and current element
+// are stored with the array elements and are restored by OT *GetArray*. You may not
+// store two- dimensional arrays in objects.
+
+// If *inObject* is not a valid object handle, an error is generated and *OK* is set to
+// zero. If no item in the object has the given tag, a new item is created.
+
+// If an item with the given tag exists and has a compatible type (see below), its value
+// is replaced.
+
+// If an item with the given tag exists and has any other type, an error is generated and
+// *OK* is set to zero if the *OT VariantItems* option is not set, otherwise the existing
+// item is deleted and a new item is created.
+
+// Array Type Compatibility
+
+// Except for * *String and Text *array* s, you must put and get *array* s into the same
+// type of *array* variable. String and Text *array* s, however, may be mixed and
+// matched, because ObjectTools stores both types of *array* with an item type of *OT
+// Character array* (113).
+
 // Access: Shared
 
 // Parameters:

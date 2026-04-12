@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_CompareItems (inSourceObject; inSourceTag; inCompareObject; inCompareTag) --> Longint
 
@@ -8,6 +8,31 @@
 // element-by-element via JSON serialisation. BLOBs are compared by
 // content. Text (including encoded dates, times, pointers) is compared
 // with exact string equality.
+
+// **ORIGINAL DOCUMENTATION**
+
+// *OT CompareItems* compares two items for equality. *inSourceObject*
+// and *inCompareObject* may be the same object.
+
+// If *inSourceObject* or *inCompareObject* is not a valid object handle,
+// if either of the two items do not exist, or if the two items do not
+// have the same type, an error is generated, *OK* is set to zero, and -1
+// is returned.
+
+// Otherwise, the items are compared according to the rules of equality
+// used for equivalent variable types in 4D, with the addition that you
+// may compare array, *BLOB*, *Picture* and embedded object items.
+
+// Arrays are considered identical if they are the same size and the
+// corresponding elements would be considered equal in 4D. This means that
+// when comparing elements of character arrays, case and diacriticals are
+// not significant and wildcards are used.
+
+// *BLOB* and *Picture* items are considered identical if they contain the
+// same data byte for byte.
+
+// Embedded objects are considered identical if each of their items are
+// considered identical according to the rules for non-object types.
 
 // Access: Shared
 

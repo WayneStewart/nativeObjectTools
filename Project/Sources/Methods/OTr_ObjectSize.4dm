@@ -12,6 +12,21 @@
 // fully serialised by a single JSON Stringify call.
 // Byte counts will not match the legacy plugin.
 
+// **ORIGINAL DOCUMENTATION**
+
+// *OT ObjectSize* returns the total size of an object in memory. If *inObject* is not a
+// valid object handle, an error is generated, *OK* is set to zero, and zero is returned.
+
+
+// Item Info Routines
+
+// The following routines provide the ability to obtain various information about each
+// item in an object. These routines are useful if you want to deal with objects in a
+// generic way and need to know how to classify each item.
+
+
+// outDataSizes}}})
+
 // Access: Shared
 
 // Parameters:

@@ -10,25 +10,17 @@
 // recognised by OTr_zMapType.
 
 // **ORIGINAL DOCUMENTATION**
-//
-// *OTr_PutBLOB* puts *inValue* into *inObject*.
-//
-// If *inObject* is not a valid object handle, an error
-// is generated and OK is set to zero.
-//
-// If no item in the object has the given inTag, a new
-// item is created.
-//
-// If an item with the given inTag exists and has the
-// type *Is BLOB*, its value is replaced. The previous
-// BLOB data in the parallel array is released and a
-// new slot is allocated.
-//
-// If an item with the given inTag exists and has any
-// other type, an error is generated and OK is set to
-// zero if the _OT VariantItems_ option is not set,
-// otherwise the existing item is deleted and a new
-// item is created.
+
+// OT PutBLOB puts *inValue* into *inObject*.
+
+// If *inObject* is not a valid object handle, an error is generated and *OK* is set to
+// zero. If no item in the object has the given tag, a new item is created.
+
+// If an item with the given tag exists and has the type Is BLOB, its value is replaced.
+
+// If an item with the given tag exists and has any other type, an error is generated and
+// *OK* is set to zero if the *OT VariantItems* option is not set, otherwise the existing
+// item is deleted and a new item is created.
 
 // Access: Shared
 

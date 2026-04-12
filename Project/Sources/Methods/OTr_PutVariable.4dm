@@ -25,29 +25,31 @@
 //     manages the lock).
 
 // **ORIGINAL DOCUMENTATION**
-//
-// *OTr_PutVariable* stores the contents of the variable
-// pointed to by *varPtr* into *inObject* at *inTag*.
-//
-// Every 4D variable type except 2D arrays can be stored
-// with this command, including Boolean variables and
-// arrays. Once stored, the data can be retrieved with
-// *OTr_GetVariable* or with the *OT Get<type>* command
-// appropriate to the variable's type.
-//
-// If *inObject* is not a valid object handle, an error
-// is generated and OK is set to zero.
-//
-// If no item in the object has the given tag, a new
-// item is created.
-//
-// If an item with the given tag exists and has a
-// matching type, its value is replaced.
-//
-// If an item with the given tag exists and has any
-// other type, an error is generated and OK is set to
-// zero if the _OT VariantItems_ option is not set,
-// otherwise the existing item is replaced.
+
+// *OT PutVariable* puts the contents of the variable pointed to by *inVarPointer* into
+// *inObject*. Every 4D variable type but 2D arrays can be stored with this command,
+// including *Boolean* variables and arrays. Once stored, the data can either be
+// retrieved with
+
+// *OT GetVariable* or with the OT *Get<type>* command appropriate to the variable’s
+// type. If *inObject* is not a valid object handle, an error is generated and *OK* is
+// set to zero.
+
+// If no item in the object has the given tag, a new item is created.
+
+// If an item with the given tag exists and has the type *Type(variablePointer->)*, its
+// value is replaced.
+
+// If an item with the given tag exists and has any other type, an error is generated and
+// *OK* is set to zero if the *OT VariantItems* option is not set, otherwise the existing
+// item is deleted and a new item is created.
+
+
+// Get Value Routines
+
+// The following routines provide the ability to get the value of any object item. After
+// you have successfully put data into an object item, you can begin retrieving data from
+// the object.
 
 // Access: Shared
 

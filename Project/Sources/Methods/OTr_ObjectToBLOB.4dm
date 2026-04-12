@@ -11,24 +11,29 @@
 // Use OTr_ObjectToNewBLOB for the simpler function-result form.
 
 // **ORIGINAL DOCUMENTATION**
-// 
-// *OTr_ObjectToBLOB* serialises an object into a BLOB. The previous
-// contents of the BLOB, if any, are completely replaced, unless a
-// non-zero value is passed in *append*, in which case the serialised
-// object is appended to the existing BLOB contents.
-// 
-// Once stored within a BLOB, you must retrieve an object from it
-// with *OTr_BLOBToObject*, not with *BLOB TO VARIABLE*.
-// 
-// If *inObject* is not a valid object handle, an error is generated,
-// OK is set to zero, and *ioBLOB* is cleared.
-// 
-// **Warning:** Do not pass a BLOB field or a dereferenced pointer to
-// a BLOB field in the *ioBLOB* parameter. Use an intermediate local
-// variable or *OTr_ObjectToNewBLOB* instead.
-// 
-// **Note:** The object remains in memory after serialisation. Clear
-// it with *OTr_Clear* when no longer needed.
+
+// *OT ObjectToBLOB* stores an object into a *BLOB*. The previous
+// contents of the *BLOB*, if any, are completely replaced, unless a
+// non-zero value is passed in *inAppend*, in which case the object is
+// appended to the *BLOB*.
+
+// Once stored within a *BLOB*, you must retrieve an object from it with
+// *OT BLOBToObject*, not with BLOB TO VARIABLE.
+
+// If *inObject* is not a valid object handle or if memory cannot be
+// allocated to copy the object, an error is generated, *OK* is set to
+// zero, and the *BLOB* is cleared.
+
+// Warning: Do not attempt to open an object saved in ObjectTools 4 with
+// a version earlier than v3. Do not attempt to pass a *BLOB* field or a
+// dereferenced pointer to a *BLOB* field as the *ioBLOB* parameter, as
+// this will result in a crash. If you want to store a *BLOB* item into a
+// field, either use an intermediate local variable or assign the result
+// of *OT ObjectToNewBLOB* to the field.
+
+// The object passed to *OT ObjectToBLOB* is copied into the *BLOB* and
+// remains in memory. You must be sure to clear it with *OT Clear* when
+// you no longer need it.
 
 // Access: Shared
 

@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_ResizeArray (inObject; inTag; inSize)
 
@@ -6,6 +6,19 @@
 // elements (not counting element 0). If growing,
 // new elements are appended with the array type's default value. If
 // shrinking, excess elements are removed from the end.
+
+// **ORIGINAL DOCUMENTATION**
+
+// *OT ResizeArray* resizes an array in *inObject*.
+
+// If *inObject* is not a valid object handle, if no item in the object
+// has the given tag, or if the item's type is not an array type, an error
+// is generated and *OK* is set to zero.
+
+// If *inSize* is greater than the current size of the array, empty
+// elements are added to the end of the array. If *inSize* is less than
+// the current size of the array, elements from *inSize* + 1 to the end of
+// the array are deleted.
 
 // Access: Shared
 

@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_ItemType (inObject; inTag {; Actual}) --> Longint
 
@@ -21,6 +21,25 @@
 //   vast majority of cases; differs only when OTr_zMapType would have applied
 //   a normalisation step (e.g. collapsing Is integer to Is longint in the
 //   fallback path, or returning a default when no shadow key is present).
+
+// **ORIGINAL DOCUMENTATION**
+
+// OT ItemType returns the type of the item referenced by *inTag*.
+
+// If *inObject* is not a valid object handle or if no item in object has the given tag,
+// an error is generated, *OK* is set to zero, and zero is returned.
+
+// If an item with the given tag exists, its type is returned.
+
+// GetItemProperties
+
+// Item Utility Routines
+
+// The following routines allow you to fold, spindle and otherwise manipulate individual
+// items within an object.
+
+
+// inCompareObject; inCompareTag)  Number
 
 // Access: Shared
 

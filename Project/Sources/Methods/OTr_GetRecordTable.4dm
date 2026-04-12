@@ -8,17 +8,20 @@
 // to before calling OTr_GetRecord.
 
 // **ORIGINAL DOCUMENTATION**
-// 
-// *OTr_GetRecordTable* retrieves the table number stored
-// in the record snapshot at *inTag* in *inObject*.
-// 
-// If *inObject* is not a valid object handle, or the item
-// at the tag is not a record snapshot, zero is returned,
-// an error is generated, and OK is set to zero.
-// 
-// Note: With the snapshot model, this returns the table
-// number recorded at snapshot time. No database access
-// is performed.
+
+// *OT GetRecordTable* retrieves the table number from the packed record data in the
+// item referenced by tag. The contents of the item must have been set with OT
+// *PutRecord*. The table used to store the packed record is the table whose number will
+// be returned.
+
+// If the object is not a valid object handle, or no item in object has the given tag,
+// zero is returned, an error is generated and OK is set to zero.
+
+// If an item with the given tag exists and has the type *OT Is Record*, the number of
+// the item’s original table is returned.
+
+// If an item with the given tag exists and has any other type, zero is returned, an
+// error is generated and OK is set to zero.
 
 // Access: Shared
 

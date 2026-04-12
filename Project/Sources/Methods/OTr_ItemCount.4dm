@@ -7,6 +7,24 @@
 // object instead. Internal __otr_ properties and shadow keys (keys ending
 // in the $type suffix) are excluded from the count.
 
+// **ORIGINAL DOCUMENTATION**
+
+// *OT ItemCount* returns the number of top level items in the referenced object. Items
+// in embedded objects are not included in the count.
+
+// If *inObject* is not a valid object handle, an error is generated, *OK* is set to
+// zero, and zero is returned.
+
+// If the tag is not passed or is empty, the count of top level items in the object is
+// returned.
+
+// If the tag is passed, is not empty, and is a valid item reference for an embedded
+// object, the count of top level items in the embedded object is returned.
+
+// Otherwise an error is generated, *OK* is set to zero, and zero is returned.
+
+
+
 // Access: Shared
 
 // Parameters:

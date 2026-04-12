@@ -1,23 +1,28 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
   // ----------------------------------------------------
   // Project Method: OTr_BLOBToObject (inBLOB) --> Longint
 
   // Deserialises an OTr object from a BLOB previously created by
   // OTr_ObjectToBLOB or OTr_ObjectToNewBLOB. Returns a new handle.
 
-  // **ORIGINAL DOCUMENTATION**
-  // 
-  // *OTr_BLOBToObject* deserialises an object from a BLOB and returns
-  // a new object handle.
-  // 
-  // If the BLOB is empty or does not contain a valid serialised
-  // Object, an error is generated, OK is set to zero, and zero is
-  // returned.
-  // 
-  // **Warning:** The handle returned is a new object added to OTr's
-  // internal list. Clear it with *OTr_Clear* when no longer needed.
+// **ORIGINAL DOCUMENTATION**
 
-  // Access: Shared
+// *OT BLOBToObject* retrieves an object from a *BLOB* into a new object
+// handle. The object must have been stored in the *BLOB* with *OT
+// ObjectToBLOB* or *OT ObjectToNewBLOB*, not with VARIABLE TO *BLOB*.
+
+// If the bytes at the given offset do not describe an object stored with
+// *OT ObjectToBLOB* or *OT ObjectToNewBLOB*, an error is generated, *OK*
+// is set to zero, and a null handle (0) is returned.
+
+// *OT BLOBToObject* transparently converts *BLOBs* created with earlier
+// versions of ObjectTools.
+
+// Warning: The handle returned is a new object that is added to
+// ObjectTools' internal list of objects. You must be sure to clear the
+// new object with *OT Clear* when you no longer need it.
+
+// Access: Shared
 
   // Parameters:
   //   $inBLOB_blob : Blob : A BLOB containing a serialised OTr object

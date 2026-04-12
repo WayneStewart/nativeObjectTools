@@ -10,24 +10,25 @@
 // empty BLOB on any error or missing tag.
 
 // **ORIGINAL DOCUMENTATION**
-// 
-// *OTr_GetNewBLOB* retrieves a BLOB value from *inObject*
-// as a function result.
-// 
-// If *inObject* is not a valid object handle, an error
-// is generated, OK is set to zero, and an empty BLOB
-// is returned.
-// 
-// If no item in the object has the given inTag, an empty
-// BLOB is returned. If the FailOnItemNotFound option is
-// set, an error is generated and OK is set to zero.
-// 
-// If an item with the given inTag exists and has the type
-// *Is BLOB*, the value of the requested item is returned.
-// 
-// If an item with the given inTag exists and has any other
-// type, an error is generated, OK is set to zero, and an
-// empty BLOB is returned.
+
+// OT GetNewBLOB gets a value in *inObject* from the item referenced by *inTag*.
+
+// If the object is not a valid object handle, an error is generated, *OK* is set to
+// zero, and an empty BLOB is returned.
+
+// If no item in the object has the given tag, an empty BLOB is returned. If the
+// *FailOnNoItem*
+
+// option is set, an error is generated and *OK* is set to zero.
+
+// If an item with the given tag exists and has the type *Is BLOB*, the value of the
+// requested item is returned.
+
+// If an item with the given tag exists and has any other type, *OK* is set to zero, and
+// an empty BLOB is returned.
+
+// Warning: Because of the problems related to the *OT GetBLOB* command, it is
+// recommended that you use this command instead.
 
 // Access: Shared
 

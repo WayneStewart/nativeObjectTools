@@ -5,6 +5,26 @@
 // Retrieves an embedded object by tag path, copies it to a new OTr
 // handle, and returns that handle.
 
+// **ORIGINAL DOCUMENTATION**
+
+// *OT GetObject* gets an object value in object from the item referenced by *inTag*. If
+// this routine successfully returns a new object, the new object handle is added to the
+// ObjectTools handle list.
+
+// If the object is not a valid object handle, an error is generated, *OK* is set to
+// zero, and a null object handle (0) is returned.
+
+// If no item in the object has the given tag, a null object handle is returned.
+
+// If an item with the given tag exists and has the type *OT Is Object (114)*, its
+// contents are returned as a new object.
+
+// If an item with the given tag exists and has any other type, an error is generated,
+// *OK* is set to zero, and a null object handle is returned.
+
+// Warning: This method creates and returns a new object in memory. You are responsible
+// for clearing it when you no longer need it by calling *OT IsObject*.
+
 // Access: Shared
 
 // Parameters:

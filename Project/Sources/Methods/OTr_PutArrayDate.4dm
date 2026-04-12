@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutArrayDate (inObject; inTag; inIndex; inValue)
 
@@ -9,6 +9,20 @@
 //   Storage.OTr.nativeDateInObject = True  → element stored as native Date
 //   Storage.OTr.nativeDateInObject = False → element stored as "YYYY-MM-DD" text
 //                                            via OTr_uDateToText (default)
+
+// **ORIGINAL DOCUMENTATION**
+
+// OT PutArrayDate sets an element of an array in *inObject*.
+
+// If the object is not a valid object handle or if no item in the object has the given
+// tag, an error is generated and *OK* is set to zero.
+
+// If an item with the given tag exists and has the type *Date array*, and *inIndex* is
+// in the range (0.. *OT SizeOfArray* ( *inObject; inTag* )), the value of the requested
+// element is set to *inValue*.
+
+// If an item with the given tag exists and has any other type, or if the index is out of
+// range, an error is generated and *OK* is set to zero.
 
 // Access: Shared
 

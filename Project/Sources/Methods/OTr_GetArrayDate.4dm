@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetArrayDate (inObject; inTag; inIndex) --> Date
 
@@ -13,6 +13,25 @@
 // This handles both the text-storage path (nativeDateInObject=False)
 // and the native-storage path (nativeDateInObject=True), and correctly
 // reads any legacy data stored as text before this guard was added.
+
+// **ORIGINAL DOCUMENTATION**
+
+// OT GetArrayDate gets a value in *inObject* from the array item referenced by *inTag*.
+
+// If the object is not a valid object handle, an error is generated, *OK* is set to
+// zero, and a null date (!00/00/00!) is returned.
+
+// If no item in the object has the given tag, a null date is returned. If the
+// *FailOnNoItem*
+
+// option is set, an error is generated and *OK* is set to zero.
+
+// If an item with the given tag exists and has the type *Date array*, and *inIndex* is
+// in the range (0.. *OT SizeOfArray* ( *inObject; inTag* )), the value of the requested
+// element is returned.
+
+// If an item with the given tag exists and has any other type, or if the index is out of
+// range, an error is generated, *OK* is set to zero, and a null date is returned.
 
 // Access: Shared
 

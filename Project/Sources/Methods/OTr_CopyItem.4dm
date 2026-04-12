@@ -6,6 +6,20 @@
 // exist; it will be created. Source and destination handles may be the
 // same. Embedded objects are deep-copied via OB Copy.
 
+// **ORIGINAL DOCUMENTATION**
+
+// *OT CopyItem* copies the item referenced by *inSourceTag* to the item referenced by
+// inDestTag. The item referenced by inDestTag* * need not exist; it will be created if
+// necessary. The source and destination objects may be the same, allowing either
+// duplication of an item at the same level of embedding within an object, or copying an
+// item from one level of embedding to another.
+
+// If either object handle is not valid, or if the source item does not exist, or if the
+// source item and destination item do not have the same type, an error is generated,
+// *OK* is set to zero, and no copy is performed.
+
+// Note: Copying an embedded object recursively copies all of its items.
+
 // Access: Shared
 
 // Parameters:

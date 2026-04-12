@@ -13,6 +13,21 @@
 // $inHowMany_i defaults to 1 if omitted.
 // Element 0 (the pre-selection slot) is never affected.
 
+// **ORIGINAL DOCUMENTATION**
+
+// *OT DeleteElement* deletes one or more elements from an array in *inObject*.
+
+// If *inObject* is not a valid object handle, if no item in the object has the given
+// tag, or if the item’s type is not an array type, an error is generated and *OK* is set
+// to zero.
+
+// Elements are deleted starting at the element specified by *inWhere*. The *inHowMany*
+// parameter is the number of elements to delete. If *inHowMany * is not specified or
+// zero, then one element is deleted. The size of the array shrinks by * inHowMany *
+// elements.
+
+
+
 // Access: Shared
 
 // Parameters:

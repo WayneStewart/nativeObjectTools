@@ -1,8 +1,26 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetText (inObject; inTag) --> Text
 
 // Retrieves a Text value from the specified tag path.
+
+// **ORIGINAL DOCUMENTATION**
+
+// *OT GetText* gets a value in *inObject* from the item referenced by
+// *inTag*.
+
+// If the object is not a valid object handle, an error is generated, *OK*
+// is set to zero, and an empty string is returned.
+
+// If no item in the object has the given tag, an empty string is
+// returned. If the *FailOnNoItem* option is set, an error is generated
+// and *OK* is set to zero.
+
+// If an item with the given tag exists and has the type *OT Is
+// Character* (112), the value of the requested element is returned.
+
+// If an item with the given tag exists and has any other type, *OK* is
+// set to zero, and an empty string is returned.
 
 // Access: Shared
 

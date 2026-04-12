@@ -4,6 +4,15 @@
 
 // Returns the current OTr options bit field.
 
+// **ORIGINAL DOCUMENTATION**
+
+// *OT GetVersion* returns a textual representation of the current numeric version of
+// ObjectTools, along with information about the platform and build type.
+
+// INDEX OF COMMANDS
+
+// .............................................................
+
 // Access: Shared
 
 // Returns:

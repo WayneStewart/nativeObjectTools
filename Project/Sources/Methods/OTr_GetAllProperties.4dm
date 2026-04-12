@@ -6,6 +6,19 @@
 // to OTr_GetAllNamedProperties with an empty tag. Item names are
 // returned in indeterminate order.
 
+// **ORIGINAL DOCUMENTATION**
+
+// *OT IsEmbedded* tests the item referenced by *inTag* to see if it is an embedded
+// object.
+
+// If *inObject* is not a valid object handle or if no item in object has the given tag,
+// an error is generated, *OK* is set to zero, and zero is returned.
+
+// If an item with the given tag exists and has the type *OT Is Object*, 1 is returned.
+// If an item with the given tag exists and has any other type, zero is returned.
+
+
+
 // Access: Shared
 
 // Parameters:

@@ -10,31 +10,28 @@
 // Adapted from OBJ_FromRecord by Cannon Smith.
 
 // **ORIGINAL DOCUMENTATION**
-// 
-// *OTr_PutRecord* serialises the current record of
-// *inTable* into *inObject* at *inTag*.
-// 
-// If *inObject* is not a valid object handle, an error
-// is generated and OK is set to zero.
-// 
-// If *inTable* is not a valid table number, or there is
-// no current record for the table, an error is generated
-// and OK is set to zero.
-// 
-// If no item in the object has the given inTag, a new
-// item is created.
-// 
-// If an item with the given inTag exists and has the type
-// *OT Record (115)*, its value is replaced.
-// 
-// If an item with the given inTag exists and has any other
-// type, an error is generated and OK is set to zero if
-// the _OT VariantItems_ option is not set, otherwise the
-// existing item is deleted and a new item is created.
-// 
-// Note: OTr stores a complete snapshot of the record,
-// not a reference to it. The snapshot is portable and
-// does not go stale if the underlying record changes.
+
+// *OT PutRecord* puts the current record into object in a packed format. The contents
+// of the item can only be retrieved with OT *GetRecord*.
+
+// If *inObject* is not a valid object handle, an error is generated and *OK* is set to
+// zero. If no item in the object has the given tag, a new item is created.
+
+// If an item with the given tag exists and has the type *OT Is Record (115)*, its value
+// is replaced.
+
+// If an item with the given tag exists and has any other type, an error is generated and
+// *OK*
+
+// is set to zero.
+
+// If table is not a valid table or field pointer, or if there is no current record for
+// the given table, an error is generated and *OK* is set to zero if the *OT
+// VariantItems* option is not set, otherwise the existing item is deleted and a new item
+// is created.
+
+// Warning: Once a record is stored with *OT PutRecord*, it must be retrieved into the
+// same table. Otherwise the results are undefined (and potentially disastrous).
 
 // Access: Shared
 

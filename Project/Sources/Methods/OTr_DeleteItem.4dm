@@ -6,6 +6,22 @@
 // recursively. BLOB and Picture parallel array slots referenced by
 // the deleted item (or any sub-items) are released.
 
+// **ORIGINAL DOCUMENTATION**
+
+// *OT DeleteItem* deletes an item from an object. *inTag* may refer to embedded items
+// and objects.
+
+// If *inObject* is not a valid object handle or *inTag* refers to an item that does not
+// exist, an error is generated, *OK* is set to zero, and no delete is performed.
+
+// Note: Deleting an embedded object recursively deletes all of its items.
+
+// Import/Export Routines
+
+// The following routines provide the ability to import and export objects to 4D *BLOB*
+// variables. This allows you to easily save and restore objects either to the database
+// or to files on disk.
+
 // Access: Shared
 
 // Parameters:

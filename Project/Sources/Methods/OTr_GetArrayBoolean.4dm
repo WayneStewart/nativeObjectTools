@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetArrayBoolean (inObject; inTag; inIndex) --> Longint
 
@@ -6,6 +6,24 @@
 // Returns 1 (True) or 0 (False) for legacy ObjectTools compatibility.
 // Returns 0 on any error or out-of-range index.
 // OK is unchanged on success; set to 0 on any failure.
+
+// **ORIGINAL DOCUMENTATION**
+
+// *OT GetArrayBoolean* gets a value in *inObject* from the array item referenced by
+// *inTag*.
+
+// If the object is not a valid object handle, an error is generated, *OK* is set to
+// zero, and zero is returned.
+
+// If no item in the object has the given tag, zero is returned. If the *FailOnNoItem*
+// option is set, an error is generated and *OK* is set to zero.
+
+// If an item with the given tag exists and has the type *Boolean array*, and *inIndex*
+// is in the range (0.. *OT SizeOfArray* ( *inObject; inTag* )), the value of the
+// requested element is returned as a number (0=false, 1=true).
+
+// If an item with the given tag exists and has any other type, or if the index is out of
+// range, an error is generated, *OK* is set to zero, and zero is returned.
 
 // Access: Shared
 

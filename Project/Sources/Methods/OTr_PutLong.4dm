@@ -6,16 +6,17 @@
 
 // **ORIGINAL DOCUMENTATION**
 
-// OT PutLong puts inValue into inObject.
+// OT PutLong puts *inValue* into *inObject*.
 
-// If inObject is not a valid object handle, an error is generated and OK is set to zero.
-// If no item in the object has the given tag, a new item is created.
+// If *inObject* is not a valid object handle, an error is generated and *OK* is set to
+// zero. If no item in the object has the given tag, a new item is created.
 
-// If an item with the given tag exists and has the type Is Longint, its value is replaced.
+// If an item with the given tag exists and has the type *Is Longint*, its value is
+// replaced.
 
 // If an item with the given tag exists and has any other type, an error is generated and
-// OK is set to zero if the OT VariantItems option is not set, otherwise the existing item
-// is deleted and a new item is created.
+// *OK* is set to zero if the *OT VariantItems* option is not set, otherwise the existing
+// item is deleted and a new item is created.
 
 // Access: Shared
 

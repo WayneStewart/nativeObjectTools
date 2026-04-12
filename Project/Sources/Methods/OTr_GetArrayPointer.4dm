@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetArrayPointer (inObject; inTag; inIndex) --> Pointer
 
@@ -8,6 +8,30 @@
 // Note: Pointer values are process-local. A pointer stored
 // from one process may not resolve correctly in another.
 // OK is unchanged on success; set to 0 on any failure.
+
+// **ORIGINAL DOCUMENTATION**
+
+// *OT GetArrayPointer* gets a value in *inObject* from the array item referenced by
+// *inTag*.
+
+// If the object is not a valid object handle, an error is generated, *OK* is set to
+// zero, and a nil pointer is returned.
+
+// If no item in the object has the given tag, a nil pointer is returned. If the
+// *FailOnNoItem*
+
+// option is set, an error is generated and *OK* is set to zero.
+
+// If an item with the given tag exists and has the type *Pointer array*, and *inIndex*
+// is in the range (0.. *OT SizeOfArray* ( *inObject; inTag* )), the value of the
+// requested element is returned.
+
+// If an item with the given tag exists and has any other type, or if the index is out of
+// range, an error is generated, *OK* is set to zero, and a nil pointer is returned.
+
+// Warning: Under no circumstances should you attempt to store a pointer to a local or
+// process variable in a compiled database and then try to retrieve that pointer in
+// another process.
 
 // Access: Shared
 

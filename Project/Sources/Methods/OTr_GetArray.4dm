@@ -8,6 +8,34 @@
 // type. Elements are converted from stored text/values
 // via the OTr_u utility methods as required.
 
+// **ORIGINAL DOCUMENTATION**
+
+// OT GetArray gets an array value in *inObject* from the item referenced by *inTag*.
+
+// If the object is not a valid object handle, an error is generated, *OK* is set to
+// zero, and
+
+// *outArray* is cleared.
+
+// If no item in the object has the given tag, *outArray* is cleared. If the
+// *FailOnNoItem* option is set, an error is generated and *OK* is set to zero.
+
+// If an item with the given tag exists and has a compatible type, the array’s contents
+// are replaced.
+
+// If an item with the given tag exists and has any other type, an error is generated,
+// *OK* is set to zero, and array is cleared.
+
+// Array Type Compatibility
+
+// Except for * *String and Text *array* s, you must put and get *array* s into the same
+// type of *array* variable. String and Text *array* s, however, may be mixed and
+// matched, because ObjectTools stores both types of *array* with an item type of *OT
+// Character array (113)*.
+
+// Note: If you retrieve into a fixed width string array and your database is running in
+// compatibility mode, the elements will be truncated to the width of the array.
+
 // Access: Shared
 
 // Parameters:

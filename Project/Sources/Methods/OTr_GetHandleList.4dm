@@ -1,8 +1,19 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetHandleList (outHandles)
 
 // Fills a Longint array with currently allocated OTr handles.
+
+// **ORIGINAL DOCUMENTATION**
+
+// Any time an object is created, whether through *OT New*, *OT Copy*,
+// *OT GetObject*, or *OT BLOBToObject*, ObjectTools adds the new object
+// handle to an internal list. When an object is cleared with *OT Clear*,
+// the object's handle is removed from the list.
+
+// *OT GetHandleList* retrieves this internal list into an array. This is
+// mainly of use in debugging. Normally you would have no need to use this
+// method.
 
 // Access: Shared
 

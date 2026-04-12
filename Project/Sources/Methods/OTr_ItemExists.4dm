@@ -7,6 +7,16 @@
 // 0 if not. An invalid handle generates an error; a missing path does
 // not (this is a query, not a mutation).
 
+// **ORIGINAL DOCUMENTATION**
+
+// *OT ItemExists* tests for the existence of the given item. *inTag* may refer to a top
+// level item, an embedded object or an embedded item.
+
+// If *inObject* is not a valid object handle, an error is generated, *OK* is set to
+// zero, and zero is returned.
+
+// If an item with the given tag exists, 1 is returned. Otherwise zero is returned.
+
 // Access: Shared
 
 // Parameters:

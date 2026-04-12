@@ -32,29 +32,30 @@
 // as a function result and requires no pointer syntax.
 
 // **ORIGINAL DOCUMENTATION**
-//
-// *OTr_GetBLOB* retrieves a BLOB value from *inObject*
-// into the *outBLOB* parameter.
-//
-// If *inObject* is not a valid object handle, an error
-// is generated, OK is set to zero, and an empty BLOB
-// is written to outBLOB.
-//
-// If no item in the object has the given inTag, an empty
-// BLOB is written to outBLOB. If the FailOnItemNotFound
-// option is set, an error is generated and OK is set to zero.
-//
-// If an item with the given inTag exists and has the type
-// *Is BLOB*, the value of the requested item is written
-// to outBLOB.
-//
-// If an item with the given inTag exists and has any other
-// type, an error is generated, OK is set to zero, and an
-// empty BLOB is written to outBLOB.
-//
-// Warning: Do not attempt to pass a pointer to a BLOB field
-// in the outBLOB parameter. Use OTr_GetNewBLOB in preference
-// when retrieving into a field.
+
+// OT GetBLOB gets a value in *inObject* from the item referenced by *inTag*.
+
+// If the object is not a valid object handle, an error is generated, *OK* is set to
+// zero, and an empty BLOB is returned.
+
+// If no item in the object has the given tag, an empty BLOB is returned. If the
+// *FailOnNoItem*
+
+// option is set, an error is generated and *OK* is set to zero.
+
+// If an item with the given tag exists and has the type *Is BLOB*, out *BLOB* ’s
+// contents are replaced.
+
+// If an item with the given tag exists and has any other type, *OK* is set to zero, and
+// an empty BLOB is returned.
+
+// Warning: Do not attempt to pass a BLOB field or a dereferenced pointer to a BLOB field
+// in the blob paremeter, as this will result in a crash. If you want to retrieve a BLOB
+// item into a field, either use an intermediate local variable or assign the result of *
+// *OT GetNewBLOB to the field. The same applies to passing a dereferenced pointer to a
+// BLOB variable. This command is being kept for backward compatibility. Because of the
+// problems related to this command, it is recommended that you use OT GetNewBLOB* *
+// instead, as this command may be removed in future versions.
 
 // Access: Shared
 

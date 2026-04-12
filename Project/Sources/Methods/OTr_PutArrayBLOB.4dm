@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutArrayBLOB (inObject; inTag; inIndex; inValue)
 
@@ -11,6 +11,21 @@
 // Native BLOB array-element storage is deferred pending Phase 10c; it
 // requires a refactor of OTr_u_AccessArrayElement and the array
 // element serialisation contract.
+
+// **ORIGINAL DOCUMENTATION**
+
+// OT PutArrayBLOB sets an element of an array in *inObject*.
+
+// If the object is not a valid object handle, if no item in the object has the given
+// tag, or if the 4D version is not v14 or later, an error is generated and *OK* is set
+// to zero.
+
+// If an item with the given tag exists and has the type *Blob array*, and *inIndex* is
+// in the range (0.. *OT SizeOfArray* ( *inObject; inTag* )), the value of the requested
+// element is set to *inValue*.
+
+// If an item with the given tag exists and has any other type, or if the index is out of
+// range, an error is generated and *OK* is set to zero.
 
 // Access: Shared
 

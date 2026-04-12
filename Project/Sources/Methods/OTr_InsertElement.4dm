@@ -10,6 +10,21 @@
 // at the end. $inHowMany_i defaults to 1 if omitted.
 // Element 0 (the pre-selection slot) is never affected.
 
+// **ORIGINAL DOCUMENTATION**
+
+// OT InsertElement inserts one or more elements into an array in inObject.
+
+// If *inObject* is not a valid object handle, if no item in the object has the given
+// tag, or if the item’s type is not an array type, an error is generated and *OK* is set
+// to zero.
+
+// The new elements are inserted before the element specified by * *inWhere, and are
+// initialized to an empty value for the array type. All elements beyond inWhere* * are
+// moved up to make room for the new elements.
+
+// If *inWhere* is greater than the size of the array, the elements are added to the end
+// of the array.
+
 // Access: Shared
 
 // Parameters:

@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_ObjectToNewBLOB (inObject) --> Blob
 
@@ -8,18 +8,22 @@
 // issues associated with OTr_ObjectToBLOB.
 
 // **ORIGINAL DOCUMENTATION**
-// 
-// *OTr_ObjectToNewBLOB* serialises an object into a new BLOB which
-// is returned as the function result.
-// 
-// Once stored within a BLOB, you must retrieve an object from it
-// with *OTr_BLOBToObject*, not with *BLOB TO VARIABLE*.
-// 
-// If *inObject* is not a valid object handle, an error is generated,
-// OK is set to zero, and an empty BLOB is returned.
-// 
-// **Note:** The object remains in memory after serialisation. Clear
-// it with *OTr_Clear* when no longer needed.
+
+// *OT ObjectToNewBLOB* stores an object into a new *BLOB*.
+
+// Once stored within a *BLOB*, you must retrieve an object from it with
+// *OT BLOBToObject*, not with BLOB TO VARIABLE.
+
+// If *inObject* is not a valid object handle or if memory cannot be
+// allocated to copy the object, an error is generated, *OK* is set to
+// zero, and an empty *BLOB* is returned.
+
+// Warning: Do not attempt to open an object saved in ObjectTools 4 with
+// a version earlier than v3.
+
+// The object passed to *OT ObjectToNewBLOB* is copied into the *BLOB*
+// and remains in memory. You must be sure to clear it with *OT Clear*
+// when you no longer need it.
 
 // Access: Shared
 

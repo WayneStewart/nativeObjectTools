@@ -5,6 +5,19 @@
 // Tests whether the item referenced by $inTag_t is an embedded object.
 // Returns 1 if the item exists and has OT Object type, 0 otherwise.
 
+// **ORIGINAL DOCUMENTATION**
+
+// *OT IsEmbedded* tests the item referenced by *inTag* to see if it is an embedded
+// object.
+
+// If *inObject* is not a valid object handle or if no item in object has the given tag,
+// an error is generated, *OK* is set to zero, and zero is returned.
+
+// If an item with the given tag exists and has the type *OT Is Object*, 1 is returned.
+// If an item with the given tag exists and has any other type, zero is returned.
+
+
+
 // Access: Shared
 
 // Parameters:

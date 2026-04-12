@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutArrayPointer (inObject; inTag; inIndex; inValue)
 
@@ -7,6 +7,24 @@
 // Note: Pointer values are process-local. A pointer stored
 // from one process may not resolve correctly in another.
 // OK is unchanged on success; set to 0 on any failure.
+
+// **ORIGINAL DOCUMENTATION**
+
+// OT PutArrayPointer sets an element of an array in *inObject*.
+
+// If the object is not a valid object handle or if no item in the object has the given
+// tag, an error is generated and *OK* is set to zero.
+
+// If an item with the given tag exists and has the type *Pointer array*, and *inIndex*
+// is in the range (0.. *OT SizeOfArray* ( *inObject; inTag* )), the value of the
+// requested element is set to *inValue*.
+
+// If an item with the given tag exists and has any other type, or if the index is out of
+// range, an error is generated and *OK* is set to zero.
+
+// Warning: Under no circumstances should you attempt to store a pointer to a local or
+// process variable in a compiled database and then try to retrieve that pointer in
+// another process.
 
 // Access: Shared
 

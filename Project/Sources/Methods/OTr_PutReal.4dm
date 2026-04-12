@@ -1,8 +1,21 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutReal (inObject; inTag; inValue)
 
 // Stores a Real value at the specified tag path.
+
+// **ORIGINAL DOCUMENTATION**
+
+// OT PutReal puts *inValue* into *inObject*.
+
+// If *inObject* is not a valid object handle, an error is generated and *OK* is set to
+// zero. If no item in the object has the given tag, a new item is created.
+
+// If an item with the given tag exists and has the type Is Real, its value is replaced.
+
+// If an item with the given tag exists and has any other type, an error is generated and
+// *OK* is set to zero if the *OT VariantItems* option is not set, otherwise the existing
+// item is deleted and a new item is created.
 
 // Access: Shared
 

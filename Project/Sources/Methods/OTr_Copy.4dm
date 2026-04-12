@@ -4,6 +4,22 @@
 
 // Deep-copies a stored object into a new handle.
 
+// **ORIGINAL DOCUMENTATION**
+
+// *OT Copy* makes a complete copy of object and returns the copy. The copy is added
+// to the ObjectTools handle list, and must be cleared with OT *IsObject* when it is no
+// longer needed.
+
+// If memory cannot be allocated for the copy, an error is generated and *OK* is set to
+// zero.
+
+
+// Put Value Routines
+
+// The following routines are used to store data in any ObjectTools object. After you
+// have successfully created an object (see “Creation and Destruction Routines”), you can
+// begin storing data into the object.
+
 // Access: Shared
 
 // Parameters:

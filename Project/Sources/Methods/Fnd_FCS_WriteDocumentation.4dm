@@ -142,9 +142,19 @@ If (Current process name:C1392=$processName_t)
 				If ($lineInfo_o.valid)
 					If ($lineInfo_o.isDeclareStyle)
 						$isDeclareStyle_b:=True:C214
-					End if 
-					$parameterBlock_t:=$parameterBlock_t+"|"+$lineInfo_o.name+"|"+$lineInfo_o.type+"|➡️|"+$lineInfo_o.description+"|"+$CR
-				End if 
+					End if
+					// Determine direction arrow from parameter name prefix
+					var $arrow_t : Text
+					Case of
+						: (Substring:C12($lineInfo_o.name; 1; 2)="io")
+							$arrow_t:="↔️"
+						: (Substring:C12($lineInfo_o.name; 1; 3)="out")
+							$arrow_t:="⬅️"
+						Else
+							$arrow_t:="➡️"
+					End case
+					$parameterBlock_t:=$parameterBlock_t+"|"+$lineInfo_o.name+"|"+$lineInfo_o.type+"|"+$arrow_t+"|"+$lineInfo_o.description+"|"+$CR
+				End if
 				$parameterBlock_i:=$parameterBlock_i+1
 				
 				// This has a more complicated end condition because we may get an out of range error

@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_RenameItem (inObject; inTag; inNewTag)
 
@@ -6,6 +6,21 @@
 // path; $inNewTag_t is the new leaf name only. For example, renaming
 // "foo.bar.old_name" to "new_name" gives access via "foo.bar.new_name".
 // BLOB and Picture references are moved, not copied (no new slot).
+
+// **ORIGINAL DOCUMENTATION**
+
+// *OT RenameItem* renames the item referenced by *inTag* to the item referenced by
+// *inNewTag*. Note that *inTag* must be a full tag if the target item is in an embedded
+// object, whereas *inNewTag* is the new item name only. For example:
+//
+// OT RenameItem ($obj;"foo.bar.old_name";"new_name")
+//
+// The above example will rename the item *old_name* to *new_name* within the embedded
+// object *foo.bar*. To access the renamed item you would use the tag "*foo.bar.new_name*".
+//
+// If the object handle is invalid, or if the item does not exist, or if an existing item
+// has the same name as *inNewTag*, an error is generated, *OK* is set to zero, and no
+// rename is performed.
 
 // Access: Shared
 

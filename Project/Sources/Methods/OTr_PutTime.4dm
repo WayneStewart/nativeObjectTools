@@ -1,8 +1,66 @@
-//%attributes = {"invisible":true,"shared":true}
+﻿//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutTime (inObject; inTag; inValue)
 
 // Stores a Time value at the specified tag path.
+
+// **ORIGINAL DOCUMENTATION**
+
+// OT PutTime puts *inValue* into *inObject*.
+
+// If *inObject* is not a valid object handle, an error is generated and *OK* is set to
+// zero. If no item in the object has the given tag, a new item is created.
+
+// If an item with the given tag exists and has the type Is Time, its value is replaced.
+
+// If an item with the given tag exists and has any other type, an error is generated and
+// *OK* is set to zero if the *OT VariantItems* option is not set, otherwise the existing
+// item is deleted and a new item is created.
+
+
+// *OT PutVariable* puts the contents of the variable pointed to by *inVarPointer* into
+// *inObject*. Every 4D variable type but 2D arrays can be stored with this command,
+// including *Boolean* variables and arrays. Once stored, the data can either be
+// retrieved with
+
+// *OT GetVariable* or with the OT *Get<type>* command appropriate to the variable’s
+// type. If *inObject* is not a valid object handle, an error is generated and *OK* is
+// set to zero.
+
+// If no item in the object has the given tag, a new item is created.
+
+// If an item with the given tag exists and has the type *Type(variablePointer->)*, its
+// value is replaced.
+
+// If an item with the given tag exists and has any other type, an error is generated and
+// *OK* is set to zero if the *OT VariantItems* option is not set, otherwise the existing
+// item is deleted and a new item is created.
+
+
+// Get Value Routines
+
+// The following routines provide the ability to get the value of any object item. After
+// you have successfully put data into an object item, you can begin retrieving data from
+// the object.
+
+
+// OT GetArray gets an array value in *inObject* from the item referenced by *inTag*.
+
+// If the object is not a valid object handle, an error is generated, *OK* is set to
+// zero, and
+
+// *outArray* is cleared.
+
+// If no item in the object has the given tag, *outArray* is cleared. If the
+// *FailOnNoItem* option is set, an error is generated and *OK* is set to zero.
+
+// If an item with the given tag exists and has a compatible type, the array’s contents
+// are replaced.
+
+// If an item with the given tag exists and has any other type, an error is generated,
+// *OK* is set to zero, and array is cleared.
+
+// Array Type Compatibility
 
 // Access: Shared
 

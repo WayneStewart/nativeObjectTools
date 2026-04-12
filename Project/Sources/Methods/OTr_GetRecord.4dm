@@ -12,27 +12,24 @@
 // Adapted from OBJ_ToRecord by Cannon Smith.
 
 // **ORIGINAL DOCUMENTATION**
-// 
-// *OTr_GetRecord* writes field values from the snapshot
-// stored at *inTag* into the current record of *inTable*.
-// 
-// It is up to the caller to ensure a record is loaded in
-// read/write mode before calling this method, and to save
-// the record afterwards.
-// 
-// If *inObject* is not a valid object handle, an error
-// is generated and OK is set to zero.
-// 
-// If *inTable* is not a valid table number, an error is
-// generated and OK is set to zero.
-// 
-// If no item in the object has the given inTag, or the
-// item is not a record snapshot sub-object, an error is
-// generated and OK is set to zero.
-// 
-// Note: Unlike the legacy OTr_GetRecord, this method writes
-// snapshot values into whatever record is currently loaded.
-// No database read is performed.
+
+// *OT GetRecord* sets the current record of a table from the packed record data in
+// the item referenced by *inTag*. The contents of the item must have been set with OT
+// *PutRecord*. The table used to store the packed record is the table which will have
+// its current record set.
+
+// If object is not a valid object handle, an error is generated and *OK* is set to zero.
+// If no item in object has the given tag, nothing happens.
+
+// If an item with the given tag exists and has the type *OT Is Record*, the current
+// record of the item’s original table is set.
+
+// If there is no current record for the item’s table or the current record is locked, an
+// error is generated and *OK* is set to zero.
+
+// Warning: Once a record is stored with *OT PutRecord*, it must be retrieved into the
+// same table. Otherwise the results are undefined (and potentially disastrous). You can
+// use the OT *GetRecordTable* command to find the source table for a stored record.
 
 // Access: Shared
 
