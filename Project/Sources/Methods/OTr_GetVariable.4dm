@@ -4,22 +4,12 @@
 
 // Retrieves a value stored at the tag path and writes it into the variable pointed to
 // by $outVarPointer_ptr. The caller's declared variable type determines how the stored
-// value is rendered.
-
-// - Native scalar types (LongInt, Integer, Real, Text, Boolean, Picture) are read
-//     directly from the object property via OB Get.
-// - Date, Time, and Pointer are parsed via the OTr_uTextTo* helpers.
-// - BLOB is decoded from base64 text via OTr_uTextToBlob.
-// - Array types are delegated to OTr_GetArray.
-// - Text is the universal fallback — any value can be retrieved as text in its stored form.
+// value is rendered. Every 4D variable type except 2D arrays can be retrieved.
 
 // **Divergence from OT — type coercion on mismatch**
-
-// - OTr: when 4D can coerce the stored value to the destination type (e.g. a stored
-//     LongInt retrieved into a Text variable), the coerced value is written and OK=0.
-// - OT: leaves the destination variable empty/unchanged and sets OK=0.
-// - Code that relies on an empty result as a sentinel for a type mismatch will behave
-//     differently under OTr.
+// OTr coerces the stored value when 4D can do so (e.g. LongInt into Text), writing the
+// coerced value and setting OK=0. OT leaves the destination unchanged and sets OK=0.
+// Code that relies on an empty result as a type-mismatch sentinel will behave differently.
 
 // **ORIGINAL DOCUMENTATION**
 

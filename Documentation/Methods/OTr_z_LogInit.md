@@ -1,0 +1,1 @@
+<!--OTr_z_LogInit Does not require any parameters -->## OTr\_z\_LogInitOTr\_z\_LogInitInitialises OTr logging state and configures the helper logger.Attributes: Private, Invisible, Preemptive indifferent| Parameters || --- || Does not require any parameters |

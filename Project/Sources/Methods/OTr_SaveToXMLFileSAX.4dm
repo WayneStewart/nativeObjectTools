@@ -2,30 +2,13 @@
 // ----------------------------------------------------
 // Project Method: OTr_SaveToXMLFileSAX (inObject; inFilePath {; inPrettyPrint})
 
-// Serialises the stored object to a UTF-8 XML file on disk using SAX output.
+// Serialises the OTr object to a UTF-8 XML file on disk using SAX output.
 // Existing files are overwritten without warning.
-//
-// SAX creates the file itself (via Create document) and writes the XML
-// structure sequentially from top to bottom using:
-//   SAX SET XML DECLARATION — UTF-8 encoding and standalone declaration
-//   SAX OPEN XML ELEMENT    — begin tag (with optional attributes)
-//   SAX ADD XML ELEMENT VALUE — element body text
-//   SAX CLOSE XML ELEMENT   — end tag
-//
-// All recursive serialisation is delegated to OTr_zXMLWriteObjectSAX,
-// which mirrors the structure produced by OTr_zXMLWriteObject (the DOM
-// equivalent).  The resulting file is therefore fully interchangeable
-// with files written by OTr_SaveToXMLFile and can be parsed by
-// OTr_LoadFromXML / OTr_LoadFromXMLFile without distinction.
-//
-// NOTE: Unlike the DOM equivalent, SAX always produces compact (non-indented)
-// output — 4D's SAX engine provides no built-in indentation facility.
-// The inPrettyPrint parameter is therefore accepted for API symmetry only
-// and has no effect on the file produced.
-//
-// Shadow-type keys (leafKey$type) are included or excluded according to
-// OTr_IncludeShadowKey (default: True).
-//
+
+// NOTE: SAX always produces compact (non-indented) output regardless of the
+// inPrettyPrint parameter, which is accepted for API symmetry only. The
+// resulting file is fully interchangeable with files written by OTr_SaveToXMLFile.
+
 // Use OTr_SaveToXMLSAX to obtain the XML as a Text value instead.
 
 // Access: Shared

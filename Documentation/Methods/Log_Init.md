@@ -1,0 +1,1 @@
+<!--Log_Init Does not require any parameters -->## Log\_InitLog\_InitInitializes both the process and interprocess variables used by the logging routines.Attributes: Private, Invisible, Preemptive capable| Parameters || --- || Does not require any parameters |

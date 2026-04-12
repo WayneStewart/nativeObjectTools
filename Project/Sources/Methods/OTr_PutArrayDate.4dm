@@ -2,13 +2,7 @@
 // ----------------------------------------------------
 // Project Method: OTr_PutArrayDate (inObject; inTag; inIndex; inValue)
 
-// Sets a single element of a Date array item.
-// OK is unchanged on success; set to 0 on any failure.
-
-// Storage strategy mirrors OTr_PutDate:
-//   Storage.OTr.nativeDateInObject = True  → element stored as native Date
-//   Storage.OTr.nativeDateInObject = False → element stored as "YYYY-MM-DD" text
-//                                            via OTr_uDateToText (default)
+// Sets a single element of a Date array item at the given index. See OTr_SetDateMode.
 
 // **ORIGINAL DOCUMENTATION**
 

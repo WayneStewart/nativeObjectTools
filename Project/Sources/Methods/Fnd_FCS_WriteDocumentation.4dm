@@ -100,13 +100,30 @@ If (Current process name:C1392=$processName_t)
 			$MethodCode_t:=Substring:C12($MethodCode_t; $Position_i+1)
 		End if 
 		
-		// Delete the actual code
-		$Position_i:=Position:C15("Created by"; $MethodCode_t)
-		$MethodCode_t:=Substring:C12($MethodCode_t; 1; ($Position_i-3))
-		$line_i:=Find in array:C230($methodLines_at; "@Created by@")
+		// Delete the actual code.
+		// Search for "// Created by" anchored to a line start (preceded by CR) to
+		// avoid false matches on prose containing "created by" mid-sentence
+		// (e.g. "previously created by OTr_ObjectToBLOB").
+		$Position_i:=Position:C15($CR+"// Created by"; $MethodCode_t)
+		If ($Position_i>0)
+			// Match includes the leading CR; keep everything before that CR.
+			$MethodCode_t:=Substring:C12($MethodCode_t; 1; $Position_i-1)
+		Else 
+			// No CR-anchored match — try from position 1 (header starts immediately)
+			$Position_i:=Position:C15("// Created by"; $MethodCode_t)
+			If ($Position_i>0)
+				$MethodCode_t:=Substring:C12($MethodCode_t; 1; $Position_i-1)
+			End if 
+			// If still 0, no "Created by" line exists — leave $MethodCode_t intact
+		End if 
+		// Find the "// Created by" line anchored to line start (not mid-sentence)
+		$line_i:=Find in array:C230($methodLines_at; "// Created by@")
+		If ($line_i<1)
+			$line_i:=Find in array:C230($methodLines_at; "//  Created by@")  // two-space variant
+		End if
 		If ($line_i>0)
 			DELETE FROM ARRAY:C228($methodLines_at; $line_i; MAXTEXTLENBEFOREV11:K35:3)  // Get rid of the code section
-		End if 
+		End if
 		
 		// Delete block lines
 		$MethodCode_t:=Replace string:C233($MethodCode_t; "  // ----------------------------------------------------\r"; "")
@@ -134,7 +151,11 @@ If (Current process name:C1392=$processName_t)
 		
 		$numberofLines_i:=Size of array:C274($methodLines_at)
 		If ($parameterBlock_i>0)
-			$parameterBlock_i:=Find in array:C230($methodLines_at; "@Parameters:@")+1
+			// Anchor to line start — avoid matching "Parameters:" mid-sentence
+			$parameterBlock_i:=Find in array:C230($methodLines_at; "// Parameters:@")+1
+			If ($parameterBlock_i<2)
+				$parameterBlock_i:=Find in array:C230($methodLines_at; "// Parameters:@"; 1)+1
+			End if
 			$parameterline_t:=$methodLines_at{$parameterBlock_i}
 			
 			Repeat 
@@ -142,19 +163,19 @@ If (Current process name:C1392=$processName_t)
 				If ($lineInfo_o.valid)
 					If ($lineInfo_o.isDeclareStyle)
 						$isDeclareStyle_b:=True:C214
-					End if
+					End if 
 					// Determine direction arrow from parameter name prefix
 					var $arrow_t : Text
-					Case of
+					Case of 
 						: (Substring:C12($lineInfo_o.name; 1; 2)="io")
 							$arrow_t:="↔️"
 						: (Substring:C12($lineInfo_o.name; 1; 3)="out")
 							$arrow_t:="⬅️"
-						Else
+						Else 
 							$arrow_t:="➡️"
-					End case
+					End case 
 					$parameterBlock_t:=$parameterBlock_t+"|"+$lineInfo_o.name+"|"+$lineInfo_o.type+"|"+$arrow_t+"|"+$lineInfo_o.description+"|"+$CR
-				End if
+				End if 
 				$parameterBlock_i:=$parameterBlock_i+1
 				
 				// This has a more complicated end condition because we may get an out of range error
@@ -188,8 +209,22 @@ If (Current process name:C1392=$processName_t)
 		$parameterBlock_t:=Replace string:C233($parameterBlock_t; $CR+$CR; $CR)
 		
 		If ($returns_i>0)
-			$parameterBlock_i:=Find in array:C230($methodLines_at; "@Returns@"; $parameterBlock_i)
-			
+			// Anchor to line start — avoid matching "// Returns the..." or "//// Returns:"
+			$parameterBlock_i:=Find in array:C230($methodLines_at; "// Returns:@"; $parameterBlock_i)
+			If ($parameterBlock_i<1)
+				$parameterBlock_i:=Find in array:C230($methodLines_at; "// Returns:@")
+			End if
+			// Reject matches on double-commented lines (//// Returns:)
+			If ($parameterBlock_i>0)
+				If (Substring:C12($methodLines_at{$parameterBlock_i}; 1; 4)="////")
+					$parameterBlock_i:=-1
+				End if
+			End if
+			If ($parameterBlock_i<1)
+				$returns_i:=0
+			End if
+
+			If ($returns_i>0)
 			$parameterline_t:=$methodLines_at{$parameterBlock_i}
 			$returnsBlock_t:=""
 			$paramName_t:="Result"
@@ -205,6 +240,10 @@ If (Current process name:C1392=$processName_t)
 				$parameterline_t:=Replace string:C233($parameterline_t; "// "; "")
 				
 				If (Length:C16($parameterline_t)>0)
+					// Detect declare-style return variable even when no Parameters block was present
+					If ((Substring:C12($parameterline_t; 1; 1)="$") & (Position:C15(Substring:C12($parameterline_t; 2; 1); "0123456789")=0))
+						$isDeclareStyle_b:=True:C214
+					End if
 					If ($isDeclareStyle_b)
 						$Position_i:=Position:C15(" : "; $parameterline_t)
 						If (($Position_i>1) & (Substring:C12($parameterline_t; 1; 1)="$"))
@@ -267,10 +306,11 @@ If (Current process name:C1392=$processName_t)
 */
 			Until ($parameterBlock_i>$numberofLines_i)\
 				 | (($parameterline_t="") & ($nextline_t=""))
-			
-			
-		End if 
-		
+
+			End if  // inner If ($returns_i>0)
+
+		End if  // outer If ($returns_i>0)
+
 		If (Length:C16($returnsBlock_t)>0)
 			$parameterline_t:="|"+$paramName_t+"|"
 			If (Length:C16($paramType_t)>0)
@@ -488,14 +528,30 @@ End if
 							End if 
 						End if 
 						
-						If ($isNumbered_b)  // Numbered line: keep as standalone line
+						If ($isNumbered_b | (Substring:C12($trimmedLine_t; 1; 2)="- "))  // Numbered or bullet line: keep as standalone
 							If (Length:C16($currentParagraph_t)>0)
 								APPEND TO ARRAY:C911($formattedCommentLines_at; $currentParagraph_t)
+								// Only add blank line before bullet if previous line was not also a bullet
 								If ($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)}#"")
-									APPEND TO ARRAY:C911($formattedCommentLines_at; "")
-								End if 
+									If (Substring:C12($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)}; 1; 2)#"- ")
+										APPEND TO ARRAY:C911($formattedCommentLines_at; "")
+									End if
+								End if
 								$currentParagraph_t:=""
-							End if 
+							Else
+								// No pending paragraph — only add blank line if previous output was not a bullet
+								If (Size of array:C274($formattedCommentLines_at)>0)
+									If ($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)}="")
+										// Previous was blank — check the one before that
+										If (Size of array:C274($formattedCommentLines_at)>1)
+											If (Substring:C12($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)-1}; 1; 2)="- ")
+												// Previous non-blank was a bullet — remove the blank line to keep list tight
+												DELETE FROM ARRAY:C228($formattedCommentLines_at; Size of array:C274($formattedCommentLines_at); 1)
+											End if
+										End if
+									End if
+								End if
+							End if
 							APPEND TO ARRAY:C911($formattedCommentLines_at; $trimmedLine_t)
 						Else 
 							If (Length:C16($currentParagraph_t)=0)

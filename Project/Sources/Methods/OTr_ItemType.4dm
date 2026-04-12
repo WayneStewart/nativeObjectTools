@@ -2,44 +2,19 @@
 // ----------------------------------------------------
 // Project Method: OTr_ItemType (inObject; inTag {; Actual}) --> Longint
 
-// Returns the type constant for the item referenced by $inTag_t.
+// Returns the OTr-normalised type constant for the item referenced by $inTag_t.
 
-// **Default behaviour (Actual omitted or False):**
-//   Returns the OTr-normalised type constant via OTr_zMapType (shadow-key-first,
-//   with OT-compatible fallback). This is the correct mode for code that compares
-//   the result against the four OT-named constants (OT Is Character, OT Character array,
-//   OT Is Object, OT Is Record) or against 4D native type constants used as shadow
-//   values (Is real:K8:4, Is longint:K8:6, Is Boolean:K8:9, Is date:K8:7,
-//   Is time:K8:8, Is picture:K8:10, Is BLOB:K8:12, Is pointer:K8:14).
-
-// **Actual mode (Actual = True):**
-//   Returns the raw value stored in the shadow key (leafKey$type) for this item.
-//   If no shadow key is present, returns OB Get type directly.
-//   Use this to confirm what OTr's Put methods actually wrote — for diagnostics,
-//   debugging, and cases where you need to distinguish the stored representation
-//   from the OTr-normalised type. Returns the same value as the default in the
-//   vast majority of cases; differs only when OTr_zMapType would have applied
-//   a normalisation step (e.g. collapsing Is integer to Is longint in the
-//   fallback path, or returning a default when no shadow key is present).
+// When the optional $Actual_b parameter is True, returns the raw shadow key value
+// instead, bypassing normalisation. Use True for diagnostics and debugging only.
 
 // **ORIGINAL DOCUMENTATION**
 
-// OT ItemType returns the type of the item referenced by *inTag*.
+// *OT ItemType* returns the type of the item referenced by *inTag*.
 
-// If *inObject* is not a valid object handle or if no item in object has the given tag,
-// an error is generated, *OK* is set to zero, and zero is returned.
+// If *inObject* is not a valid object handle or if no item in the object has the given
+// tag, an error is generated, *OK* is set to zero, and zero is returned.
 
 // If an item with the given tag exists, its type is returned.
-
-// GetItemProperties
-
-// Item Utility Routines
-
-// The following routines allow you to fold, spindle and otherwise manipulate individual
-// items within an object.
-
-
-// inCompareObject; inCompareTag)  Number
 
 // Access: Shared
 

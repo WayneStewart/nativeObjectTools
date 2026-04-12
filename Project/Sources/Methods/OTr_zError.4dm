@@ -1,5 +1,5 @@
 //%attributes = {"invisible":true,"shared":false}
-/*
+
 
 // ----------------------------------------------------
 // Project Method: OTr_zError ($message_t : Text; $source_t : Text) --> \
@@ -20,7 +20,7 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-*/
+
 
 #DECLARE($message_t : Text; $source_t : Text)->$handled_b : Boolean
 

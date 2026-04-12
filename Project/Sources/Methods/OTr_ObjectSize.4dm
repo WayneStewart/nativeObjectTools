@@ -1,31 +1,14 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_ObjectSize (inObject) --> Longint
 
-// Returns an approximation of the size of an OTr object as the character
-// length of its JSON representation. All scalar, text, date, boolean,
-// and nested object properties are included in the JSON output. Native
-// BLOB and Picture properties are not emitted by JSON Stringify and are
-// therefore not counted; this is consistent with the legacy plugin's
-// approximation contract. No loop over individual keys is required
-// because all content — including embedded objects at any depth — is
-// fully serialised by a single JSON Stringify call.
-// Byte counts will not match the legacy plugin.
+// Returns an approximation of the memory size of an OTr object. Note: byte counts
+// will not match the legacy plugin exactly.
 
 // **ORIGINAL DOCUMENTATION**
 
 // *OT ObjectSize* returns the total size of an object in memory. If *inObject* is not a
 // valid object handle, an error is generated, *OK* is set to zero, and zero is returned.
-
-
-// Item Info Routines
-
-// The following routines provide the ability to obtain various information about each
-// item in an object. These routines are useful if you want to deal with objects in a
-// generic way and need to know how to classify each item.
-
-
-// outDataSizes}}})
 
 // Access: Shared
 
@@ -47,21 +30,23 @@
 
 #DECLARE($inObject_i : Integer)->$size_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_zAddToCallStack(Current method name:C684)
+
+var $temp_blob : Blob
 
 $size_i:=0
-
-// OTr_zLock // Unnecessary to lock for Read Only access
-
 OTr_zInit
 
 If (OTr_zIsValidHandle($inObject_i))
-	$size_i:=Length:C16(JSON Stringify:C1217(<>OTR_Objects_ao{$inObject_i}))
-
-Else
+	
+	VARIABLE TO BLOB:C532(<>OTR_Objects_ao{$inObject_i}; $temp_blob)
+	$size_i:=BLOB size:C605($temp_blob)
+	SET BLOB SIZE:C606($temp_blob; 0)
+	
+Else 
 	OTr_zError("Invalid handle"; Current method name:C684)
-End if
+End if 
 
 // OTr_zUnlock // Unnecessary to lock for Read Only access
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

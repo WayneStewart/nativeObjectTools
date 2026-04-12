@@ -4,36 +4,23 @@
 
 // Retrieves a single element from a Time array item.
 // Returns ?00:00:00? on any error or out-of-range index.
-// OK is unchanged on success; set to 0 on any failure.
-
-// Retrieval is transparent to storage path: the stored variant
-// type is inspected directly.
-//   Is text → parsed via OTr_uTextToTime ("HH:MM:SS")
-//   Is time → retrieved as native Time
-// This handles both the text-storage path (nativeDateInObject=False)
-// and the native-storage path (nativeDateInObject=True), and correctly
-// reads any legacy data stored as text before this guard was added.
 
 // **ORIGINAL DOCUMENTATION**
 
-// OT GetArrayTime gets a value in *inObject* from the array item referenced by *inTag*.
+// *OT GetArrayTime* gets a value in *inObject* from the array item referenced by *inTag*.
 
-// the object is not a valid object handle or if the 4D version is not v14 or later, an
-// error is generated, *OK* is set to zero, and the time ?00:00:00? is returned.
+// If the object is not a valid object handle, an error is generated, *OK* is set to
+// zero, and ?00:00:00? is returned.
 
-// If no item in the object has the given tag, zero is returned. If the *FailOnNoItem*
-// option is set, an error is generated and *OK* is set to zero.
+// If no item in the object has the given tag, ?00:00:00? is returned. If the
+// *FailOnNoItem* option is set, an error is generated and *OK* is set to zero.
 
 // If an item with the given tag exists and has the type *Time array*, and *inIndex* is
-// in the range (0.. *OT SizeOfArray* ( *inObject; inTag* )), the value of the requested
+// in the range (0..*OT SizeOfArray*(*inObject*; *inTag*)), the value of the requested
 // element is returned.
 
 // If an item with the given tag exists and has any other type, or if the index is out of
-// range, an error is generated, *OK* is set to zero, and the time ?00:00:00? is
-// returned.
-
-
-// OT GetBLOB(inObject; inTag; outBLOB)
+// range, an error is generated, *OK* is set to zero, and ?00:00:00? is returned.
 
 // Access: Shared
 

@@ -1,9 +1,11 @@
 //%attributes = {"invisible":true,"shared":true}
-  // ----------------------------------------------------
-  // Project Method: OTr_BLOBToObject (inBLOB) --> Longint
+// ----------------------------------------------------
+// Project Method: OTr_BLOBToObject (inBLOB) --> Longint
 
-  // Deserialises an OTr object from a BLOB previously created by
-  // OTr_ObjectToBLOB or OTr_ObjectToNewBLOB. Returns a new handle.
+// Deserialises an OTr object from a BLOB previously made by
+// OTr_ObjectToBLOB or OTr_ObjectToNewBLOB.  a new handle is returned
+
+// **NOTE**: Blobs created by the Object Tools plugin are **NOT** compatible and can't be opened.
 
 // **ORIGINAL DOCUMENTATION**
 
@@ -24,66 +26,66 @@
 
 // Access: Shared
 
-  // Parameters:
-  //   $inBLOB_blob : Blob : A BLOB containing a serialised OTr object
+// Parameters:
+//   $inBLOB_blob : Blob : A BLOB containing a serialised OTr object
 
-  // Returns:
-  //   $handle_i : Integer : New OTr handle, or 0 on error
+// Returns:
+//   $handle_i : Integer : New OTr handle, or 0 on error
 
-  // Created by Wayne Stewart, 2026-04-03
-  // Based on work by himself, Rob Laveaux, and Cannon Smith.
-  // Wayne Stewart, 2026-04-03 - Simplified: dropped ioOffset parameter and
-  //       OTR1 envelope. Now uses EXPAND BLOB + BLOB TO VARIABLE.
+// Created by Wayne Stewart, 2026-04-03
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-03 - Simplified: dropped ioOffset parameter and
+//   OTR1 envelope. Now uses EXPAND BLOB + BLOB TO VARIABLE.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
-  // Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
-  //   success path (see OTr-OK0-Conditions specification).
-  // ----------------------------------------------------
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+//   success path (see OTr-OK0-Conditions specification).
+// ----------------------------------------------------
 
 #DECLARE($inBLOB_blob : Blob)->$handle_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_zAddToCallStack(Current method name:C684)
 
 var $work_blob : Blob
 var $obj_o : Object
 var $compressed_i : Integer
 
-$handle_i := 0
+$handle_i:=0
 
-If (BLOB SIZE($inBLOB_blob) = 0)
-	OTr_zError("BLOB is empty"; Current method name)
+If (BLOB size:C605($inBLOB_blob)=0)
+	OTr_zError("BLOB is empty"; Current method name:C684)
 	OTr_zSetOK(0)
-
-Else
-
-	$work_blob := $inBLOB_blob
-	BLOB PROPERTIES($work_blob; $compressed_i)
-	If ($compressed_i # Is not compressed)
-		EXPAND BLOB($work_blob)
-	End if
-
-	BLOB TO VARIABLE($work_blob; $obj_o)
-
-	If (OK = 0)
-		OTr_zError("BLOB does not contain a valid OTr object"; Current method name)
+	
+Else 
+	
+	$work_blob:=$inBLOB_blob
+	BLOB PROPERTIES:C536($work_blob; $compressed_i)
+	If ($compressed_i#Is not compressed:K22:11)
+		EXPAND BLOB:C535($work_blob)
+	End if 
+	
+	BLOB TO VARIABLE:C533($work_blob; $obj_o)
+	
+	If (OK=0)
+		OTr_zError("BLOB does not contain a valid OTr object"; Current method name:C684)
 		OTr_zSetOK(0)
-
-	Else
-
+		
+	Else 
+		
 		OTr_zLock
-
-		$handle_i := Find in array(<>OTR_InUse_ab; False)
-		If ($handle_i = -1)
-			$handle_i := Size of array(<>OTR_InUse_ab)+1
-			INSERT IN ARRAY(<>OTR_InUse_ab; $handle_i; 1)
-			INSERT IN ARRAY(<>OTR_Objects_ao; $handle_i; 1)
-		End if
-		<>OTR_InUse_ab{$handle_i} := True
-		<>OTR_Objects_ao{$handle_i} := $obj_o
-
+		
+		$handle_i:=Find in array:C230(<>OTR_InUse_ab; False:C215)
+		If ($handle_i=-1)
+			$handle_i:=Size of array:C274(<>OTR_InUse_ab)+1
+			INSERT IN ARRAY:C227(<>OTR_InUse_ab; $handle_i; 1)
+			INSERT IN ARRAY:C227(<>OTR_Objects_ao; $handle_i; 1)
+		End if 
+		<>OTR_InUse_ab{$handle_i}:=True:C214
+		<>OTR_Objects_ao{$handle_i}:=$obj_o
+		
 		OTr_zUnlock
+		
+	End if 
+	
+End if 
 
-	End if
-
-End if
-
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

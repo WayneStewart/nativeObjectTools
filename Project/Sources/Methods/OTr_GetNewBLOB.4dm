@@ -2,33 +2,27 @@
 // ----------------------------------------------------
 // Project Method: OTr_GetNewBLOB (inObject; inTag) --> Blob
 
-// Retrieves a BLOB value from the specified tag path as
-// a function result. When Storage.OTr.nativeBlobInObject is
-// True (4D v19 R2 and later), the property is read as a
-// native BLOB via OB Get; otherwise it is read as plain
-// base64 text and decoded via OTr_uTextToBlob. Returns an
-// empty BLOB on any error or missing tag.
+// Retrieves a BLOB value from the specified tag path as a function result.
+// Returns an empty BLOB on any error or missing tag.
 
 // **ORIGINAL DOCUMENTATION**
 
-// OT GetNewBLOB gets a value in *inObject* from the item referenced by *inTag*.
+// *OT GetNewBLOB* gets a value in *inObject* from the item referenced by *inTag*.
 
 // If the object is not a valid object handle, an error is generated, *OK* is set to
 // zero, and an empty BLOB is returned.
 
 // If no item in the object has the given tag, an empty BLOB is returned. If the
-// *FailOnNoItem*
-
-// option is set, an error is generated and *OK* is set to zero.
+// *FailOnNoItem* option is set, an error is generated and *OK* is set to zero.
 
 // If an item with the given tag exists and has the type *Is BLOB*, the value of the
 // requested item is returned.
 
-// If an item with the given tag exists and has any other type, *OK* is set to zero, and
+// If an item with the given tag exists and has any other type, *OK* is set to zero and
 // an empty BLOB is returned.
 
-// Warning: Because of the problems related to the *OT GetBLOB* command, it is
-// recommended that you use this command instead.
+// Warning: Because of the problems related to *OT GetBLOB*, it is recommended that
+// you use this command instead.
 
 // Access: Shared
 

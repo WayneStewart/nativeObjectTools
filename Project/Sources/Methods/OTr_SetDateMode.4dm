@@ -3,39 +3,25 @@
 // Project Method: OTr_SetDateMode ({inMode}) --> Text
 
 // Gets or sets the current process's Date/Time storage mode for OTr objects.
+// The setting is per-process. Omit the parameter to use as a getter only.
+
+// The three mode tokens correspond to 4D's "Dates inside objects" parameter:
+// - "native"  — store Date/Time as native 4D types (default since v17)
+// - "iso"     — store as ISO text without timezone ("YYYY-MM-DD")
+// - "iso-tz"  — store as ISO text with timezone suffix
+
+// All OTr Date/Time put methods detect the current mode via OTr_uNativeDateInObject
+// at the time of each call. See also: OTr_uNativeDateInObject.
+
+// Reference: 4D KB 78256 — https://kb.4d.com/assetid=78256
 
 // Access: Shared
 
-// Parameters (all optional):
-//   $inMode_t : Text : Desired mode token (case-insensitive):
-//                        "native"  — store Date/Time as native 4D types (default since v17)
-//                        "iso"     — store as ISO text without timezone ("YYYY-MM-DD")
-//                        "iso-tz"  — store as ISO text with timezone suffix
-//                      Omit to use as getter only (no SET DATABASE PARAMETER call).
+// Parameters:
+//   $inMode_t : Text : Mode token — "native", "iso", or "iso-tz" (optional)
 
 // Returns:
-//   $outMode_t : Text : Current mode token after any change:
-//                         "native", "iso", or "iso-tz"
-
-// Background:
-//   This method wraps SET DATABASE PARAMETER (Dates inside objects; ...) and provides
-//   a readable, OTr-consistent API for controlling how Date and Time values are stored
-//   in 4D Object properties. The setting is per-process: calling this method affects
-//   only the current process. All other OTr Date/Time put methods (OTr_PutDate,
-//   OTr_PutTime, OTr_PutArrayDate, OTr_PutArrayTime, OTr_PutRecord) detect the
-//   current mode via OTr_uNativeDateInObject at the time of each call.
-//
-//   The three modes correspond to the three 4D constant values for Dates inside objects:
-//     "native"  → Date type (2)              — native 4D Date/Time in object
-//     "iso"     → String type without time zone (0) — "YYYY-MM-DD" text
-//     "iso-tz"  → String type with time zone (1)   — ISO with timezone offset
-//
-//   Typical use: call OTr_SetDateMode("iso") at process startup if the host database
-//   uses the legacy ISO-string compatibility mode. Calling OTr_SetDateMode("native")
-//   is safe but redundant in most databases (native is the default since 4D v17).
-//
-//   Reference: 4D KB 78256 — https://kb.4d.com/assetid=78256
-//   See also: OTr_uNativeDateInObject, OTr-Phase-002-Spec.md §Date/Time Storage Strategy
+//   $outMode_t : Text : Current mode token after any change
 
 // Created by Wayne Stewart, 2026-04-11
 // Based on work by himself, Rob Laveaux, and Cannon Smith.

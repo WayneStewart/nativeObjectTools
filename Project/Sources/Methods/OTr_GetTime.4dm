@@ -6,58 +6,19 @@
 
 // **ORIGINAL DOCUMENTATION**
 
-// OT GetTime gets a value in *inObject* from the item referenced by *inTag*.
+// *OT GetTime* gets a value in *inObject* from the item referenced by *inTag*.
 
 // If the object is not a valid object handle, an error is generated, *OK* is set to
-// zero, and the time ?00/00/00? is returned.
+// zero, and ?00:00:00? is returned.
 
-// If no item in the object has the given tag, the time ?00:00:00? is returned. If the
-
+// If no item in the object has the given tag, ?00:00:00? is returned. If the
 // *FailOnNoItem* option is set, an error is generated and *OK* is set to zero.
 
 // If an item with the given tag exists and has the type *Is Time*, the value of the
 // requested item is returned.
 
-// If an item with the given tag exists and has any other type, *OK* is set to zero, and
-// the time
-
-// ?00:00:00? is returned.
-
-
-
-// *OT GetVariable* gets a value in *inObject* from the item referenced by *inTag*. Every
-// 4D variable type but 2D arrays can be retrieved with this command, including *Boolean*
-// variables and arrays.
-
-// If the object is not a valid object handle, an error is generated and *OK* is set to
-// zero. If no item in the object has the given tag, nothing happens.
-
-// If an item with the given tag exists and has the same type as the type of the
-// destination variable, the variable’s data is replaced with the data stored in the
-// object.
-
-// If an item with the given tag exists and has a type other than the type of the
-// destination variable, an error is generated and *OK* is set to zero.
-
-
-// Array Utility Routines
-
-// The following routines provide commands for manipulating, searching and sorting
-// arrays. These commands are analogous to the array commands in 4D. It is far more
-// efficient to use these commands than to use *OT GetArray*, manipulate the array,
-// then use OT *PutArray*.
-
-
-// *OT DeleteElement* deletes one or more elements from an array in *inObject*.
-
-// If *inObject* is not a valid object handle, if no item in the object has the given
-// tag, or if the item’s type is not an array type, an error is generated and *OK* is set
-// to zero.
-
-// Elements are deleted starting at the element specified by *inWhere*. The *inHowMany*
-// parameter is the number of elements to delete. If *inHowMany * is not specified or
-// zero, then one element is deleted. The size of the array shrinks by * inHowMany *
-// elements.
+// If an item with the given tag exists and has any other type, *OK* is set to zero
+// and ?00:00:00? is returned.
 
 // Access: Shared
 

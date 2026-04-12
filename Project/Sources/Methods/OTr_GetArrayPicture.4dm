@@ -3,9 +3,7 @@
 // Project Method: OTr_GetArrayPicture (inObject; inTag; inIndex) --> Picture
 
 // Retrieves a single element from a Picture array item.
-// Pictures are stored natively in the object property.
 // Returns an empty Picture on any error or out-of-range index.
-// OK is unchanged on success; set to 0 on any failure.
 
 // **ORIGINAL DOCUMENTATION**
 
@@ -16,12 +14,11 @@
 // zero, and an empty picture is returned.
 
 // If no item in the object has the given tag, an empty picture is returned. If the
-
 // *FailOnNoItem* option is set, an error is generated and *OK* is set to zero.
 
 // If an item with the given tag exists and has the type *Picture array*, and *inIndex*
-// is in the range (0.. *OT SizeOfArray* ( *inObject; inTag* )), the value of the
-// requested element is returned.
+// is in the range (0..*OT SizeOfArray*(*inObject*; *inTag*)), the value of the requested
+// element is returned.
 
 // If an item with the given tag exists and has any other type, or if the index is out of
 // range, an error is generated, *OK* is set to zero, and an empty picture is returned.

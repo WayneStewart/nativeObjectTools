@@ -3,22 +3,20 @@
 // Project Method: OTr_GetArrayBLOB (inObject; inTag; inIndex) --> Blob
 
 // Retrieves a single element from a Blob array item.
-// The stored base64 text is decoded via OTr_uTextToBlob.
 // Returns an empty BLOB on any error or out-of-range index.
-// OK is unchanged on success; set to 0 on any failure.
 
 // **ORIGINAL DOCUMENTATION**
 
-// OT GetArrayBLOB gets a value in *inObject* from the array item referenced by *inTag*.
+// *OT GetArrayBLOB* gets a value in *inObject* from the array item referenced by *inTag*.
 
-// If the object is not a valid object handle or if the 4D version is not v14 or later,
-// an error is generated, *OK* is set to zero, and and empty BLOB is returned.
+// If the object is not a valid object handle, an error is generated, *OK* is set to
+// zero, and an empty BLOB is returned.
 
-// If no item in the object has the given tag, zero is returned. If the *FailOnNoItem*
-// option is set, an error is generated and *OK* is set to zero.
+// If no item in the object has the given tag, an empty BLOB is returned. If the
+// *FailOnNoItem* option is set, an error is generated and *OK* is set to zero.
 
 // If an item with the given tag exists and has the type *Blob array*, and *inIndex* is
-// in the range (0.. *OT SizeOfArray* ( *inObject; inTag* )), the value of the requested
+// in the range (0..*OT SizeOfArray*(*inObject*; *inTag*)), the value of the requested
 // element is returned.
 
 // If an item with the given tag exists and has any other type, or if the index is out of

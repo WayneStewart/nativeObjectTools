@@ -2,13 +2,7 @@
 // ----------------------------------------------------
 // Project Method: OTr_PutArrayTime (inObject; inTag; inIndex; inValue)
 
-// Sets a single element of a Time array item.
-// OK is unchanged on success; set to 0 on any failure.
-
-// Storage strategy mirrors OTr_PutTime:
-//   Storage.OTr.nativeDateInObject = True  → element stored as native Time
-//   Storage.OTr.nativeDateInObject = False → element stored as "HH:MM:SS" text
-//                                            via OTr_uTimeToText (default)
+// Sets a single element of a Time array item at the given index.
 
 // **ORIGINAL DOCUMENTATION**
 

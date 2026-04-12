@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_CompiledApplication () --> Longint
 
@@ -16,12 +16,13 @@
 
 #DECLARE()->$isCompiled_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+var $compiled_b : Boolean
 
-If (Is compiled mode)
-	$isCompiled_i:=1
-Else
-	$isCompiled_i:=0
-End if
+OTr_zAddToCallStack(Current method name:C684)
 
-OTr_zRemoveFromCallStack(Current method name)
+$compiled_b:=Is compiled mode:C492
+
+$isCompiled_i:=Num:C11($compiled_b)
+
+OTr_zRemoveFromCallStack(Current method name:C684)
+

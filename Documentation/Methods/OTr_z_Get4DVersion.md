@@ -1,0 +1,1 @@
+<!--OTr_z_Get4DVersion -> ReturnTypeResult : Text : ⬅️ : Description-->## OTr\_z\_Get4DVersionOTr\_z\_Get4DVersion --> ReturnTypeReturns a neatly formatted string describing the version of 4D Eg. 4D 20 R3 (100359)Attributes: Private, Invisible, Preemptive capable| Parameter | Type |  | Description || --- | --- | --- | --- ||Result|Text|⬅️|Description|

@@ -1,0 +1,1 @@
+<!--ethod_t : Text)->$exists_b : Boolean Does not require any parameters -->## Is a method#DECLARE($method\_t : Text)->$exists\_b : BooleanARRAY TEXT($wombat\_at; 0) METHOD GET NAMES($wombat\_at; $method\_t)$exists\_b:=(Size of array($wombat\_at)=1)| Parameters || --- || Does not require any parameters |

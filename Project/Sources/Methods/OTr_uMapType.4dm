@@ -1,43 +1,43 @@
 ﻿//%attributes = {"invisible":true,"shared":false}
-  // ----------------------------------------------------
-  // Project Method: OTr_uMapType ($nativeType_i : Integer {; $direction_i : Integer}) --> $result_i : Integer
+// ----------------------------------------------------
+// Project Method: OTr_uMapType ($nativeType_i : Integer {; $direction_i : Integer}) --> $result_i : Integer
 
-  // Bidirectional mapping between native 4D type constants
-  // and legacy OT plugin type constants.
-  // 
-  // Direction 0 (default): 4D → OT. Returns the OT type
-  // constant that corresponds to the given 4D constant.
-  // 
-  // Direction 1: OT → 4D. Returns the 4D type constant
-  // that corresponds to the given OT constant. OT Record
-  // (115) and OT Variable (24) have no direct 4D equivalent
-  // and both map to Is text (2).
-  // 
-  // Returns 0 for any type with no known mapping.
-  // 
-  // Note: This method handles structural type mapping only.
-  // It does not inspect stored values. For value-level
-  // discrimination of text properties that encode a date or
-  // time (the only surviving text-encoded scalars under the
-  // native-storage architecture) see OTr_zMapType.
+// Bidirectional mapping between native 4D type constants
+// and legacy OT plugin type constants.
+//
+// Direction 0 (default): 4D → OT. Returns the OT type
+// constant that corresponds to the given 4D constant.
+//
+// Direction 1: OT → 4D. Returns the 4D type constant
+// that corresponds to the given OT constant. OT Record
+// (115) and OT Variable (24) have no direct 4D equivalent
+// and both map to Is text (2).
+//
+// Returns 0 for any type with no known mapping.
+//
+// Note: This method handles structural type mapping only.
+// It does not inspect stored values. For value-level
+// discrimination of text properties that encode a date or
+// time (the only surviving text-encoded scalars under the
+// native-storage architecture) see OTr_zMapType.
 
-  // Access: Private
+// Access: Private
 
-  // Parameters:
-  //   $nativeType_i : Integer : A type constant (4D native or OT legacy)
-  //   $direction_i  : Integer : 0 = 4D→OT (default), 1 = OT→4D (optional)
+// Parameters:
+//   $nativeType_i : Integer : A type constant (4D native or OT legacy)
+//   $direction_i  : Integer : 0 = 4D→OT (default), 1 = OT→4D (optional)
 
-  // Returns:
-  //   $result_i : Integer : The mapped type constant, or 0 if no mapping
+// Returns:
+//   $result_i : Integer : The mapped type constant, or 0 if no mapping
 
-  // Created by Wayne Stewart, 2026-04-03
-  // Based on work by himself, Rob Laveaux, and Cannon Smith.
-  // Wayne Stewart, 2026-04-10 - Added array-type mappings (4D → OT).
-  //   Under the legacy plugin, OT ItemType returns the element type constant
-  //   for non-character arrays, and OT Character array (113) for String/Text
-  //   arrays. Used by OTr_zMapType when descending into an OTr array-container
-  //   sub-object.
-  // ----------------------------------------------------
+// Created by Wayne Stewart, 2026-04-03
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-10 - Added array-type mappings (4D → OT).
+//   Under the legacy plugin, OT ItemType returns the element type constant
+//   for non-character arrays, and OT Character array (113) for String/Text
+//   arrays. Used by OTr_zMapType when descending into an OTr array-container
+//   sub-object.
+// ----------------------------------------------------
 
 #DECLARE($nativeType_i : Integer; $direction_i : Integer)->$result_i : Integer
 

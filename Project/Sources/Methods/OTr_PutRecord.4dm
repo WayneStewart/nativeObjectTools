@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutRecord (inObject; inTag; inTable)
 
@@ -21,9 +21,7 @@
 // is replaced.
 
 // If an item with the given tag exists and has any other type, an error is generated and
-// *OK*
-
-// is set to zero.
+// *OK* is set to zero.
 
 // If table is not a valid table or field pointer, or if there is no current record for
 // the given table, an error is generated and *OK* is set to zero if the *OT
@@ -59,7 +57,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inTable_i : Integer)
 
-OTr_zAddToCallStack(Current method name)
+OTr_zAddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -97,7 +95,7 @@ If (OTr_zIsValidHandle($inObject_i))
 			// Probe once before the field loop — the setting is per-process and
 			// constant for the duration of this call.
 			$nativeDate_b:=OTr_uNativeDateInObject
-
+			
 			$snapshot_o:=New object:C1471
 			$snapshot_o.__tableNum:=$inTable_i
 			
@@ -116,16 +114,16 @@ If (OTr_zIsValidHandle($inObject_i))
 						: ($fieldType_i=Is date:K8:7)
 							If ($nativeDate_b)
 								OB SET:C1220($snapshot_o; $fieldName_t; $fieldPtr_ptr->)
-							Else
+							Else 
 								OB SET:C1220($snapshot_o; $fieldName_t; OTr_uDateToText($fieldPtr_ptr->))
-							End if
-
+							End if 
+							
 						: ($fieldType_i=Is time:K8:8)
 							If ($nativeDate_b)
 								OB SET:C1220($snapshot_o; $fieldName_t; $fieldPtr_ptr->)
-							Else
+							Else 
 								OB SET:C1220($snapshot_o; $fieldName_t; OTr_uTimeToText($fieldPtr_ptr->))
-							End if
+							End if 
 							
 						: ($fieldType_i=Is picture:K8:10)
 							PICTURE TO BLOB:C692($fieldPtr_ptr->; $tempBlob_blob; ".png")
@@ -149,7 +147,7 @@ If (OTr_zIsValidHandle($inObject_i))
 			If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; ->$parent_o; ->$leafKey_t))
 				OB SET:C1220($parent_o; $leafKey_t; $snapshot_o)
 				OB SET:C1220($parent_o; OTr_zShadowKey($leafKey_t); OT Is Record)
-			End if
+			End if 
 			
 		End if 
 		
@@ -162,4 +160,4 @@ End if
 
 OTr_zUnlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

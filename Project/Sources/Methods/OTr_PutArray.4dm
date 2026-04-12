@@ -2,13 +2,7 @@
 // ----------------------------------------------------
 // Project Method: OTr_PutArray (inObject; inTag; inArray)
 
-// Stores a 4D array into an OTr object at the given
-// tag path. The array is serialised as a 4D Object
-// with metadata properties (arrayType, numElements,
-// currentItem) and one string-keyed property per
-// element ("0" through "n"). Date and Time elements
-// are stored as ISO text via OTr_uDateToText and
-// OTr_uTimeToText.
+// Stores a 4D array into an OTr object at the given tag path.
 
 // **ORIGINAL DOCUMENTATION**
 

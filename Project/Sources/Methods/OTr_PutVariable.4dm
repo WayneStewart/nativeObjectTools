@@ -2,38 +2,17 @@
 // ----------------------------------------------------
 // Project Method: OTr_PutVariable (inObject; inTag; inVarPointer)
 
-// Stores the contents of the variable pointed to by
-// $inVarPointer_ptr at the tag path in the object. Every 4D
-// variable type except 2D arrays can be stored, including
-// arrays and Booleans.
-//
-// Storage strategy (revised 2026-04-10):
-//   - Scalar types that 4D's object model represents natively —
-//     LongInt, Integer, Real, Text, Boolean, Picture, Date, and
-//     Time — are stored directly via OB SET with no encoding
-//     wrapper. BLOBs are also stored natively when
-//     Storage.OTr.nativeBlobInObject is True (4D v19 R2+).
-//   - Pointer values, and BLOBs on pre-v19 R2, cannot travel
-//     through 4D's object model as first-class types and so are
-//     stored as plain text via OTr_uPointerToText / OTr_uBlobToText.
-//     A sibling shadow-type key (leafKey$type) records the original
-//     OT type constant (23 for Pointer, 30 for BLOB) so that
-//     OTr_zMapType / OTr_ItemType can distinguish these encoded
-//     values from ordinary user text on the retrieval side.
-//   - Array types are encoded as sub-objects by delegating to
-//     OTr_PutArray (which records its arrayType internally and
-//     manages the lock).
+// Stores the contents of the variable pointed to by $inVarPointer_ptr at the tag path.
+// Every 4D variable type except 2D arrays can be stored, including arrays and Booleans.
 
 // **ORIGINAL DOCUMENTATION**
 
 // *OT PutVariable* puts the contents of the variable pointed to by *inVarPointer* into
 // *inObject*. Every 4D variable type but 2D arrays can be stored with this command,
-// including *Boolean* variables and arrays. Once stored, the data can either be
-// retrieved with
+// including *Boolean* variables and arrays. Once stored, the data can be retrieved with
+// *OT GetVariable* or with the *OT Get<type>* command appropriate to the variable's type.
 
-// *OT GetVariable* or with the OT *Get<type>* command appropriate to the variable’s
-// type. If *inObject* is not a valid object handle, an error is generated and *OK* is
-// set to zero.
+// If *inObject* is not a valid object handle, an error is generated and *OK* is set to zero.
 
 // If no item in the object has the given tag, a new item is created.
 
@@ -43,13 +22,6 @@
 // If an item with the given tag exists and has any other type, an error is generated and
 // *OK* is set to zero if the *OT VariantItems* option is not set, otherwise the existing
 // item is deleted and a new item is created.
-
-
-// Get Value Routines
-
-// The following routines provide the ability to get the value of any object item. After
-// you have successfully put data into an object item, you can begin retrieving data from
-// the object.
 
 // Access: Shared
 

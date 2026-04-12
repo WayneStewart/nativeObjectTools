@@ -1,0 +1,1 @@
+<!--LOG STOP LOG WRITER Does not require any parameters -->## LOG STOP LOG WRITERLOG STOP LOG WRITERCall this method to stop the Log Writer worker The worker will restart if needed automaticallyAttributes: Private, Invisible, Preemptive indifferent| Parameters || --- || Does not require any parameters |

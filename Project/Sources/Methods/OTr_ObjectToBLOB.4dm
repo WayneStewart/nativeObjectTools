@@ -8,7 +8,8 @@
 // 
 // Because 4D passes BLOBs by value, *ioBLOB* must be passed as a
 // Pointer to a BLOB variable: OTr_ObjectToBLOB($h; ->$myBlob).
-// Use OTr_ObjectToNewBLOB for the simpler function-result form.
+
+// **DO NOT USE THIS COMMAND,** Use OTr_ObjectToNewBLOB for the simpler function-result form.
 
 // **ORIGINAL DOCUMENTATION**
 

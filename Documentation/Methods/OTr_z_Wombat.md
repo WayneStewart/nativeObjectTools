@@ -1,0 +1,1 @@
+<!--OTr_z_Wombat -> PictureResult : Picture : ⬅️ : A small picture of a young wombat-->## OTr\_z\_WombatOTr\_z\_Wombat --> PictureReturns a picture of a WombatAttributes: Private, Invisible, Preemptive indifferent| Parameter | Type |  | Description || --- | --- | --- | --- ||Result|Picture|⬅️|A small picture of a young wombat|

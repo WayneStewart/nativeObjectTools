@@ -1,0 +1,1 @@
+<!--OTr_onExit Does not require any parameters -->## OTr\_onExitOTr\_onExitShuts down the OTr logging subsystem cleanly.Call from the host On Exit database method when the On Host Database Event security setting is disabled.Attributes: Shared, Invisible, Preemptive indifferent| Parameters || --- || Does not require any parameters |

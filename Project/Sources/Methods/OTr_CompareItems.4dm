@@ -3,36 +3,22 @@
 // Project Method: OTr_CompareItems (inSourceObject; inSourceTag; inCompareObject; inCompareTag) --> Longint
 
 // Compares two items for equality. Both handles may be the same object.
-// Returns 1 if items are identical, 0 if not, -1 on error.
-// Objects are compared via JSON serialisation. Collections are compared
-// element-by-element via JSON serialisation. BLOBs are compared by
-// content. Text (including encoded dates, times, pointers) is compared
-// with exact string equality.
+// Returns 1 if identical, 0 if not, -1 on error.
 
 // **ORIGINAL DOCUMENTATION**
 
-// *OT CompareItems* compares two items for equality. *inSourceObject*
-// and *inCompareObject* may be the same object.
+// *OT CompareItems* compares two items for equality. *inSourceObject* and
+// *inCompareObject* may be the same object.
 
-// If *inSourceObject* or *inCompareObject* is not a valid object handle,
-// if either of the two items do not exist, or if the two items do not
-// have the same type, an error is generated, *OK* is set to zero, and -1
+// If either object handle is not valid, if either item does not exist, or if the two
+// items do not have the same type, an error is generated, *OK* is set to zero, and -1
 // is returned.
 
-// Otherwise, the items are compared according to the rules of equality
-// used for equivalent variable types in 4D, with the addition that you
-// may compare array, *BLOB*, *Picture* and embedded object items.
-
-// Arrays are considered identical if they are the same size and the
-// corresponding elements would be considered equal in 4D. This means that
-// when comparing elements of character arrays, case and diacriticals are
-// not significant and wildcards are used.
-
-// *BLOB* and *Picture* items are considered identical if they contain the
-// same data byte for byte.
-
-// Embedded objects are considered identical if each of their items are
-// considered identical according to the rules for non-object types.
+// Otherwise items are compared according to the rules of equality for equivalent
+// variable types in 4D. Arrays are considered identical if they are the same size and
+// corresponding elements are equal. *BLOB* and *Picture* items are considered identical
+// if they contain the same bytes. Embedded objects are considered identical if each of
+// their items are identical.
 
 // Access: Shared
 

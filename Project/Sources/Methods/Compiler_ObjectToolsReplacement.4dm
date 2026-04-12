@@ -569,8 +569,6 @@ If (False:C215)
 	C_PICTURE:C286(OTr_z_Wombat; $0)
 	C_PICTURE:C286(OTr_z_Koala; $0)
 	
-	
-	
 	// Phase 10 sub-methods
 	C_BOOLEAN:C305(____Test_Phase_10; $1)
 	C_LONGINT:C283(____Test_Phase_10_OTr; $1)

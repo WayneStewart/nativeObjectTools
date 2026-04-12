@@ -2,31 +2,21 @@
 // ----------------------------------------------------
 // Project Method: OTr_DeleteElement (inObject; inTag; inWhere {; inHowMany})
 
-// Deletes one or more elements from an OTr array
-// starting at position $inWhere_i (1-based). Elements
-// after the deleted range are shifted down by $inHowMany_i.
-// If the array holds Blob or Picture types, binary slots
-// for all deleted elements are released before the shift.
-// If $inWhere_i exceeds numElements, nothing is done and no
-// error is reported. If the range extends beyond the end
-// of the array, only elements up to numElements are deleted.
-// $inHowMany_i defaults to 1 if omitted.
-// Element 0 (the pre-selection slot) is never affected.
+// Deletes one or more elements from an OTr array starting at position $inWhere_i
+// (1-based). $inHowMany_i defaults to 1 if omitted. Element 0 is never affected.
 
 // **ORIGINAL DOCUMENTATION**
 
 // *OT DeleteElement* deletes one or more elements from an array in *inObject*.
 
 // If *inObject* is not a valid object handle, if no item in the object has the given
-// tag, or if the item’s type is not an array type, an error is generated and *OK* is set
-// to zero.
+// tag, or if the item's type is not an array type, an error is generated and *OK* is
+// set to zero.
 
 // Elements are deleted starting at the element specified by *inWhere*. The *inHowMany*
-// parameter is the number of elements to delete. If *inHowMany * is not specified or
-// zero, then one element is deleted. The size of the array shrinks by * inHowMany *
+// parameter is the number of elements to delete. If *inHowMany* is not specified or
+// zero, then one element is deleted. The size of the array shrinks by *inHowMany*
 // elements.
-
-
 
 // Access: Shared
 

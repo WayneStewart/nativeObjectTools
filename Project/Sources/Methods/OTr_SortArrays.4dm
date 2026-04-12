@@ -1,39 +1,49 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_SortArrays (inObject; inTag1; inDirection1 {; inTag2; inDirection2 {; inTag3; inDirection3 {; inTag4; inDirection4 {; inTag5; inDirection5 {; inTag6; inDirection6 {; inTag7; inDirection7}}}}}})
-//
-// Sorts one or more OTr arrays within the same OTr
-// object via MULTI SORT ARRAY. Direction codes:
-//   ">" ascending, "<" descending, "*" slave.
-// At least one pair must be ">" or "<". All active
-// arrays must have the same numElements. BLOB, Picture,
-// and Pointer arrays cannot be sorted (any position,
-// including slave).
-//
-// Each pair is validated via OTr_zSortValidatePair.
-// Key arrays are loaded into process-scope scratch
-// arrays via OTr_zSortFillSlot. Pointers to those
-// arrays are built with OTr_zSortSlotPointer and
-// passed to MULTI SORT ARRAY. The resulting sorted
-// index (OTR_SortIdx_ai) drives write-back for all
-// pairs (keys and slaves). OTr_zLock is held only
-// during the write-back phase.
-//
-// Access: Public
-//
+// Project Method: OTr_SortArrays (inObject; inTag1; inDirection1 … inTag7; inDirection7)
+
+// Sorts one or more OTr arrays within the same OTr object via MULTI SORT ARRAY.
+// Up to seven tag/direction pairs may be supplied. Direction codes:
+// - ">" ascending
+// - "<" descending
+// - "*" slave (moves with the preceding key array)
+
+// At least one pair must be ">" or "<". All active arrays must have the same number
+// of elements. BLOB, Picture, and Pointer arrays cannot be sorted in any position,
+// including slave.
+
+// **ORIGINAL DOCUMENTATION**
+
+// *OT SortArrays* performs a multilevel sort on one or more arrays in *inObject*.
+// You may sort up to seven arrays at once with this command.
+
+// If *inObject* is not a valid object handle, if no item in the object has the given
+// tag, if the item's type is not a sortable array type, if all of the arrays do not
+// have the same number of elements, or if a direction is not valid, an error is
+// generated and *OK* is set to zero.
+
+// The direction parameter for each array should be one of:
+// - ">" — ascending key
+// - "<" — descending key
+// - "*" — move with previous array (slave)
+
+// For example, to sort parallel arrays of names and associated ids:
+// OT SortArrays($object;"names";">";"ids";"*")
+
+// To sort addresses by state and then by city within each state:
+// OT SortArrays($object;"states";">";"cities";">")
+
+// Access: Shared
+
 // Parameters:
 //   $inObject_i               : Integer : OTr inObject
 //   $inTag1_t .. $inTag7_t    : Text    : Array tag name (inTag1..inTag7)
-//   $inDirection1_t .. $inDirection7_t : Text    : Sort direction (inDirection1..inDirection7)
-//                          ">"  ascending key
-//                          "<"  descending key
-//                          "*"  slave (follows keys)
-//
-// Returns: Nothing (use OTr_OK to check status)
-//
+//   $inDirection1_t .. $inDirection7_t : Text : Sort direction (inDirection1..inDirection7)
+
+// Returns: Nothing
+
 // Created by Wayne Stewart, 2026-04-02
-// Based on work by himself, Rob Laveaux, and Cannon
-// Smith.
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
 //   success path (see OTr-OK0-Conditions specification).

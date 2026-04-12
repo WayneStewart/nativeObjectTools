@@ -1,0 +1,1 @@
+<!--OTr_z_Koala -> PictureResult : Picture : ⬅️ : A small picture of a young Koala-->## OTr\_z\_KoalaOTr\_z\_Koala --> PictureReturns a picture of a KoalaAttributes: Private, Invisible, Preemptive indifferent| Parameter | Type |  | Description || --- | --- | --- | --- ||Result|Picture|⬅️|A small picture of a young Koala|
