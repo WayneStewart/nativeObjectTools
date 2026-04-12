@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetAllProperties (inObject; outNames {; outTypes {; outItemSizes {; outDataSizes}}})
 
@@ -16,8 +16,6 @@
 
 // If an item with the given tag exists and has the type *OT Is Object*, 1 is returned.
 // If an item with the given tag exists and has any other type, zero is returned.
-
-
 
 // Access: Shared
 

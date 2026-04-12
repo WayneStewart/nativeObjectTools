@@ -45,9 +45,12 @@ OTr_zAddToCallStack(Current method name)
 
 var $tmpPath_t : Text
 var $valid_b : Boolean
+var $prettyPrint_b : Boolean
 
 If (Count parameters < 2)
-	$inPrettyPrint_b:=True
+	$prettyPrint_b:=True
+Else
+	$prettyPrint_b:=$inPrettyPrint_b
 End if
 
 $xml_t:=""

@@ -31,10 +31,15 @@ var $DesiredProcessName_t : Text
 $StackSize_i:=0
 $DesiredProcessName_t:=Current method name:C684
 
-$suppressAlert_b:=Choose:C955(Count parameters:C259=1; $suppressAlert_b; False:C215)
+var $hideAlert_b : Boolean
+If (Count parameters:C259<1)
+	$hideAlert_b:=False:C215
+Else 
+	$hideAlert_b:=$suppressAlert_b
+End if 
 
 If (Current process name:C1392=$DesiredProcessName_t)
-
+	
 	// ====================================================
 	// SHARED INFRASTRUCTURE
 	// ====================================================
@@ -42,67 +47,67 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $masterText_t : Text
 	var $rowNum_i : Integer
 	var $totalPass_i; $totalFail_i : Integer
-
+	
 	$TAB:=Char:C90(Tab:K15:37)
 	$LF:=Char:C90(Line feed:K15:40)
 	$CR:=Char:C90(Carriage return:K15:38)
-
+	
 	$rowNum_i:=0
 	$totalPass_i:=0
 	$totalFail_i:=0
-
+	
 	// ====================================================
 	// DOCUMENT HEADER (platform, version, timestamp)
 	// ====================================================
 	var $platform_t; $version_t; $dateStr_t; $timeStr_t : Text
 	var $y_i; $mo_i; $d_i : Integer
-
+	
 	If (Is macOS:C1572)
 		$platform_t:="Mac"
-	Else
+	Else 
 		$platform_t:="Windows"
-	End if
-
+	End if 
+	
 	$version_t:=Application version:C493
-
+	
 	$y_i:=Year of:C25(Current date:C33)
 	$mo_i:=Month of:C24(Current date:C33)
 	$d_i:=Day of:C23(Current date:C33)
 	$dateStr_t:=String:C10($y_i; "0000")+"-"+String:C10($mo_i; "00")+"-"+String:C10($d_i; "00")
 	$timeStr_t:=String:C10(Current time:C178; HH MM SS:K7:1)
-
+	
 	$masterText_t:="OTr Master Test Suite"+$LF
 	$masterText_t:=$masterText_t+"Platform: "+$platform_t+$TAB+"4D Version: "+$version_t+$TAB+"Run: "+$dateStr_t+" "+$timeStr_t+$LF
 	$masterText_t:=$masterText_t+$LF
-
+	
 	// Column header for unit-test rows
 	$masterText_t:=$masterText_t+"Num"+$TAB+"Phase"+$TAB+"Test Name"+$TAB+"Expected"+$TAB+"Actual"+$TAB+"Pass/Fail"+$LF
-
+	
 	// ====================================================
 	// HELPER: inline macro — append one result row
 	// (implemented as a block convention; each phase section
 	//  uses $phase_t, $testName_t, $expected_t, $actual_t, $pass_b)
 	// ====================================================
-
+	
 	var $phase_t; $testName_t; $expected_t; $actual_t : Text
 	var $pass_b : Boolean
-
+	
 	// ====================================================
 	// ============================================================
 	// PHASE 1 — Core handle management
 	// ============================================================
 	// ====================================================
 	$phase_t:="Phase 1"
-
+	
 	OTr_ClearAll
-
+	
 	var $h1_i; $h2_i; $h3_i : Integer
 	var $regResult_i; $compiled_i : Integer
 	var $originalOptions_i; $newOptions_i; $readOptions_i : Integer
 	var $prevHandler_t; $prev2Handler_t; $prev3Handler_t : Text
 	var $findIndex_i : Integer
 	ARRAY LONGINT:C221($handles_ai; 0)
-
+	
 	// OTr_GetVersion
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetVersion returns non-empty"
@@ -112,10 +117,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_Register
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_Register returns 1"
@@ -126,10 +131,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_CompiledApplication
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_CompiledApplication is 0 or 1"
@@ -140,10 +145,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_SetOptions / OTr_GetOptions round-trip
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_SetOptions/GetOptions round-trip"
@@ -157,11 +162,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
+	End if 
 	OTr_SetOptions($originalOptions_i)
-
+	
 	// OTr_SetErrorHandler chaining
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_SetErrorHandler chaining"
@@ -174,10 +179,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_New returns positive handle
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_New returns positive handle"
@@ -188,10 +193,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_IsObject — valid handle
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_IsObject valid handle = 1"
@@ -201,10 +206,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_IsObject — handle 0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_IsObject handle 0 = 0"
@@ -214,10 +219,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_IsObject — invalid handle
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_IsObject invalid handle = 0"
@@ -227,10 +232,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_Copy — distinct handle
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_Copy returns distinct positive handle"
@@ -241,10 +246,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_GetHandleList — 2 handles
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetHandleList returns 2 handles"
@@ -256,10 +261,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_GetHandleList contains h1
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetHandleList contains h1"
@@ -270,10 +275,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_GetHandleList contains h2
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetHandleList contains h2 (copy)"
@@ -284,10 +289,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_Clear invalidates handle
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_Clear invalidates handle"
@@ -298,10 +303,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_New reuses cleared slot
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_New reuses cleared slot"
@@ -312,10 +317,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_ClearAll empties handle list
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ClearAll empties handle list"
@@ -328,10 +333,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_ClearAll leaves former handles invalid
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ClearAll leaves h2 and h3 invalid"
@@ -341,20 +346,20 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// ============================================================
 	// PHASE 1.5 — Export methods
 	// ============================================================
 	$phase_t:="Phase 1.5"
-
+	
 	OTr_ClearAll
 	var $handle_i : Integer
 	var $json_t; $tempFile_t; $readBack_t : Text
 	$handle_i:=OTr_New
-
+	
 	// OTr_SaveToText empty object
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_SaveToText empty object = {}"
@@ -365,10 +370,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_SaveToText pretty
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_SaveToText pretty contains {"
@@ -379,10 +384,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// OTr_SaveToFile
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_SaveToFile creates readable JSON"
@@ -395,11 +400,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
+	End if 
 	DELETE DOCUMENT:C159($tempFile_t)
-
+	
 	// OTr_SaveToClipboard
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_SaveToClipboard places JSON on clipboard"
@@ -411,17 +416,17 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	OTr_ClearAll
-
+	
 	// ============================================================
 	// PHASE 2 — Scalar put/get and object paths
 	// ============================================================
 	$phase_t:="Phase 2"
-
+	
 	OTr_ClearAll
 	var $hRoot_i; $hObj_i; $hObjOut_i : Integer
 	var $long_i : Integer
@@ -430,10 +435,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $date_d : Date
 	var $time_h : Time
 	var $bool_i : Integer
-
+	
 	$hRoot_i:=OTr_New
 	$hObj_i:=OTr_New
-
+	
 	// PutLong/GetLong
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutLong/GetLong round-trip"
@@ -445,10 +450,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutReal/GetReal
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutReal/GetReal round-trip"
@@ -460,10 +465,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutString/GetString
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutString/GetString round-trip"
@@ -475,10 +480,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutText/GetText
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutText/GetText round-trip"
@@ -490,10 +495,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutDate/GetDate
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutDate/GetDate round-trip"
@@ -505,10 +510,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutTime/GetTime
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutTime/GetTime round-trip"
@@ -520,10 +525,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutBoolean True
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutBoolean/GetBoolean True"
@@ -535,10 +540,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutBoolean False
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutBoolean/GetBoolean False"
@@ -550,10 +555,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutObject/GetObject — handle returned
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutObject/GetObject returns handle"
@@ -566,10 +571,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetObject content
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetObject content correct"
@@ -579,10 +584,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetObject deep copy semantics
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetObject is deep copy (mutate source, child unchanged)"
@@ -593,10 +598,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// Missing path defaults
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetLong missing path default = 0"
@@ -606,10 +611,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetText missing path default = empty"
 	$expected_t:="(empty)"
@@ -619,17 +624,17 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	OTr_ClearAll
-
+	
 	// ============================================================
 	// PHASE 3 — Item info and utility methods
 	// ============================================================
 	$phase_t:="Phase 3"
-
+	
 	OTr_ClearAll
 	var $h1_3_i; $h2_3_i; $hObj3_i : Integer
 	var $count3_i; $type3_i; $isEmbedded3_i; $exists3_i; $size3_i; $cmp3_i : Integer
@@ -639,7 +644,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	ARRAY LONGINT:C221($types3_ai; 0)
 	ARRAY LONGINT:C221($itemSizes3_ai; 0)
 	ARRAY LONGINT:C221($dataSizes3_ai; 0)
-
+	
 	$h1_3_i:=OTr_New
 	$h2_3_i:=OTr_New
 	$hObj3_i:=OTr_New
@@ -648,7 +653,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_PutBoolean($h1_3_i; "a.flag"; True:C214)
 	OTr_PutText($hObj3_i; "inside"; "value")
 	OTr_PutObject($h1_3_i; "a.child"; $hObj3_i)
-
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ItemCount on embedded object = 4"
 	$count3_i:=OTr_ItemCount($h1_3_i; "a")
@@ -658,10 +663,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ItemExists existing tag = 1"
 	$exists3_i:=OTr_ItemExists($h1_3_i; "a.long")
@@ -671,10 +676,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ItemExists missing tag = 0"
 	$exists3_i:=OTr_ItemExists($h1_3_i; "a.missing")
@@ -684,10 +689,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ItemType for long = Is longint (shadow key)"
 	$type3_i:=OTr_ItemType($h1_3_i; "a.long")
@@ -697,10 +702,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_IsEmbedded for object item = 1"
 	$isEmbedded3_i:=OTr_IsEmbedded($h1_3_i; "a.child")
@@ -710,10 +715,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetAllNamedProperties count = 4"
 	OTr_GetAllNamedProperties($h1_3_i; "a"; ->$names3_at; ->$types3_ai; ->$itemSizes3_ai; ->$dataSizes3_ai)
@@ -723,10 +728,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetNamedProperties type=112; index=0"
 	$outType3_i:=0
@@ -740,10 +745,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetItemProperties returns non-empty name"
 	$name3_t:=""
@@ -757,10 +762,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_CopyItem/CompareItems equal = 1"
 	OTr_CopyItem($h1_3_i; "a.text"; $h2_3_i; "b.text")
@@ -771,10 +776,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_RenameItem — new name exists"
 	OTr_RenameItem($h2_3_i; "b.text"; "renamed")
@@ -784,10 +789,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_DeleteItem — item gone"
 	OTr_DeleteItem($h2_3_i; "b.renamed")
@@ -797,10 +802,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ObjectSize > 0"
 	$size3_i:=OTr_ObjectSize($h1_3_i)
@@ -810,17 +815,17 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	OTr_ClearAll
-
+	
 	// ============================================================
 	// PHASE 4 — Array operations
 	// ============================================================
 	$phase_t:="Phase 4"
-
+	
 	OTr_ClearAll
 	var $h4_i : Integer
 	var $i4_i : Integer
@@ -831,16 +836,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	ARRAY DATE:C224($dateArr4_ad; 0)
 	ARRAY TIME:C1223($timeArr4_ah; 0)
 	ARRAY BOOLEAN:C223($boolArr4_ab; 0)
-
+	
 	$h4_i:=OTr_New
-
+	
 	// PutArray/GetArray LongInt
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArray/GetArray LongInt (5 elements)"
 	ARRAY LONGINT:C221($longArr4_ai; 5)
 	For ($i4_i; 1; 5)
 		$longArr4_ai{$i4_i}:=$i4_i*10
-	End for
+	End for 
 	OTr_PutArray($h4_i; "longs"; ->$longArr4_ai)
 	ARRAY LONGINT:C221($longArr4_ai; 0)
 	OTr_GetArray($h4_i; "longs"; ->$longArr4_ai)
@@ -850,10 +855,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutArray/GetArray Text
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArray/GetArray Text (3 elements)"
@@ -870,10 +875,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// SizeOfArray
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_SizeOfArray = 5"
@@ -883,10 +888,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// ArrayType — LongInt
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ArrayType LongInt array = LongInt array constant"
@@ -896,10 +901,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// ArrayType — missing returns -1
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ArrayType missing tag = -1"
@@ -909,10 +914,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// ResizeArray — grow
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ResizeArray grow to 8"
@@ -923,10 +928,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// ResizeArray — shrink
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ResizeArray shrink to 3"
@@ -937,10 +942,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// ResizeArray — invalid handle sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ResizeArray invalid handle sets OK=0"
@@ -951,17 +956,17 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutArrayLong / GetArrayLong
 	ARRAY LONGINT:C221($longArr4_ai; 5)
 	For ($i4_i; 1; 5)
 		$longArr4_ai{$i4_i}:=$i4_i*100
-	End for
+	End for 
 	OTr_PutArray($h4_i; "longs"; ->$longArr4_ai)
-
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayLong/GetArrayLong round-trip"
 	OTr_PutArrayLong($h4_i; "longs"; 2; 999)
@@ -971,10 +976,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayLong adjacent elements undisturbed"
 	$expected_t:="[1]=100; [5]=500"
@@ -983,10 +988,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayLong out-of-range sets OK=0"
 	OTr_PutArrayLong($h4_i; "longs"; 99; 1)
@@ -996,10 +1001,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayLong type mismatch sets OK=0"
 	OTr_PutArrayLong($h4_i; "words"; 1; 1)
@@ -1009,10 +1014,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutArrayReal / GetArrayReal
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayReal/GetArrayReal round-trip"
@@ -1031,10 +1036,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutArrayString / GetArrayString
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayString/GetArrayString round-trip"
@@ -1050,10 +1055,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutArrayText / GetArrayText
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayText/GetArrayText round-trip"
@@ -1069,10 +1074,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutArrayDate / GetArrayDate
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayDate/GetArrayDate round-trip"
@@ -1088,10 +1093,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutArrayTime / GetArrayTime
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayTime/GetArrayTime round-trip"
@@ -1107,10 +1112,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutArrayBoolean / GetArrayBoolean
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayBoolean/GetArrayBoolean round-trip"
@@ -1127,10 +1132,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// InsertElement at pos 2
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_InsertElement at pos 2"
@@ -1149,10 +1154,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// DeleteElement at pos 2
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_DeleteElement at pos 2"
@@ -1165,10 +1170,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// FindInArray — Text first match
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_FindInArray Text first match"
@@ -1185,10 +1190,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// FindInArray — startFrom
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_FindInArray Text startFrom=3"
@@ -1198,10 +1203,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// FindInArray — not found
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_FindInArray not found = -1"
@@ -1211,10 +1216,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// FindInArray — invalid handle
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_FindInArray invalid handle sets OK=0"
@@ -1225,10 +1230,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// SortArrays — single ascending LongInt
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_SortArrays single key ascending LongInt"
@@ -1248,10 +1253,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// SortArrays — invalid handle sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_SortArrays invalid handle sets OK=0"
@@ -1262,27 +1267,27 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	OTr_ClearAll
-
+	
 	// ============================================================
 	// PHASE 5 — Binary and specialised data
 	// ============================================================
 	$phase_t:="Phase 5"
-
+	
 	OTr_ClearAll
 	var $h5_i : Integer
 	var $testBlob5_blob; $gotBlob5_blob : Blob
 	var $testPic5_pic; $gotPic5_pic : Picture
 	var $ptrVar5_ptr : Pointer
 	var vtCC_Filename : Text  // process variable used for pointer round-trip
-
+	
 	$h5_i:=OTr_New
 	vtCC_Filename:="pointer-round-trip"
-
+	
 	// PutBLOB — tag created
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_PutBLOB creates tag"
@@ -1294,10 +1299,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetBLOB — pointer-parameter round-trip
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetBLOB pointer-parameter round-trip"
@@ -1309,10 +1314,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetNewBLOB — round-trip
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetNewBLOB round-trip"
@@ -1325,10 +1330,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutBLOB — invalid handle sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_PutBLOB invalid handle sets OK=0"
@@ -1339,10 +1344,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutPicture — tag created
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_PutPicture creates tag"
@@ -1354,10 +1359,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetPicture — round-trip
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetPicture round-trip"
@@ -1368,10 +1373,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutPointer — tag created
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_PutPointer creates tag"
@@ -1382,10 +1387,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetPointer — round-trip
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetPointer round-trip"
@@ -1397,10 +1402,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutRecord — invalid handle sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_PutRecord invalid handle sets OK=0"
@@ -1411,10 +1416,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutRecord — invalid table sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_PutRecord invalid table sets OK=0"
@@ -1425,10 +1430,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetRecord — invalid handle sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetRecord invalid handle sets OK=0"
@@ -1439,10 +1444,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetRecordTable — hand-crafted snapshot
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetRecordTable hand-crafted snapshot = 7"
@@ -1455,10 +1460,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutVariable / GetVariable — LongInt
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_PutVariable/GetVariable LongInt"
@@ -1473,10 +1478,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutVariable / GetVariable — Text
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_PutVariable/GetVariable Text"
@@ -1491,10 +1496,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutVariable — invalid handle sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_PutVariable invalid handle sets OK=0"
@@ -1505,17 +1510,17 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	OTr_ClearAll
-
+	
 	// ============================================================
 	// PHASE 6 — Serialisation (uMapType, ObjectToBLOB, BLOBToObject)
 	// ============================================================
 	$phase_t:="Phase 6"
-
+	
 	OTr_ClearAll
 	var $h6_i; $h6b_i : Integer
 	var $mapResult6_i : Integer
@@ -1523,7 +1528,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $gotStr6_t : Text
 	var $gotLong6_i : Integer
 	var $gotBool6_i : Integer
-
+	
 	// uMapType 4D→OT: Is longint → Is longint:K8:6 (shadow-key currency)
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_uMapType Is longint 4D→OT → Is longint:K8:6"
@@ -1534,10 +1539,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// uMapType 4D→OT: Is text → OT Is Character (112)
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_uMapType Is text 4D→OT → OT Is Character (112)"
@@ -1548,24 +1553,24 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// uMapType OT→4D: Is longint:K8:6 → Is longint
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_uMapType Is longint:K8:6 OT→4D → Is longint"
 	$mapResult6_i:=OTr_uMapType(Is longint:K8:6; 1)
-	$expected_t:=String:C10(Is longint)
+	$expected_t:=String:C10(Is longint:K8:6)
 	$actual_t:=String:C10($mapResult6_i)
-	$pass_b:=($mapResult6_i=Is longint)
+	$pass_b:=($mapResult6_i=Is longint:K8:6)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// uMapType 4D→OT: Is real → Is real:K8:4 (shadow-key currency)
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_uMapType Is real 4D→OT → Is real:K8:4"
@@ -1576,10 +1581,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// uMapType 4D→OT: Is picture → Is picture:K8:10 (shadow-key currency)
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_uMapType Is picture 4D→OT → Is picture:K8:10"
@@ -1590,10 +1595,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// uMapType 4D→OT: Is collection → OT Character array (113)
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_uMapType Is collection 4D→OT → OT Character array (113)"
@@ -1604,52 +1609,52 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// uMapType OT→4D: OT Is Record (115) → Is text
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_uMapType OT Is Record (115) OT→4D → Is text"
 	$mapResult6_i:=OTr_uMapType(OT Is Record; 1)
-	$expected_t:=String:C10(Is text)
+	$expected_t:=String:C10(Is text:K8:3)
 	$actual_t:=String:C10($mapResult6_i)
-	$pass_b:=($mapResult6_i=Is text)
+	$pass_b:=($mapResult6_i=Is text:K8:3)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// uMapType OT→4D: 24 (legacy Variable) → Is text
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_uMapType 24 (legacy Variable) OT→4D → Is text"
 	$mapResult6_i:=OTr_uMapType(24; 1)
-	$expected_t:=String:C10(Is text)
+	$expected_t:=String:C10(Is text:K8:3)
 	$actual_t:=String:C10($mapResult6_i)
-	$pass_b:=($mapResult6_i=Is text)
+	$pass_b:=($mapResult6_i=Is text:K8:3)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// uMapType 4D→OT: Is Boolean → Is Boolean:K8:9 (shadow-key currency; default direction)
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_uMapType Is Boolean 4D→OT (default dir) → Is Boolean:K8:9"
-	$mapResult6_i:=OTr_uMapType(Is Boolean:K8:9)
-	$expected_t:=String:C10(Is Boolean:K8:9)
+	$mapResult6_i:=OTr_uMapType(Is boolean:K8:9)
+	$expected_t:=String:C10(Is boolean:K8:9)
 	$actual_t:=String:C10($mapResult6_i)
-	$pass_b:=($mapResult6_i=Is Boolean:K8:9)
+	$pass_b:=($mapResult6_i=Is boolean:K8:9)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// uMapType — unknown type returns 0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_uMapType unknown type → 0"
@@ -1660,10 +1665,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// ObjectToNewBLOB — non-empty BLOB
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ObjectToNewBLOB produces non-empty BLOB"
@@ -1679,10 +1684,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// BLOBToObject — returns valid handle
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_BLOBToObject returns valid handle"
@@ -1693,10 +1698,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// BLOBToObject round-trip — string value
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="BLOBToObject round-trip string value"
@@ -1707,10 +1712,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// BLOBToObject round-trip — long value
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="BLOBToObject round-trip long value"
@@ -1721,10 +1726,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// BLOBToObject round-trip — real value
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="BLOBToObject round-trip real value"
@@ -1736,10 +1741,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// BLOBToObject round-trip — boolean value
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="BLOBToObject round-trip boolean value"
@@ -1750,10 +1755,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// ObjectToBLOB — invalid handle sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_ObjectToBLOB invalid handle sets OK=0"
@@ -1765,10 +1770,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// BLOBToObject — invalid data sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_BLOBToObject invalid data sets OK=0; returns 0"
@@ -1781,10 +1786,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// BLOBToObject — BLOB too small (< 4 bytes) sets OK=0; returns 0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_BLOBToObject BLOB too small (3 bytes) sets OK=0; returns 0"
@@ -1797,10 +1802,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// BLOB item round-trip: object containing BLOB → ObjectToNewBLOB → BLOBToObject → GetNewBLOB
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="Phase 6 BLOB item round-trip: ObjectToNewBLOB/BLOBToObject/GetNewBLOB"
@@ -1818,10 +1823,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// Picture item round-trip: object containing Picture → ObjectToNewBLOB → BLOBToObject → GetPicture
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="Phase 6 Picture item round-trip: ObjectToNewBLOB/BLOBToObject/GetPicture"
@@ -1840,17 +1845,17 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	OTr_ClearAll
-
+	
 	// ============================================================
 	// PHASE 8 — Typed array element accessors (_New)
 	// ============================================================
 	$phase_t:="Phase 8"
-
+	
 	OTr_ClearAll
 	var $h8_i; $subH8_i : Integer
 	var $result8_i : Integer
@@ -1873,10 +1878,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	ARRAY BLOB:C1222($blobArr8_ablob; 0)
 	ARRAY PICTURE:C279($picArr8_apic; 0)
 	ARRAY POINTER:C280($ptrArr8_aptr; 0)
-
+	
 	$h8_i:=OTr_New
 	$testWombat8_pic:=OTr_z_Wombat()
-
+	
 	// Set up arrays
 	ARRAY LONGINT:C221($longArr8_ai; 5)
 	$longArr8_ai{1}:=100
@@ -1885,51 +1890,51 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$longArr8_ai{4}:=400
 	$longArr8_ai{5}:=500
 	OTr_PutArray($h8_i; "longs"; ->$longArr8_ai)
-
+	
 	ARRAY REAL:C219($realArr8_ar; 3)
 	$realArr8_ar{1}:=1.1
 	$realArr8_ar{2}:=2.2
 	$realArr8_ar{3}:=3.3
 	OTr_PutArray($h8_i; "reals"; ->$realArr8_ar)
-
+	
 	ARRAY TEXT:C222($textArr8_at; 3)
 	$textArr8_at{1}:="alpha"
 	$textArr8_at{2}:="beta"
 	$textArr8_at{3}:="gamma"
 	OTr_PutArray($h8_i; "words"; ->$textArr8_at)
-
+	
 	ARRAY DATE:C224($dateArr8_ad; 3)
 	$dateArr8_ad{1}:=!2026-01-01!
 	$dateArr8_ad{2}:=!2026-06-15!
 	$dateArr8_ad{3}:=!2026-12-31!
 	OTr_PutArray($h8_i; "dates"; ->$dateArr8_ad)
-
+	
 	ARRAY TIME:C1223($timeArr8_ah; 3)
 	$timeArr8_ah{1}:=?08:00:00?
 	$timeArr8_ah{2}:=?12:30:00?
 	$timeArr8_ah{3}:=?23:59:59?
 	OTr_PutArray($h8_i; "times"; ->$timeArr8_ah)
-
+	
 	ARRAY BOOLEAN:C223($boolArr8_ab; 3)
 	$boolArr8_ab{1}:=True:C214
 	$boolArr8_ab{2}:=False:C215
 	$boolArr8_ab{3}:=True:C214
 	OTr_PutArray($h8_i; "flags8"; ->$boolArr8_ab)
-
+	
 	ARRAY BLOB:C1222($blobArr8_ablob; 3)
 	TEXT TO BLOB:C554("hello"; $blobArr8_ablob{1})
 	TEXT TO BLOB:C554("world"; $blobArr8_ablob{2})
 	TEXT TO BLOB:C554("test"; $blobArr8_ablob{3})
 	OTr_PutArray($h8_i; "blobs"; ->$blobArr8_ablob)
-
+	
 	ARRAY PICTURE:C279($picArr8_apic; 3)
 	$picArr8_apic{1}:=$testWombat8_pic
 	OTr_PutArray($h8_i; "pics"; ->$picArr8_apic)
-
+	
 	ARRAY POINTER:C280($ptrArr8_aptr; 3)
 	$ptrArr8_aptr{1}:=->vtCC_Filename
 	OTr_PutArray($h8_i; "ptrs"; ->$ptrArr8_aptr)
-
+	
 	// Sub-object with nested array
 	$subH8_i:=OTr_New
 	ARRAY LONGINT:C221($longArr8_ai; 3)
@@ -1939,7 +1944,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_PutArray($subH8_i; "vals"; ->$longArr8_ai)
 	OTr_PutObject($h8_i; "sub"; $subH8_i)
 	OTr_Clear($subH8_i)
-
+	
 	// GetArrayLong — top-level element
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayLong top-level element 3 = 300"
@@ -1950,10 +1955,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutArrayLong round-trip
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayLong/GetArrayLong round-trip"
@@ -1965,10 +1970,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayLong — sub-object dotted path
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayLong sub-object dotted path element 2 = 22"
@@ -1979,10 +1984,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayLong — invalid handle sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayLong invalid handle sets OK=0"
@@ -1993,10 +1998,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayLong — missing tag sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayLong missing tag sets OK=0"
@@ -2007,10 +2012,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayLong — type mismatch sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayLong type mismatch sets OK=0"
@@ -2021,10 +2026,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayLong — out-of-range sets OK=0
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayLong out-of-range sets OK=0"
@@ -2035,10 +2040,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayReal
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayReal element 2 = 2.2"
@@ -2049,10 +2054,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayString
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayString element 1 = alpha"
@@ -2063,10 +2068,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayText (alias)
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayText element 3 = gamma"
@@ -2077,10 +2082,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayDate
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayDate element 2 = !2026-06-15!"
@@ -2091,10 +2096,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayTime
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayTime element 1 = ?08:00:00?"
@@ -2105,10 +2110,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayBoolean True
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayBoolean element 1 (True) = 1"
@@ -2119,10 +2124,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayBoolean False
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayBoolean element 2 (False) = 0"
@@ -2133,10 +2138,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutArrayBLOB / GetArrayBLOB round-trip
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayBLOB/GetArrayBLOB round-trip"
@@ -2149,10 +2154,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayPicture — existing element
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayPicture existing element matches"
@@ -2163,10 +2168,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// GetArrayPointer — existing element
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayPointer existing element dereference matches"
@@ -2177,10 +2182,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	// PutArrayPointer / GetArrayPointer round-trip (element 2)
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayPointer/GetArrayPointer round-trip"
@@ -2192,12 +2197,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
-	Else
+	Else 
 		$totalFail_i:=$totalFail_i+1
-	End if
-
+	End if 
+	
 	OTr_ClearAll
-
+	
 	// ============================================================
 	// SIDE-BY-SIDE PHASES — inline execution via sub-methods
 	//
@@ -2207,7 +2212,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// individual timestamped files in the Logs folder to preserve the
 	// per-phase review artefacts.
 	// ============================================================
-
+	
 	var $sbAccum_i : Integer
 	var $sbTotal_i; $sbI_i : Integer
 	var $sbTestName_t; $sbOtCmd_t; $sbOtResult_t; $sbOtrCmd_t; $sbOtrResult_t : Text
@@ -2216,11 +2221,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $sbFileName_t; $sbFilePath_t : Text
 	var $sbFolderPath_t : Text
 	$sbFolderPath_t:=Get 4D folder:C485(Logs folder:K5:19)
-
+	
 	// ---- Phase 10 ----
 	$masterText_t:=$masterText_t+$LF+"--- Phase 10: Logging side-by-side ---"+$LF
 	$masterText_t:=$masterText_t+"Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$LF
-
+	
 	OTr_ClearAll
 	$sbAccum_i:=OTr_New
 	____Test_Phase_10_OTr($sbAccum_i)
@@ -2235,18 +2240,18 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$sbOtrResult_t:=OTr_GetArrayText($sbAccum_i; "otrResult"; $sbI_i)
 		$sbTable_t:=$sbTable_t+$sbTestName_t+$TAB+$sbOtCmd_t+$TAB+$sbOtResult_t+$TAB+$sbOtrCmd_t+$TAB+$sbOtrResult_t+$LF
 		$masterText_t:=$masterText_t+$sbTestName_t+$TAB+$sbOtCmd_t+$TAB+$sbOtResult_t+$TAB+$sbOtrCmd_t+$TAB+$sbOtrResult_t+$LF
-	End for
+	End for 
 	OTr_Clear($sbAccum_i)
 	$sbSummary_t:="Total scenarios: "+String:C10($sbTotal_i)
 	$sbTable_t:=$sbTable_t+$LF+$sbSummary_t
 	$sbFileName_t:="____Test_Phase_10-"+$dateStr_t+"-"+$timeStr_t+".txt"
 	TEXT TO DOCUMENT:C1237($sbFolderPath_t+$sbFileName_t; $sbTable_t; "UTF-8")
 	$masterText_t:=$masterText_t+$sbSummary_t+$LF
-
+	
 	// ---- Phase 10a ----
 	$masterText_t:=$masterText_t+$LF+"--- Phase 10a: Broad side-by-side sweep ---"+$LF
 	$masterText_t:=$masterText_t+"Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$LF
-
+	
 	OTr_ClearAll
 	$sbAccum_i:=OTr_New
 	____Test_Phase_10a_OTr($sbAccum_i)
@@ -2261,18 +2266,18 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$sbOtrResult_t:=OTr_GetArrayText($sbAccum_i; "otrResult"; $sbI_i)
 		$sbTable_t:=$sbTable_t+$sbTestName_t+$TAB+$sbOtCmd_t+$TAB+$sbOtResult_t+$TAB+$sbOtrCmd_t+$TAB+$sbOtrResult_t+$LF
 		$masterText_t:=$masterText_t+$sbTestName_t+$TAB+$sbOtCmd_t+$TAB+$sbOtResult_t+$TAB+$sbOtrCmd_t+$TAB+$sbOtrResult_t+$LF
-	End for
+	End for 
 	OTr_Clear($sbAccum_i)
 	$sbSummary_t:="Total scenarios: "+String:C10($sbTotal_i)
 	$sbTable_t:=$sbTable_t+$LF+$sbSummary_t
 	$sbFileName_t:="____Test_Phase_10a-"+$dateStr_t+"-"+$timeStr_t+".txt"
 	TEXT TO DOCUMENT:C1237($sbFolderPath_t+$sbFileName_t; $sbTable_t; "UTF-8")
 	$masterText_t:=$masterText_t+$sbSummary_t+$LF
-
+	
 	// ---- Phase 10b ----
 	$masterText_t:=$masterText_t+$LF+"--- Phase 10b: Misuse suite ---"+$LF
 	$masterText_t:=$masterText_t+"Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$LF
-
+	
 	OTr_ClearAll
 	$sbAccum_i:=OTr_New
 	____Test_Phase_10b_OTr($sbAccum_i)
@@ -2287,18 +2292,18 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$sbOtrResult_t:=OTr_GetArrayText($sbAccum_i; "otrResult"; $sbI_i)
 		$sbTable_t:=$sbTable_t+$sbTestName_t+$TAB+$sbOtCmd_t+$TAB+$sbOtResult_t+$TAB+$sbOtrCmd_t+$TAB+$sbOtrResult_t+$LF
 		$masterText_t:=$masterText_t+$sbTestName_t+$TAB+$sbOtCmd_t+$TAB+$sbOtResult_t+$TAB+$sbOtrCmd_t+$TAB+$sbOtrResult_t+$LF
-	End for
+	End for 
 	OTr_Clear($sbAccum_i)
 	$sbSummary_t:="Total scenarios: "+String:C10($sbTotal_i)
 	$sbTable_t:=$sbTable_t+$LF+$sbSummary_t
 	$sbFileName_t:="____Test_Phase_10b-"+$dateStr_t+"-"+$timeStr_t+".txt"
 	TEXT TO DOCUMENT:C1237($sbFolderPath_t+$sbFileName_t; $sbTable_t; "UTF-8")
 	$masterText_t:=$masterText_t+$sbSummary_t+$LF
-
+	
 	// ---- Phase 10c ----
 	$masterText_t:=$masterText_t+$LF+"--- Phase 10c: OK=0 error conditions ---"+$LF
 	$masterText_t:=$masterText_t+"Test Name"+$TAB+"OT Test"+$TAB+"OT Result"+$TAB+"OTr Test"+$TAB+"OTr Result"+$LF
-
+	
 	OTr_ClearAll
 	$sbAccum_i:=OTr_New
 	____Test_Phase_10c_OTr($sbAccum_i)
@@ -2313,18 +2318,18 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$sbOtrResult_t:=OTr_GetArrayText($sbAccum_i; "otrResult"; $sbI_i)
 		$sbTable_t:=$sbTable_t+$sbTestName_t+$TAB+$sbOtCmd_t+$TAB+$sbOtResult_t+$TAB+$sbOtrCmd_t+$TAB+$sbOtrResult_t+$LF
 		$masterText_t:=$masterText_t+$sbTestName_t+$TAB+$sbOtCmd_t+$TAB+$sbOtResult_t+$TAB+$sbOtrCmd_t+$TAB+$sbOtrResult_t+$LF
-	End for
+	End for 
 	OTr_Clear($sbAccum_i)
 	$sbSummary_t:="Total scenarios: "+String:C10($sbTotal_i)
 	$sbTable_t:=$sbTable_t+$LF+$sbSummary_t
 	$sbFileName_t:="____Test_Phase_10c-"+$dateStr_t+"-"+$timeStr_t+".txt"
 	TEXT TO DOCUMENT:C1237($sbFolderPath_t+$sbFileName_t; $sbTable_t; "UTF-8")
 	$masterText_t:=$masterText_t+$sbSummary_t+$LF
-
+	
 	// ---- Phase 15 ----
 	$masterText_t:=$masterText_t+$LF+"--- Phase 15: Compatibility vs ObjectTools 5.0 ---"+$LF
 	$masterText_t:=$masterText_t+"Num"+$TAB+"Test Name"+$TAB+"OT Command"+$TAB+"OT Result"+$TAB+"OTr Command"+$TAB+"OTr Result"+$LF
-
+	
 	OTr_ClearAll
 	$sbAccum_i:=OTr_New
 	____Test_Phase_15_OTr($sbAccum_i)
@@ -2347,24 +2352,24 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$masterText_t:=$masterText_t+$sbTestNum_t+$TAB+$sbTestName_t+$TAB+$sbOtCmd_t+$TAB+$sbOtResult_t+$TAB+$sbOtrCmd_t+$TAB+$sbOtrResult_t+$LF
 		If (Substring:C12($sbOtrResult_t; 1; 4)="Pass")
 			$sb15Pass_i:=$sb15Pass_i+1
-		Else
+		Else 
 			$sb15Fail_i:=$sb15Fail_i+1
-		End if
+		End if 
 		If (Substring:C12($sbOtResult_t; 1; 4)="Pass")
 			$sb15OtPass_i:=$sb15OtPass_i+1
-		Else
+		Else 
 			$sb15OtFail_i:=$sb15OtFail_i+1
-		End if
-	End for
+		End if 
+	End for 
 	OTr_Clear($sbAccum_i)
 	$sbSummary_t:="Total: "+String:C10($sbTotal_i)+"  OTr Pass: "+String:C10($sb15Pass_i)+"  OTr Fail: "+String:C10($sb15Fail_i)+"  OT Pass: "+String:C10($sb15OtPass_i)+"  OT Fail: "+String:C10($sb15OtFail_i)
 	$sbTable_t:=$sbTable_t+$LF+$sbSummary_t
 	$sbFileName_t:="____Test_Phase_15-"+$dateStr_t+"-"+$timeStr_t+".txt"
 	TEXT TO DOCUMENT:C1237($sbFolderPath_t+$sbFileName_t; $sbTable_t; "UTF-8")
 	$masterText_t:=$masterText_t+$sbSummary_t+$LF
-
+	
 	OTr_ClearAll
-
+	
 	// ============================================================
 	// FINAL SUMMARY AND FILE OUTPUT
 	// ============================================================
@@ -2374,7 +2379,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$summaryLine_m:="Unit test total: "+String:C10($totalPass_i+$totalFail_i)+"  Pass: "+String:C10($totalPass_i)+"  Fail: "+String:C10($totalFail_i)
 	$masterText_t:=$masterText_t+$summaryLine_m+$LF
 	$masterText_t:=$masterText_t+"========================================"+$LF
-
+	
 	// Build timestamped filename
 	$y_i:=Year of:C25(Current date:C33)
 	$mo_i:=Month of:C24(Current date:C33)
@@ -2385,20 +2390,20 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $masterFileName_t; $masterFilePath_t : Text
 	$masterFileName_t:="____Test_OTr_Master-"+$dateStr_t+"-"+$timeStr_t+".txt"
 	$masterFilePath_t:=Get 4D folder:C485(Logs folder:K5:19)+$masterFileName_t
-
+	
 	TEXT TO DOCUMENT:C1237($masterFilePath_t; $masterText_t; "UTF-8")
-
-	If ($suppressAlert_b)
-	Else
+	
+	If ($hideAlert_b)
+	Else 
 		ALERT:C41($summaryLine_m+$CR+"Master results written to: "+$masterFileName_t)
 		SET TEXT TO PASTEBOARD:C523($masterText_t)
-	End if
-
-Else
+	End if 
+	
+Else 
 	// Unique named process guard — spawns one process and brings it to front
-	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $DesiredProcessName_t; $suppressAlert_b; *)
+	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $DesiredProcessName_t; $hideAlert_b; *)
 	RESUME PROCESS:C320($ProcessID_i)
 	SHOW PROCESS:C325($ProcessID_i)
 	BRING TO FRONT:C326($ProcessID_i)
-End if
+End if 
 

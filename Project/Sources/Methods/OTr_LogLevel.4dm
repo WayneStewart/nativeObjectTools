@@ -25,59 +25,65 @@ OTr_zAddToCallStack(Current method name:C684)
 var $parametersCount_i : Integer
 var $currentLoggingLevel_t; $initialLoggingLevel_t : Text
 var $logLevelFile_t : Text
+var $level_t : Text
+var $persist_b : Boolean
 
 $parametersCount_i:=Count parameters:C259
 
-Case of 
+Case of
 	: ($parametersCount_i=0)
-		$setLogLevel_t:=""
-		$permanent_b:=False:C215
-		
-	: ($parametersCount_i=1)
-		$permanent_b:=False:C215
-		
-		
-End case 
+		$level_t:=""
+		$persist_b:=False:C215
 
-$setLogLevel_t:=Lowercase:C14($setLogLevel_t)
-Case of 
-	: (($setLogLevel_t="off") | ($setLogLevel_t="info") | ($setLogLevel_t="debug"))
+	: ($parametersCount_i=1)
+		$level_t:=$setLogLevel_t
+		$persist_b:=False:C215
+
+	Else
+		$level_t:=$setLogLevel_t
+		$persist_b:=$permanent_b
+
+End case
+
+$level_t:=Lowercase:C14($level_t)
+Case of
+	: (($level_t="off") | ($level_t="info") | ($level_t="debug"))
 		// Valid token
-		
-	: (Length:C16($setLogLevel_t)=0)
+
+	: (Length:C16($level_t)=0)
 		// Getter call
-		
-	Else 
-		$setLogLevel_t:=""
-		
-End case 
+
+	Else
+		$level_t:=""
+
+End case
 
 $currentLoggingLevel_t:=Storage:C1525.OT_Logging.level
 $initialLoggingLevel_t:=$currentLoggingLevel_t
 
-Case of 
-	: (Length:C16($setLogLevel_t)=0)
+Case of
+	: (Length:C16($level_t)=0)
 		// Do nothing
-		
-	: ($currentLoggingLevel_t=$setLogLevel_t)
+
+	: ($currentLoggingLevel_t=$level_t)
 		// Do Nothing
-		
-	Else 
+
+	Else
 		Use (Storage:C1525.OT_Logging)
-			Storage:C1525.OT_Logging.level:=$setLogLevel_t
-		End use 
-		
-End case 
+			Storage:C1525.OT_Logging.level:=$level_t
+		End use
+
+End case
 
 $currentLoggingLevel_t:=Storage:C1525.OT_Logging.level  // It may have changed
 
 If ($currentLoggingLevel_t="off")
 	LOG ENABLE(False:C215)
-Else 
+Else
 	LOG ENABLE(True:C214)
-End if 
+End if
 
-If ($permanent_b) & ($initialLoggingLevel_t#$currentLoggingLevel_t)  // Write the changes (if there were any)
+If ($persist_b) & ($initialLoggingLevel_t#$currentLoggingLevel_t)  // Write the changes (if there were any)
 	$logLevelFile_t:=Storage:C1525.OT_Logging.directory+"log_level"
 	TEXT TO DOCUMENT:C1237($logLevelFile_t; $currentLoggingLevel_t; "UTF-8")
 End if 

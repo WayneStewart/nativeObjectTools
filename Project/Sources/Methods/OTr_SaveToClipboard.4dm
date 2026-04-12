@@ -25,9 +25,12 @@ OTr_zAddToCallStack(Current method name)
 var $snapshot_o : Object
 var $json_t : Text
 var $valid_b : Boolean
+var $prettyPrint_b : Boolean
 
 If (Count parameters < 2)
-	$inPrettyPrint_b:=True
+	$prettyPrint_b:=True
+Else
+	$prettyPrint_b:=$inPrettyPrint_b
 End if
 
 $valid_b:=False
@@ -42,7 +45,7 @@ End if
 OTr_zUnlock
 
 If ($valid_b)
-	If ($inPrettyPrint_b)
+	If ($prettyPrint_b)
 		$json_t:=JSON Stringify($snapshot_o; *)
 	Else
 		$json_t:=JSON Stringify($snapshot_o)

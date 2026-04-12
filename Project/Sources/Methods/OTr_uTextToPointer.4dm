@@ -49,15 +49,21 @@ If ($pointerAsText_t#"")
 	
 	Case of 
 		: (($variableName_t#"") & ($tableNum_i=-1))  // variable pointer
-			$thePointer_ptr:=Get pointer:C304($variableName_t)
+			If (Storage:C1525.OTr.structureName="nativeObjectTools")
+				$thePointer_ptr:=Get pointer:C304($variableName_t)  // This should work during testing
+			Else 
+				EXECUTE METHOD:C1007("OT Host GetPointer"; $thePointer_ptr; $pointerAsText_t)  // This will execut in th host's namespace
+			End if 
+			
 			
 		: (($variableName_t#"") & ($tableNum_i>0))  // array element pointer
+			// This will need testing, I'm not sure if we need to call a host method here
 			$thePointer_ptr:=Get pointer:C304($variableName_t+"{"+String:C10($tableNum_i)+"}")
 			
-		: (($tableNum_i>0) & ($fieldNum_i=0))  // table pointer
+		: (($tableNum_i>0) & ($fieldNum_i=0))  // table pointer, this will work regardless of host or matrix
 			$thePointer_ptr:=Table:C252($tableNum_i)
 			
-		: (($tableNum_i>0) & ($fieldNum_i>0))  // field pointer
+		: (($tableNum_i>0) & ($fieldNum_i>0))  // field pointer, this will work regardless of host or matrix
 			$thePointer_ptr:=Field:C253($tableNum_i; $fieldNum_i)
 			
 	End case 

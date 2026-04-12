@@ -53,6 +53,7 @@ var $leafKey_t : Text
 var $keys_c : Collection
 var $useTag_b : Boolean
 var $thisKey_t : Text
+var $tag_t : Text
 
 $keys_c:=New collection:C1472
 
@@ -61,13 +62,17 @@ $count_i:=0
 OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
-	
-	$inTag_t:=Choose:C955(Count parameters:C259=2; $inTag_t; "")
-	$useTag_b:=($inTag_t#"")
-	
+
+	If (Count parameters:C259<2)
+		$tag_t:=""
+	Else
+		$tag_t:=$inTag_t
+	End if
+	$useTag_b:=($tag_t#"")
+
 	If ($useTag_b)
-		
-		If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
+
+		If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $tag_t; False:C215; \
 			->$parent_o; ->$leafKey_t))
 			If (OB Is defined:C1231($parent_o; $leafKey_t))
 				$target_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
@@ -78,16 +83,16 @@ If (OTr_zIsValidHandle($inObject_i))
 							$count_i:=$count_i+1
 						End if
 					End for each
-				Else 
+				Else
 					OTr_zError(\
 						"Tag does not reference an embedded object"; \
 						Current method name:C684)
-				End if 
-			Else 
-				OTr_zError("Item not found: "+$inTag_t; Current method name:C684)
-			End if 
-		Else 
-			OTr_zError("Invalid path: "+$inTag_t; Current method name:C684)
+				End if
+			Else
+				OTr_zError("Item not found: "+$tag_t; Current method name:C684)
+			End if
+		Else
+			OTr_zError("Invalid path: "+$tag_t; Current method name:C684)
 		End if 
 		
 	Else 

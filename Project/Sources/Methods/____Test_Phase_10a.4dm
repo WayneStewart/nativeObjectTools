@@ -27,12 +27,16 @@
 
 var $ProcessID_i; $StackSize_i : Integer
 var $DesiredProcessName_t : Text
+var $hideAlert_b : Boolean
 
 $StackSize_i:=0
 $DesiredProcessName_t:=Current method name:C684
 
-$suppressAlert_b:=Choose:C955(Count parameters:C259=1; $suppressAlert_b; False:C215)
-
+If (Count parameters:C259<1)
+	$hideAlert_b:=False:C215
+Else 
+	$hideAlert_b:=$suppressAlert_b
+End if 
 
 If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_ClearAll
@@ -84,14 +88,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	TEXT TO DOCUMENT:C1237($filePath_t; $tableText_t; "UTF-8")
 	// show on disk($filePath_t)
-	If ($suppressAlert_b)
+	If ($hideAlert_b)
 	Else 
 		ALERT:C41($summaryLine_t+Char:C90(Carriage return:K15:38)+"Results written to: "+$fileName_t)
 		SET TEXT TO PASTEBOARD:C523($tableText_t)
 	End if 
 	
 Else 
-	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $DesiredProcessName_t; $suppressAlert_b; *)
+	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $DesiredProcessName_t; $hideAlert_b; *)
 	RESUME PROCESS:C320($ProcessID_i)
 	SHOW PROCESS:C325($ProcessID_i)
 	BRING TO FRONT:C326($ProcessID_i)

@@ -48,23 +48,26 @@
 
 OTr_zAddToCallStack(Current method name:C684)
 
-If (Count parameters:C259<3)
-	$useActual_b:=False:C215
-End if 
-
 var $parent_o : Object
 var $leafKey_t : Text
+var $actualMode_b : Boolean
+
+If (Count parameters:C259<3)
+	$actualMode_b:=False:C215
+Else
+	$actualMode_b:=$useActual_b
+End if
 
 $otType_i:=0
 
 OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
-	
+
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
-			
-			If ($useActual_b)
+
+			If ($actualMode_b)
 				// Actual mode: return the raw shadow key value, or OB Get type if absent.
 				If (OB Is defined:C1231($parent_o; OTr_zShadowKey($leafKey_t)))
 					$otType_i:=OB Get:C1224($parent_o; OTr_zShadowKey($leafKey_t); Is longint:K8:6)

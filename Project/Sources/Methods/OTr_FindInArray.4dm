@@ -77,6 +77,7 @@ var $workPtr : Pointer
 var $searchBool_b : Boolean
 var $searchDate_d : Date
 var $search_h : Time
+var $startAt_i : Integer
 
 ARRAY TEXT:C222($Work_at; 0)
 ARRAY LONGINT:C221($Work_ai; 0)
@@ -86,7 +87,11 @@ ARRAY BOOLEAN:C223($Work_ab; 0)
 ARRAY DATE:C224($Work_ad; 0)
 ARRAY TIME:C1223($Work_ah; 0)
 
-$inStart_i:=Choose:C955(Count parameters:C259=4; $inStart_i; 1)
+If (Count parameters:C259<4)
+	$startAt_i:=1
+Else
+	$startAt_i:=$inStart_i
+End if
 
 $result_i:=-1
 
@@ -133,28 +138,28 @@ If (OTr_zIsValidHandle($inObject_i))
 					// it is only set to 0 on genuine error paths above.
 					Case of
 						: (($type_i=Text array:K8:16) | ($type_i=String array:K8:15))
-							$result_i:=Find in array:C230($Work_at; $inValue_t; $inStart_i)
+							$result_i:=Find in array:C230($Work_at; $inValue_t; $startAt_i)
 
 						: ($type_i=LongInt array:K8:19)
-							$result_i:=Find in array:C230($Work_ai; Num:C11($inValue_t); $inStart_i)
+							$result_i:=Find in array:C230($Work_ai; Num:C11($inValue_t); $startAt_i)
 
 						: ($type_i=Integer array:K8:18)
-							$result_i:=Find in array:C230($Work_ai; Num:C11($inValue_t); $inStart_i)
+							$result_i:=Find in array:C230($Work_ai; Num:C11($inValue_t); $startAt_i)
 
 						: ($type_i=Real array:K8:17)
-							$result_i:=Find in array:C230($Work_ar; Num:C11($inValue_t); $inStart_i)
+							$result_i:=Find in array:C230($Work_ar; Num:C11($inValue_t); $startAt_i)
 
 						: ($type_i=Boolean array:K8:21)
 							$searchBool_b:=(($inValue_t="true") | ($inValue_t="1"))
-							$result_i:=Find in array:C230($Work_ab; $searchBool_b; $inStart_i)
+							$result_i:=Find in array:C230($Work_ab; $searchBool_b; $startAt_i)
 
 						: ($type_i=Date array:K8:20)
 							$searchDate_d:=OTr_uTextToDate($inValue_t)
-							$result_i:=Find in array:C230($Work_ad; $searchDate_d; $inStart_i)
+							$result_i:=Find in array:C230($Work_ad; $searchDate_d; $startAt_i)
 
 						: ($type_i=Time array:K8:29)
 							$search_h:=OTr_uTextToTime($inValue_t)
-							$result_i:=Find in array:C230($Work_ah; $search_h; $inStart_i)
+							$result_i:=Find in array:C230($Work_ah; $search_h; $startAt_i)
 
 					End case
 				End if 

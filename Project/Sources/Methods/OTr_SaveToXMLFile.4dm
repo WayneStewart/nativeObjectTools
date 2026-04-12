@@ -35,9 +35,12 @@ var $domRef_t : Text
 var $valid_b : Boolean
 var $includeShadow_b : Boolean
 var $xml_t : Text
+var $prettyPrint_b : Boolean
 
 If (Count parameters < 3)
-	$inPrettyPrint_b:=True
+	$prettyPrint_b:=True
+Else
+	$prettyPrint_b:=$inPrettyPrint_b
 End if
 
 $valid_b:=False
@@ -61,7 +64,7 @@ If ($valid_b)
 
 	OTr_zXMLWriteObject($domRef_t; $snapshot_o; $includeShadow_b)
 
-	If ($inPrettyPrint_b)
+	If ($prettyPrint_b)
 		// Export with indentation directly to file
 		DOM EXPORT TO FILE($domRef_t; $inFilePath_t)
 	Else

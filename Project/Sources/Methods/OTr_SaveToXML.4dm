@@ -54,9 +54,12 @@ var $snapshot_o : Object
 var $domRef_t : Text
 var $valid_b : Boolean
 var $includeShadow_b : Boolean
+var $prettyPrint_b : Boolean
 
 If (Count parameters < 2)
-	$inPrettyPrint_b:=True
+	$prettyPrint_b:=True
+Else
+	$prettyPrint_b:=$inPrettyPrint_b
 End if
 
 $xml_t:=""
@@ -84,7 +87,7 @@ If ($valid_b)
 	// Export to text variable
 	DOM EXPORT TO VAR($domRef_t; $xml_t)
 
-	If (Not($inPrettyPrint_b))
+	If (Not($prettyPrint_b))
 		// Compact: strip newlines and redundant whitespace between tags
 		$xml_t:=Replace string($xml_t; Char(10); "")
 		$xml_t:=Replace string($xml_t; Char(9); "")

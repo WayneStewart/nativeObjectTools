@@ -37,6 +37,11 @@
 ##############
 **/Data
 
+# Helpers #
+########
+**/Helpers or Examples
+**/Helpers or Examples/**
+
 # 4D Data files 
 *.4dd
 *.4DIndx

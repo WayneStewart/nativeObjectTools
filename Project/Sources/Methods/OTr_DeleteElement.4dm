@@ -44,7 +44,11 @@ var $arrayObj_o : Object
 var $leafKey_t : Text
 var $n_i; $i_i; $count_i; $last_i : Integer
 
-$count_i:=Choose(Count parameters:C259<4; 1; $inHowMany_i)
+If (Count parameters:C259<4)
+	$count_i:=1
+Else
+	$count_i:=$inHowMany_i
+End if
 
 OTr_zLock
 

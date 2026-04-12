@@ -32,9 +32,12 @@ var $snapshot_o : Object
 var $docRef_t : Time
 var $valid_b : Boolean
 var $includeShadow_b : Boolean
+var $prettyPrint_b : Boolean
 
 If (Count parameters < 3)
-	$inPrettyPrint_b:=True
+	$prettyPrint_b:=True
+Else
+	$prettyPrint_b:=$inPrettyPrint_b
 End if
 
 $valid_b:=False

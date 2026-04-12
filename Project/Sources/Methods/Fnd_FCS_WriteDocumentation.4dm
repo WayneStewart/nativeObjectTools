@@ -654,29 +654,48 @@ End if
 		ALERT:C41($alert_t; "Great")
 	End if 
 	
-Else 
-	
-	$MethodName_t:=Choose:C955(Count parameters:C259<1; ""; $MethodName_t)
-	$ToolTip_b:=Choose:C955(Count parameters:C259<2; True:C214; $ToolTip_b)
-	$excludePrivate_b:=Choose:C955(Count parameters:C259<3; True:C214; $excludePrivate_b)
-	$silent_b:=Choose:C955(Count parameters:C259<4; True:C214; $silent_b)
-	
-	If ($excludePrivate_b)  // Delete the existing documentation folder
+Else
+
+	var $launchMethodName_t : Text
+	var $launchToolTip_b; $launchExcludePrivate_b; $launchSilent_b : Boolean
+
+	If (Count parameters:C259<1)
+		$launchMethodName_t:=""
+	Else
+		$launchMethodName_t:=$MethodName_t
+	End if
+	If (Count parameters:C259<2)
+		$launchToolTip_b:=True:C214
+	Else
+		$launchToolTip_b:=$ToolTip_b
+	End if
+	If (Count parameters:C259<3)
+		$launchExcludePrivate_b:=True:C214
+	Else
+		$launchExcludePrivate_b:=$excludePrivate_b
+	End if
+	If (Count parameters:C259<4)
+		$launchSilent_b:=True:C214
+	Else
+		$launchSilent_b:=$silent_b
+	End if
+
+	If ($launchExcludePrivate_b)  // Delete the existing documentation folder
 		$documentationPath_t:=Get 4D folder:C485(Database folder:K5:14)+"Documentation"+Folder separator:K24:12+"Methods"+Folder separator:K24:12
 		If (Test path name:C476($documentationPath_t)=Is a folder:K24:2)
 			DELETE FOLDER:C693($documentationPath_t; Delete with contents:K24:24)
-		End if 
+		End if
 		CREATE FOLDER:C475($documentationPath_t)
-	End if 
-	
-	
+	End if
+
+
 	// This version allows for any number of processes
 	// $ProcessID_i:=New Process(Current method name;$StackSize_i;Current method name;0)
-	
+
 	// On the other hand, this version allows for one unique process
-	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $processName_t; $MethodName_t; $ToolTip_b; $excludePrivate_b; $silent_b; *)
-	
+	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $processName_t; $launchMethodName_t; $launchToolTip_b; $launchExcludePrivate_b; $launchSilent_b; *)
+
 	RESUME PROCESS:C320($ProcessID_i)
 	SHOW PROCESS:C325($ProcessID_i)
 	BRING TO FRONT:C326($ProcessID_i)
-End if 
+End if

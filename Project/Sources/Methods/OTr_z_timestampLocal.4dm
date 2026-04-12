@@ -20,14 +20,18 @@
 
 #DECLARE($UTCtimeStamp_t : Text)->$localTimeStamp_t : Text
 
-var $local_t : Text
+var $local_t; $useThisTimeStamp_t : Text
 var $local_d : Date  //local date
 var $local_h : Time  //local hour
 
-$UTCtimeStamp_t:=Choose:C955(Count parameters:C259=0; Timestamp:C1445; $UTCtimeStamp_t)
+If (Count parameters:C259=0)
+	$useThisTimeStamp_t:=Timestamp:C1445
+Else 
+	$useThisTimeStamp_t:=$UTCtimeStamp_t
+End if 
 
-$local_t:=Substring:C12($UTCtimeStamp_t; 1; 23)  //locale (remove Z)
-$local_d:=Date:C102($UTCtimeStamp_t)
-$local_h:=Time:C179($UTCtimeStamp_t)
+$local_t:=Substring:C12($useThisTimeStamp_t; 1; 23)  //locale (remove Z)
+$local_d:=Date:C102($useThisTimeStamp_t)
+$local_h:=Time:C179($useThisTimeStamp_t)
 
-$localTimeStamp_t:=String:C10($local_d; ISO date:K1:8; $local_h)+Substring:C12($UTCtimeStamp_t; 20; 4)
+$localTimeStamp_t:=String:C10($local_d; ISO date:K1:8; $local_h)+Substring:C12($useThisTimeStamp_t; 20; 4)

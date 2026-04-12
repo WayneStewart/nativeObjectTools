@@ -43,7 +43,11 @@
 
 var $dir_i : Integer
 
-$dir_i := Choose(Count parameters < 2; 0; $direction_i)
+If (Count parameters < 2)
+	$dir_i := 0
+Else
+	$dir_i := $direction_i
+End if
 $result_i := 0
 
 If ($dir_i = 0)

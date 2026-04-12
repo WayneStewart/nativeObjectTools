@@ -81,7 +81,7 @@ If ($pairCount_i<1)
 		Current method name:C684)
 	OTr_zSetOK(0)
 	$continue_b:=False:C215
-End if 
+End if
 
 // Populate tag/dir arrays from named parameters
 If ($continue_b)
@@ -90,27 +90,27 @@ If ($continue_b)
 	If ($pairCount_i>=2)
 		$tags_at{2}:=$inTag2_t
 		$dirs_at{2}:=$inDirection2_t
-	End if 
+	End if
 	If ($pairCount_i>=3)
 		$tags_at{3}:=$inTag3_t
 		$dirs_at{3}:=$inDirection3_t
-	End if 
+	End if
 	If ($pairCount_i>=4)
 		$tags_at{4}:=$inTag4_t
 		$dirs_at{4}:=$inDirection4_t
-	End if 
+	End if
 	If ($pairCount_i>=5)
 		$tags_at{5}:=$inTag5_t
 		$dirs_at{5}:=$inDirection5_t
-	End if 
+	End if
 	If ($pairCount_i>=6)
 		$tags_at{6}:=$inTag6_t
 		$dirs_at{6}:=$inDirection6_t
-	End if 
+	End if
 	If ($pairCount_i>=7)
 		$tags_at{7}:=$inTag7_t
 		$dirs_at{7}:=$inDirection7_t
-	End if 
+	End if
 End if 
 
 // ------------------------------------------------

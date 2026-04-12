@@ -32,10 +32,13 @@ OTr_zAddToCallStack(Current method name:C684)
 var $snapshot_o : Object
 var $json_t : Text
 var $valid_b : Boolean
+var $prettyPrint_b : Boolean
 
 If (Count parameters:C259<3)
-	$inPrettyPrint_b:=True:C214
-End if 
+	$prettyPrint_b:=True:C214
+Else
+	$prettyPrint_b:=$inPrettyPrint_b
+End if
 
 $valid_b:=False:C215
 
@@ -44,12 +47,12 @@ OTr_zLock
 If (OTr_zIsValidHandle($inObject_i))
 	$snapshot_o:=OB Copy:C1225(<>OTR_Objects_ao{$inObject_i})
 	$valid_b:=True:C214
-End if 
+End if
 
 OTr_zUnlock
 
 If ($valid_b)
-	If ($inPrettyPrint_b)
+	If ($prettyPrint_b)
 		$json_t:=JSON Stringify:C1217($snapshot_o; *)
 	Else 
 		$json_t:=JSON Stringify:C1217($snapshot_o)
