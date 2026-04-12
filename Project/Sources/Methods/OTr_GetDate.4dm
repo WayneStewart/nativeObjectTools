@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetDate (inObject; inTag) --> Date
 
@@ -36,11 +36,11 @@
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-11 - Added If/Else native/text retrieval guard.
 //   The stored type is inspected directly: if the property is Is text,
-//   it is parsed via OTr_uTextToDate ("YYYY-MM-DD"); if it is Is date,
+//   it is parsed via OTr_u_TextToDate ("YYYY-MM-DD"); if it is Is date,
 //   it is retrieved natively. Handles both storage paths and any legacy
 //   text-stored dates correctly.
-// Wayne Stewart, 2026-04-12 - Added OTr_zMapType outer type guard (shadow-key-first).
-//   OTr_zMapType = Is date:K8:7 is the admission test; only then does the inner branch
+// Wayne Stewart, 2026-04-12 - Added OTr_z_MapType outer type guard (shadow-key-first).
+//   OTr_z_MapType = Is date:K8:7 is the admission test; only then does the inner branch
 //   inspect OB Get type to decide whether to retrieve natively (Is date) or parse text
 //   ("YYYY-MM-DD"). This separation is necessary because both storage paths now write
 //   shadow key Is date:K8:7, so the shadow key alone cannot distinguish native from text
@@ -49,38 +49,38 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_d : Date
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
 var $rawText_t : Text
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; \
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
 		->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			If (OTr_zMapType($parent_o; $leafKey_t)=Is date:K8:7)
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
+			If (OTr_z_MapType($parent_o; $leafKey_t)=Is date:K8:7)
 				// Inner branch on raw storage representation:
 				// both paths now write shadow key 4, so use OB Get type
 				// to distinguish native date from text-encoded date.
-				If (OB Get type($parent_o; $leafKey_t)=Is text)
+				If (OB Get type:C1230($parent_o; $leafKey_t)=Is text:K8:3)
 					// Text path: stored as "YYYY-MM-DD"
-					$rawText_t:=OB Get($parent_o; $leafKey_t; Is text)
-					$result_d:=OTr_uTextToDate($rawText_t)
-				Else
+					$rawText_t:=OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3)
+					$result_d:=OTr_u_TextToDate($rawText_t)
+				Else 
 					// Native path: stored as native Date
-					$result_d:=OB Get($parent_o; $leafKey_t; Is date)
-				End if
-			Else
-				OTr_zError("Type mismatch"; Current method name)
-				OTr_zSetOK(0)
-			End if
-		End if
-	End if
-End if
+					$result_d:=OB Get:C1224($parent_o; $leafKey_t; Is date:K8:7)
+				End if 
+			Else 
+				OTr_z_Error("Type mismatch"; Current method name:C684)
+				OTr_z_SetOK(0)
+			End if 
+		End if 
+	End if 
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

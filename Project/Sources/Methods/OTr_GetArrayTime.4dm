@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetArrayTime (inObject; inTag; inIndex) --> Time
 
@@ -40,17 +40,17 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_h : Time
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $raw_v : Variant
 
 $raw_v:=OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Time array:K8:29)
 If (Value type:C1509($raw_v)#Is undefined:K8:13)
 	If (Value type:C1509($raw_v)=Is text:K8:3)
-		$result_h:=OTr_uTextToTime($raw_v)
-	Else
+		$result_h:=OTr_u_TextToTime($raw_v)
+	Else 
 		$result_h:=$raw_v
-	End if
-End if
+	End if 
+End if 
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

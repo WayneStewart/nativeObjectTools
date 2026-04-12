@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_SizeOfArray (inObject; inTag) --> Longint
 
@@ -32,7 +32,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$size_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $arrayObj_o : Object
@@ -40,17 +40,17 @@ var $leafKey_t : Text
 
 $size_i:=0
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
 			If (OB Is defined:C1231($arrayObj_o; "numElements"))
-					$size_i:=$arrayObj_o.numElements
-			End if
-		End if
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name:C684)
-End if
+				$size_i:=$arrayObj_o.numElements
+			End if 
+		End if 
+	End if 
+Else 
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+End if 
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

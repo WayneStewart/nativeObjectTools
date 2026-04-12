@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetRecordTable (inObject; inTag) --> Integer
 
@@ -39,38 +39,38 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
 var $snapshot_o : Object
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
+If (OTr_z_IsValidHandle($inObject_i))
+	
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+		
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
+			
+			$snapshot_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
+			
+			If (OB Is defined:C1231($snapshot_o; "__tableNum"))
+				$result_i:=OB Get:C1224($snapshot_o; "__tableNum"; Is longint:K8:6)
+			Else 
+				OTr_z_Error("Tag is not a record snapshot"; Current method name:C684)
+				OTr_z_SetOK(0)
+			End if 
+			
+		End if 
+		
+	End if 
+	
+Else 
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+	OTr_z_SetOK(0)
+End if 
 
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; ->$parent_o; ->$leafKey_t))
+OTr_z_Unlock
 
-		If (OB Is defined($parent_o; $leafKey_t))
-
-			$snapshot_o:=OB Get($parent_o; $leafKey_t; Is object)
-
-			If (OB Is defined($snapshot_o; "__tableNum"))
-				$result_i:=OB Get($snapshot_o; "__tableNum"; Is longint)
-			Else
-				OTr_zError("Tag is not a record snapshot"; Current method name)
-				OTr_zSetOK(0)
-			End if
-
-		End if
-
-	End if
-
-Else
-	OTr_zError("Invalid handle"; Current method name)
-	OTr_zSetOK(0)
-End if
-
-OTr_zUnlock
-
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

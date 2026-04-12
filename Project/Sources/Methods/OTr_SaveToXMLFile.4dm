@@ -5,7 +5,7 @@
 // Serialises the stored object to a UTF-8 XML file on disk
 // using DOM output.  Existing files are overwritten without warning.
 //
-// Delegates all serialisation to OTr_zXMLWriteObject.
+// Delegates all serialisation to OTr_z_XMLWriteObject.
 // See OTr_SaveToXML for a description of the XML schema.
 //
 // Shadow-type keys (leafKey$type) are included or excluded
@@ -28,7 +28,7 @@
 
 #DECLARE($inObject_i : Integer; $inFilePath_t : Text; $inPrettyPrint_b : Boolean)
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $snapshot_o : Object
 var $domRef_t : Text
@@ -37,47 +37,47 @@ var $includeShadow_b : Boolean
 var $xml_t : Text
 var $prettyPrint_b : Boolean
 
-If (Count parameters < 3)
-	$prettyPrint_b:=True
-Else
+If (Count parameters:C259<3)
+	$prettyPrint_b:=True:C214
+Else 
 	$prettyPrint_b:=$inPrettyPrint_b
-End if
+End if 
 
-$valid_b:=False
+$valid_b:=False:C215
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	$snapshot_o:=OB Copy(<>OTR_Objects_ao{$inObject_i})
-	$valid_b:=True
-End if
+If (OTr_z_IsValidHandle($inObject_i))
+	$snapshot_o:=OB Copy:C1225(<>OTR_Objects_ao{$inObject_i})
+	$valid_b:=True:C214
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
 If ($valid_b)
-
+	
 	$includeShadow_b:=OTr_IncludeShadowKey  // read current setting
-
+	
 	// Build DOM tree.
 	// DOM Create XML Ref returns a reference to the root element directly.
-	$domRef_t:=DOM Create XML Ref("OTrObject")
-
-	OTr_zXMLWriteObject($domRef_t; $snapshot_o; $includeShadow_b)
-
+	$domRef_t:=DOM Create XML Ref:C861("OTrObject")
+	
+	OTr_z_XMLWriteObject($domRef_t; $snapshot_o; $includeShadow_b)
+	
 	If ($prettyPrint_b)
 		// Export with indentation directly to file
-		DOM EXPORT TO FILE($domRef_t; $inFilePath_t)
-	Else
+		DOM EXPORT TO FILE:C862($domRef_t; $inFilePath_t)
+	Else 
 		// Export compact: serialise to var then strip whitespace, write via SET DOCUMENT TEXT
-		DOM EXPORT TO VAR($domRef_t; $xml_t)
-		$xml_t:=Replace string($xml_t; Char(10); "")
-		$xml_t:=Replace string($xml_t; Char(9); "")
-		$xml_t:=Replace string($xml_t; ">  <"; "><"; *)
-		TEXT TO DOCUMENT($inFilePath_t; $xml_t; "UTF-8")
-	End if
+		DOM EXPORT TO VAR:C863($domRef_t; $xml_t)
+		$xml_t:=Replace string:C233($xml_t; Char:C90(10); "")
+		$xml_t:=Replace string:C233($xml_t; Char:C90(9); "")
+		$xml_t:=Replace string:C233($xml_t; ">  <"; "><"; *)
+		TEXT TO DOCUMENT:C1237($inFilePath_t; $xml_t; "UTF-8")
+	End if 
+	
+	DOM CLOSE XML:C722($domRef_t)
+	
+End if 
 
-	DOM CLOSE XML($domRef_t)
-
-End if
-
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

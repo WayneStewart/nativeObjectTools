@@ -269,7 +269,7 @@
 
 //OT PutPicture($otMain_i; "pic"; $wombat_pic)
 //$gotPic_pic:=OT GetPicture($otMain_i; "pic")
-//If (OTr_uEqualPictures($wombat_pic; $gotPic_pic))
+//If (OTr_u_EqualPictures($wombat_pic; $gotPic_pic))
 //$otResult_t:="Pass"
 //Else 
 //$otResult_t:="Fail: picture mismatch"
@@ -290,7 +290,7 @@
 //Else 
 //OT PutPicture($otMain_i; "pic9a"; $wombat_pic)
 //$gotPic_pic:=OT GetPicture($otMain_i; "pic9a")
-//If (OTr_uEqualPictures($wombat_pic; $gotPic_pic))
+//If (OTr_u_EqualPictures($wombat_pic; $gotPic_pic))
 //$otResult_t:="Pass"
 //Else 
 //$otResult_t:="Fail: picture mismatch"
@@ -310,7 +310,7 @@
 
 //OT PutBLOB($otMain_i; "blob"; $testBlob_blob)
 //$gotBlob_blob:=OT GetNewBLOB($otMain_i; "blob")
-//If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
+//If (OTr_u_EqualBLOBs($testBlob_blob; $gotBlob_blob))
 //$otResult_t:="Pass"
 //Else 
 //$otResult_t:="Fail: BLOB content mismatch"
@@ -539,7 +539,7 @@
 //Else 
 //OT PutArrayPicture($otMain_i; "apic"; 1; $wombat_pic)
 //$otArrPicOut_pic:=OT GetArrayPicture($otMain_i; "apic"; 1)
-//If (OTr_uEqualPictures($wombat_pic; $otArrPicOut_pic))
+//If (OTr_u_EqualPictures($wombat_pic; $otArrPicOut_pic))
 //$otResult_t:="Pass"
 //Else 
 //$otResult_t:="Fail: picture mismatch"

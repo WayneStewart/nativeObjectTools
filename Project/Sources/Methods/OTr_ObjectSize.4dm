@@ -24,29 +24,29 @@
 // Wayne Stewart, 2026-04-05 - Removed erroneous per-key BLOB/Picture
 //   size loop. BLOBs and Pictures are embedded in the Object; no
 //   external accumulation is required or correct.
-// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_z_SetOK(1) on
 //   success path (see OTr-OK0-Conditions specification).
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer)->$size_i : Integer
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $temp_blob : Blob
 
 $size_i:=0
-OTr_zInit
+OTr_z_Init
 
-If (OTr_zIsValidHandle($inObject_i))
+If (OTr_z_IsValidHandle($inObject_i))
 	
 	VARIABLE TO BLOB:C532(<>OTR_Objects_ao{$inObject_i}; $temp_blob)
 	$size_i:=BLOB size:C605($temp_blob)
 	SET BLOB SIZE:C606($temp_blob; 0)
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
 End if 
 
-// OTr_zUnlock // Unnecessary to lock for Read Only access
+// OTr_z_Unlock // Unnecessary to lock for Read Only access
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

@@ -22,15 +22,15 @@
 
 #DECLARE($inFilePath_t : Text)->$handle_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $xml_t : Text
 
 $handle_i:=0
 
-If (Test path name($inFilePath_t)=Is a document)
-	$xml_t:=Document to text($inFilePath_t; "UTF-8")
+If (Test path name:C476($inFilePath_t)=Is a document:K24:1)
+	$xml_t:=Document to text:C1236($inFilePath_t; "UTF-8")
 	$handle_i:=OTr_LoadFromXML($xml_t)
-End if
+End if 
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

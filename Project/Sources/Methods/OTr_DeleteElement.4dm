@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_DeleteElement (inObject; inTag; inWhere {; inHowMany})
 
@@ -37,7 +37,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inWhere_i : Integer; $inHowMany_i : Integer)
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $arrayObj_o : Object
@@ -46,14 +46,14 @@ var $n_i; $i_i; $count_i; $last_i : Integer
 
 If (Count parameters:C259<4)
 	$count_i:=1
-Else
+Else 
 	$count_i:=$inHowMany_i
-End if
+End if 
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
 			If (OB Is defined:C1231($arrayObj_o; "numElements"))
@@ -61,30 +61,30 @@ If (OTr_zIsValidHandle($inObject_i))
 				
 				If ($inWhere_i<=$n_i)
 					// Clamp count so we don't exceed the array end
-					$last_i:=Choose($inWhere_i+$count_i-1>$n_i; $n_i; $inWhere_i+$count_i-1)
+					$last_i:=Choose:C955($inWhere_i+$count_i-1>$n_i; $n_i; $inWhere_i+$count_i-1)
 					$count_i:=$last_i-$inWhere_i+1
 					
 					// Shift elements above the deleted range down by count
 					For ($i_i; $inWhere_i; $n_i-$count_i)
 						$arrayObj_o[String:C10($i_i)]:=$arrayObj_o[String:C10($i_i+$count_i)]
-					End for
+					End for 
 					
 					// Remove the now-duplicate trailing keys
 					For ($i_i; $n_i-$count_i+1; $n_i)
 						OB REMOVE:C1226($arrayObj_o; String:C10($i_i))
-					End for
+					End for 
 					
 					$arrayObj_o.numElements:=$n_i-$count_i
 					
-				// else: $inWhere_i > $n_i — do nothing, no error
-				End if
-			End if
-		End if
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name:C684)
-End if
+					// else: $inWhere_i > $n_i — do nothing, no error
+				End if 
+			End if 
+		End if 
+	End if 
+Else 
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

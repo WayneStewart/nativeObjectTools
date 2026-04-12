@@ -1,0 +1,76 @@
+//%attributes = {"invisible":true}
+// ----------------------------------------------------
+// Project Method: OTr_z_Init
+
+// Initialises the OTr registry arrays and default module state.
+
+// Access: Private
+
+// Returns: Nothing
+
+// Created by Wayne Stewart, 2026-03-31
+// Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-04-05 - Added OTr_z_CheckHostMethods call for host propagation setup.
+// Wayne Stewart, 2026-04-11 - Added includeShadowKeys flag (default True) to
+//   Storage.OTr so OTr_IncludeShadowKey and the XML/JSON export methods can
+//   read it from any process or preemptive worker.
+// Wayne Stewart, 2026-04-11 - NOTE: An earlier revision added a global nativeDateInObject
+//   probe to Storage.OTr. This has been removed. The "Dates inside objects" setting
+//   (SET DATABASE PARAMETER) is per-process scope; a global flag stored in Storage
+//   would reflect the main process's state at startup and would be wrong for any
+//   process that has overridden the default. Date/Time storage now uses a per-call
+//   probe via OTr_u_NativeDateInObject. See OTr_u_NativeDateInObject and Phase 2 spec.
+// ----------------------------------------------------
+
+
+If (Storage:C1525.OTr=Null:C1517)
+	
+	var $fullpath : Object
+	var $name : Text
+	var $ApplicationVersion_i : Integer
+	
+	If (Application type:C494#4D Remote mode:K5:5)
+		$fullpath:=Path to object:C1547(Structure file:C489(*))
+		$name:=$fullpath.name
+	End if 
+	
+	$ApplicationVersion_i:=Num:C11(Application version:C493)
+	
+	Use (Storage:C1525)
+		Storage:C1525.OTr:=New shared object:C1526("structureName"; $name; \
+			"nativeBlobInObject"; ($ApplicationVersion_i>=1920); \
+			"mechanism"; OTR IP Arrays; \
+			"includeShadowKeys"; True:C214)
+	End use 
+	OTr_z_CheckHostMethods
+	
+	// OTr_z_LogInit  // Check logging is ready and write the startup message.
+	
+End if 
+
+
+
+C_BOOLEAN:C305(<>OTR_Initialised_b; OTR_Initialised_b)
+
+Compiler_ObjectToolsReplacement
+
+
+If (Not:C34(<>OTR_Initialised_b))
+	
+	
+	<>OTR_Options_i:=4  // AutoCreateObjects on by default.
+	<>OTR_ErrorHandler_t:=""
+	
+	<>OTR_Semaphore_t:="$OTr_Registry"
+	
+	<>OTR_Initialised_b:=True:C214
+End if 
+
+If (Not:C34(OTR_Initialised_b))
+	ARRAY TEXT:C222(OTR_callStack_at; 0)
+	
+	OTR_LockCount_i:=0
+	
+	OTR_Initialised_b:=True:C214
+	
+End if 

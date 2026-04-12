@@ -637,7 +637,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	//MARK:- OTr_SortArrays — error cases
 	// ====================================================
 	
-	// Nonexistent tag — OTr_zSortValidatePair reports "Tag not found"
+	// Nonexistent tag — OTr_z_SortValidatePair reports "Tag not found"
 	$total_i:=$total_i+1
 	OTr_SortArrays($h_i; "no_such_array"; ">")
 	If (OK=0)

@@ -37,13 +37,13 @@
 // Wayne Stewart, 2026-04-03 - Simplified: dropped ioOffset parameter and
 //   OTR1 envelope. Now uses EXPAND BLOB + BLOB TO VARIABLE.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
-// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_z_SetOK(1) on
 //   success path (see OTr-OK0-Conditions specification).
 // ----------------------------------------------------
 
 #DECLARE($inBLOB_blob : Blob)->$handle_i : Integer
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $work_blob : Blob
 var $obj_o : Object
@@ -52,8 +52,8 @@ var $compressed_i : Integer
 $handle_i:=0
 
 If (BLOB size:C605($inBLOB_blob)=0)
-	OTr_zError("BLOB is empty"; Current method name:C684)
-	OTr_zSetOK(0)
+	OTr_z_Error("BLOB is empty"; Current method name:C684)
+	OTr_z_SetOK(0)
 	
 Else 
 	
@@ -66,12 +66,12 @@ Else
 	BLOB TO VARIABLE:C533($work_blob; $obj_o)
 	
 	If (OK=0)
-		OTr_zError("BLOB does not contain a valid OTr object"; Current method name:C684)
-		OTr_zSetOK(0)
+		OTr_z_Error("BLOB does not contain a valid OTr object"; Current method name:C684)
+		OTr_z_SetOK(0)
 		
 	Else 
 		
-		OTr_zLock
+		OTr_z_Lock
 		
 		$handle_i:=Find in array:C230(<>OTR_InUse_ab; False:C215)
 		If ($handle_i=-1)
@@ -82,10 +82,10 @@ Else
 		<>OTR_InUse_ab{$handle_i}:=True:C214
 		<>OTR_Objects_ao{$handle_i}:=$obj_o
 		
-		OTr_zUnlock
+		OTr_z_Unlock
 		
 	End if 
 	
 End if 
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

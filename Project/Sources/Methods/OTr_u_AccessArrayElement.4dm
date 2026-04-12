@@ -45,53 +45,53 @@ var $storedType_i : Integer
 var $typeOK_b : Boolean
 var $key_t : Text
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; ->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			If (OB Get type($parent_o; $leafKey_t) = Is object)
-				$arrayObj_o := OB Get($parent_o; $leafKey_t)
-				$storedType_i := OTr_zArrayType($arrayObj_o)
-
-				$typeOK_b := ($storedType_i = $inArrayType_i)
-				If (Not($typeOK_b))
-					Case of
-						: (($inArrayType_i = LongInt array) | ($inArrayType_i = Integer array))
-							$typeOK_b := ($storedType_i = LongInt array) | ($storedType_i = Integer array)
-						: (($inArrayType_i = Text array) | ($inArrayType_i = String array))
-							$typeOK_b := ($storedType_i = Text array) | ($storedType_i = String array)
-					End case
-				End if
-
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
+			If (OB Get type:C1230($parent_o; $leafKey_t)=Is object:K8:27)
+				$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
+				$storedType_i:=OTr_z_ArrayType($arrayObj_o)
+				
+				$typeOK_b:=($storedType_i=$inArrayType_i)
+				If (Not:C34($typeOK_b))
+					Case of 
+						: (($inArrayType_i=LongInt array:K8:19) | ($inArrayType_i=Integer array:K8:18))
+							$typeOK_b:=($storedType_i=LongInt array:K8:19) | ($storedType_i=Integer array:K8:18)
+						: (($inArrayType_i=Text array:K8:16) | ($inArrayType_i=String array:K8:15))
+							$typeOK_b:=($storedType_i=Text array:K8:16) | ($storedType_i=String array:K8:15)
+					End case 
+				End if 
+				
 				If ($typeOK_b)
-					If (($inIndex_i >= 0) & ($inIndex_i <= $arrayObj_o.numElements))
-						$key_t := String($inIndex_i)
-						If (Count parameters = 5)
-							$arrayObj_o[$key_t] := $inValue_v
-						End if
-						If (OB Is defined($arrayObj_o; $key_t))
-							$result_v := $arrayObj_o[$key_t]
-						Else
-							OTr_zSetOK(0)
-						End if
-					Else
-						OTr_zError("Index out of range"; Current method name)
-						OTr_zSetOK(0)
-					End if
-				Else
-					OTr_zError("Array type mismatch"; Current method name)
-					OTr_zSetOK(0)
-				End if
-			Else
+					If (($inIndex_i>=0) & ($inIndex_i<=$arrayObj_o.numElements))
+						$key_t:=String:C10($inIndex_i)
+						If (Count parameters:C259=5)
+							$arrayObj_o[$key_t]:=$inValue_v
+						End if 
+						If (OB Is defined:C1231($arrayObj_o; $key_t))
+							$result_v:=$arrayObj_o[$key_t]
+						Else 
+							OTr_z_SetOK(0)
+						End if 
+					Else 
+						OTr_z_Error("Index out of range"; Current method name:C684)
+						OTr_z_SetOK(0)
+					End if 
+				Else 
+					OTr_z_Error("Array type mismatch"; Current method name:C684)
+					OTr_z_SetOK(0)
+				End if 
+			Else 
 				// The tag exists but holds a scalar, not an array object.
-				OTr_zError("Array type mismatch"; Current method name)
-				OTr_zSetOK(0)
-			End if
-		Else
-			OTr_zError("Tag not found"; Current method name)
-			OTr_zSetOK(0)
-		End if
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name)
-	OTr_zSetOK(0)
-End if
+				OTr_z_Error("Array type mismatch"; Current method name:C684)
+				OTr_z_SetOK(0)
+			End if 
+		Else 
+			OTr_z_Error("Tag not found"; Current method name:C684)
+			OTr_z_SetOK(0)
+		End if 
+	End if 
+Else 
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+	OTr_z_SetOK(0)
+End if 

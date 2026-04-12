@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetBoolean (inObject; inTag) --> Longint
 
@@ -38,14 +38,14 @@
 // Wayne Stewart, 2026-04-11 - Added type pre-check: if stored type is not
 //     Is boolean, generates an error, sets OK=0, and returns 0 (False).
 //     Matches OT behaviour — coercion from other types is not performed.
-// Wayne Stewart, 2026-04-12 - Type check replaced with OTr_zMapType (shadow-key-first)
-//   instead of OB Get type = Is boolean. OTr_zMapType consults the shadow key written by
+// Wayne Stewart, 2026-04-12 - Type check replaced with OTr_z_MapType (shadow-key-first)
+//   instead of OB Get type = Is boolean. OTr_z_MapType consults the shadow key written by
 //   OTr_PutBoolean (Is Boolean:K8:9) and is therefore version-independent.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -53,25 +53,25 @@ var $value_b : Boolean
 
 $result_i:=0
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; \
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
 		->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			If (OTr_zMapType($parent_o; $leafKey_t)=Is Boolean:K8:9)
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
+			If (OTr_z_MapType($parent_o; $leafKey_t)=Is boolean:K8:9)
 				$value_b:=OB Get:C1224($parent_o; $leafKey_t; Is boolean:K8:9)
 				If ($value_b)
 					$result_i:=1
-				End if
-			Else
-				OTr_zError("Type mismatch"; Current method name)
-				OTr_zSetOK(0)
-			End if
-		End if
-	End if
-End if
+				End if 
+			Else 
+				OTr_z_Error("Type mismatch"; Current method name:C684)
+				OTr_z_SetOK(0)
+			End if 
+		End if 
+	End if 
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

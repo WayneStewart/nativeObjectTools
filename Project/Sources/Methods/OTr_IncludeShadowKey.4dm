@@ -35,14 +35,14 @@
 
 #DECLARE($inValue_b : Boolean)->$previous_b : Boolean
 
-OTr_zInit
+OTr_z_Init
 
-$previous_b:=Storage.OTr.includeShadowKeys
+$previous_b:=Storage:C1525.OTr.includeShadowKeys
 
-If (Count parameters >= 1)
-	If ($inValue_b # $previous_b)
-		Use (Storage.OTr)
-			Storage.OTr.includeShadowKeys:=$inValue_b
-		End use
-	End if
-End if
+If (Count parameters:C259>=1)
+	If ($inValue_b#$previous_b)
+		Use (Storage:C1525.OTr)
+			Storage:C1525.OTr.includeShadowKeys:=$inValue_b
+		End use 
+	End if 
+End if 

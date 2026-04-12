@@ -41,40 +41,40 @@
 
 #DECLARE($inObject_i : Integer; $inPrettyPrint_b : Boolean)->$xml_t : Text
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $tmpPath_t : Text
 var $valid_b : Boolean
 var $prettyPrint_b : Boolean
 
-If (Count parameters < 2)
-	$prettyPrint_b:=True
-Else
+If (Count parameters:C259<2)
+	$prettyPrint_b:=True:C214
+Else 
 	$prettyPrint_b:=$inPrettyPrint_b
-End if
+End if 
 
 $xml_t:=""
-$valid_b:=False
+$valid_b:=False:C215
 
 // Quick validity check before allocating a temp file
-OTr_zLock
-$valid_b:=OTr_zIsValidHandle($inObject_i)
-OTr_zUnlock
+OTr_z_Lock
+$valid_b:=OTr_z_IsValidHandle($inObject_i)
+OTr_z_Unlock
 
 If ($valid_b)
-
+	
 	// Build a unique temporary file path in the system temp folder
-	$tmpPath_t:=Temporary folder+"OTr_SAX_"+String(Milliseconds)+".xml"
-
+	$tmpPath_t:=Temporary folder:C486+"OTr_SAX_"+String:C10(Milliseconds:C459)+".xml"
+	
 	// Delegate all SAX serialisation to OTr_SaveToXMLFileSAX.
 	// SAX always produces compact output; inPrettyPrint has no effect.
 	OTr_SaveToXMLFileSAX($inObject_i; $tmpPath_t)
+	
+	If (Test path name:C476($tmpPath_t)=Is a document:K24:1)
+		$xml_t:=Document to text:C1236($tmpPath_t; "UTF-8")
+		DELETE DOCUMENT:C159($tmpPath_t)
+	End if 
+	
+End if 
 
-	If (Test path name($tmpPath_t)=Is a document)
-		$xml_t:=Document to text($tmpPath_t; "UTF-8")
-		DELETE DOCUMENT($tmpPath_t)
-	End if
-
-End if
-
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

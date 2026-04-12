@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":false}
+//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: OTr_z_LogInit
 
@@ -12,7 +12,7 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-OTr_zInit
+OTr_z_Init
 
 var $applicationType_t; $buildType_t; $dateText_t; $legacyLevelFile_t; $locale_t; \
 $logDirectory_t; $logFileName_t; $logLevelFile_t; $processor_t; $rawLevel_t; \
@@ -78,33 +78,33 @@ If (Storage:C1525.OT_Logging=Null:C1517)
 		Storage:C1525.OT_Logging.level:=$resolvedLevel_t
 	End use 
 	
-	ARRAY TEXT($logFiles_at; 0)
-	ARRAY TEXT($sessionPrefixes_at; 0)
-	DOCUMENT LIST($logDirectory_t; $logFiles_at)
-	For ($fileIndex_i; Size of array($logFiles_at); 1; -1)
-		If (Substring($logFiles_at{$fileIndex_i}; 1; 12)="ObjectTools ")
-			$filePrefix_t:=Substring($logFiles_at{$fileIndex_i}; 13; 16)
-			If (Find in array($sessionPrefixes_at; $filePrefix_t)=-1)
-				APPEND TO ARRAY($sessionPrefixes_at; $filePrefix_t)
+	ARRAY TEXT:C222($logFiles_at; 0)
+	ARRAY TEXT:C222($sessionPrefixes_at; 0)
+	DOCUMENT LIST:C474($logDirectory_t; $logFiles_at)
+	For ($fileIndex_i; Size of array:C274($logFiles_at); 1; -1)
+		If (Substring:C12($logFiles_at{$fileIndex_i}; 1; 12)="ObjectTools ")
+			$filePrefix_t:=Substring:C12($logFiles_at{$fileIndex_i}; 13; 16)
+			If (Find in array:C230($sessionPrefixes_at; $filePrefix_t)=-1)
+				APPEND TO ARRAY:C911($sessionPrefixes_at; $filePrefix_t)
 			End if 
 		Else 
-			DELETE FROM ARRAY($logFiles_at; $fileIndex_i)
+			DELETE FROM ARRAY:C228($logFiles_at; $fileIndex_i)
 		End if 
 	End for 
-	SORT ARRAY($sessionPrefixes_at; >)
-	$prefixCount_i:=Size of array($sessionPrefixes_at)
+	SORT ARRAY:C229($sessionPrefixes_at; >)
+	$prefixCount_i:=Size of array:C274($sessionPrefixes_at)
 	If ($prefixCount_i>$retainSessions_i)
 		For ($retainIndex_i; 1; $prefixCount_i-$retainSessions_i)
 			$filePrefix_t:=$sessionPrefixes_at{$retainIndex_i}
-			For ($fileIndex_i; 1; Size of array($logFiles_at))
-				If (Substring($logFiles_at{$fileIndex_i}; 13; 16)=$filePrefix_t)
-					DELETE DOCUMENT($logDirectory_t+$logFiles_at{$fileIndex_i})
+			For ($fileIndex_i; 1; Size of array:C274($logFiles_at))
+				If (Substring:C12($logFiles_at{$fileIndex_i}; 13; 16)=$filePrefix_t)
+					DELETE DOCUMENT:C159($logDirectory_t+$logFiles_at{$fileIndex_i})
 				End if 
 			End for 
 		End for 
 	End if 
 	
-	$logFileName_t:=OTr_zLogFileName
+	$logFileName_t:=OTr_z_LogFileName
 	Log Folder Path($logDirectory_t)
 	Log File Name($logFileName_t)
 	LOG ENABLE(True:C214)

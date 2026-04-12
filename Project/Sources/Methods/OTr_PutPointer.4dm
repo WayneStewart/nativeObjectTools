@@ -3,7 +3,7 @@
 // Project Method: OTr_PutPointer (inObject; inTag; inValue)
 
 // Stores a Pointer value at the specified tag path.
-// The pointer is serialised to text via OTr_uPointerToText
+// The pointer is serialised to text via OTr_u_PointerToText
 // and stored as the object property value.
 
 // **VERY IMPORTANT NOTE**
@@ -40,29 +40,29 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-10 - Writes a shadow-type key
-//     (leafKey$type := Is pointer = 23) so OTr_zMapType can distinguish a
+//     (leafKey$type := Is pointer = 23) so OTr_z_MapType can distinguish a
 //     serialised pointer from ordinary user text.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; ->$parent_o; ->$leafKey_t))
-		OB SET:C1220($parent_o; $leafKey_t; OTr_uPointerToText($inValue_ptr))
-		OB SET:C1220($parent_o; OTr_zShadowKey($leafKey_t); Is pointer:K8:14)
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; ->$parent_o; ->$leafKey_t))
+		OB SET:C1220($parent_o; $leafKey_t; OTr_u_PointerToText($inValue_ptr))
+		OB SET:C1220($parent_o; OTr_z_ShadowKey($leafKey_t); Is pointer:K8:14)
 	End if 
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
-	OTr_zSetOK(0)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+	OTr_z_SetOK(0)
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

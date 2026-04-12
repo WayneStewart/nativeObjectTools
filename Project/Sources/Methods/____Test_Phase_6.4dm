@@ -3,11 +3,11 @@
 // Project Method: ____Test_Phase_6
 
 // Unit tests for all Phase 6 methods:
-// •  OTr_uMapType
+// •  OTr_u_MapType
 // •  OTr_ObjectToBLOB / OTr_ObjectToNewBLOB / OTr_BLOBToObject
 //
 // Tests cover:
-// •  OTr_uMapType — 4D→OT and OT→4D spot checks
+// •  OTr_u_MapType — 4D→OT and OT→4D spot checks
 // •  Scalar round-trip (text, long, real, boolean, date, time)
 // •  BLOB item round-trip (binary attachment table)
 // •  Picture item round-trip (binary attachment table)
@@ -69,11 +69,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$failures_t:=""
 	
 	// ====================================================
-	//MARK:- OTr_uMapType — 4D→OT direction
+	//MARK:- OTr_u_MapType — 4D→OT direction
 	// ====================================================
 	
 	$total_i:=$total_i+1
-	$mapResult_i:=OTr_uMapType(Is longint:K8:6; 0)
+	$mapResult_i:=OTr_u_MapType(Is longint:K8:6; 0)
 	If ($mapResult_i=5)
 		$passed_i:=$passed_i+1
 	Else 
@@ -82,7 +82,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	
 	$total_i:=$total_i+1
-	$mapResult_i:=OTr_uMapType(Is real:K8:4; 0)
+	$mapResult_i:=OTr_u_MapType(Is real:K8:4; 0)
 	If ($mapResult_i=1)
 		$passed_i:=$passed_i+1
 	Else 
@@ -91,7 +91,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	
 	$total_i:=$total_i+1
-	$mapResult_i:=OTr_uMapType(Is text:K8:3; 0)
+	$mapResult_i:=OTr_u_MapType(Is text:K8:3; 0)
 	If ($mapResult_i=112)
 		$passed_i:=$passed_i+1
 	Else 
@@ -100,7 +100,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	
 	$total_i:=$total_i+1
-	$mapResult_i:=OTr_uMapType(Is picture:K8:10; 0)
+	$mapResult_i:=OTr_u_MapType(Is picture:K8:10; 0)
 	If ($mapResult_i=3)
 		$passed_i:=$passed_i+1
 	Else 
@@ -109,7 +109,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	
 	$total_i:=$total_i+1
-	$mapResult_i:=OTr_uMapType(Is collection:K8:32; 0)
+	$mapResult_i:=OTr_u_MapType(Is collection:K8:32; 0)
 	If ($mapResult_i=113)
 		$passed_i:=$passed_i+1
 	Else 
@@ -118,11 +118,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	
 	// ====================================================
-	//MARK:- OTr_uMapType — OT→4D direction
+	//MARK:- OTr_u_MapType — OT→4D direction
 	// ====================================================
 	
 	$total_i:=$total_i+1
-	$mapResult_i:=OTr_uMapType(5; 1)
+	$mapResult_i:=OTr_u_MapType(5; 1)
 	If ($mapResult_i=Is longint:K8:6)
 		$passed_i:=$passed_i+1
 	Else 
@@ -131,7 +131,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	
 	$total_i:=$total_i+1
-	$mapResult_i:=OTr_uMapType(115; 1)
+	$mapResult_i:=OTr_u_MapType(115; 1)
 	If ($mapResult_i=Is text:K8:3)
 		$passed_i:=$passed_i+1
 	Else 
@@ -140,7 +140,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	
 	$total_i:=$total_i+1
-	$mapResult_i:=OTr_uMapType(24; 1)
+	$mapResult_i:=OTr_u_MapType(24; 1)
 	If ($mapResult_i=Is text:K8:3)
 		$passed_i:=$passed_i+1
 	Else 
@@ -149,11 +149,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	
 	// ====================================================
-	//MARK:- OTr_uMapType — default direction (no second param)
+	//MARK:- OTr_u_MapType — default direction (no second param)
 	// ====================================================
 	
 	$total_i:=$total_i+1
-	$mapResult_i:=OTr_uMapType(Is boolean:K8:9)
+	$mapResult_i:=OTr_u_MapType(Is boolean:K8:9)
 	If ($mapResult_i=6)
 		$passed_i:=$passed_i+1
 	Else 
@@ -162,11 +162,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	
 	// ====================================================
-	//MARK:- OTr_uMapType — unknown type returns 0
+	//MARK:- OTr_u_MapType — unknown type returns 0
 	// ====================================================
 	
 	$total_i:=$total_i+1
-	$mapResult_i:=OTr_uMapType(9999; 0)
+	$mapResult_i:=OTr_u_MapType(9999; 0)
 	If ($mapResult_i=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -283,7 +283,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	$total_i:=$total_i+1
 	$gotBlob_blob:=OTr_GetNewBLOB($h4_i; "bdata")
-	If (OK=1) & (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
+	If (OK=1) & (OTr_u_EqualBLOBs($testBlob_blob; $gotBlob_blob))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
@@ -319,7 +319,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	$total_i:=$total_i+1
 	$gotPic_pic:=OTr_GetPicture($h2_i; "pdata")
-	If (OK=1) & (OTr_uEqualPictures($testPic_pic; $gotPic_pic))
+	If (OK=1) & (OTr_u_EqualPictures($testPic_pic; $gotPic_pic))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1

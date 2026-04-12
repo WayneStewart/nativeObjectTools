@@ -20,6 +20,11 @@ For decades, ObjectTools has been a critical component in many 4D applications�
 - **Ensures long-term maintainability** — As a native 4D solution, OTr will continue to work with future 4D releases
 - **Provides a clear migration path** — Detailed specifications and comprehensive test coverage ensure reliable porting of ObjectTools-dependent code
 
+## Ch-ch-ch-ch-changes
+Some Object Tools plugin commands can't be matched exactly to a native 4D component. To see a list of API differences, look at this document.
+
+**[OTr-API-Differences.md](OTr-API-Differences.md)**
+
 ## Key Features
 
 - **Handle-based object registry** — Preserves the familiar handle-based API from the original plugin

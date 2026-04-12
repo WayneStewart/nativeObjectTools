@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_SaveToFile (inObject; inFilePath {; inPrettyPrint})
 
@@ -26,7 +26,7 @@
 
 #DECLARE($inObject_i : Integer; $inFilePath_t : Text; $inPrettyPrint_b : Boolean)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 
 var $snapshot_o : Object
@@ -36,20 +36,20 @@ var $prettyPrint_b : Boolean
 
 If (Count parameters:C259<3)
 	$prettyPrint_b:=True:C214
-Else
+Else 
 	$prettyPrint_b:=$inPrettyPrint_b
-End if
+End if 
 
 $valid_b:=False:C215
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
+If (OTr_z_IsValidHandle($inObject_i))
 	$snapshot_o:=OB Copy:C1225(<>OTR_Objects_ao{$inObject_i})
 	$valid_b:=True:C214
-End if
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
 If ($valid_b)
 	If ($prettyPrint_b)
@@ -61,4 +61,4 @@ If ($valid_b)
 	TEXT TO DOCUMENT:C1237($inFilePath_t; $json_t; "UTF-8")
 End if 
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

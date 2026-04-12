@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetObject (inObject; inTag) --> Longint
 
@@ -41,7 +41,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$newHandle_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -49,30 +49,30 @@ var $embedded_o : Object
 
 $newHandle_i:=0
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; \
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
 		->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			$embedded_o:=OB Get($parent_o; $leafKey_t; Is object)
-			If ($embedded_o#Null)
-				$newHandle_i:=Find in array(<>OTR_InUse_ab; False)
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
+			$embedded_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
+			If ($embedded_o#Null:C1517)
+				$newHandle_i:=Find in array:C230(<>OTR_InUse_ab; False:C215)
 				If ($newHandle_i=-1)
-					$newHandle_i:=Size of array(<>OTR_InUse_ab)+1
-					INSERT IN ARRAY(<>OTR_InUse_ab; $newHandle_i)
-					INSERT IN ARRAY(<>OTR_Objects_ao; $newHandle_i)
-				End if
+					$newHandle_i:=Size of array:C274(<>OTR_InUse_ab)+1
+					INSERT IN ARRAY:C227(<>OTR_InUse_ab; $newHandle_i)
+					INSERT IN ARRAY:C227(<>OTR_Objects_ao; $newHandle_i)
+				End if 
+				
+				<>OTR_InUse_ab{$newHandle_i}:=True:C214
+				<>OTR_Objects_ao{$newHandle_i}:=OB Copy:C1225($embedded_o)
+			End if 
+		End if 
+	End if 
+Else 
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+End if 
 
-				<>OTR_InUse_ab{$newHandle_i}:=True
-				<>OTR_Objects_ao{$newHandle_i}:=OB Copy($embedded_o)
-			End if
-		End if
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name)
-End if
+OTr_z_Unlock
 
-OTr_zUnlock
-
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

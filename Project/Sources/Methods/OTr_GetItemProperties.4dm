@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetItemProperties (inObject; inIndex; outName {; outType {; outItemSize {; outDataSize}}})
 
@@ -40,7 +40,7 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-10 - Filters sibling shadow-type keys
-//   (leafKey$type) via OTr_zIsShadowKey so the 1-based index
+//   (leafKey$type) via OTr_z_IsShadowKey so the 1-based index
 //   reflects logical items only. Added Date and Time data-size
 //   cases.
 // ----------------------------------------------------
@@ -49,7 +49,7 @@
 $outName_ptr : Pointer; $outType_ptr : Pointer; \
 $outItemSize_ptr : Pointer; $outDataSize_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $k_i : Integer
 var $validIdx_i : Integer
@@ -73,17 +73,17 @@ $needType_b:=(Count parameters:C259>=4)
 $needItemSize_b:=(Count parameters:C259>=5)
 $needDataSize_b:=(Count parameters:C259>=6)
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
+If (OTr_z_IsValidHandle($inObject_i))
 	
 	$allKeys_c:=OB Keys:C1719(<>OTR_Objects_ao{$inObject_i})
 	
 	// Filter out __otr_ internal properties
 	For each ($thisKey_t; $allKeys_c)
-		If ((Substring:C12($thisKey_t; 1; 7)#"__otr_") & (Not:C34(OTr_zIsShadowKey($thisKey_t))))
+		If ((Substring:C12($thisKey_t; 1; 7)#"__otr_") & (Not:C34(OTr_z_IsShadowKey($thisKey_t))))
 			APPEND TO ARRAY:C911($keys_at; $thisKey_t)
-		End if
+		End if 
 	End for each 
 	
 	If (($inIndex_i>=1) & ($inIndex_i<=Size of array:C274($keys_at)))
@@ -127,19 +127,19 @@ If (OTr_zIsValidHandle($inObject_i))
 					
 				: ($nativeType_i=Is picture:K8:10)
 					$dataSize_i:=Picture size:C356(OB Get:C1224(<>OTR_Objects_ao{$inObject_i}; $keys_at{$inIndex_i}; Is picture:K8:10))
-
+					
 				: ($nativeType_i=Is date:K8:7)
 					$dataSize_i:=8
-
+					
 				: ($nativeType_i=Is time:K8:8)
 					$dataSize_i:=8
-
-			End case
+					
+			End case 
 			
 			$itemSize_i:=$dataSize_i+Length:C16($keys_at{$inIndex_i})
 			
 			If ($needType_b)
-				$outType_ptr->:=OTr_zMapType(\
+				$outType_ptr->:=OTr_z_MapType(\
 					<>OTR_Objects_ao{$inObject_i}; $keys_at{$inIndex_i})
 			End if 
 			If ($needItemSize_b)
@@ -152,14 +152,14 @@ If (OTr_zIsValidHandle($inObject_i))
 		End if 
 		
 	Else 
-		OTr_zError("Index out of range: "+String:C10($inIndex_i); \
+		OTr_z_Error("Index out of range: "+String:C10($inIndex_i); \
 			Current method name:C684)
 	End if 
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

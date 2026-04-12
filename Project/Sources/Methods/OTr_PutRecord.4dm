@@ -48,16 +48,16 @@
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-11 - Added If/Else native/text storage guard for
 //   date and time fields, matching the OTr_PutDate/OTr_PutTime strategy.
-//   OTr_uNativeDateInObject() probed once before the field loop (per-process,
-//   per-call). True → OB SET native; False → text via OTr_uDateToText/OTr_uTimeToText.
+//   OTr_u_NativeDateInObject() probed once before the field loop (per-process,
+//   per-call). True → OB SET native; False → text via OTr_u_DateToText/OTr_u_TimeToText.
 // Wayne Stewart, 2026-04-12 - Write shadow-type key (leafKey$type := 115 = OT Is Record)
-//   on the snapshot OB SET so that OTr_zMapType can unambiguously identify a record
+//   on the snapshot OB SET so that OTr_z_MapType can unambiguously identify a record
 //   snapshot sub-object as OT Record (115) rather than OT Object (114).
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inTable_i : Integer)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -72,13 +72,13 @@ var $recordNum_i : Integer
 var $tempBlob_blob : Blob
 var $nativeDate_b : Boolean
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
+If (OTr_z_IsValidHandle($inObject_i))
 	
 	If (Not:C34(Is table number valid:C999($inTable_i)))
-		OTr_zError("Invalid table number"; Current method name:C684)
-		OTr_zSetOK(0)
+		OTr_z_Error("Invalid table number"; Current method name:C684)
+		OTr_z_SetOK(0)
 		
 	Else 
 		
@@ -87,14 +87,14 @@ If (OTr_zIsValidHandle($inObject_i))
 		$recordNum_i:=Record number:C243($tablePtr_ptr->)
 		
 		If ($recordNum_i<0)
-			OTr_zError("No current record"; Current method name:C684)
-			OTr_zSetOK(0)
+			OTr_z_Error("No current record"; Current method name:C684)
+			OTr_z_SetOK(0)
 			
 		Else 
 			
 			// Probe once before the field loop — the setting is per-process and
 			// constant for the duration of this call.
-			$nativeDate_b:=OTr_uNativeDateInObject
+			$nativeDate_b:=OTr_u_NativeDateInObject
 			
 			$snapshot_o:=New object:C1471
 			$snapshot_o.__tableNum:=$inTable_i
@@ -115,14 +115,14 @@ If (OTr_zIsValidHandle($inObject_i))
 							If ($nativeDate_b)
 								OB SET:C1220($snapshot_o; $fieldName_t; $fieldPtr_ptr->)
 							Else 
-								OB SET:C1220($snapshot_o; $fieldName_t; OTr_uDateToText($fieldPtr_ptr->))
+								OB SET:C1220($snapshot_o; $fieldName_t; OTr_u_DateToText($fieldPtr_ptr->))
 							End if 
 							
 						: ($fieldType_i=Is time:K8:8)
 							If ($nativeDate_b)
 								OB SET:C1220($snapshot_o; $fieldName_t; $fieldPtr_ptr->)
 							Else 
-								OB SET:C1220($snapshot_o; $fieldName_t; OTr_uTimeToText($fieldPtr_ptr->))
+								OB SET:C1220($snapshot_o; $fieldName_t; OTr_u_TimeToText($fieldPtr_ptr->))
 							End if 
 							
 						: ($fieldType_i=Is picture:K8:10)
@@ -144,9 +144,9 @@ If (OTr_zIsValidHandle($inObject_i))
 				
 			End for 
 			
-			If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; ->$parent_o; ->$leafKey_t))
+			If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; ->$parent_o; ->$leafKey_t))
 				OB SET:C1220($parent_o; $leafKey_t; $snapshot_o)
-				OB SET:C1220($parent_o; OTr_zShadowKey($leafKey_t); OT Is Record)
+				OB SET:C1220($parent_o; OTr_z_ShadowKey($leafKey_t); OT Is Record)
 			End if 
 			
 		End if 
@@ -154,10 +154,10 @@ If (OTr_zIsValidHandle($inObject_i))
 	End if 
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
-	OTr_zSetOK(0)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+	OTr_z_SetOK(0)
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

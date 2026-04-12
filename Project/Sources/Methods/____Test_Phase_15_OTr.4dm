@@ -236,7 +236,7 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 $otrCmd_t:="OTr_PutPointer / OTr_GetPointer"
 $otrResult_t:="Fail: not run"
-// Use a process variable (no $) so OTr_uTextToPointer can
+// Use a process variable (no $) so OTr_u_TextToPointer can
 // reconstruct it via Get pointer. Local ($) variables cannot
 // be resolved by name -- this is a 4D platform constraint,
 // not an OTr defect, and matches the OT 5.0 documented limit.
@@ -267,7 +267,7 @@ $otrResult_t:="Fail: not run"
 
 OTr_PutPicture($otrMain_i; "pic"; $wombat_pic)
 $gotPic_pic:=OTr_GetPicture($otrMain_i; "pic")
-If (OTr_uEqualPictures($wombat_pic; $gotPic_pic))
+If (OTr_u_EqualPictures($wombat_pic; $gotPic_pic))
 	$otrResult_t:="Pass"
 Else 
 	$otrResult_t:="Fail: picture mismatch or OK=0"
@@ -289,7 +289,7 @@ If (Picture size:C356($wombat_pic)=0)
 Else 
 	OTr_PutPicture($otrMain_i; "pic9a"; $wombat_pic)
 	$gotPic_pic:=OTr_GetPicture($otrMain_i; "pic9a")
-	If (OTr_uEqualPictures($wombat_pic; $gotPic_pic))
+	If (OTr_u_EqualPictures($wombat_pic; $gotPic_pic))
 		$otrResult_t:="Pass"
 	Else 
 		$otrResult_t:="Fail: picture mismatch or OK=0"
@@ -310,7 +310,7 @@ CONVERT FROM TEXT:C1011("compat-blob-data"; "UTF-8"; $testBlob_blob)
 
 OTr_PutBLOB($otrMain_i; "blob"; $testBlob_blob)
 $gotBlob_blob:=OTr_GetNewBLOB($otrMain_i; "blob")
-If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
+If (OTr_u_EqualBLOBs($testBlob_blob; $gotBlob_blob))
 	$otrResult_t:="Pass"
 Else 
 	$otrResult_t:="Fail: BLOB content mismatch or OK=0"
@@ -487,7 +487,7 @@ ARRAY POINTER:C280($setupAptr_aptr; 1)
 OTr_PutArray($otrMain_i; "aptr"; ->$setupAptr_aptr)
 
 // NOTE: OTr pointer array round-trip for local ($) variables
-// is unreliable -- OTr_uTextToPointer reconstructs via
+// is unreliable -- OTr_u_TextToPointer reconstructs via
 // Get pointer which cannot resolve the caller's local scope.
 // Use a process variable (no $) so Get pointer can resolve it.
 var vtCC_XMLTopLevelRef : Text
@@ -545,7 +545,7 @@ If (Picture size:C356($wombat_pic)=0)
 Else 
 	OTr_PutArrayPicture($otrMain_i; "apic"; 1; $wombat_pic)
 	$otrArrPicOut_pic:=OTr_GetArrayPicture($otrMain_i; "apic"; 1)
-	If (OTr_uEqualPictures($wombat_pic; $otrArrPicOut_pic))
+	If (OTr_u_EqualPictures($wombat_pic; $otrArrPicOut_pic))
 		$otrResult_t:="Pass"
 	Else 
 		$otrResult_t:="Fail: picture mismatch or OK=0"

@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_SaveToBlob (inObject) --> Blob
 
@@ -22,25 +22,25 @@
 
 #DECLARE($inObject_i : Integer)->$outBlob_blob : Blob
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $snapshot_o : Object
 var $valid_b : Boolean
 
-$valid_b:=False
+$valid_b:=False:C215
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	$snapshot_o:=OB Copy(<>OTR_Objects_ao{$inObject_i})
-	$valid_b:=True
-End if
+If (OTr_z_IsValidHandle($inObject_i))
+	$snapshot_o:=OB Copy:C1225(<>OTR_Objects_ao{$inObject_i})
+	$valid_b:=True:C214
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
 If ($valid_b)
-	VARIABLE TO BLOB($snapshot_o; $outBlob_blob)
-	COMPRESS BLOB($outBlob_blob; GZIP best compression mode)
-End if
+	VARIABLE TO BLOB:C532($snapshot_o; $outBlob_blob)
+	COMPRESS BLOB:C534($outBlob_blob; GZIP best compression mode:K22:18)
+End if 
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

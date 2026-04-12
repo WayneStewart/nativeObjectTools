@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutObject (inObject; inTag; inObject)
 
@@ -38,33 +38,33 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-12 - Write shadow-type key (leafKey$type := 114 = OT Is Object)
-//   so that OTr_zMapType can reliably identify the embedded sub-object as an OT Object
-//   rather than descending into OTr_zArrayType. Without the shadow key, OTr_zMapType
+//   so that OTr_z_MapType can reliably identify the embedded sub-object as an OT Object
+//   rather than descending into OTr_z_ArrayType. Without the shadow key, OTr_z_MapType
 //   would need to inspect the sub-object's content to decide whether it is an array
 //   container or a user object. The shadow key short-circuits that heuristic.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inSourceObject_i : Integer)
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
 var $copy_o : Object
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i) & OTr_zIsValidHandle($inSourceObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; \
+If (OTr_z_IsValidHandle($inObject_i) & OTr_z_IsValidHandle($inSourceObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; \
 		->$parent_o; ->$leafKey_t))
-		$copy_o:=OB Copy(<>OTR_Objects_ao{$inSourceObject_i})
-		OB SET($parent_o; $leafKey_t; $copy_o)
-		OB SET($parent_o; OTr_zShadowKey($leafKey_t); OT Is Object)
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name)
-End if
+		$copy_o:=OB Copy:C1225(<>OTR_Objects_ao{$inSourceObject_i})
+		OB SET:C1220($parent_o; $leafKey_t; $copy_o)
+		OB SET:C1220($parent_o; OTr_z_ShadowKey($leafKey_t); OT Is Object)
+	End if 
+Else 
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetArrayBoolean (inObject; inTag; inIndex) --> Longint
 
@@ -41,7 +41,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_i : Integer
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $raw_v : Variant
 
@@ -50,4 +50,4 @@ If (Value type:C1509($raw_v)#Is undefined:K8:13)
 	$result_i:=Choose:C955($raw_v; 1; 0)
 End if 
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

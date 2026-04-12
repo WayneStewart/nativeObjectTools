@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_SetErrorHandler (inNewHandler) --> Text
 
@@ -35,13 +35,13 @@
 
 #DECLARE($inNewHandler_t : Text)->$previousHandler_t : Text
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
-OTr_zLock
+OTr_z_Lock
 
 $previousHandler_t:=<>OTR_ErrorHandler_t
 <>OTR_ErrorHandler_t:=$inNewHandler_t
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

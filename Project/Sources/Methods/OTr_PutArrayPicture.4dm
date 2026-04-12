@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutArrayPicture (inObject; inTag; inIndex; inValue)
 
@@ -36,10 +36,10 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_pic : Picture)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
-OTr_zLock
+OTr_z_Lock
 OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Picture array:K8:22; $inValue_pic)
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

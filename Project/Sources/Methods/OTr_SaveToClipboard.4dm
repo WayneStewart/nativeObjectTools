@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_SaveToClipboard (inObject {; inPrettyPrint})
 
@@ -20,38 +20,38 @@
 
 #DECLARE($inObject_i : Integer; $inPrettyPrint_b : Boolean)
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $snapshot_o : Object
 var $json_t : Text
 var $valid_b : Boolean
 var $prettyPrint_b : Boolean
 
-If (Count parameters < 2)
-	$prettyPrint_b:=True
-Else
+If (Count parameters:C259<2)
+	$prettyPrint_b:=True:C214
+Else 
 	$prettyPrint_b:=$inPrettyPrint_b
-End if
+End if 
 
-$valid_b:=False
+$valid_b:=False:C215
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	$snapshot_o:=OB Copy(<>OTR_Objects_ao{$inObject_i})
-	$valid_b:=True
-End if
+If (OTr_z_IsValidHandle($inObject_i))
+	$snapshot_o:=OB Copy:C1225(<>OTR_Objects_ao{$inObject_i})
+	$valid_b:=True:C214
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
 If ($valid_b)
 	If ($prettyPrint_b)
-		$json_t:=JSON Stringify($snapshot_o; *)
-	Else
-		$json_t:=JSON Stringify($snapshot_o)
-	End if
+		$json_t:=JSON Stringify:C1217($snapshot_o; *)
+	Else 
+		$json_t:=JSON Stringify:C1217($snapshot_o)
+	End if 
+	
+	SET TEXT TO PASTEBOARD:C523($json_t)
+End if 
 
-	SET TEXT TO PASTEBOARD($json_t)
-End if
-
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

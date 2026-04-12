@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_ArrayType (inObject; inTag) --> Longint
 
@@ -26,7 +26,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$arrayType_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $arrayObj_o : Object
@@ -34,13 +34,13 @@ var $leafKey_t : Text
 
 $arrayType_i:=-1
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
-			$arrayType_i:=OTr_zArrayType($arrayObj_o)
+			$arrayType_i:=OTr_z_ArrayType($arrayObj_o)
 		End if 
 	End if 
-End if
+End if 
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

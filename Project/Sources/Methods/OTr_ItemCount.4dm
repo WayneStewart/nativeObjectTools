@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_ItemCount (inObject {; inTag}) --> Longint
 
@@ -45,7 +45,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$count_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $target_o : Object
 var $parent_o : Object
@@ -59,57 +59,57 @@ $keys_c:=New collection:C1472
 
 $count_i:=0
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-
+If (OTr_z_IsValidHandle($inObject_i))
+	
 	If (Count parameters:C259<2)
 		$tag_t:=""
-	Else
+	Else 
 		$tag_t:=$inTag_t
-	End if
+	End if 
 	$useTag_b:=($tag_t#"")
-
+	
 	If ($useTag_b)
-
-		If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $tag_t; False:C215; \
+		
+		If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $tag_t; False:C215; \
 			->$parent_o; ->$leafKey_t))
 			If (OB Is defined:C1231($parent_o; $leafKey_t))
 				$target_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
 				If ($target_o#Null:C1517)
 					$keys_c:=OB Keys:C1719($target_o)
 					For each ($thisKey_t; $keys_c)
-						If (Substring:C12($thisKey_t; 1; 7)#"__otr_") & (Not:C34(OTr_zIsShadowKey($thisKey_t)))
+						If (Substring:C12($thisKey_t; 1; 7)#"__otr_") & (Not:C34(OTr_z_IsShadowKey($thisKey_t)))
 							$count_i:=$count_i+1
-						End if
-					End for each
-				Else
-					OTr_zError(\
+						End if 
+					End for each 
+				Else 
+					OTr_z_Error(\
 						"Tag does not reference an embedded object"; \
 						Current method name:C684)
-				End if
-			Else
-				OTr_zError("Item not found: "+$tag_t; Current method name:C684)
-			End if
-		Else
-			OTr_zError("Invalid path: "+$tag_t; Current method name:C684)
+				End if 
+			Else 
+				OTr_z_Error("Item not found: "+$tag_t; Current method name:C684)
+			End if 
+		Else 
+			OTr_z_Error("Invalid path: "+$tag_t; Current method name:C684)
 		End if 
 		
 	Else 
 		
 		$keys_c:=OB Keys:C1719(<>OTR_Objects_ao{$inObject_i})
 		For each ($thisKey_t; $keys_c)
-			If (Substring:C12($thisKey_t; 1; 7)#"__otr_") & (Not:C34(OTr_zIsShadowKey($thisKey_t)))
+			If (Substring:C12($thisKey_t; 1; 7)#"__otr_") & (Not:C34(OTr_z_IsShadowKey($thisKey_t)))
 				$count_i:=$count_i+1
-			End if
-		End for each
+			End if 
+		End for each 
 		
 	End if 
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

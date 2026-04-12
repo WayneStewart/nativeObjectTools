@@ -1,0 +1,1 @@
+<!--OTr_z_LogFileName () -> TextResult : Text : ⬅️ : Current session log file name-->## OTr\_z\_LogFileNameOTr\_z\_LogFileName () --> TextBuilds the current session log file name for OTr.Attributes: Private, Invisible, Preemptive indifferent| Parameter | Type |  | Description || --- | --- | --- | --- ||Result|Text|⬅️|Current session log file name|

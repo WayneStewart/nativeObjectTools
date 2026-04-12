@@ -4,7 +4,7 @@
 
 // Retrieves a Pointer value from the specified tag path
 // into the outPointer parameter. The stored text is
-// deserialised via OTr_uTextToPointer. Returns a Null
+// deserialised via OTr_u_TextToPointer. Returns a Null
 // pointer on any error or missing tag.
 
 // **VERY IMPORTANT NOTE**
@@ -73,24 +73,24 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outPointer_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
-			$outPointer_ptr->:=OTr_uTextToPointer(OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3))
+			$outPointer_ptr->:=OTr_u_TextToPointer(OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3))
 		End if 
 	End if 
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
 	
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

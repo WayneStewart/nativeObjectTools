@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_DeleteItem (inObject; inTag)
 
@@ -34,43 +34,43 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-04 - Fixed: missing OB REMOVE call (item was
-//   never deleted). Added OTr_zSetOK(1) on success.
-// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+//   never deleted). Added OTr_z_SetOK(1) on success.
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_z_SetOK(1) on
 //   success path (see OTr-OK0-Conditions specification).
 // Wayne Stewart, 2026-04-10 - Also removes any sibling shadow-type
 //   key (leafKey$type) so that a subsequent Put of an unrelated
-//   value at the same leaf is not misreported by OTr_zMapType.
+//   value at the same leaf is not misreported by OTr_z_MapType.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
+If (OTr_z_IsValidHandle($inObject_i))
 	
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
 		->$parent_o; ->$leafKey_t))
 		
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			OB REMOVE:C1226($parent_o; $leafKey_t)
-			OB REMOVE:C1226($parent_o; OTr_zShadowKey($leafKey_t))
-		Else
-			OTr_zError("Item not found: "+$inTag_t; Current method name:C684)
-		End if
+			OB REMOVE:C1226($parent_o; OTr_z_ShadowKey($leafKey_t))
+		Else 
+			OTr_z_Error("Item not found: "+$inTag_t; Current method name:C684)
+		End if 
 		
 	Else 
-		OTr_zError("Invalid path: "+$inTag_t; Current method name:C684)
+		OTr_z_Error("Invalid path: "+$inTag_t; Current method name:C684)
 	End if 
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

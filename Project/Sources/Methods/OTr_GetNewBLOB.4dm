@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetNewBLOB (inObject; inTag) --> Blob
 
@@ -41,39 +41,39 @@
 // Wayne Stewart, 2026-04-10 - Actually honours
 //   Storage.OTr.nativeBlobInObject (previously only claimed to in
 //   the changelog; the body always decoded base64 text).
-// Wayne Stewart, 2026-04-11 - Added type-mismatch guard via OTr_zMapType: if the tag
+// Wayne Stewart, 2026-04-11 - Added type-mismatch guard via OTr_z_MapType: if the tag
 //   exists but its stored OT type is not 30 (BLOB), an error is generated and OK is
 //   set to zero, matching the documented original behaviour.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_blob : Blob
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; ->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			If (OTr_zMapType($parent_o; $leafKey_t)=30)
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
+			If (OTr_z_MapType($parent_o; $leafKey_t)=30)
 				If (Storage:C1525.OTr.nativeBlobInObject)
-					$result_blob:=OB Get($parent_o; $leafKey_t; Is BLOB)
-				Else
-					$result_blob:=OTr_uTextToBlob(OB Get($parent_o; $leafKey_t; Is text))
-				End if
-			Else
-				OTr_zError("Type mismatch"; Current method name)
-			End if
-		End if
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name)
-	OTr_zSetOK(0)
-End if
+					$result_blob:=OB Get:C1224($parent_o; $leafKey_t; Is BLOB:K8:12)
+				Else 
+					$result_blob:=OTr_u_TextToBlob(OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3))
+				End if 
+			Else 
+				OTr_z_Error("Type mismatch"; Current method name:C684)
+			End if 
+		End if 
+	End if 
+Else 
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+	OTr_z_SetOK(0)
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

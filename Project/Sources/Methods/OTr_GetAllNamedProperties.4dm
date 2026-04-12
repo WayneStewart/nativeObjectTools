@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetAllNamedProperties (inObject; inTag; outNames {; outTypes {; outItemSizes {; outDataSizes}}})
 
@@ -27,7 +27,7 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-10 - Skips sibling shadow-type keys
-//   (leafKey$type) via OTr_zIsShadowKey so enumeration reflects the
+//   (leafKey$type) via OTr_z_IsShadowKey so enumeration reflects the
 //   logical property set, not the physical storage schema. Added
 //   Date and Time data-size cases.
 // ----------------------------------------------------
@@ -36,7 +36,7 @@
 $outTypes_ptr : Pointer; $outItemSizes_ptr : Pointer; \
 $outDataSizes_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 
 var $target_o : Object
@@ -61,28 +61,28 @@ $needTypes_b:=(Count parameters:C259>=4)
 $needItemSizes_b:=(Count parameters:C259>=5)
 $needDataSizes_b:=(Count parameters:C259>=6)
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
+If (OTr_z_IsValidHandle($inObject_i))
 	
 	// Determine the target object
 	If ($inTag_t="")
 		$target_o:=<>OTR_Objects_ao{$inObject_i}
 	Else 
-		If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
+		If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
 			->$parent_o; ->$leafKey_t))
 			If (OB Is defined:C1231($parent_o; $leafKey_t))
 				$target_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
 				If ($target_o=Null:C1517)
-					OTr_zError(\
+					OTr_z_Error(\
 						"Tag does not reference an embedded object"; \
 						Current method name:C684)
 				End if 
 			Else 
-				OTr_zError("Item not found: "+$inTag_t; Current method name:C684)
+				OTr_z_Error("Item not found: "+$inTag_t; Current method name:C684)
 			End if 
 		Else 
-			OTr_zError("Invalid path: "+$inTag_t; Current method name:C684)
+			OTr_z_Error("Invalid path: "+$inTag_t; Current method name:C684)
 		End if 
 	End if 
 	
@@ -104,13 +104,13 @@ If (OTr_zIsValidHandle($inObject_i))
 		
 		For each ($thisKey_t; $keys_c)
 			
-			If ((Substring:C12($thisKey_t; 1; 7)#"__otr_") & (Not:C34(OTr_zIsShadowKey($thisKey_t))))
+			If ((Substring:C12($thisKey_t; 1; 7)#"__otr_") & (Not:C34(OTr_z_IsShadowKey($thisKey_t))))
 				
 				APPEND TO ARRAY:C911($outNames_ptr->; $thisKey_t)
 				
 				If ($needTypes_b)
 					APPEND TO ARRAY:C911($outTypes_ptr->; \
-						OTr_zMapType($target_o; $thisKey_t))
+						OTr_z_MapType($target_o; $thisKey_t))
 				End if 
 				
 				If ($needItemSizes_b | $needDataSizes_b)
@@ -148,14 +148,14 @@ If (OTr_zIsValidHandle($inObject_i))
 							
 						: ($nativeType_i=Is picture:K8:10)
 							$dataSize_i:=Picture size:C356(OB Get:C1224($target_o; $thisKey_t; Is picture:K8:10))
-
+							
 						: ($nativeType_i=Is date:K8:7)
 							$dataSize_i:=8
-
+							
 						: ($nativeType_i=Is time:K8:8)
 							$dataSize_i:=8
-
-					End case
+							
+					End case 
 					
 					$itemSize_i:=$dataSize_i+Length:C16($thisKey_t)
 					
@@ -188,10 +188,10 @@ If (OTr_zIsValidHandle($inObject_i))
 	End if 
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
 	ARRAY TEXT:C222($outNames_ptr->; 0)
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

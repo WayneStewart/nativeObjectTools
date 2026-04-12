@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_CopyItem (inSourceObject; inSourceTag; inDestObject; inDestTag)
 
@@ -33,18 +33,18 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
-// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_z_SetOK(1) on
 //   success path (see OTr-OK0-Conditions specification).
 // Wayne Stewart, 2026-04-10 - Added native Date and Time branches
 //   (previously missing). Copies any sibling shadow-type key
-//   (srcLeafKey$type -> destLeafKey$type) so that OTr_zMapType
+//   (srcLeafKey$type -> destLeafKey$type) so that OTr_z_MapType
 //   reports the correct OT type at the destination; if the source
 //   has no shadow, any stale shadow at the destination is removed.
 // ----------------------------------------------------
 
 #DECLARE($inSourceObject_i : Integer; $inSourceTag_t : Text; $inDestObject_i : Integer; $inDestTag_t : Text)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 
 var $srcParent_o : Object
@@ -55,17 +55,17 @@ var $nativeType_i : Integer
 var $textVal_t : Text
 var $srcShadow_t; $destShadow_t : Text
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inSourceObject_i)\
- & OTr_zIsValidHandle($inDestObject_i))
+If (OTr_z_IsValidHandle($inSourceObject_i)\
+ & OTr_z_IsValidHandle($inDestObject_i))
 	
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inSourceObject_i}; $inSourceTag_t; \
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inSourceObject_i}; $inSourceTag_t; \
 		False:C215; ->$srcParent_o; ->$srcLeafKey_t))
 		
 		If (OB Is defined:C1231($srcParent_o; $srcLeafKey_t))
 			
-			If (OTr_zResolvePath(<>OTR_Objects_ao{$inDestObject_i}; \
+			If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inDestObject_i}; \
 				$inDestTag_t; True:C214; ->$destParent_o; ->$destLeafKey_t))
 				
 				$nativeType_i:=OB Get type:C1230($srcParent_o; $srcLeafKey_t)
@@ -104,43 +104,43 @@ If (OTr_zIsValidHandle($inSourceObject_i)\
 					: ($nativeType_i=Is picture:K8:10)
 						OB SET:C1220($destParent_o; $destLeafKey_t; \
 							OB Get:C1224($srcParent_o; $srcLeafKey_t; Is picture:K8:10))
-
+						
 					: ($nativeType_i=Is date:K8:7)
 						OB SET:C1220($destParent_o; $destLeafKey_t; \
 							OB Get:C1224($srcParent_o; $srcLeafKey_t; Is date:K8:7))
-
+						
 					: ($nativeType_i=Is time:K8:8)
 						OB SET:C1220($destParent_o; $destLeafKey_t; \
 							OB Get:C1224($srcParent_o; $srcLeafKey_t; Is time:K8:8))
-
-				End case
-
+						
+				End case 
+				
 				// Shadow-type key: copy alongside if present at
 				// the source; otherwise clear any stale shadow at
 				// the destination to keep the leaf self-consistent.
-				$srcShadow_t:=OTr_zShadowKey($srcLeafKey_t)
-				$destShadow_t:=OTr_zShadowKey($destLeafKey_t)
+				$srcShadow_t:=OTr_z_ShadowKey($srcLeafKey_t)
+				$destShadow_t:=OTr_z_ShadowKey($destLeafKey_t)
 				If (OB Is defined:C1231($srcParent_o; $srcShadow_t))
 					OB SET:C1220($destParent_o; $destShadow_t; \
 						OB Get:C1224($srcParent_o; $srcShadow_t; Is longint:K8:6))
-				Else
+				Else 
 					OB REMOVE:C1226($destParent_o; $destShadow_t)
-				End if
-			End if
+				End if 
+			End if 
 			
 		Else 
-			OTr_zError("Source item not found: "+$inSourceTag_t; \
+			OTr_z_Error("Source item not found: "+$inSourceTag_t; \
 				Current method name:C684)
 		End if 
 		
 	Else 
-		OTr_zError("Invalid source path: "+$inSourceTag_t; Current method name:C684)
+		OTr_z_Error("Invalid source path: "+$inSourceTag_t; Current method name:C684)
 	End if 
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

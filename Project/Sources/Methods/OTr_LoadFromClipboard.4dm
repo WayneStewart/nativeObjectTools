@@ -20,11 +20,11 @@
 
 #DECLARE()->$handle_i : Integer
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $json_t : Text
 
 $json_t:=Get text from pasteboard:C524
 $handle_i:=OTr_LoadFromText($json_t)
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

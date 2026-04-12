@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_InsertElement (inObject; inTag; inWhere {; inHowMany})
 
@@ -44,7 +44,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inWhere_i : Integer; $inHowMany_i : Integer)
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $arrayObj_o : Object
@@ -53,42 +53,42 @@ var $n_i; $i_i; $count_i; $effectivePos_i; $arrayType_i : Integer
 
 If (Count parameters:C259<4)
 	$count_i:=1
-Else
+Else 
 	$count_i:=$inHowMany_i
-End if
+End if 
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
 			If (OB Is defined:C1231($arrayObj_o; "numElements"))
 				$n_i:=$arrayObj_o.numElements
-				$arrayType_i:=OTr_zArrayType($arrayObj_o)
+				$arrayType_i:=OTr_z_ArrayType($arrayObj_o)
 				
 				// Clamp: if position exceeds array size, append at end
-				$effectivePos_i:=Choose($inWhere_i>$n_i; $n_i+1; $inWhere_i)
+				$effectivePos_i:=Choose:C955($inWhere_i>$n_i; $n_i+1; $inWhere_i)
 				
 				// Shift elements n..effectivePos up by count (preserves native types)
 				For ($i_i; $n_i; $effectivePos_i; -1)
 					$arrayObj_o[String:C10($i_i+$count_i)]:=$arrayObj_o[String:C10($i_i)]
-				End for
+				End for 
 				
 				// Initialise new slots to type-appropriate default value
 				For ($i_i; $effectivePos_i; $effectivePos_i+$count_i-1)
-					$arrayObj_o[String:C10($i_i)]:=OTr_uNewValueForEmbeddedType($arrayType_i)
-				End for
+					$arrayObj_o[String:C10($i_i)]:=OTr_u_NewValueForEmbeddedType($arrayType_i)
+				End for 
 				
 				$arrayObj_o.numElements:=$n_i+$count_i
 				
-			End if
-		End if
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name:C684)
-End if
+			End if 
+		End if 
+	End if 
+Else 
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

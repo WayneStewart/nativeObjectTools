@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetArrayDate (inObject; inTag; inIndex) --> Date
 
@@ -40,17 +40,17 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_d : Date
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $raw_v : Variant
 
 $raw_v:=OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Date array:K8:20)
 If (Value type:C1509($raw_v)#Is undefined:K8:13)
 	If (Value type:C1509($raw_v)=Is text:K8:3)
-		$result_d:=OTr_uTextToDate($raw_v)
-	Else
+		$result_d:=OTr_u_TextToDate($raw_v)
+	Else 
 		$result_d:=$raw_v
-	End if
-End if
+	End if 
+End if 
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

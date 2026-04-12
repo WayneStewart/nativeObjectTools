@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutArrayDate (inObject; inTag; inIndex; inValue)
 
@@ -31,23 +31,23 @@
 // Created by Wayne Stewart, 2026-04-05
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-11 - Added If/Else native/text storage guard to
-//   match OTr_PutDate strategy. See OTr_uNativeDateInObject for probe details.
+//   match OTr_PutDate strategy. See OTr_u_NativeDateInObject for probe details.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inValue_d : Date)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $encoded_v : Variant
 
-If (OTr_uNativeDateInObject)
+If (OTr_u_NativeDateInObject)
 	$encoded_v:=$inValue_d
-Else
-	$encoded_v:=OTr_uDateToText($inValue_d)
-End if
+Else 
+	$encoded_v:=OTr_u_DateToText($inValue_d)
+End if 
 
-OTr_zLock
+OTr_z_Lock
 OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Date array:K8:20; $encoded_v)
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

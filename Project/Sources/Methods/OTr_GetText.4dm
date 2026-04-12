@@ -38,8 +38,8 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_t : Text
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 $result_t:=OTr_GetString($inObject_i; $inTag_t)
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

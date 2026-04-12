@@ -47,10 +47,10 @@ If (False:C215)
 	C_TEXT:C284(OTr_SetErrorHandler; $0)
 	C_TEXT:C284(OTr_SetErrorHandler; $1)
 	
-	C_BOOLEAN:C305(OTr_zResolvePath; $0; $3)
-	C_OBJECT:C1216(OTr_zResolvePath; $1)
-	C_TEXT:C284(OTr_zResolvePath; $2)
-	C_POINTER:C301(OTr_zResolvePath; $4; $5)
+	C_BOOLEAN:C305(OTr_z_ResolvePath; $0; $3)
+	C_OBJECT:C1216(OTr_z_ResolvePath; $1)
+	C_TEXT:C284(OTr_z_ResolvePath; $2)
+	C_POINTER:C301(OTr_z_ResolvePath; $4; $5)
 	
 	C_LONGINT:C283(OTr_PutLong; $1; $3)
 	C_TEXT:C284(OTr_PutLong; $2)
@@ -155,12 +155,12 @@ If (False:C215)
 	
 	C_BOOLEAN:C305(OTr_IncludeShadowKey; $0; $1)
 	
-	C_TEXT:C284(OTr_zXMLWriteObject; $1)
-	C_OBJECT:C1216(OTr_zXMLWriteObject; $2)
-	C_BOOLEAN:C305(OTr_zXMLWriteObject; $3)
+	C_TEXT:C284(OTr_z_XMLWriteObject; $1)
+	C_OBJECT:C1216(OTr_z_XMLWriteObject; $2)
+	C_BOOLEAN:C305(OTr_z_XMLWriteObject; $3)
 	
-	C_OBJECT:C1216(OTr_zXMLReadObject; $0)
-	C_TEXT:C284(OTr_zXMLReadObject; $1)
+	C_OBJECT:C1216(OTr_z_XMLReadObject; $0)
+	C_TEXT:C284(OTr_z_XMLReadObject; $1)
 	
 	C_TEXT:C284(OTr_SaveToXMLSAX; $0)
 	C_LONGINT:C283(OTr_SaveToXMLSAX; $1)
@@ -170,9 +170,9 @@ If (False:C215)
 	C_TEXT:C284(OTr_SaveToXMLFileSAX; $2)
 	C_BOOLEAN:C305(OTr_SaveToXMLFileSAX; $3)
 	
-	C_TIME:C306(OTr_zXMLWriteObjectSAX; $1)
-	C_OBJECT:C1216(OTr_zXMLWriteObjectSAX; $2)
-	C_BOOLEAN:C305(OTr_zXMLWriteObjectSAX; $3)
+	C_TIME:C306(OTr_z_XMLWriteObjectSAX; $1)
+	C_OBJECT:C1216(OTr_z_XMLWriteObjectSAX; $2)
+	C_BOOLEAN:C305(OTr_z_XMLWriteObjectSAX; $3)
 	
 	C_LONGINT:C283(OTr_SetOptions; $1)
 	
@@ -183,15 +183,15 @@ If (False:C215)
 	
 	C_LONGINT:C283(OTr_GetOptions; $0)
 	
-	C_BOOLEAN:C305(OTr_zIsValidHandle; $0)
-	C_LONGINT:C283(OTr_zIsValidHandle; $1)
+	C_BOOLEAN:C305(OTr_z_IsValidHandle; $0)
+	C_LONGINT:C283(OTr_z_IsValidHandle; $1)
 	
 	C_LONGINT:C283(OTr_New; $0)
 	
 	C_LONGINT:C283(OTr_Clear; $1)
 	
-	C_BOOLEAN:C305(OTr_zError; $0)
-	C_TEXT:C284(OTr_zError; $1; $2)
+	C_BOOLEAN:C305(OTr_z_Error; $0)
+	C_TEXT:C284(OTr_z_Error; $1; $2)
 	
 	C_TEXT:C284(OTr_GetVersion; $0)
 	
@@ -239,9 +239,9 @@ If (False:C215)
 	C_LONGINT:C283(OTr_DeleteItem; $1)
 	C_TEXT:C284(OTr_DeleteItem; $2)
 	
-	C_LONGINT:C283(OTr_zMapType; $0)
-	C_OBJECT:C1216(OTr_zMapType; $1)
-	C_TEXT:C284(OTr_zMapType; $2)
+	C_LONGINT:C283(OTr_z_MapType; $0)
+	C_OBJECT:C1216(OTr_z_MapType; $1)
+	C_TEXT:C284(OTr_z_MapType; $2)
 	
 	
 	C_LONGINT:C283(OTr_Register; $0)
@@ -255,17 +255,17 @@ If (False:C215)
 	C_POINTER:C301(OTr_GetHandleList; $1)
 	C_LONGINT:C283(OTr_GetActiveHandleCount; $0)
 	
-	C_BOOLEAN:C305(OTr_uEqualBLOBs; $0)
-	C_BLOB:C604(OTr_uEqualBLOBs; $1; $2)
+	C_BOOLEAN:C305(OTr_u_EqualBLOBs; $0)
+	C_BLOB:C604(OTr_u_EqualBLOBs; $1; $2)
 	
-	C_BOOLEAN:C305(OTr_uEqualStrings; $0)
-	C_TEXT:C284(OTr_uEqualStrings; $1; $2)
+	C_BOOLEAN:C305(OTr_u_EqualStrings; $0)
+	C_TEXT:C284(OTr_u_EqualStrings; $1; $2)
 	
-	C_BOOLEAN:C305(OTr_uEqualPictures; $0)
-	C_PICTURE:C286(OTr_uEqualPictures; $1; $2)
+	C_BOOLEAN:C305(OTr_u_EqualPictures; $0)
+	C_PICTURE:C286(OTr_u_EqualPictures; $1; $2)
 	
-	C_OBJECT:C1216(OTr_uEqualObjects; $1; $2)
-	C_BOOLEAN:C305(OTr_uEqualObjects; $0)
+	C_OBJECT:C1216(OTr_u_EqualObjects; $1; $2)
+	C_BOOLEAN:C305(OTr_u_EqualObjects; $0)
 	
 	C_LONGINT:C283(OTr_PutArray; $1)
 	C_TEXT:C284(OTr_PutArray; $2)
@@ -452,37 +452,37 @@ If (False:C215)
 	C_LONGINT:C283(OTr_SortArrays; $1)
 	C_TEXT:C284(OTr_SortArrays; ${2})
 	
-	C_BOOLEAN:C305(OTr_zSortValidatePair; $0)
-	C_OBJECT:C1216(OTr_zSortValidatePair; $1)
+	C_BOOLEAN:C305(OTr_z_SortValidatePair; $0)
+	C_OBJECT:C1216(OTr_z_SortValidatePair; $1)
 	
-	C_POINTER:C301(OTr_zSortSlotPointer; $0)
-	C_LONGINT:C283(OTr_zSortSlotPointer; $1; $2)
+	C_POINTER:C301(OTr_z_SortSlotPointer; $0)
+	C_LONGINT:C283(OTr_z_SortSlotPointer; $1; $2)
 	
-	C_LONGINT:C283(OTr_zSortFillSlot; $1; $3)
-	C_OBJECT:C1216(OTr_zSortFillSlot; $2)
+	C_LONGINT:C283(OTr_z_SortFillSlot; $1; $3)
+	C_OBJECT:C1216(OTr_z_SortFillSlot; $2)
 	
 	
-	C_TIME:C306(OTr_uTimeToText; $1)
-	C_TEXT:C284(OTr_uTimeToText; $0)
+	C_TIME:C306(OTr_u_TimeToText; $1)
+	C_TEXT:C284(OTr_u_TimeToText; $0)
 	
-	C_TEXT:C284(OTr_uTextToTime; $1)
-	C_TIME:C306(OTr_uTextToTime; $0)
+	C_TEXT:C284(OTr_u_TextToTime; $1)
+	C_TIME:C306(OTr_u_TextToTime; $0)
 	
-	C_DATE:C307(OTr_uDateToText; $1)
-	C_TEXT:C284(OTr_uDateToText; $0)
+	C_DATE:C307(OTr_u_DateToText; $1)
+	C_TEXT:C284(OTr_u_DateToText; $0)
 	
-	C_TEXT:C284(OTr_uTextToDate; $1)
-	C_DATE:C307(OTr_uTextToDate; $0)
+	C_TEXT:C284(OTr_u_TextToDate; $1)
+	C_DATE:C307(OTr_u_TextToDate; $0)
 	
-	C_BOOLEAN:C305(OTr_uNativeDateInObject; $0)
+	C_BOOLEAN:C305(OTr_u_NativeDateInObject; $0)
 	
 	C_TEXT:C284(OTr_SetDateMode; $1; $0)
 	
-	C_POINTER:C301(OTr_uPointerToText; $1)
-	C_TEXT:C284(OTr_uPointerToText; $0)
+	C_POINTER:C301(OTr_u_PointerToText; $1)
+	C_TEXT:C284(OTr_u_PointerToText; $0)
 	
-	C_TEXT:C284(OTr_uTextToPointer; $1)
-	C_POINTER:C301(OTr_uTextToPointer; $0)
+	C_TEXT:C284(OTr_u_TextToPointer; $1)
+	C_POINTER:C301(OTr_u_TextToPointer; $0)
 	
 	C_LONGINT:C283(OTr_SizeOfArray; $0; $1)
 	C_TEXT:C284(OTr_SizeOfArray; $2)
@@ -496,16 +496,16 @@ If (False:C215)
 	C_LONGINT:C283(OTr_InsertElement; $1; $3; $4)
 	C_TEXT:C284(OTr_InsertElement; $2)
 	
-	C_OBJECT:C1216(OTr_zArrayFromObject; $1)
-	C_POINTER:C301(OTr_zArrayFromObject; $2)
+	C_OBJECT:C1216(OTr_z_ArrayFromObject; $1)
+	C_POINTER:C301(OTr_z_ArrayFromObject; $2)
 	
-	C_LONGINT:C283(OTr_zArrayType; $0)
-	C_OBJECT:C1216(OTr_zArrayType; $1)
+	C_LONGINT:C283(OTr_z_ArrayType; $0)
+	C_OBJECT:C1216(OTr_z_ArrayType; $1)
 	
-	C_TEXT:C284(OTr_zShadowKey; $0; $1)
+	C_TEXT:C284(OTr_z_ShadowKey; $0; $1)
 	
-	C_BOOLEAN:C305(OTr_zIsShadowKey; $0)
-	C_TEXT:C284(OTr_zIsShadowKey; $1)
+	C_BOOLEAN:C305(OTr_z_IsShadowKey; $0)
+	C_TEXT:C284(OTr_z_IsShadowKey; $1)
 	
 	C_LONGINT:C283(OTr_ArrayType; $0; $1)
 	C_TEXT:C284(OTr_ArrayType; $2)
@@ -514,29 +514,29 @@ If (False:C215)
 	C_TEXT:C284(OTr_GetArray; $2)
 	C_POINTER:C301(OTr_GetArray; $3)
 	
-	C_BLOB:C604(OTr_uBlobToText; $1)
-	C_TEXT:C284(OTr_uBlobToText; $0)
+	C_BLOB:C604(OTr_u_BlobToText; $1)
+	C_TEXT:C284(OTr_u_BlobToText; $0)
 	
-	C_TEXT:C284(OTr_uTextToBlob; $1)
-	C_BLOB:C604(OTr_uTextToBlob; $0)
+	C_TEXT:C284(OTr_u_TextToBlob; $1)
+	C_BLOB:C604(OTr_u_TextToBlob; $0)
 	
 	C_TEXT:C284(OTr_FindInArray; $2; $3)
 	C_LONGINT:C283(OTr_FindInArray; $1; $0; $4)
 	
-	C_LONGINT:C283(OTr_uNewValueForEmbeddedType; $1)
-	C_VARIANT:C1683(OTr_uNewValueForEmbeddedType; $0)
+	C_LONGINT:C283(OTr_u_NewValueForEmbeddedType; $1)
+	C_VARIANT:C1683(OTr_u_NewValueForEmbeddedType; $0)
 	
-	C_LONGINT:C283(OTr_zSetOK; $1; $0)
+	C_LONGINT:C283(OTr_z_SetOK; $1; $0)
 	
 	C_TEXT:C284(OTr_z_LogDirectory; $0)
-	C_LONGINT:C283(OTr_zLogLevelToInt; $0)
-	C_TEXT:C284(OTr_zLogLevelToInt; $1)
-	C_TEXT:C284(OTr_zLogFileName; $0)
-	OTr_zLogShutdown
-	C_TEXT:C284(OTr_zLogWrite; $1; $2; $3)
-	C_TEXT:C284(OTr_zLogGetCallStack; $0; $1)
-	C_TEXT:C284(OTr_zAddToCallStack; $1)
-	C_TEXT:C284(OTr_zRemoveFromCallStack; $1)
+	C_LONGINT:C283(OTr_z_LogLevelToInt; $0)
+	C_TEXT:C284(OTr_z_LogLevelToInt; $1)
+	C_TEXT:C284(OTr_z_LogFileName; $0)
+	OTr_z_LogShutdown
+	C_TEXT:C284(OTr_z_LogWrite; $1; $2; $3)
+	C_TEXT:C284(OTr_z_LogGetCallStack; $0; $1)
+	C_TEXT:C284(OTr_z_AddToCallStack; $1)
+	C_TEXT:C284(OTr_z_RemoveFromCallStack; $1)
 	
 	C_LONGINT:C283(OTr_PutRecord; $1; $3)
 	C_TEXT:C284(OTr_PutRecord; $2)
@@ -555,7 +555,7 @@ If (False:C215)
 	C_TEXT:C284(OTr_GetVariable; $2)
 	C_POINTER:C301(OTr_GetVariable; $3)
 	
-	C_LONGINT:C283(OTr_uMapType; $1; $2; $0)
+	C_LONGINT:C283(OTr_u_MapType; $1; $2; $0)
 	
 	C_LONGINT:C283(OTr_ObjectToBLOB; $1; $3)
 	C_POINTER:C301(OTr_ObjectToBLOB; $2)

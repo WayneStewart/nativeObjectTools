@@ -29,13 +29,13 @@
 
 #DECLARE($outHandles_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $index_i : Integer
 
 ARRAY LONGINT:C221($handleList_ai; 0)
 
-OTr_zLock
+OTr_z_Lock
 
 For ($index_i; 1; Size of array:C274(<>OTR_InUse_ab))
 	If (<>OTR_InUse_ab{$index_i})
@@ -43,8 +43,8 @@ For ($index_i; 1; Size of array:C274(<>OTR_InUse_ab))
 	End if 
 End for 
 
-OTr_zUnlock
+OTr_z_Unlock
 
 COPY ARRAY:C226($handleList_ai; $outHandles_ptr->)
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

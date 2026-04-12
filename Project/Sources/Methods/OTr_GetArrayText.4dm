@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetArrayText (inObject; inTag; inIndex) --> Text
 
@@ -48,8 +48,8 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_t : Text
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
-$result_t := OTr_GetArrayString($inObject_i; $inTag_t; $inIndex_i)
+$result_t:=OTr_GetArrayString($inObject_i; $inTag_t; $inIndex_i)
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

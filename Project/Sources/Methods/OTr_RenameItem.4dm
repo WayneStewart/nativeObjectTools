@@ -34,20 +34,20 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
-// Wayne Stewart, 2026-04-04 - Added OTr_zSetOK(1) on success.
-// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+// Wayne Stewart, 2026-04-04 - Added OTr_z_SetOK(1) on success.
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_z_SetOK(1) on
 //   success path (see OTr-OK0-Conditions specification).
 // Wayne Stewart, 2026-04-10 - Rewritten to copy the value via a
 //   single OB SET that dereferences OB Get (type-agnostic), covering
 //   every native 4D object-model type including Date, Time, Picture,
 //   and BLOB. Any sibling shadow-type key (leafKey$type) is moved
-//   alongside the primary leaf so that OTr_zMapType continues to
+//   alongside the primary leaf so that OTr_z_MapType continues to
 //   report the correct OT type after the rename.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inNewTag_t : Text)
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $dotPos_i : Integer
 var $scanPos_i : Integer
@@ -58,132 +58,132 @@ var $parentLeaf_t : Text
 var $nativeType_i : Integer
 var $shadowOld_t; $shadowNew_t : Text
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-
+If (OTr_z_IsValidHandle($inObject_i))
+	
 	// Split $inTag_t into parent path and leaf name
 	$dotPos_i:=0
-	$scanPos_i:=Length($inTag_t)
+	$scanPos_i:=Length:C16($inTag_t)
 	While ($scanPos_i>0)
-		If (Substring($inTag_t; $scanPos_i; 1)=".")
+		If (Substring:C12($inTag_t; $scanPos_i; 1)=".")
 			$dotPos_i:=$scanPos_i
 			$scanPos_i:=0
-		Else
+		Else 
 			$scanPos_i:=$scanPos_i-1
-		End if
-	End while
-
+		End if 
+	End while 
+	
 	If ($dotPos_i>0)
 		// Item is nested — navigate to parent container
-		$parentPath_t:=Substring($inTag_t; 1; $dotPos_i-1)
-		$leafKey_t:=Substring($inTag_t; $dotPos_i+1)
-
+		$parentPath_t:=Substring:C12($inTag_t; 1; $dotPos_i-1)
+		$leafKey_t:=Substring:C12($inTag_t; $dotPos_i+1)
+		
 		var $resolvedParent_o : Object
 		var $resolvedParentLeaf_t : Text
-
-		If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; \
-			$parentPath_t; False; ->$resolvedParent_o; \
+		
+		If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; \
+			$parentPath_t; False:C215; ->$resolvedParent_o; \
 			->$resolvedParentLeaf_t))
-			If (OB Is defined($resolvedParent_o; $resolvedParentLeaf_t))
-				$parentObj_o:=OB Get( \
-					$resolvedParent_o; $resolvedParentLeaf_t; Is object)
-			End if
-		End if
-	Else
+			If (OB Is defined:C1231($resolvedParent_o; $resolvedParentLeaf_t))
+				$parentObj_o:=OB Get:C1224(\
+					$resolvedParent_o; $resolvedParentLeaf_t; Is object:K8:27)
+			End if 
+		End if 
+	Else 
 		// Top-level item
 		$leafKey_t:=$inTag_t
 		$parentObj_o:=<>OTR_Objects_ao{$inObject_i}
-	End if
-
-	If ($parentObj_o=Null)
-		OTr_zError("Cannot resolve parent for: "+$inTag_t; Current method name)
-
-	Else
-
-		If (OB Is defined($parentObj_o; $leafKey_t))
-
-			If (OB Is defined($parentObj_o; $inNewTag_t))
-				OTr_zError("Target name already exists: "+$inNewTag_t; \
-					Current method name)
-
-			Else
-
-				$nativeType_i:=OB Get type($parentObj_o; $leafKey_t)
-
-				Case of
-
-					: ($nativeType_i=Is real)
-						OB SET($parentObj_o; $inNewTag_t; \
-							OB Get($parentObj_o; $leafKey_t; Is real))
-
-					: (($nativeType_i=Is longint) \
-						| ($nativeType_i=Is integer))
-						OB SET($parentObj_o; $inNewTag_t; \
-							OB Get($parentObj_o; $leafKey_t; Is longint))
-
-					: ($nativeType_i=Is Boolean)
-						OB SET($parentObj_o; $inNewTag_t; \
-							OB Get($parentObj_o; $leafKey_t; Is Boolean))
-
-					: ($nativeType_i=Is date)
-						OB SET($parentObj_o; $inNewTag_t; \
-							OB Get($parentObj_o; $leafKey_t; Is date))
-
-					: ($nativeType_i=Is time)
-						OB SET($parentObj_o; $inNewTag_t; \
-							OB Get($parentObj_o; $leafKey_t; Is time))
-
-					: ($nativeType_i=Is picture)
-						OB SET($parentObj_o; $inNewTag_t; \
-							OB Get($parentObj_o; $leafKey_t; Is picture))
-
-					: ($nativeType_i=Is BLOB)
-						OB SET($parentObj_o; $inNewTag_t; \
-							OB Get($parentObj_o; $leafKey_t; Is BLOB))
-
-					: ($nativeType_i=Is object)
-						OB SET($parentObj_o; $inNewTag_t; \
-							OB Get($parentObj_o; $leafKey_t; Is object))
-
-					: ($nativeType_i=Is collection)
-						OB SET($parentObj_o; $inNewTag_t; \
-							OB Get($parentObj_o; $leafKey_t; Is collection))
-
-					: ($nativeType_i=Is text)
+	End if 
+	
+	If ($parentObj_o=Null:C1517)
+		OTr_z_Error("Cannot resolve parent for: "+$inTag_t; Current method name:C684)
+		
+	Else 
+		
+		If (OB Is defined:C1231($parentObj_o; $leafKey_t))
+			
+			If (OB Is defined:C1231($parentObj_o; $inNewTag_t))
+				OTr_z_Error("Target name already exists: "+$inNewTag_t; \
+					Current method name:C684)
+				
+			Else 
+				
+				$nativeType_i:=OB Get type:C1230($parentObj_o; $leafKey_t)
+				
+				Case of 
+						
+					: ($nativeType_i=Is real:K8:4)
+						OB SET:C1220($parentObj_o; $inNewTag_t; \
+							OB Get:C1224($parentObj_o; $leafKey_t; Is real:K8:4))
+						
+					: (($nativeType_i=Is longint:K8:6)\
+						 | ($nativeType_i=Is integer:K8:5))
+						OB SET:C1220($parentObj_o; $inNewTag_t; \
+							OB Get:C1224($parentObj_o; $leafKey_t; Is longint:K8:6))
+						
+					: ($nativeType_i=Is boolean:K8:9)
+						OB SET:C1220($parentObj_o; $inNewTag_t; \
+							OB Get:C1224($parentObj_o; $leafKey_t; Is boolean:K8:9))
+						
+					: ($nativeType_i=Is date:K8:7)
+						OB SET:C1220($parentObj_o; $inNewTag_t; \
+							OB Get:C1224($parentObj_o; $leafKey_t; Is date:K8:7))
+						
+					: ($nativeType_i=Is time:K8:8)
+						OB SET:C1220($parentObj_o; $inNewTag_t; \
+							OB Get:C1224($parentObj_o; $leafKey_t; Is time:K8:8))
+						
+					: ($nativeType_i=Is picture:K8:10)
+						OB SET:C1220($parentObj_o; $inNewTag_t; \
+							OB Get:C1224($parentObj_o; $leafKey_t; Is picture:K8:10))
+						
+					: ($nativeType_i=Is BLOB:K8:12)
+						OB SET:C1220($parentObj_o; $inNewTag_t; \
+							OB Get:C1224($parentObj_o; $leafKey_t; Is BLOB:K8:12))
+						
+					: ($nativeType_i=Is object:K8:27)
+						OB SET:C1220($parentObj_o; $inNewTag_t; \
+							OB Get:C1224($parentObj_o; $leafKey_t; Is object:K8:27))
+						
+					: ($nativeType_i=Is collection:K8:32)
+						OB SET:C1220($parentObj_o; $inNewTag_t; \
+							OB Get:C1224($parentObj_o; $leafKey_t; Is collection:K8:32))
+						
+					: ($nativeType_i=Is text:K8:3)
 						// Plain copy — covers ordinary user text as
 						// well as the text-encoded fallbacks for
 						// Pointer and (pre-v19 R2) BLOB.
-						OB SET($parentObj_o; $inNewTag_t; \
-							OB Get($parentObj_o; $leafKey_t; Is text))
-
-				End case
-
+						OB SET:C1220($parentObj_o; $inNewTag_t; \
+							OB Get:C1224($parentObj_o; $leafKey_t; Is text:K8:3))
+						
+				End case 
+				
 				// Move the sibling shadow-type key alongside the
-				// primary leaf so OTr_zMapType continues to report
+				// primary leaf so OTr_z_MapType continues to report
 				// the correct OT type after the rename.
-				$shadowOld_t:=OTr_zShadowKey($leafKey_t)
-				$shadowNew_t:=OTr_zShadowKey($inNewTag_t)
-				If (OB Is defined($parentObj_o; $shadowOld_t))
-					OB SET($parentObj_o; $shadowNew_t; \
-						OB Get($parentObj_o; $shadowOld_t; Is longint))
-					OB REMOVE($parentObj_o; $shadowOld_t)
-				End if
+				$shadowOld_t:=OTr_z_ShadowKey($leafKey_t)
+				$shadowNew_t:=OTr_z_ShadowKey($inNewTag_t)
+				If (OB Is defined:C1231($parentObj_o; $shadowOld_t))
+					OB SET:C1220($parentObj_o; $shadowNew_t; \
+						OB Get:C1224($parentObj_o; $shadowOld_t; Is longint:K8:6))
+					OB REMOVE:C1226($parentObj_o; $shadowOld_t)
+				End if 
+				
+				OB REMOVE:C1226($parentObj_o; $leafKey_t)
+				
+			End if 
+			
+		Else 
+			OTr_z_Error("Item not found: "+$inTag_t; Current method name:C684)
+		End if 
+		
+	End if 
+	
+Else 
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+End if 
 
-				OB REMOVE($parentObj_o; $leafKey_t)
+OTr_z_Unlock
 
-			End if
-
-		Else
-			OTr_zError("Item not found: "+$inTag_t; Current method name)
-		End if
-
-	End if
-
-Else
-	OTr_zError("Invalid handle"; Current method name)
-End if
-
-OTr_zUnlock
-
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

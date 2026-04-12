@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_Clear (ioObject)
 
@@ -40,13 +40,13 @@
 
 #DECLARE($ioObject_i : Integer)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $size_i : Integer
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($ioObject_i))
+If (OTr_z_IsValidHandle($ioObject_i))
 	<>OTR_Objects_ao{$ioObject_i}:=New object:C1471()
 	<>OTR_InUse_ab{$ioObject_i}:=False:C215
 	
@@ -57,9 +57,9 @@ If (OTr_zIsValidHandle($ioObject_i))
 		$size_i:=$size_i-1
 	End while 
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

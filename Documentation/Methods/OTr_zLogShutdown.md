@@ -1,1 +1,0 @@
-<!--OTr_zLogShutdown Does not require any parameters -->## OTr\_zLogShutdownOTr\_zLogShutdownPerforms the basic shutdown of the OTr logging subsystem.Attributes: Private, Invisible, Preemptive indifferent| Parameters || --- || Does not require any parameters |

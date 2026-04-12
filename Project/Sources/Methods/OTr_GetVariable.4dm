@@ -43,13 +43,13 @@
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-10 - Revised retrieval strategy: dispatch
 //     on Value type of the destination; native OB Get for native
-//     scalar types; OTr_uTextTo* helpers for Date/Time/Pointer/BLOB.
+//     scalar types; OTr_u_TextTo* helpers for Date/Time/Pointer/BLOB.
 //     Removed the "var:typename:" sentinel parser. Corrected the
 //     pointer-case constant (was K8:11, now Is pointer K8:14).
 // Wayne Stewart, 2026-04-10 - BLOB case now honours
 //     Storage.OTr.nativeBlobInObject, matching OTr_GetBLOB/GetNewBLOB.
 // Wayne Stewart, 2026-04-10 - Date and Time destinations now read
-//     natively via OB Get (was OTr_uTextToDate / OTr_uTextToTime),
+//     natively via OB Get (was OTr_u_TextToDate / OTr_u_TextToTime),
 //     matching the native-write side in OTr_PutVariable.
 // Wayne Stewart, 2026-04-11 - Documented coercion-on-mismatch
 //     divergence from OT (coerced value returned; OK=0 preserved).
@@ -57,7 +57,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outVarPointer_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -66,9 +66,9 @@ var $unlocked_b : Boolean
 
 $unlocked_b:=False:C215
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
+If (OTr_z_IsValidHandle($inObject_i))
 	
 	$destType_i:=Value type:C1509($outVarPointer_ptr->)
 	
@@ -77,7 +77,7 @@ If (OTr_zIsValidHandle($inObject_i))
 			// Array destinations: delegate to OTr_GetArray
 		: ($destType_i=Is collection:K8:32)
 			// Collections are handled by OTr_GetArray via the collection path
-			OTr_zUnlock
+			OTr_z_Unlock
 			$unlocked_b:=True:C214
 			OTr_GetArray($inObject_i; $inTag_t; $outVarPointer_ptr)
 			
@@ -92,13 +92,13 @@ If (OTr_zIsValidHandle($inObject_i))
 			 | (Type:C295($outVarPointer_ptr->)=Picture array:K8:22)\
 			 | (Type:C295($outVarPointer_ptr->)=Pointer array:K8:23)\
 			 | (Type:C295($outVarPointer_ptr->)=Is integer 64 bits:K8:25)
-			OTr_zUnlock
+			OTr_z_Unlock
 			$unlocked_b:=True:C214
 			OTr_GetArray($inObject_i; $inTag_t; $outVarPointer_ptr)
 			
 		Else 
 			// Scalar destinations — resolve the path and dispatch on type
-			If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+			If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 				
 				If (OB Is defined:C1231($parent_o; $leafKey_t))
 					
@@ -126,17 +126,17 @@ If (OTr_zIsValidHandle($inObject_i))
 							$outVarPointer_ptr->:=OB Get:C1224($parent_o; $leafKey_t; Is time:K8:8)
 							
 						: ($destType_i=Is pointer:K8:14)
-							$outVarPointer_ptr->:=OTr_uTextToPointer(OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3))
+							$outVarPointer_ptr->:=OTr_u_TextToPointer(OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3))
 							
 						: ($destType_i=Is BLOB:K8:12)
 							If (Storage:C1525.OTr.nativeBlobInObject)
 								$outVarPointer_ptr->:=OB Get:C1224($parent_o; $leafKey_t; Is BLOB:K8:12)
 							Else 
-								$outVarPointer_ptr->:=OTr_uTextToBlob(OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3))
+								$outVarPointer_ptr->:=OTr_u_TextToBlob(OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3))
 							End if 
 							
 						Else 
-							OTr_zError("Unsupported destination variable type"; Current method name:C684)
+							OTr_z_Error("Unsupported destination variable type"; Current method name:C684)
 							
 					End case 
 					
@@ -147,12 +147,12 @@ If (OTr_zIsValidHandle($inObject_i))
 	End case 
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
 	
 End if 
 
 If (Not:C34($unlocked_b))
-	OTr_zUnlock
+	OTr_z_Unlock
 End if 
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

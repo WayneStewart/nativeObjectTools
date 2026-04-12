@@ -16,7 +16,7 @@
 
 #DECLARE($request_t : Text)->$reply_t : Text
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 Case of 
 	: (Count parameters:C259=0)
@@ -32,4 +32,4 @@ Case of
 		$reply_t:=" Label Not Recognised"
 End case 
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

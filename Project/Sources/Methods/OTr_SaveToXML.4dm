@@ -48,7 +48,7 @@
 
 #DECLARE($inObject_i : Integer; $inPrettyPrint_b : Boolean)->$xml_t : Text
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $snapshot_o : Object
 var $domRef_t : Text
@@ -56,45 +56,45 @@ var $valid_b : Boolean
 var $includeShadow_b : Boolean
 var $prettyPrint_b : Boolean
 
-If (Count parameters < 2)
-	$prettyPrint_b:=True
-Else
+If (Count parameters:C259<2)
+	$prettyPrint_b:=True:C214
+Else 
 	$prettyPrint_b:=$inPrettyPrint_b
-End if
+End if 
 
 $xml_t:=""
-$valid_b:=False
+$valid_b:=False:C215
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	$snapshot_o:=OB Copy(<>OTR_Objects_ao{$inObject_i})
-	$valid_b:=True
-End if
+If (OTr_z_IsValidHandle($inObject_i))
+	$snapshot_o:=OB Copy:C1225(<>OTR_Objects_ao{$inObject_i})
+	$valid_b:=True:C214
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
 If ($valid_b)
-
+	
 	$includeShadow_b:=OTr_IncludeShadowKey  // read current setting
-
+	
 	// Build DOM tree.
 	// DOM Create XML Ref returns a reference to the root element directly.
-	$domRef_t:=DOM Create XML Ref("OTrObject")
-
-	OTr_zXMLWriteObject($domRef_t; $snapshot_o; $includeShadow_b)
-
+	$domRef_t:=DOM Create XML Ref:C861("OTrObject")
+	
+	OTr_z_XMLWriteObject($domRef_t; $snapshot_o; $includeShadow_b)
+	
 	// Export to text variable
-	DOM EXPORT TO VAR($domRef_t; $xml_t)
-
-	If (Not($prettyPrint_b))
+	DOM EXPORT TO VAR:C863($domRef_t; $xml_t)
+	
+	If (Not:C34($prettyPrint_b))
 		// Compact: strip newlines and redundant whitespace between tags
-		$xml_t:=Replace string($xml_t; Char(10); "")
-		$xml_t:=Replace string($xml_t; Char(9); "")
-	End if
+		$xml_t:=Replace string:C233($xml_t; Char:C90(10); "")
+		$xml_t:=Replace string:C233($xml_t; Char:C90(9); "")
+	End if 
+	
+	DOM CLOSE XML:C722($domRef_t)
+	
+End if 
 
-	DOM CLOSE XML($domRef_t)
-
-End if
-
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

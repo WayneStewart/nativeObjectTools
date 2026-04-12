@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutArray (inObject; inTag; inArray)
 
@@ -42,18 +42,18 @@
 // ----------------------------------------------------
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inArray_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $anObj_o; $parent_o; $arrayObject_o : Object
 var $leafKey_t : Text
 var $type_i; $index_i; $count_i; $currentItem_i : Integer
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
+If (OTr_z_IsValidHandle($inObject_i))
 	$anObj_o:=<>OTR_Objects_ao{$inObject_i}  // Make the code easier to read
 	
-	If (OTr_zResolvePath($anObj_o; $inTag_t; True:C214; ->$parent_o; ->$leafKey_t))
+	If (OTr_z_ResolvePath($anObj_o; $inTag_t; True:C214; ->$parent_o; ->$leafKey_t))
 		$type_i:=Type:C295($inArray_ptr->)
 		$count_i:=Size of array:C274($inArray_ptr->)
 		$currentItem_i:=$inArray_ptr->
@@ -69,16 +69,16 @@ If (OTr_zIsValidHandle($inObject_i))
 					$arrayObject_o[String:C10($index_i)]:=$inArray_ptr->{$index_i}
 					
 				: ($type_i=Date array:K8:20)
-					$arrayObject_o[String:C10($index_i)]:=OTr_uDateToText($inArray_ptr->{$index_i})
+					$arrayObject_o[String:C10($index_i)]:=OTr_u_DateToText($inArray_ptr->{$index_i})
 					
 				: ($type_i=Time array:K8:29)
-					$arrayObject_o[String:C10($index_i)]:=OTr_uTimeToText($inArray_ptr->{$index_i})
+					$arrayObject_o[String:C10($index_i)]:=OTr_u_TimeToText($inArray_ptr->{$index_i})
 					
 				: ($type_i=Pointer array:K8:23)
-					$arrayObject_o[String:C10($index_i)]:=OTr_uPointerToText($inArray_ptr->{$index_i})
+					$arrayObject_o[String:C10($index_i)]:=OTr_u_PointerToText($inArray_ptr->{$index_i})
 					
 				: ($type_i=Blob array:K8:30)
-					$arrayObject_o[String:C10($index_i)]:=OTr_uBlobToText($inArray_ptr->{$index_i})
+					$arrayObject_o[String:C10($index_i)]:=OTr_u_BlobToText($inArray_ptr->{$index_i})
 					
 				: ($type_i=Picture array:K8:22)
 					$arrayObject_o[String:C10($index_i)]:=$inArray_ptr->{$index_i}
@@ -96,9 +96,9 @@ If (OTr_zIsValidHandle($inObject_i))
 	End if 
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

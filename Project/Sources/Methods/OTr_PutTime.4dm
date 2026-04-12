@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutTime (inObject; inTag; inValue)
 
@@ -32,63 +32,63 @@
 // Wayne Stewart, 2026-04-11 - Added type-consistency guard: refuses to overwrite an
 //   existing item whose stored type differs from Time (OK=0, value unchanged).
 // Wayne Stewart, 2026-04-11 - Added If/Else native/text storage guard.
-//   OTr_uNativeDateInObject() probes the current process's "Dates inside objects"
+//   OTr_u_NativeDateInObject() probes the current process's "Dates inside objects"
 //   setting at call time (per-process, per-call — see that method for rationale).
 //   True  → OB SET with native Time value (no shadow key needed; OB Get type → Is time).
-//   False → store as "HH:MM:SS" text via OTr_uTimeToText, plus a shadow key
-//           (leafKey$type := 11) so OTr_zMapType can identify the stored text as
+//   False → store as "HH:MM:SS" text via OTr_u_TimeToText, plus a shadow key
+//           (leafKey$type := 11) so OTr_z_MapType can identify the stored text as
 //           Is time (11) rather than OT Character (112).
-// Wayne Stewart, 2026-04-12 - Type guard updated to use OTr_zMapType (shadow-key-first)
+// Wayne Stewart, 2026-04-12 - Type guard updated to use OTr_z_MapType (shadow-key-first)
 //   instead of OB Get type, ensuring correct rejection of a text-stored Time (shadow key
 //   Is time = 11) that would otherwise pass an Is text check. Native path now also writes
-//   the shadow key (leafKey$type := Is time = 11) so that OTr_zMapType is version-independent
+//   the shadow key (leafKey$type := Is time = 11) so that OTr_z_MapType is version-independent
 //   and so that OTr_GetTime can branch on the shadow key rather than OB Get type alone.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_h : Time)
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
 var $existingType_i : Integer
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; \
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; \
 		->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			$existingType_i:=OTr_zMapType($parent_o; $leafKey_t)
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
+			$existingType_i:=OTr_z_MapType($parent_o; $leafKey_t)
 			If ($existingType_i#0) & ($existingType_i#Is time:K8:8)
-				OTr_zError("Type mismatch"; Current method name)
-			Else
-				If (OTr_uNativeDateInObject)
-					OB SET($parent_o; $leafKey_t; $inValue_h)
-					OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is time:K8:8)
-				Else
-					OB SET($parent_o; $leafKey_t; OTr_uTimeToText($inValue_h))
-					// Shadow key lets OTr_zMapType distinguish a text-stored time
+				OTr_z_Error("Type mismatch"; Current method name:C684)
+			Else 
+				If (OTr_u_NativeDateInObject)
+					OB SET:C1220($parent_o; $leafKey_t; $inValue_h)
+					OB SET:C1220($parent_o; OTr_z_ShadowKey($leafKey_t); Is time:K8:8)
+				Else 
+					OB SET:C1220($parent_o; $leafKey_t; OTr_u_TimeToText($inValue_h))
+					// Shadow key lets OTr_z_MapType distinguish a text-stored time
 					// (OT type 11) from an ordinary text string (OT type 112).
-					OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is time:K8:8)
-				End if
-			End if
-		Else
-			If (OTr_uNativeDateInObject)
-				OB SET($parent_o; $leafKey_t; $inValue_h)
-				OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is time:K8:8)
-			Else
-				OB SET($parent_o; $leafKey_t; OTr_uTimeToText($inValue_h))
-				// Shadow key lets OTr_zMapType distinguish a text-stored time
+					OB SET:C1220($parent_o; OTr_z_ShadowKey($leafKey_t); Is time:K8:8)
+				End if 
+			End if 
+		Else 
+			If (OTr_u_NativeDateInObject)
+				OB SET:C1220($parent_o; $leafKey_t; $inValue_h)
+				OB SET:C1220($parent_o; OTr_z_ShadowKey($leafKey_t); Is time:K8:8)
+			Else 
+				OB SET:C1220($parent_o; $leafKey_t; OTr_u_TimeToText($inValue_h))
+				// Shadow key lets OTr_z_MapType distinguish a text-stored time
 				// (Is time = 11) from an ordinary text string (OT Character = 112).
-				OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is time:K8:8)
-			End if
-		End if
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name)
-End if
+				OB SET:C1220($parent_o; OTr_z_ShadowKey($leafKey_t); Is time:K8:8)
+			End if 
+		End if 
+	End if 
+Else 
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

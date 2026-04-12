@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetNamedProperties (inObject; inTag; outType {; outItemSize {; outDataSize {; outIndex}}})
 
@@ -30,7 +30,7 @@
 $outItemSize_ptr : Pointer; $outDataSize_ptr : Pointer; \
 $outIndex_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -48,15 +48,15 @@ $needItemSize_b:=(Count parameters:C259>=4)
 $needDataSize_b:=(Count parameters:C259>=5)
 $needIndex_b:=(Count parameters:C259>=6)
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
+If (OTr_z_IsValidHandle($inObject_i))
 	
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; \
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			
-			$outType_ptr->:=OTr_zMapType($parent_o; $leafKey_t)
+			$outType_ptr->:=OTr_z_MapType($parent_o; $leafKey_t)
 			
 			If ($needItemSize_b | $needDataSize_b)
 				
@@ -92,14 +92,14 @@ If (OTr_zIsValidHandle($inObject_i))
 						
 					: ($nativeType_i=Is picture:K8:10)
 						$dataSize_i:=Picture size:C356(OB Get:C1224($parent_o; $leafKey_t; Is picture:K8:10))
-
+						
 					: ($nativeType_i=Is date:K8:7)
 						$dataSize_i:=8
-
+						
 					: ($nativeType_i=Is time:K8:8)
 						$dataSize_i:=8
-
-				End case
+						
+				End case 
 				
 				$itemSize_i:=$dataSize_i+Length:C16($leafKey_t)
 				
@@ -117,16 +117,16 @@ If (OTr_zIsValidHandle($inObject_i))
 			End if 
 			
 		Else 
-			OTr_zError("Item not found: "+$inTag_t; Current method name:C684)
+			OTr_z_Error("Item not found: "+$inTag_t; Current method name:C684)
 		End if 
 	Else 
-		OTr_zError("Invalid path: "+$inTag_t; Current method name:C684)
+		OTr_z_Error("Invalid path: "+$inTag_t; Current method name:C684)
 	End if 
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

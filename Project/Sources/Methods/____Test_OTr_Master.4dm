@@ -1309,8 +1309,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	CLEAR VARIABLE:C89($gotBlob5_blob)
 	OTr_GetBLOB($h5_i; "blobval"; ->$gotBlob5_blob)
 	$expected_t:="equal"
-	$actual_t:=Choose:C955(OTr_uEqualBLOBs($testBlob5_blob; $gotBlob5_blob); "equal"; "not equal")
-	$pass_b:=OTr_uEqualBLOBs($testBlob5_blob; $gotBlob5_blob)
+	$actual_t:=Choose:C955(OTr_u_EqualBLOBs($testBlob5_blob; $gotBlob5_blob); "equal"; "not equal")
+	$pass_b:=OTr_u_EqualBLOBs($testBlob5_blob; $gotBlob5_blob)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -1325,8 +1325,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_PutBLOB($h5_i; "blobval2"; $testBlob5_blob)
 	$gotBlob5_blob:=OTr_GetNewBLOB($h5_i; "blobval2")
 	$expected_t:="equal"
-	$actual_t:=Choose:C955(OTr_uEqualBLOBs($testBlob5_blob; $gotBlob5_blob); "equal"; "not equal")
-	$pass_b:=OTr_uEqualBLOBs($testBlob5_blob; $gotBlob5_blob)
+	$actual_t:=Choose:C955(OTr_u_EqualBLOBs($testBlob5_blob; $gotBlob5_blob); "equal"; "not equal")
+	$pass_b:=OTr_u_EqualBLOBs($testBlob5_blob; $gotBlob5_blob)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -1368,8 +1368,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$testName_t:="OTr_GetPicture round-trip"
 	$gotPic5_pic:=OTr_GetPicture($h5_i; "picval")
 	$expected_t:="equal"
-	$actual_t:=Choose:C955(OTr_uEqualPictures($testPic5_pic; $gotPic5_pic); "equal"; "not equal")
-	$pass_b:=OTr_uEqualPictures($testPic5_pic; $gotPic5_pic)
+	$actual_t:=Choose:C955(OTr_u_EqualPictures($testPic5_pic; $gotPic5_pic); "equal"; "not equal")
+	$pass_b:=OTr_u_EqualPictures($testPic5_pic; $gotPic5_pic)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -1451,9 +1451,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// GetRecordTable — hand-crafted snapshot
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetRecordTable hand-crafted snapshot = 7"
-	OTr_zLock
+	OTr_z_Lock
 	OB SET:C1220(<>OTR_Objects_ao{$h5_i}; "snaptag"; New object:C1471("__tableNum"; 7; "SomeField"; "test-value"))
-	OTr_zUnlock
+	OTr_z_Unlock
 	$expected_t:="7"
 	$actual_t:=String:C10(OTr_GetRecordTable($h5_i; "snaptag"))
 	$pass_b:=(OTr_GetRecordTable($h5_i; "snaptag")=7)
@@ -1531,8 +1531,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	// uMapType 4D→OT: Is longint → Is longint:K8:6 (shadow-key currency)
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is longint 4D→OT → Is longint:K8:6"
-	$mapResult6_i:=OTr_uMapType(Is longint:K8:6; 0)
+	$testName_t:="OTr_u_MapType Is longint 4D→OT → Is longint:K8:6"
+	$mapResult6_i:=OTr_u_MapType(Is longint:K8:6; 0)
 	$expected_t:=String:C10(Is longint:K8:6)
 	$actual_t:=String:C10($mapResult6_i)
 	$pass_b:=($mapResult6_i=Is longint:K8:6)
@@ -1545,8 +1545,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	// uMapType 4D→OT: Is text → OT Is Character (112)
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is text 4D→OT → OT Is Character (112)"
-	$mapResult6_i:=OTr_uMapType(Is text:K8:3; 0)
+	$testName_t:="OTr_u_MapType Is text 4D→OT → OT Is Character (112)"
+	$mapResult6_i:=OTr_u_MapType(Is text:K8:3; 0)
 	$expected_t:=String:C10(OT Is Character)
 	$actual_t:=String:C10($mapResult6_i)
 	$pass_b:=($mapResult6_i=OT Is Character)
@@ -1559,8 +1559,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	// uMapType OT→4D: Is longint:K8:6 → Is longint
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is longint:K8:6 OT→4D → Is longint"
-	$mapResult6_i:=OTr_uMapType(Is longint:K8:6; 1)
+	$testName_t:="OTr_u_MapType Is longint:K8:6 OT→4D → Is longint"
+	$mapResult6_i:=OTr_u_MapType(Is longint:K8:6; 1)
 	$expected_t:=String:C10(Is longint:K8:6)
 	$actual_t:=String:C10($mapResult6_i)
 	$pass_b:=($mapResult6_i=Is longint:K8:6)
@@ -1573,8 +1573,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	// uMapType 4D→OT: Is real → Is real:K8:4 (shadow-key currency)
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is real 4D→OT → Is real:K8:4"
-	$mapResult6_i:=OTr_uMapType(Is real:K8:4; 0)
+	$testName_t:="OTr_u_MapType Is real 4D→OT → Is real:K8:4"
+	$mapResult6_i:=OTr_u_MapType(Is real:K8:4; 0)
 	$expected_t:=String:C10(Is real:K8:4)
 	$actual_t:=String:C10($mapResult6_i)
 	$pass_b:=($mapResult6_i=Is real:K8:4)
@@ -1587,8 +1587,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	// uMapType 4D→OT: Is picture → Is picture:K8:10 (shadow-key currency)
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is picture 4D→OT → Is picture:K8:10"
-	$mapResult6_i:=OTr_uMapType(Is picture:K8:10; 0)
+	$testName_t:="OTr_u_MapType Is picture 4D→OT → Is picture:K8:10"
+	$mapResult6_i:=OTr_u_MapType(Is picture:K8:10; 0)
 	$expected_t:=String:C10(Is picture:K8:10)
 	$actual_t:=String:C10($mapResult6_i)
 	$pass_b:=($mapResult6_i=Is picture:K8:10)
@@ -1601,8 +1601,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	// uMapType 4D→OT: Is collection → OT Character array (113)
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is collection 4D→OT → OT Character array (113)"
-	$mapResult6_i:=OTr_uMapType(Is collection:K8:32; 0)
+	$testName_t:="OTr_u_MapType Is collection 4D→OT → OT Character array (113)"
+	$mapResult6_i:=OTr_u_MapType(Is collection:K8:32; 0)
 	$expected_t:=String:C10(OT Character array)
 	$actual_t:=String:C10($mapResult6_i)
 	$pass_b:=($mapResult6_i=OT Character array)
@@ -1615,8 +1615,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	// uMapType OT→4D: OT Is Record (115) → Is text
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType OT Is Record (115) OT→4D → Is text"
-	$mapResult6_i:=OTr_uMapType(OT Is Record; 1)
+	$testName_t:="OTr_u_MapType OT Is Record (115) OT→4D → Is text"
+	$mapResult6_i:=OTr_u_MapType(OT Is Record; 1)
 	$expected_t:=String:C10(Is text:K8:3)
 	$actual_t:=String:C10($mapResult6_i)
 	$pass_b:=($mapResult6_i=Is text:K8:3)
@@ -1629,8 +1629,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	// uMapType OT→4D: 24 (legacy Variable) → Is text
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType 24 (legacy Variable) OT→4D → Is text"
-	$mapResult6_i:=OTr_uMapType(24; 1)
+	$testName_t:="OTr_u_MapType 24 (legacy Variable) OT→4D → Is text"
+	$mapResult6_i:=OTr_u_MapType(24; 1)
 	$expected_t:=String:C10(Is text:K8:3)
 	$actual_t:=String:C10($mapResult6_i)
 	$pass_b:=($mapResult6_i=Is text:K8:3)
@@ -1643,8 +1643,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	// uMapType 4D→OT: Is Boolean → Is Boolean:K8:9 (shadow-key currency; default direction)
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType Is Boolean 4D→OT (default dir) → Is Boolean:K8:9"
-	$mapResult6_i:=OTr_uMapType(Is boolean:K8:9)
+	$testName_t:="OTr_u_MapType Is Boolean 4D→OT (default dir) → Is Boolean:K8:9"
+	$mapResult6_i:=OTr_u_MapType(Is boolean:K8:9)
 	$expected_t:=String:C10(Is boolean:K8:9)
 	$actual_t:=String:C10($mapResult6_i)
 	$pass_b:=($mapResult6_i=Is boolean:K8:9)
@@ -1657,8 +1657,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	// uMapType — unknown type returns 0
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_uMapType unknown type → 0"
-	$mapResult6_i:=OTr_uMapType(9999; 0)
+	$testName_t:="OTr_u_MapType unknown type → 0"
+	$mapResult6_i:=OTr_u_MapType(9999; 0)
 	$expected_t:="0"
 	$actual_t:=String:C10($mapResult6_i)
 	$pass_b:=($mapResult6_i=0)
@@ -1818,8 +1818,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$h6blobItem2_i:=OTr_BLOBToObject($roundBlob6_blob)
 	$gotBlobItem6_blob:=OTr_GetNewBLOB($h6blobItem2_i; "bdata")
 	$expected_t:="equal"
-	$actual_t:=Choose:C955(OTr_uEqualBLOBs($blobItem6_blob; $gotBlobItem6_blob); "equal"; "not equal")
-	$pass_b:=OTr_uEqualBLOBs($blobItem6_blob; $gotBlobItem6_blob)
+	$actual_t:=Choose:C955(OTr_u_EqualBLOBs($blobItem6_blob; $gotBlobItem6_blob); "equal"; "not equal")
+	$pass_b:=OTr_u_EqualBLOBs($blobItem6_blob; $gotBlobItem6_blob)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -1840,8 +1840,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$h6picItem2_i:=OTr_BLOBToObject($roundPicBlob6_blob)
 	$gotPicItem6_pic:=OTr_GetPicture($h6picItem2_i; "pdata")
 	$expected_t:="equal"
-	$actual_t:=Choose:C955(OTr_uEqualPictures($picItem6_pic; $gotPicItem6_pic); "equal"; "not equal")
-	$pass_b:=OTr_uEqualPictures($picItem6_pic; $gotPicItem6_pic)
+	$actual_t:=Choose:C955(OTr_u_EqualPictures($picItem6_pic; $gotPicItem6_pic); "equal"; "not equal")
+	$pass_b:=OTr_u_EqualPictures($picItem6_pic; $gotPicItem6_pic)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -2149,8 +2149,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_PutArrayBLOB($h8_i; "blobs"; 1; $testBlob8_blob)
 	$result8_blob:=OTr_GetArrayBLOB($h8_i; "blobs"; 1)
 	$expected_t:="equal"
-	$actual_t:=Choose:C955(OTr_uEqualBLOBs($result8_blob; $testBlob8_blob); "equal"; "not equal")
-	$pass_b:=OTr_uEqualBLOBs($result8_blob; $testBlob8_blob)
+	$actual_t:=Choose:C955(OTr_u_EqualBLOBs($result8_blob; $testBlob8_blob); "equal"; "not equal")
+	$pass_b:=OTr_u_EqualBLOBs($result8_blob; $testBlob8_blob)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -2163,8 +2163,8 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$testName_t:="GetArrayPicture existing element matches"
 	$result8_pic:=OTr_GetArrayPicture($h8_i; "pics"; 1)
 	$expected_t:="equal"
-	$actual_t:=Choose:C955(OTr_uEqualPictures($result8_pic; $testWombat8_pic); "equal"; "not equal")
-	$pass_b:=OTr_uEqualPictures($result8_pic; $testWombat8_pic)
+	$actual_t:=Choose:C955(OTr_u_EqualPictures($result8_pic; $testWombat8_pic); "equal"; "not equal")
+	$pass_b:=OTr_u_EqualPictures($result8_pic; $testWombat8_pic)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1

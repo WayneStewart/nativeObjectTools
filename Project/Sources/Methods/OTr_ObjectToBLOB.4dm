@@ -52,13 +52,13 @@
 // Wayne Stewart, 2026-04-03 - Rewritten: VARIABLE TO BLOB + GZIP compression;
 //       dropped OTR1 envelope and parallel-array expansion.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
-// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_z_SetOK(1) on
 //   success path (see OTr-OK0-Conditions specification).
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $ioBLOB_ptr : Pointer; $inAppend_i : Integer)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 //var $inAppend_i : Integer
 
@@ -73,16 +73,16 @@ Else
 End if 
 
 If ($ioBLOB_ptr=Null:C1517)
-	OTr_zError("ioBLOB pointer is Nil"; Current method name:C684)
-	OTr_zSetOK(0)
+	OTr_z_Error("ioBLOB pointer is Nil"; Current method name:C684)
+	OTr_z_SetOK(0)
 	
 Else 
 	
-	OTr_zLock
+	OTr_z_Lock
 	
-	If (OTr_zIsValidHandle($inObject_i))
+	If (OTr_z_IsValidHandle($inObject_i))
 		$obj_o:=OB Copy:C1225(<>OTR_Objects_ao{$inObject_i})
-		OTr_zUnlock
+		OTr_z_Unlock
 		
 		VARIABLE TO BLOB:C532($obj_o; $serialised_blob)
 		COMPRESS BLOB:C534($serialised_blob; GZIP best compression mode:K22:18)
@@ -95,13 +95,13 @@ Else
 		End if 
 		
 	Else 
-		OTr_zError("Invalid inObject"; Current method name:C684)
+		OTr_z_Error("Invalid inObject"; Current method name:C684)
 		SET BLOB SIZE:C606($ioBLOB_ptr->; 0)
-		OTr_zSetOK(0)
-		OTr_zUnlock
+		OTr_z_SetOK(0)
+		OTr_z_Unlock
 		
 	End if 
 	
 End if 
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

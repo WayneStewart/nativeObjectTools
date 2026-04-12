@@ -40,7 +40,7 @@
 $outTypes_ptr : Pointer; $outItemSizes_ptr : Pointer; \
 $outDataSizes_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 // Delegate to OTr_GetAllNamedProperties with an empty tag,
 // forwarding only the pointer params that were actually supplied.
@@ -65,4 +65,4 @@ Case of
 		
 End case 
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

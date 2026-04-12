@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_ItemType (inObject; inTag {; Actual}) --> Longint
 
@@ -29,7 +29,7 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
-// Wayne Stewart, 2026-04-10 - Removed OTr_zSetOK(1) on success path.
+// Wayne Stewart, 2026-04-10 - Removed OTr_z_SetOK(1) on success path.
 //   The legacy ObjectTools plugin has no documented instances of setting
 //   OK to 1; OTr matches that behaviour. OK is pulled to zero on error
 //   (invalid handle, missing tag) and is not modified on success.
@@ -38,7 +38,7 @@
 //   is returned. This implementation is therefore correct.
 // Wayne Stewart, 2026-04-12 - Added optional Actual parameter.
 //   When True, returns the raw shadow key value (leafKey$type) written by
-//   the Put method rather than the OTr_zMapType-normalised result.
+//   the Put method rather than the OTr_z_MapType-normalised result.
 //   Falls back to OB Get type if no shadow key is present.
 //   Useful for diagnostics and distinguishing stored representation from
 //   the OT-compatible normalised type.
@@ -46,7 +46,7 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $useActual_b : Boolean)->$otType_i : Integer
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -54,42 +54,42 @@ var $actualMode_b : Boolean
 
 If (Count parameters:C259<3)
 	$actualMode_b:=False:C215
-Else
+Else 
 	$actualMode_b:=$useActual_b
-End if
+End if 
 
 $otType_i:=0
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_z_IsValidHandle($inObject_i))
+	
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
-
+			
 			If ($actualMode_b)
 				// Actual mode: return the raw shadow key value, or OB Get type if absent.
-				If (OB Is defined:C1231($parent_o; OTr_zShadowKey($leafKey_t)))
-					$otType_i:=OB Get:C1224($parent_o; OTr_zShadowKey($leafKey_t); Is longint:K8:6)
+				If (OB Is defined:C1231($parent_o; OTr_z_ShadowKey($leafKey_t)))
+					$otType_i:=OB Get:C1224($parent_o; OTr_z_ShadowKey($leafKey_t); Is longint:K8:6)
 				Else 
 					$otType_i:=OB Get type:C1230($parent_o; $leafKey_t)
 				End if 
 			Else 
-				// Default mode: OTr-normalised type via OTr_zMapType.
-				$otType_i:=OTr_zMapType($parent_o; $leafKey_t)
+				// Default mode: OTr-normalised type via OTr_z_MapType.
+				$otType_i:=OTr_z_MapType($parent_o; $leafKey_t)
 			End if 
 			
 		Else 
-			OTr_zError("Item not found: "+$inTag_t; Current method name:C684)
+			OTr_z_Error("Item not found: "+$inTag_t; Current method name:C684)
 		End if 
 	Else 
-		OTr_zError("Invalid path: "+$inTag_t; Current method name:C684)
+		OTr_z_Error("Invalid path: "+$inTag_t; Current method name:C684)
 	End if 
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

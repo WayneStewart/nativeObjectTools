@@ -161,34 +161,7 @@
 			"OTr_z_LogDirectory",
 			"OTr_z_LogInit",
 			"OTr_z_timestampLocal",
-			"OTr_z_Wombat",
-			"OTr_zAddToCallStack",
-			"OTr_zArrayFromObject",
-			"OTr_zArrayType",
-			"OTr_zErrIgnore",
-			"OTr_zError",
-			"OTr_zInit",
-			"OTr_zIsShadowKey",
-			"OTr_zIsValidHandle",
-			"OTr_zLock",
-			"OTr_zLogFileName",
-			"OTr_zLogGetCallStack",
-			"OTr_zLogLevelToInt",
-			"OTr_zLogShutdown",
-			"OTr_zLogWrite",
-			"OTr_zMapType",
-			"OTr_zRemoveFromCallStack",
-			"OTr_zResolvePath",
-			"OTr_zSetOK",
-			"OTr_zShadowKey",
-			"OTr_zSortFillSlot",
-			"OTr_zSortSlotPointer",
-			"OTr_zSortValidatePair",
-			"OTr_zTogglePluginBlocks",
-			"OTr_zUnlock",
-			"OTr_zXMLReadObject",
-			"OTr_zXMLWriteObject",
-			"OTr_zXMLWriteObjectSAX"
+			"OTr_z_Wombat"
 		]
 	},
 	"OT Testing": {
@@ -227,22 +200,7 @@
 	"OT Utility Methods": {
 		"methods": [
 			"Is a method",
-			"OTr_u_AccessArrayElement",
-			"OTr_uBlobToText",
-			"OTr_uDateToText",
-			"OTr_uEqualBLOBs",
-			"OTr_uEqualObjects",
-			"OTr_uEqualPictures",
-			"OTr_uEqualStrings",
-			"OTr_uMapType",
-			"OTr_uNativeDateInObject",
-			"OTr_uNewValueForEmbeddedType",
-			"OTr_uPointerToText",
-			"OTr_uTextToBlob",
-			"OTr_uTextToDate",
-			"OTr_uTextToPointer",
-			"OTr_uTextToTime",
-			"OTr_uTimeToText"
+			"OTr_u_AccessArrayElement"
 		]
 	},
 	"trash": {}

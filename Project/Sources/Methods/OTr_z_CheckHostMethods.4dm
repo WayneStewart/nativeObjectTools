@@ -4,7 +4,7 @@
 
 // Creates required methods in the host database if they do not
 //   already exist. Called once per application launch from
-//   within the Storage initialisation block in OTr_zInit.
+//   within the Storage initialisation block in OTr_z_Init.
 
 // Access: Private
 

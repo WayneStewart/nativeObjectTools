@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_Register (inSerialNum) --> Longint
 
@@ -19,10 +19,10 @@
 
 #DECLARE($inSerialNum_t : Text)->$result_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 $result_i:=1
 
-OTr_zLogWrite("info"; "plugin"; "successfully registered ObjectTools")
+OTr_z_LogWrite("info"; "plugin"; "successfully registered ObjectTools")
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

@@ -18,11 +18,11 @@
 
 var $compiled_b : Boolean
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 $compiled_b:=Is compiled mode:C492
 
 $isCompiled_i:=Num:C11($compiled_b)
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)
 

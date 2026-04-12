@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetArray (inObject; inTag; outArray)
 
@@ -6,7 +6,7 @@
 // the 4D array pointed to by $outArray_ptr. The target
 // array must already be declared with an appropriate
 // type. Elements are converted from stored text/values
-// via the OTr_u utility methods as required.
+// via the OTr_u_ utility methods as required.
 
 // **ORIGINAL DOCUMENTATION**
 
@@ -47,43 +47,43 @@
 
 // Wayne Stewart, 2026-04-02 - Restructured to resolve handle/path
 //   once; now calls OTr_ArrayType directly on the retrieved object
-//   instead of going through OTr_zArrayType a second time.
+//   instead of going through OTr_z_ArrayType a second time.
 
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-11 - OB Get now uses Is object type argument
 //     to avoid "Argument types are incompatible" crash when the tag
-//     holds a scalar. OTr_zArrayType handles Null by returning -1.
+//     holds a scalar. OTr_z_ArrayType handles Null by returning -1.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $outArray_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $arrayObj_o : Object
 var $leafKey_t : Text
 var $storedType_i : Integer
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 		If (OB Is defined:C1231($parent_o; $leafKey_t))
 			$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t; Is object:K8:27)
-			$storedType_i:=OTr_zArrayType($arrayObj_o)
+			$storedType_i:=OTr_z_ArrayType($arrayObj_o)
 			If ($storedType_i=-1)
-				OTr_zError("Tag does not reference an array"; Current method name:C684)
+				OTr_z_Error("Tag does not reference an array"; Current method name:C684)
 			Else 
 				If ($storedType_i#Type:C295($outArray_ptr->))
-					OTr_zError("Array type mismatch"; Current method name:C684)
+					OTr_z_Error("Array type mismatch"; Current method name:C684)
 				Else 
-					OTr_zArrayFromObject($arrayObj_o; $outArray_ptr)
+					OTr_z_ArrayFromObject($arrayObj_o; $outArray_ptr)
 				End if 
 			End if 
 		End if 
 	End if 
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
-End if
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+End if 
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutReal (inObject; inTag; inValue)
 
@@ -33,7 +33,7 @@
 //   existing item whose stored type differs from numeric/real (OK=0, value unchanged).
 //   Note: 4D objects store all numeric scalars (Long, Integer, Real) as Is real at the
 //   JSON level, so the guard cannot distinguish between Real and Long subtypes.
-// Wayne Stewart, 2026-04-12 - Type guard updated to use OTr_zMapType (shadow-key-first)
+// Wayne Stewart, 2026-04-12 - Type guard updated to use OTr_z_MapType (shadow-key-first)
 //   instead of OB Get type. A Longint stored at the same tag (shadow key = 5) is
 //   correctly rejected. Write shadow-type key (leafKey$type := Is real = 1) so that
 //   OTr_ItemType and OTr_GetReal can distinguish a Real from a Longint (shadow key = Is longint = 5)
@@ -42,34 +42,34 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_r : Real)
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
 var $existingType_i : Integer
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; \
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; \
 		->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			$existingType_i:=OTr_zMapType($parent_o; $leafKey_t)
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
+			$existingType_i:=OTr_z_MapType($parent_o; $leafKey_t)
 			If ($existingType_i#0) & ($existingType_i#Is real:K8:4)
-				OTr_zError("Type mismatch"; Current method name)
-			Else
-				OB SET($parent_o; $leafKey_t; $inValue_r)
-				OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is real:K8:4)
-			End if
-		Else
-			OB SET($parent_o; $leafKey_t; $inValue_r)
-			OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is real:K8:4)
-		End if
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name)
-End if
+				OTr_z_Error("Type mismatch"; Current method name:C684)
+			Else 
+				OB SET:C1220($parent_o; $leafKey_t; $inValue_r)
+				OB SET:C1220($parent_o; OTr_z_ShadowKey($leafKey_t); Is real:K8:4)
+			End if 
+		Else 
+			OB SET:C1220($parent_o; $leafKey_t; $inValue_r)
+			OB SET:C1220($parent_o; OTr_z_ShadowKey($leafKey_t); Is real:K8:4)
+		End if 
+	End if 
+Else 
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

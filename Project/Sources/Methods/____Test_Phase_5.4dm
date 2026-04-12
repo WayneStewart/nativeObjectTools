@@ -74,7 +74,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $dateVarOut_d : Date
 	var $timeVarOut_h : Time
 	
-	// Expand/Collapse tests removed — OTr_uExpandBinaries/OTr_uCollapseBinaries
+	// Expand/Collapse tests removed — OTr_u_ExpandBinaries/OTr_u_CollapseBinaries
 	// retired in Phase 6; binary data now stored natively in 4D Objects.
 	
 	// ====================================================
@@ -109,7 +109,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	CLEAR VARIABLE:C89($gotBlob_blob)
 	OTr_GetBLOB($h_i; "blobval"; ->$gotBlob_blob)
 	
-	If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
+	If (OTr_u_EqualBLOBs($testBlob_blob; $gotBlob_blob))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
@@ -124,7 +124,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	CONVERT FROM TEXT:C1011("hello-otr-blob-test"; "UTF-8"; $testBlob_blob)
 	OTr_PutBLOB($h_i; "blobval2"; $testBlob_blob)
 	$gotBlob_blob:=OTr_GetNewBLOB($h_i; "blobval2")
-	If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
+	If (OTr_u_EqualBLOBs($testBlob_blob; $gotBlob_blob))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
@@ -170,7 +170,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	$total_i:=$total_i+1
 	$gotPic_pic:=OTr_GetPicture($h_i; "picval")
-	If (OTr_uEqualPictures($testPic_pic; $gotPic_pic))
+	If (OTr_u_EqualPictures($testPic_pic; $gotPic_pic))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
@@ -294,9 +294,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// verify OTr_GetRecordTable returns the __tableNum.
 	// ====================================================
 	
-	OTr_zLock
+	OTr_z_Lock
 	OB SET:C1220(<>OTR_Objects_ao{$h_i}; "snaptag"; New object:C1471("__tableNum"; 7; "SomeField"; "test-value"))
-	OTr_zUnlock
+	OTr_z_Unlock
 	
 	$total_i:=$total_i+1
 	If (OTr_GetRecordTable($h_i; "snaptag")=7)
@@ -311,9 +311,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 	
 	$total_i:=$total_i+1
-	OTr_zLock
+	OTr_z_Lock
 	OB SET:C1220(<>OTR_Objects_ao{$h_i}; "notasnap"; New object:C1471("x"; "y"))
-	OTr_zUnlock
+	OTr_z_Unlock
 	If (OTr_GetRecordTable($h_i; "notasnap")=0)
 		$passed_i:=$passed_i+1
 	Else 
@@ -476,7 +476,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_GetVariable($h_i; "vblob"; ->$gotBlob_blob)
 	
 	$total_i:=$total_i+1
-	If (OTr_uEqualBLOBs($testBlob_blob; $gotBlob_blob))
+	If (OTr_u_EqualBLOBs($testBlob_blob; $gotBlob_blob))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
@@ -500,7 +500,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_GetVariable($h_i; "vpic"; ->$gotPic_pic)
 	
 	$total_i:=$total_i+1
-	If (OTr_uEqualPictures($testPic_pic; $gotPic_pic))
+	If (OTr_u_EqualPictures($testPic_pic; $gotPic_pic))
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1

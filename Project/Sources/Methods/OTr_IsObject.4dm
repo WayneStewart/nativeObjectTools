@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_IsObject (inObject) --> Longint
 
@@ -41,16 +41,16 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-05 - Inlined handle check rather than calling
-//   OTr_zIsValidHandle, because OTr_IsObject does not set OK and
-//   OTr_zIsValidHandle now sets OK to 0 on failure. The inlined check
+//   OTr_z_IsValidHandle, because OTr_IsObject does not set OK and
+//   OTr_z_IsValidHandle now sets OK to 0 on failure. The inlined check
 //   preserves the pre-call value of OK in all cases.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer)->$isObject_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
-OTr_zLock
+OTr_z_Lock
 
 $isObject_i:=0
 
@@ -58,10 +58,10 @@ If ($inObject_i>0)
 	If ($inObject_i<=Size of array:C274(<>OTR_InUse_ab))
 		If (<>OTR_InUse_ab{$inObject_i})
 			$isObject_i:=1
-		End if
-	End if
-End if
+		End if 
+	End if 
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

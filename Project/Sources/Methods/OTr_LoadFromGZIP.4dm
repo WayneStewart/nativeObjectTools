@@ -24,7 +24,7 @@
 
 #DECLARE($inBlob_blob : Blob)->$handle_i : Integer
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $json_t : Text
 
@@ -36,4 +36,4 @@ If (BLOB size:C605($inBlob_blob)>0)
 	$handle_i:=OTr_LoadFromText($json_t)
 End if 
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

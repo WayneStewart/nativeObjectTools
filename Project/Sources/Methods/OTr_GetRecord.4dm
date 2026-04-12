@@ -7,7 +7,7 @@
 // table. Field matching is by name; unrecognised properties
 // are silently ignored and unmatched fields are untouched.
 // Date and time fields are restored from text via
-// OTr_uTextToDate and OTr_uTextToTime. Picture and BLOB
+// OTr_u_TextToDate and OTr_u_TextToTime. Picture and BLOB
 // fields are decoded from base64.
 // Adapted from OBJ_ToRecord by Cannon Smith.
 
@@ -46,13 +46,13 @@
 // Wayne Stewart, 2026-04-11 - Applied dual-path Date/Time retrieval to match
 //   OTr_PutRecord. When the stored property type is Is date / Is time (native
 //   path), OB Get is used directly. When it is Is text (text path, or legacy
-//   snapshot), OTr_uTextToDate / OTr_uTextToTime are used. This prevents
+//   snapshot), OTr_u_TextToDate / OTr_u_TextToTime are used. This prevents
 //   silent data corruption when Storage.OTr.nativeDateInObject is True.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inTable_i : Integer)
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -66,22 +66,22 @@ var $x_i : Integer
 var $tempBlob_blob : Blob
 var $storedPropType_i : Integer
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
+If (OTr_z_IsValidHandle($inObject_i))
 	
 	
 	
 	If (Not:C34(Is table number valid:C999($inTable_i)))
-		OTr_zError("Invalid table number"; Current method name:C684)
-		OTr_zSetOK(0)
+		OTr_z_Error("Invalid table number"; Current method name:C684)
+		OTr_z_SetOK(0)
 		
 	Else 
 		
 		$tablePtr_ptr:=Table:C252($inTable_i)
 		
 		
-		If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+		If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
 			
 			If (OB Is defined:C1231($parent_o; $leafKey_t))
 				
@@ -111,7 +111,7 @@ If (OTr_zIsValidHandle($inObject_i))
 										If ($storedPropType_i=Is date:K8:7)
 											$fieldPtr_ptr->:=OB Get:C1224($snapshot_o; $fieldName_t; Is date:K8:7)
 										Else 
-											$fieldPtr_ptr->:=OTr_uTextToDate(OB Get:C1224($snapshot_o; $fieldName_t; Is text:K8:3))
+											$fieldPtr_ptr->:=OTr_u_TextToDate(OB Get:C1224($snapshot_o; $fieldName_t; Is text:K8:3))
 										End if 
 										
 									: ($fieldType_i=Is time:K8:8)
@@ -121,7 +121,7 @@ If (OTr_zIsValidHandle($inObject_i))
 										If ($storedPropType_i=Is time:K8:8)
 											$fieldPtr_ptr->:=OB Get:C1224($snapshot_o; $fieldName_t; Is time:K8:8)
 										Else 
-											$fieldPtr_ptr->:=OTr_uTextToTime(OB Get:C1224($snapshot_o; $fieldName_t; Is text:K8:3))
+											$fieldPtr_ptr->:=OTr_u_TextToTime(OB Get:C1224($snapshot_o; $fieldName_t; Is text:K8:3))
 										End if 
 										
 									: ($fieldType_i=Is picture:K8:10)
@@ -158,8 +158,8 @@ If (OTr_zIsValidHandle($inObject_i))
 					End for 
 					
 				Else 
-					OTr_zError("Tag is not a record snapshot"; Current method name:C684)
-					OTr_zSetOK(0)
+					OTr_z_Error("Tag is not a record snapshot"; Current method name:C684)
+					OTr_z_SetOK(0)
 				End if 
 				
 			End if 
@@ -169,10 +169,10 @@ If (OTr_zIsValidHandle($inObject_i))
 	End if 
 	
 Else 
-	OTr_zError("Invalid handle"; Current method name:C684)
-	OTr_zSetOK(0)
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+	OTr_z_SetOK(0)
 End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

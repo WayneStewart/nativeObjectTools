@@ -14,4 +14,4 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-OTr_zLogShutdown
+OTr_z_LogShutdown

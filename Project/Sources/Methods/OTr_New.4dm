@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_New () --> Longint
 
@@ -16,27 +16,27 @@
 
 #DECLARE()->$handle_i : Integer
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $slot_i : Integer
 
-OTr_zLock
+OTr_z_Lock
 
-$slot_i:=Find in array(<>OTR_InUse_ab; False)
+$slot_i:=Find in array:C230(<>OTR_InUse_ab; False:C215)
 If ($slot_i=-1)
-	$slot_i:=Size of array(<>OTR_InUse_ab)+1
-	INSERT IN ARRAY(<>OTR_InUse_ab; $slot_i)
-	INSERT IN ARRAY(<>OTR_Objects_ao; $slot_i)
+	$slot_i:=Size of array:C274(<>OTR_InUse_ab)+1
+	INSERT IN ARRAY:C227(<>OTR_InUse_ab; $slot_i)
+	INSERT IN ARRAY:C227(<>OTR_Objects_ao; $slot_i)
+	
+	<>OTR_InUse_ab{$slot_i}:=True:C214
+	<>OTR_Objects_ao{$slot_i}:=New object:C1471
+Else 
+	<>OTR_InUse_ab{$slot_i}:=True:C214
+	<>OTR_Objects_ao{$slot_i}:=New object:C1471
+End if 
 
-	<>OTR_InUse_ab{$slot_i}:=True
-	<>OTR_Objects_ao{$slot_i}:=New object
-Else
-	<>OTR_InUse_ab{$slot_i}:=True
-	<>OTR_Objects_ao{$slot_i}:=New object
-End if
-
-OTr_zUnlock
+OTr_z_Unlock
 
 $handle_i:=$slot_i
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)

@@ -45,7 +45,7 @@
 // Created by Wayne Stewart, 2026-04-02
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
-// Wayne Stewart, 2026-04-10 - Removed spurious OTr_zSetOK(1) on
+// Wayne Stewart, 2026-04-10 - Removed spurious OTr_z_SetOK(1) on
 //   success path (see OTr-OK0-Conditions specification).
 // ----------------------------------------------------
 
@@ -59,7 +59,7 @@ $inTag6_t : Text; $inDirection6_t : Text; \
 $inTag7_t : Text; $inDirection7_t : Text)
 
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $pairCount_i; $keyCount_i; $ptrIdx_i : Integer
 var $n_i; $j_i; $slot_i : Integer
@@ -77,11 +77,11 @@ $pairCount_i:=(Count parameters:C259-1)/2
 $continue_b:=True:C214
 
 If ($pairCount_i<1)
-	OTr_zError("At least one tag/direction pair required"; \
+	OTr_z_Error("At least one tag/direction pair required"; \
 		Current method name:C684)
-	OTr_zSetOK(0)
+	OTr_z_SetOK(0)
 	$continue_b:=False:C215
-End if
+End if 
 
 // Populate tag/dir arrays from named parameters
 If ($continue_b)
@@ -90,43 +90,43 @@ If ($continue_b)
 	If ($pairCount_i>=2)
 		$tags_at{2}:=$inTag2_t
 		$dirs_at{2}:=$inDirection2_t
-	End if
+	End if 
 	If ($pairCount_i>=3)
 		$tags_at{3}:=$inTag3_t
 		$dirs_at{3}:=$inDirection3_t
-	End if
+	End if 
 	If ($pairCount_i>=4)
 		$tags_at{4}:=$inTag4_t
 		$dirs_at{4}:=$inDirection4_t
-	End if
+	End if 
 	If ($pairCount_i>=5)
 		$tags_at{5}:=$inTag5_t
 		$dirs_at{5}:=$inDirection5_t
-	End if
+	End if 
 	If ($pairCount_i>=6)
 		$tags_at{6}:=$inTag6_t
 		$dirs_at{6}:=$inDirection6_t
-	End if
+	End if 
 	If ($pairCount_i>=7)
 		$tags_at{7}:=$inTag7_t
 		$dirs_at{7}:=$inDirection7_t
-	End if
+	End if 
 End if 
 
 // ------------------------------------------------
 // Phase 2 — Validate handle (no lock needed)
 // ------------------------------------------------
 If ($continue_b)
-	If (Not:C34(OTr_zIsValidHandle($inObject_i)))
-		OTr_zError("Invalid handle"; Current method name:C684)
-		OTr_zSetOK(0)
+	If (Not:C34(OTr_z_IsValidHandle($inObject_i)))
+		OTr_z_Error("Invalid handle"; Current method name:C684)
+		OTr_z_SetOK(0)
 		$continue_b:=False:C215
 	End if 
 End if 
 
 // ------------------------------------------------
 // Phase 3 — Resolve paths + validate types
-// Each pair validated via OTr_zSortValidatePair.
+// Each pair validated via OTr_z_SortValidatePair.
 // arrayObj references stored in $arrayObjStore_o
 // under keys "a1".."a7" for write-back in Phase 8.
 // ------------------------------------------------
@@ -137,7 +137,7 @@ If ($continue_b)
 		If ($continue_b)
 			$params_o.tag:=$tags_at{$slot_i}
 			$params_o.dir:=$dirs_at{$slot_i}
-			$continue_b:=OTr_zSortValidatePair($params_o)
+			$continue_b:=OTr_z_SortValidatePair($params_o)
 			If ($continue_b)
 				$types_ai{$slot_i}:=$params_o.arrayType
 				$arrayObjStore_o["a"+String:C10($slot_i)]:=$params_o.arrayObj
@@ -145,9 +145,9 @@ If ($continue_b)
 					$n_i:=$params_o.numElements
 				Else 
 					If ($params_o.numElements#$n_i)
-						OTr_zError("Array size mismatch: "+\
+						OTr_z_Error("Array size mismatch: "+\
 							$tags_at{$slot_i}; Current method name:C684)
-						OTr_zSetOK(0)
+						OTr_z_SetOK(0)
 						$continue_b:=False:C215
 					End if 
 				End if 
@@ -167,9 +167,9 @@ If ($continue_b)
 		End if 
 	End for 
 	If ($keyCount_i=0)
-		OTr_zError("No sort keys specified; all pairs are slaves"; \
+		OTr_z_Error("No sort keys specified; all pairs are slaves"; \
 			Current method name:C684)
-		OTr_zSetOK(0)
+		OTr_z_SetOK(0)
 		$continue_b:=False:C215
 	End if 
 End if 
@@ -182,7 +182,7 @@ If ($continue_b)
 	For ($slot_i; 1; $pairCount_i)
 		If ($dirs_at{$slot_i}#"*")
 			$slotObj_o:=$arrayObjStore_o["a"+String:C10($slot_i)]
-			OTr_zSortFillSlot($slot_i; $slotObj_o; $types_ai{$slot_i})
+			OTr_z_SortFillSlot($slot_i; $slotObj_o; $types_ai{$slot_i})
 		End if 
 	End for 
 End if 
@@ -206,7 +206,7 @@ If ($continue_b)
 	For ($slot_i; 1; $pairCount_i)
 		If ($dirs_at{$slot_i}#"*")
 			$ptrIdx_i:=$ptrIdx_i+1
-			$ptrs_aptr{$ptrIdx_i}:=OTr_zSortSlotPointer($slot_i; $types_ai{$slot_i})
+			$ptrs_aptr{$ptrIdx_i}:=OTr_z_SortSlotPointer($slot_i; $types_ai{$slot_i})
 			$sortOrd_ai{$ptrIdx_i}:=Choose:C955($dirs_at{$slot_i}=">"; 1; -1)
 		End if 
 	End for 
@@ -228,7 +228,7 @@ End if
 // Element 0 is not touched.
 // ------------------------------------------------
 If ($continue_b)
-	OTr_zLock
+	OTr_z_Lock
 	For ($slot_i; 1; $pairCount_i)
 		$slotObj_o:=$arrayObjStore_o["a"+String:C10($slot_i)]
 		$temp_o:=OB Copy:C1225($slotObj_o)
@@ -237,7 +237,7 @@ If ($continue_b)
 				$temp_o[String:C10(OTR_SortIdx_ai{$j_i})]
 		End for 
 	End for 
-	OTr_zUnlock
+	OTr_z_Unlock
 End if 
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

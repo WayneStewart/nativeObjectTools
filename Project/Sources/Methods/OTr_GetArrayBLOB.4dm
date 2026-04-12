@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetArrayBLOB (inObject; inTag; inIndex) --> Blob
 
@@ -38,13 +38,13 @@
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer)->$result_blob : Blob
 
-OTr_zAddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $raw_v : Variant
 
 $raw_v:=OTr_u_AccessArrayElement($inObject_i; $inTag_t; $inIndex_i; Blob array:K8:30)
 If (Value type:C1509($raw_v)#Is undefined:K8:13)
-	$result_blob:=OTr_uTextToBlob($raw_v)
+	$result_blob:=OTr_u_TextToBlob($raw_v)
 End if 
 
-OTr_zRemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name:C684)

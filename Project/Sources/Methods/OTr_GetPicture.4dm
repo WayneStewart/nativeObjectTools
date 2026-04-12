@@ -39,42 +39,42 @@
 // Wayne Stewart, 2026-04-11 - Added OB Get type pre-check before
 //     retrieving as picture. OB Get with Is picture on a non-picture
 //     property throws error 64; the type check intercepts this and
-//     routes to OTr_zError instead.
+//     routes to OTr_z_Error instead.
 // Wayne Stewart, 2026-04-12 - Replaced broad (Is picture | Is object)
-//     type check with OTr_zMapType shadow-key discriminator. OB Get type
+//     type check with OTr_z_MapType shadow-key discriminator. OB Get type
 //     misreports stored Pictures as Is object (38) in 4D v19-v21; the
 //     previous workaround accepted any Is object property as a Picture,
 //     which would incorrectly allow a genuine embedded object to pass the
-//     type check. OTr_zMapType consults the shadow key written by
+//     type check. OTr_z_MapType consults the shadow key written by
 //     OTr_PutPicture (Is picture:K8:10) and returns Is picture:K8:10 only for genuine
 //     Pictures, regardless of the native type misreport.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_pic : Picture
 
-OTr_zAddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
 
-OTr_zLock
+OTr_z_Lock
 
-If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; ->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t))
-			If (OTr_zMapType($parent_o; $leafKey_t)=Is picture:K8:10)
-				$result_pic:=OB Get($parent_o; $leafKey_t; Is picture)
-			Else
-				OTr_zError("Type mismatch: tag does not reference a Picture"; Current method name)
-				OTr_zSetOK(0)
-			End if
-		End if
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name)
-	OTr_zSetOK(0)
-End if
+If (OTr_z_IsValidHandle($inObject_i))
+	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+		If (OB Is defined:C1231($parent_o; $leafKey_t))
+			If (OTr_z_MapType($parent_o; $leafKey_t)=Is picture:K8:10)
+				$result_pic:=OB Get:C1224($parent_o; $leafKey_t; Is picture:K8:10)
+			Else 
+				OTr_z_Error("Type mismatch: tag does not reference a Picture"; Current method name:C684)
+				OTr_z_SetOK(0)
+			End if 
+		End if 
+	End if 
+Else 
+	OTr_z_Error("Invalid handle"; Current method name:C684)
+	OTr_z_SetOK(0)
+End if 
 
-OTr_zUnlock
+OTr_z_Unlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)
