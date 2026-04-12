@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true,"shared":false}
+//%attributes = {}
 // ----------------------------------------------------
 // Project Method: ____Test_OTr_Master
 //
@@ -1283,10 +1283,10 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $testBlob5_blob; $gotBlob5_blob : Blob
 	var $testPic5_pic; $gotPic5_pic : Picture
 	var $ptrVar5_ptr : Pointer
-	var vtCC_Filename : Text  // process variable used for pointer round-trip
+	var OTr_DummyVariableForTests_t : Text  // process variable used for pointer round-trip
 	
 	$h5_i:=OTr_New
-	vtCC_Filename:="pointer-round-trip"
+	OTr_DummyVariableForTests_t:="pointer-round-trip"
 	
 	// PutBLOB — tag created
 	$rowNum_i:=$rowNum_i+1
@@ -1380,7 +1380,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// PutPointer — tag created
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_PutPointer creates tag"
-	OTr_PutPointer($h5_i; "ptrval"; ->vtCC_Filename)
+	OTr_PutPointer($h5_i; "ptrval"; ->OTr_DummyVariableForTests_t)
 	$expected_t:="1"
 	$actual_t:=String:C10(OTr_ItemExists($h5_i; "ptrval"))
 	$pass_b:=(OTr_ItemExists($h5_i; "ptrval")=1)
@@ -1932,7 +1932,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_PutArray($h8_i; "pics"; ->$picArr8_apic)
 	
 	ARRAY POINTER:C280($ptrArr8_aptr; 3)
-	$ptrArr8_aptr{1}:=->vtCC_Filename
+	$ptrArr8_aptr{1}:=->OTr_DummyVariableForTests_t
 	OTr_PutArray($h8_i; "ptrs"; ->$ptrArr8_aptr)
 	
 	// Sub-object with nested array
@@ -2176,9 +2176,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayPointer existing element dereference matches"
 	$result8_ptr:=OTr_GetArrayPointer($h8_i; "ptrs"; 1)
-	$expected_t:=vtCC_Filename
+	$expected_t:=OTr_DummyVariableForTests_t
 	$actual_t:=Choose:C955($result8_ptr#Null:C1517; $result8_ptr->; "(null)")
-	$pass_b:=($result8_ptr->=vtCC_Filename)
+	$pass_b:=($result8_ptr->=OTr_DummyVariableForTests_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -2189,11 +2189,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// PutArrayPointer / GetArrayPointer round-trip (element 2)
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayPointer/GetArrayPointer round-trip"
-	OTr_PutArrayPointer($h8_i; "ptrs"; 2; ->vtCC_Filename)
+	OTr_PutArrayPointer($h8_i; "ptrs"; 2; ->OTr_DummyVariableForTests_t)
 	$result8_ptr:=OTr_GetArrayPointer($h8_i; "ptrs"; 2)
-	$expected_t:=vtCC_Filename
+	$expected_t:=OTr_DummyVariableForTests_t
 	$actual_t:=Choose:C955($result8_ptr#Null:C1517; $result8_ptr->; "(null)")
-	$pass_b:=($result8_ptr->=vtCC_Filename)
+	$pass_b:=($result8_ptr->=OTr_DummyVariableForTests_t)
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1

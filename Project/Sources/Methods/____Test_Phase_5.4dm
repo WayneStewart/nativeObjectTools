@@ -54,7 +54,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $gotPic_pic : Picture
 	
 	// Pointer test vars
-	var vtCC_Filename : Text
+	var OTr_DummyVariableForTests_t : Text
 	
 	// Record test vars
 	var $snapObj_o : Object
@@ -147,7 +147,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 	//MARK:- OTr_PutPicture / OTr_GetPicture — round-trip
 	//
-	// NOTE: A 1×1 black PNG is constructed from hardcoded 
+	// NOTE: A 1×1 black PNG is constructed from hardcoded
 	// Base64. If PutPicture fails (OK=0), the Base64 may
 	// need replacing with a path to a real image resource.
 	// ====================================================
@@ -197,9 +197,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	//MARK:- OTr_PutPointer — store creates the tag
 	// ====================================================
 	
-	vtCC_Filename:="pointer-round-trip"
+	OTr_DummyVariableForTests_t:="pointer-round-trip"
 	$total_i:=$total_i+1
-	OTr_PutPointer($h_i; "ptrval"; ->vtCC_Filename)
+	OTr_PutPointer($h_i; "ptrval"; ->OTr_DummyVariableForTests_t)
 	If (OTr_ItemExists($h_i; "ptrval")=1)
 		$passed_i:=$passed_i+1
 	Else 
@@ -444,7 +444,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	//MARK:- OTr_PutVariable / OTr_GetVariable — Pointer round-trip
 	// ====================================================
 	
-	$ptrVar_ptr:=->vtCC_Filename
+	$ptrVar_ptr:=->OTr_DummyVariableForTests_t
 	OTr_PutVariable($h_i; "vptr"; ->$ptrVar_ptr)
 	$ptrVar_ptr:=Null:C1517
 	OTr_GetVariable($h_i; "vptr"; ->$ptrVar_ptr)

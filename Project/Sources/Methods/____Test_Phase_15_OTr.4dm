@@ -43,7 +43,7 @@ var $testDate_d : Date
 var $gotDate_d : Date
 var $testTime_h : Time
 var $gotTime_h : Time
-var vtCC_Filename : Text  // process variable -- required for Get pointer round-trip
+var OTr_DummyVariableForTests_t : Text  // process variable -- required for Get pointer round-trip
 var $gotPtr_ptr : Pointer
 var $wombat_pic : Picture
 var $gotPic_pic : Picture
@@ -240,12 +240,12 @@ $otrResult_t:="Fail: not run"
 // reconstruct it via Get pointer. Local ($) variables cannot
 // be resolved by name -- this is a 4D platform constraint,
 // not an OTr defect, and matches the OT 5.0 documented limit.
-vtCC_Filename:="otr-ptr-val"
+OTr_DummyVariableForTests_t:="otr-ptr-val"
 
-OTr_PutPointer($otrMain_i; "ptr"; ->vtCC_Filename)
+OTr_PutPointer($otrMain_i; "ptr"; ->OTr_DummyVariableForTests_t)
 OTr_GetPointer($otrMain_i; "ptr"; ->$gotPtr_ptr)
 If (OK=1) & ($gotPtr_ptr#Null:C1517)
-	If (($gotPtr_ptr->)=vtCC_Filename)
+	If (($gotPtr_ptr->)=OTr_DummyVariableForTests_t)
 		$otrResult_t:="Pass"
 	Else 
 		$otrResult_t:="Fail: dereference got '"+String:C10($gotPtr_ptr->)+"'"
@@ -490,12 +490,12 @@ OTr_PutArray($otrMain_i; "aptr"; ->$setupAptr_aptr)
 // is unreliable -- OTr_u_TextToPointer reconstructs via
 // Get pointer which cannot resolve the caller's local scope.
 // Use a process variable (no $) so Get pointer can resolve it.
-var vtCC_XMLTopLevelRef : Text
-vtCC_XMLTopLevelRef:="arr-ptr-val"
-OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->vtCC_XMLTopLevelRef)
+var OTr_DummyVariableForTests_t : Text
+OTr_DummyVariableForTests_t:="arr-ptr-val"
+OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->OTr_DummyVariableForTests_t)
 $gotPtr_ptr:=OTr_GetArrayPointer($otrMain_i; "aptr"; 1)
 If (OK=1) & ($gotPtr_ptr#Null:C1517)
-	If (($gotPtr_ptr->)=vtCC_XMLTopLevelRef)
+	If (($gotPtr_ptr->)=OTr_DummyVariableForTests_t)
 		$otrResult_t:="Pass"
 	Else 
 		$otrResult_t:="Fail: value mismatch"

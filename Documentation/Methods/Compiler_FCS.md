@@ -1,0 +1,1 @@
+<!-- Does not require any parameters -->## Compiler\_FCSIf (False)	C\_TEXT(Fnd\_FCS\_ParseParameterLine; $1) 	C\_OBJECT(Fnd\_FCS\_ParseParameterLine; $0)	C\_TEXT(Fnd\_FCS\_WriteDocumentation; $1) 	C\_BOOLEAN(Fnd\_FCS\_WriteDocumentation; ${2})	C\_TEXT(Fnd\_FCS\_BuildComponent; $1)End if| Parameters || --- || Does not require any parameters |

@@ -1,4 +1,4 @@
-//%attributes = {}
+//%attributes = {"invisible":true}
 //Quick and dirty test
 
 ____Test_Phase_15(True:C214)

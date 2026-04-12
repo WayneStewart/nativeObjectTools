@@ -46,7 +46,7 @@ var $compare_i : Integer
 var $gotBlob_blob : Blob
 var $testDate_d : Date
 var $testTime_h : Time
-var vtCC_Filename : Text
+var OTr_DummyVariableForTests_t : Text
 var $wombat_pic : Picture
 var $varLong_i : Integer
 var $find_i : Integer
@@ -69,7 +69,7 @@ ARRAY LONGINT:C221($longArrOut_ai; 0)
 $otrMain_i:=OTr_New
 $testDate_d:=!2026-04-06!
 $testTime_h:=?10:30:45?
-vtCC_Filename:="phase10a"
+OTr_DummyVariableForTests_t:="phase10a"
 $wombat_pic:=OTr_z_Wombat
 TEXT TO BLOB:C554("phase10a-blob"; $gotBlob_blob)
 
@@ -106,7 +106,7 @@ APPEND TO ARRAY:C911($otrResult_at; $otrResult_t)
 // ====================================================
 // 3. Pointer / BLOB / Picture
 // ====================================================
-OTr_PutPointer($otrMain_i; "ptr"; ->vtCC_Filename)
+OTr_PutPointer($otrMain_i; "ptr"; ->OTr_DummyVariableForTests_t)
 OTr_PutBLOB($otrMain_i; "blob"; $gotBlob_blob)
 OTr_PutPicture($otrMain_i; "pic"; $wombat_pic)
 $ptrOut_ptr:=Null:C1517

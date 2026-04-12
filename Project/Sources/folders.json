@@ -33,7 +33,7 @@
 	"Miscellaneous": {
 		"methods": [
 			"__WriteDocumentation",
-			"Compiler_Helpers",
+			"Compiler_Constants",
 			"Fnd_FCS_ParseParameterLine",
 			"Fnd_FCS_WriteDocumentation"
 		]

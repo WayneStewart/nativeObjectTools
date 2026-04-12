@@ -70,7 +70,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$failures_t:=""
 	
 	$testWombat_pic:=OTr_z_Wombat()  // A lovely wombat
-	vtCC_Filename:=Structure file:C489  // This already declared in a compiler method, so it won't cause any problems here
+	OTr_DummyVariableForTests_t:=Structure file:C489  // This already declared in a compiler method, so it won't cause any problems here
 	
 	// Build a top-level 5-element LongInt array
 	ARRAY LONGINT:C221($longArr_ai; 5)
@@ -132,7 +132,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	// Pointer array (3 elements — element 1 seeded with ->vtCC_Filename)
 	ARRAY POINTER:C280($ptrArr_aptr; 3)
-	$ptrArr_aptr{1}:=->vtCC_Filename
+	$ptrArr_aptr{1}:=->OTr_DummyVariableForTests_t
 	OTr_PutArray($h_i; "ptrs"; ->$ptrArr_aptr)
 	
 	// Build a sub-object containing a 3-element LongInt array.
@@ -550,7 +550,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	$total_i:=$total_i+1
 	$result_ptr:=OTr_GetArrayPointer($h_i; "ptrs"; 1)
-	If ($result_ptr->=vtCC_Filename)
+	If ($result_ptr->=OTr_DummyVariableForTests_t)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
@@ -562,9 +562,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// ====================================================
 	
 	$total_i:=$total_i+1
-	OTr_PutArrayPointer($h_i; "ptrs"; 2; ->vtCC_Filename)
+	OTr_PutArrayPointer($h_i; "ptrs"; 2; ->OTr_DummyVariableForTests_t)
 	$result_ptr:=OTr_GetArrayPointer($h_i; "ptrs"; 2)
-	If ($result_ptr->=vtCC_Filename)
+	If ($result_ptr->=OTr_DummyVariableForTests_t)
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1

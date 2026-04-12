@@ -35,6 +35,8 @@ End if
 If (Not:C34(OTR_Initialised_b))
 	ARRAY TEXT:C222(OTR_callStack_at; 0)
 	var OTR_LockCount_i : Integer
+	var OTr_DummyVariableForTests_t : Text
+	//var vtCC_XMLTopLevelRef : Text
 	
 	Compiler_OTrSortProcess  // These are the arrays used in the sorting routines
 	
