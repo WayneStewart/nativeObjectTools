@@ -1,1 +1,0 @@
-<!--OTr_ClearAll Does not require any parameters -->## OTr\_ClearAllOTr\_ClearAllClears all OTr handles.Attributes: Shared, Invisible, Preemptive indifferent| Parameters || --- || Does not require any parameters |

@@ -131,7 +131,7 @@ If (OTr_zIsValidHandle($inObject_i))
 		: ($type_i=Is pointer:K8:14)
 			If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; ->$parent_o; ->$leafKey_t))
 				OB SET:C1220($parent_o; $leafKey_t; OTr_uPointerToText($inVarPointer_ptr->))
-				OB SET:C1220($parent_o; OTr_zShadowKey($leafKey_t); 23)  // OT Pointer
+				OB SET:C1220($parent_o; OTr_zShadowKey($leafKey_t); Is pointer:K8:14)
 			End if
 
 			// BLOB — native OB SET where Storage.OTr.nativeBlobInObject
@@ -146,7 +146,7 @@ If (OTr_zIsValidHandle($inObject_i))
 					OB REMOVE:C1226($parent_o; OTr_zShadowKey($leafKey_t))
 				Else
 					OB SET:C1220($parent_o; $leafKey_t; OTr_uBlobToText($inVarPointer_ptr->))
-					OB SET:C1220($parent_o; OTr_zShadowKey($leafKey_t); 30)  // OT BLOB
+					OB SET:C1220($parent_o; OTr_zShadowKey($leafKey_t); Is BLOB:K8:12)
 				End if
 			End if
 

@@ -1,1 +1,0 @@
-<!--OTr_Clear (ioObject)ioObject : Integer : ➡️ : OTr handle to clear (ioObject)-->## OTr\_ClearOTr\_Clear (ioObject)Releases an OTr handle and clears its stored object.Attributes: Shared, Invisible, Preemptive indifferent| Parameter | Type |  | Description || --- | --- | --- | --- ||ioObject|Integer|➡️|OTr handle to clear (ioObject)|

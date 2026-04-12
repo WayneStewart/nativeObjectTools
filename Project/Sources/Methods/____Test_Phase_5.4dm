@@ -54,7 +54,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $gotPic_pic : Picture
 	
 	// Pointer test vars
-	var $targetVal_t : Text
+	var vtCC_Filename : Text
 	
 	// Record test vars
 	var $snapObj_o : Object
@@ -152,10 +152,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// need replacing with a path to a real image resource.
 	// ====================================================
 	
-	$pngB64_t:="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
-	CONVERT FROM TEXT:C1011($pngB64_t; "US-ASCII"; $pngBlob_blob)
-	BASE64 DECODE:C896($pngBlob_blob)
-	BLOB TO PICTURE:C682($pngBlob_blob; $testPic_pic; ".png")
+	//$pngB64_t:="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+	//CONVERT FROM TEXT($pngB64_t; "US-ASCII"; $pngBlob_blob)
+	//BASE64 DECODE($pngBlob_blob)
+	//BLOB TO PICTURE($pngBlob_blob; $testPic_pic; ".png")
+	
+	$testPic_pic:=OTr_z_Wombat
 	
 	$total_i:=$total_i+1
 	OTr_PutPicture($h_i; "picval"; $testPic_pic)
@@ -195,9 +197,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	//MARK:- OTr_PutPointer — store creates the tag
 	// ====================================================
 	
-	$targetVal_t:="pointer-round-trip"
+	vtCC_Filename:="pointer-round-trip"
 	$total_i:=$total_i+1
-	OTr_PutPointer($h_i; "ptrval"; ->$targetVal_t)
+	OTr_PutPointer($h_i; "ptrval"; ->vtCC_Filename)
 	If (OTr_ItemExists($h_i; "ptrval")=1)
 		$passed_i:=$passed_i+1
 	Else 
@@ -442,7 +444,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	//MARK:- OTr_PutVariable / OTr_GetVariable — Pointer round-trip
 	// ====================================================
 	
-	$ptrVar_ptr:=->$targetVal_t
+	$ptrVar_ptr:=->vtCC_Filename
 	OTr_PutVariable($h_i; "vptr"; ->$ptrVar_ptr)
 	$ptrVar_ptr:=Null:C1517
 	OTr_GetVariable($h_i; "vptr"; ->$ptrVar_ptr)

@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutReal (inObject; inTag; inValue)
 
@@ -20,6 +20,11 @@
 //   existing item whose stored type differs from numeric/real (OK=0, value unchanged).
 //   Note: 4D objects store all numeric scalars (Long, Integer, Real) as Is real at the
 //   JSON level, so the guard cannot distinguish between Real and Long subtypes.
+// Wayne Stewart, 2026-04-12 - Type guard updated to use OTr_zMapType (shadow-key-first)
+//   instead of OB Get type. A Longint stored at the same tag (shadow key = 5) is
+//   correctly rejected. Write shadow-type key (leafKey$type := Is real = 1) so that
+//   OTr_ItemType and OTr_GetReal can distinguish a Real from a Longint (shadow key = Is longint = 5)
+//   when both are stored as Is real at the JSON level.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_r : Real)
@@ -28,17 +33,24 @@ OTr_zAddToCallStack(Current method name)
 
 var $parent_o : Object
 var $leafKey_t : Text
+var $existingType_i : Integer
 
 OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; \
 		->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t) \
-			& (OB Get type($parent_o; $leafKey_t)#Is real:K8:4))
-			OTr_zError("Type mismatch"; Current method name)
+		If (OB Is defined($parent_o; $leafKey_t))
+			$existingType_i:=OTr_zMapType($parent_o; $leafKey_t)
+			If ($existingType_i#0) & ($existingType_i#Is real:K8:4)
+				OTr_zError("Type mismatch"; Current method name)
+			Else
+				OB SET($parent_o; $leafKey_t; $inValue_r)
+				OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is real:K8:4)
+			End if
 		Else
 			OB SET($parent_o; $leafKey_t; $inValue_r)
+			OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is real:K8:4)
 		End if
 	End if
 Else

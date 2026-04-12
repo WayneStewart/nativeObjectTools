@@ -33,10 +33,10 @@
   // Created by Wayne Stewart, 2026-04-03
   // Based on work by himself, Rob Laveaux, and Cannon Smith.
   // Wayne Stewart, 2026-04-10 - Added array-type mappings (4D → OT).
-  //   Under the legacy plugin, OT ItemType returns the element type
-  //   (1, 4, 5, 6, 11, 3, 30, 23) for non-character arrays, and 113
-  //   for String/Text arrays. Used by OTr_zMapType when descending
-  //   into an OTr array-container sub-object.
+  //   Under the legacy plugin, OT ItemType returns the element type constant
+  //   for non-character arrays, and OT Character array (113) for String/Text
+  //   arrays. Used by OTr_zMapType when descending into an OTr array-container
+  //   sub-object.
   // ----------------------------------------------------
 
 #DECLARE($nativeType_i : Integer; $direction_i : Integer)->$result_i : Integer
@@ -52,67 +52,67 @@ If ($dir_i = 0)
 	Case of
 
 		: (($nativeType_i = Is longint) | ($nativeType_i = Is integer))
-			$result_i := 5  // OT Longint
+			$result_i := Is longint:K8:6
 
 		: ($nativeType_i = Is real)
-			$result_i := 1  // OT Real
+			$result_i := Is real:K8:4
 
 		: ($nativeType_i = Is text)
-			$result_i := 112  // OT Character
+			$result_i := OT Is Character
 
 		: ($nativeType_i = Is date)
-			$result_i := 4  // OT Date
+			$result_i := Is date:K8:7
 
 		: ($nativeType_i = Is time)
-			$result_i := 11  // OT Time
+			$result_i := Is time:K8:8
 
 		: ($nativeType_i = Is Boolean)
-			$result_i := 6  // OT Boolean
+			$result_i := Is Boolean:K8:9
 
 		: ($nativeType_i = Is BLOB)
-			$result_i := 30  // OT BLOB
+			$result_i := Is BLOB:K8:12
 
 		: ($nativeType_i = Is picture)
-			$result_i := 3  // OT Picture
+			$result_i := Is picture:K8:10
 
 		: ($nativeType_i = Is pointer)
-			$result_i := 23  // OT Pointer
+			$result_i := Is pointer:K8:14
 
 		: ($nativeType_i = Is object)
-			$result_i := 114  // OT Object
+			$result_i := OT Is Object
 
 		: ($nativeType_i = Is collection)
-			$result_i := 113  // OT Array Character
+			$result_i := OT Character array
 
 			// Array element types: under ObjectTools 5, OT ItemType
 			// reports the element type for non-character arrays, and
-			// 113 (OT Character array) for String / Text arrays.
+			// OT Character array (113) for String / Text arrays.
 		: ($nativeType_i = String array) | ($nativeType_i = Text array)
-			$result_i := 113  // OT Character array
+			$result_i := OT Character array
 
 		: ($nativeType_i = Real array)
-			$result_i := 1  // OT Real
+			$result_i := Is real:K8:4
 
 		: ($nativeType_i = Integer array) | ($nativeType_i = LongInt array)
-			$result_i := 5  // OT Longint
+			$result_i := Is longint:K8:6
 
 		: ($nativeType_i = Date array)
-			$result_i := 4  // OT Date
+			$result_i := Is date:K8:7
 
 		: ($nativeType_i = Time array)
-			$result_i := 11  // OT Time
+			$result_i := Is time:K8:8
 
 		: ($nativeType_i = Boolean array)
-			$result_i := 6  // OT Boolean
+			$result_i := Is Boolean:K8:9
 
 		: ($nativeType_i = Picture array)
-			$result_i := 3  // OT Picture
+			$result_i := Is picture:K8:10
 
 		: ($nativeType_i = Blob array)
-			$result_i := 30  // OT BLOB
+			$result_i := Is BLOB:K8:12
 
 		: ($nativeType_i = Pointer array)
-			$result_i := 23  // OT Pointer
+			$result_i := Is pointer:K8:14
 
 	End case
 
@@ -121,52 +121,44 @@ Else
 	// OT → 4D
 	Case of
 
-		: ($nativeType_i = 5)
-			// OT Longint
+		: ($nativeType_i = Is longint:K8:6)
 			$result_i := Is longint
 
-		: ($nativeType_i = 1)
-			// OT Real
+		: ($nativeType_i = Is real:K8:4)
 			$result_i := Is real
 
-		: ($nativeType_i = 112)
-			// OT Character
+		: ($nativeType_i = OT Is Character)
+			// OT Is Character → Is text
 			$result_i := Is text
 
-		: ($nativeType_i = 4)
-			// OT Date
+		: ($nativeType_i = Is date:K8:7)
 			$result_i := Is date
 
-		: ($nativeType_i = 11)
-			// OT Time
+		: ($nativeType_i = Is time:K8:8)
 			$result_i := Is time
 
-		: ($nativeType_i = 6)
-			// OT Boolean
+		: ($nativeType_i = Is Boolean:K8:9)
 			$result_i := Is Boolean
 
-		: ($nativeType_i = 30)
-			// OT BLOB
+		: ($nativeType_i = Is BLOB:K8:12)
 			$result_i := Is BLOB
 
-		: ($nativeType_i = 3)
-			// OT Picture
+		: ($nativeType_i = Is picture:K8:10)
 			$result_i := Is picture
 
-		: ($nativeType_i = 23)
-			// OT Pointer
+		: ($nativeType_i = Is pointer:K8:14)
 			$result_i := Is pointer
 
-		: ($nativeType_i = 114)
-			// OT Object
+		: ($nativeType_i = OT Is Object)
+			// OT Is Object → Is object
 			$result_i := Is object
 
-		: ($nativeType_i = 113)
-			// OT Array Character
+		: ($nativeType_i = OT Character array)
+			// OT Character array → Is collection
 			$result_i := Is collection
 
-		: (($nativeType_i = 115) | ($nativeType_i = 24))
-			// OT Record (115), OT Variable (24) → stored as text; map to Is text
+		: (($nativeType_i = OT Is Record) | ($nativeType_i = 24))
+			// OT Is Record (115), legacy OT Variable (24) → stored as text; map to Is text
 			$result_i := Is text
 
 	End case

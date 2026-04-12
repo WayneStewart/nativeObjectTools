@@ -63,16 +63,7 @@ See §7 of the parent specification for the full bidirectional mapping table.
 
 | OT Constant | OT Value | Maps To (4D) | OTr Storage Convention |
 |---|---|---|---|
-| `OT Real` | 1 | `Is real` (1) | Direct |
-| `OT Picture` | 3 | `Is picture` (3) | Native Object property |
-| `OT Date` | 4 | `Is date` (4) | `YYYY-MM-DD` text |
-| `OT Longint` | 5 | `Is longint` (9) | Direct |
-| `OT Boolean` | 6 | `Is Boolean` (6) | Direct |
-| `OT Time` | 11 | `Is time` (11) | `HH:MM:SS` text |
-| `OT Pointer` | 23 | `Is pointer` (23) | `ptr:` text |
-| `OT BLOB` | 30 | `Is BLOB` (30) | Native on v19R2+; base64 Text on v19/v19R1 |
-| `OT Character` | 112 | `Is text` (2) | Direct |
-| `OT Array Character` | 113 | `Is collection` (42) | Collection of text |
-| `OT Object` | 114 | `Is object` (38) | Embedded 4D Object |
+| `OT Character` | 112 | `Is text, Is string var, or Is alpha field` | Direct |
+| `OT Array Character` | 113 | `Text array or String array` | Either type but Array text is most common |
+| `OT Object` | 114 | `Is object` | Embedded 4D Object |
 | `OT Record` | 115 | *(none)* | `rec:tableNum;recordNum` text |
-| `OT Variable` | 24 | *(none)* | `var:typeName:value` text |

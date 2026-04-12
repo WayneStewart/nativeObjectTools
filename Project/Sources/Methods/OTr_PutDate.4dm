@@ -24,7 +24,12 @@
 //   True  → OB SET with native Date value (no shadow key needed; OB Get type → Is date).
 //   False → store as "YYYY-MM-DD" text via OTr_uDateToText, plus a shadow key
 //           (leafKey$type := 4) so OTr_zMapType can identify the stored text as
-//           OT Date (type 4) rather than OT Character (112).
+//           Is date (4) rather than OT Character (112).
+// Wayne Stewart, 2026-04-12 - Type guard updated to use OTr_zMapType (shadow-key-first)
+//   instead of OB Get type, ensuring correct rejection of a text-stored Date (shadow key
+//   Is date = 4) that would otherwise pass an Is text check. Native path now also writes
+//   the shadow key (leafKey$type := Is date = 4) so that OTr_zMapType is version-independent
+//   and so that OTr_GetDate can branch on the shadow key rather than OB Get type alone.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_d : Date)
@@ -33,25 +38,37 @@ OTr_zAddToCallStack(Current method name)
 
 var $parent_o : Object
 var $leafKey_t : Text
+var $existingType_i : Integer
 
 OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; \
 		->$parent_o; ->$leafKey_t))
-		If (OB Is defined($parent_o; $leafKey_t) \
-			& (OB Get type($parent_o; $leafKey_t)#Is date:K8:7) \
-			& (OB Get type($parent_o; $leafKey_t)#Is text:K8:3))
-			OTr_zError("Type mismatch"; Current method name)
+		If (OB Is defined($parent_o; $leafKey_t))
+			$existingType_i:=OTr_zMapType($parent_o; $leafKey_t)
+			If ($existingType_i#0) & ($existingType_i#Is date:K8:7)
+				OTr_zError("Type mismatch"; Current method name)
+			Else
+				If (OTr_uNativeDateInObject)
+					OB SET($parent_o; $leafKey_t; $inValue_d)
+					OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is date:K8:7)
+				Else
+					OB SET($parent_o; $leafKey_t; OTr_uDateToText($inValue_d))
+					// Shadow key lets OTr_zMapType distinguish a text-stored date
+					// (OT type 4) from an ordinary text string (OT type 112).
+					OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is date:K8:7)
+				End if
+			End if
 		Else
 			If (OTr_uNativeDateInObject)
 				OB SET($parent_o; $leafKey_t; $inValue_d)
-				// No shadow key: OB Get type returns Is date, unambiguous.
+				OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is date:K8:7)
 			Else
 				OB SET($parent_o; $leafKey_t; OTr_uDateToText($inValue_d))
 				// Shadow key lets OTr_zMapType distinguish a text-stored date
-				// (OT type 4) from an ordinary text string (OT type 112).
-				OB SET($parent_o; OTr_zShadowKey($leafKey_t); 4)
+				// (Is date = 4) from an ordinary text string (OT Character = 112).
+				OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is date:K8:7)
 			End if
 		End if
 	End if

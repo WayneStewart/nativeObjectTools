@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutBLOB (inObject; inTag; inValue)
 
@@ -10,20 +10,20 @@
 // recognised by OTr_zMapType.
 
 // **ORIGINAL DOCUMENTATION**
-// 
+//
 // *OTr_PutBLOB* puts *inValue* into *inObject*.
-// 
+//
 // If *inObject* is not a valid object handle, an error
 // is generated and OK is set to zero.
-// 
+//
 // If no item in the object has the given inTag, a new
 // item is created.
-// 
+//
 // If an item with the given inTag exists and has the
 // type *Is BLOB*, its value is replaced. The previous
 // BLOB data in the parallel array is released and a
 // new slot is allocated.
-// 
+//
 // If an item with the given inTag exists and has any
 // other type, an error is generated and OK is set to
 // zero if the _OT VariantItems_ option is not set,
@@ -48,9 +48,14 @@
 //   Storage.OTr.nativeBlobInObject (previously only claimed to in
 //   the changelog; the body always stored base64 text).
 // Wayne Stewart, 2026-04-10 - Under the fallback path, writes a
-//   shadow-type key (leafKey$type := 30) so OTr_zMapType can
+//   shadow-type key (leafKey$type := Is BLOB = 30) so OTr_zMapType can
 //   distinguish an encoded BLOB from ordinary user text. The
 //   native-storage path removes any lingering shadow.
+// Wayne Stewart, 2026-04-12 - Native path now also writes the shadow
+//   key (leafKey$type := Is BLOB = 30). OB Get type misreports native BLOBs
+//   as Is object (38) in 4D v20-v21 (same issue as Pictures); the shadow
+//   key lets OTr_zMapType return the correct type (Is BLOB = 30) regardless
+//   of the misreport.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_blob : Blob)
@@ -64,12 +69,12 @@ OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; ->$parent_o; ->$leafKey_t))
-		If (Storage:C1525.OTr.nativeBlobInObject)
+		If (Storage.OTr.nativeBlobInObject)
 			OB SET($parent_o; $leafKey_t; $inValue_blob)
-			OB REMOVE($parent_o; OTr_zShadowKey($leafKey_t))
+			OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is BLOB:K8:12)
 		Else
 			OB SET($parent_o; $leafKey_t; OTr_uBlobToText($inValue_blob))
-			OB SET($parent_o; OTr_zShadowKey($leafKey_t); 30)  // OT BLOB
+			OB SET($parent_o; OTr_zShadowKey($leafKey_t); Is BLOB:K8:12)
 		End if
 	End if
 Else

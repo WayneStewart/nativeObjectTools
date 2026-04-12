@@ -208,6 +208,7 @@ If (False:C215)
 	
 	C_LONGINT:C283(OTr_ItemType; $0; $1)
 	C_TEXT:C284(OTr_ItemType; $2)
+	C_BOOLEAN:C305(OTr_ItemType; $3)
 	
 	C_LONGINT:C283(OTr_IsEmbedded; $0; $1)
 	C_TEXT:C284(OTr_IsEmbedded; $2)
@@ -595,6 +596,7 @@ If (False:C215)
 	C_LONGINT:C283(____Test_Phase_15_OTr; $1)
 	C_LONGINT:C283(____Test_Phase_15_OT; $1)
 	
+	C_BOOLEAN:C305(____Test_OTr_Master; $1)
 	
 	C_TEXT:C284(OTr_z_timestampLocal; $1; $0)
 	

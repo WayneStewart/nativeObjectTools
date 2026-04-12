@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetString (inObject; inTag) --> Text
 
@@ -23,6 +23,11 @@
 //     to prevent crash when stored value is a non-Text type.
 // Wayne Stewart, 2026-04-12 - Added OTr_zError on invalid handle to match
 //     the error-logging pattern of all other scalar Get methods.
+// Wayne Stewart, 2026-04-12 - Added OTr_zMapType type guard (shadow-key-first).
+//   Pointer (Is pointer:K8:14), BLOB fallback (Is BLOB:K8:12), Date text path (Is date:K8:7),
+//   and Time text path (Is time:K8:8) are all stored as Is text but carry shadow keys
+//   distinguishing them from genuine user strings. OTr_zMapType = OT Is Character
+//   admits only genuine strings. Returns error and OK=0 for any other shadow key.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_t : Text
@@ -40,7 +45,12 @@ If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; \
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			$result_t:=OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3)
+			If (OTr_zMapType($parent_o; $leafKey_t)=OT Is Character)
+				$result_t:=OB Get:C1224($parent_o; $leafKey_t; Is text:K8:3)
+			Else
+				OTr_zError("Type mismatch"; Current method name)
+				OTr_zSetOK(0)
+			End if
 		End if
 	End if
 Else

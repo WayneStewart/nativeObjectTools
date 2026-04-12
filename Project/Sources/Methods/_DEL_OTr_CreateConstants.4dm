@@ -22,6 +22,13 @@ Constants_NewGroup("OT Miscellaneous")
 Constants_AddString("Log Writer"; "$Log Writer")
 Constants_AddString("OT Right Arrow"; "→")
 
+Constants_NewGroup("OT Type Constants")
+Constants_AddLong("OT Is Character"; 112)
+Constants_AddLong("OT Character array"; 113)
+Constants_AddLong("OT Is Object"; 114)
+Constants_AddLong("OT Is Record"; 115)
+
+
 
 Constants_SaveFile
 

@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // Project Method: OTr_Info (label) --> Text
 
 // Returns requested information to the host.
@@ -16,6 +16,8 @@
 
 #DECLARE($request_t : Text)->$reply_t : Text
 
+OTr_zAddToCallStack(Current method name:C684)
+
 Case of 
 	: (Count parameters:C259=0)
 		$reply_t:="Error: No parameter passed."
@@ -29,3 +31,5 @@ Case of
 	Else 
 		$reply_t:=" Label Not Recognised"
 End case 
+
+OTr_zRemoveFromCallStack(Current method name:C684)

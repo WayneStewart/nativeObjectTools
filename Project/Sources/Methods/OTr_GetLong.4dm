@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_GetLong (inObject; inTag) --> Longint
 
@@ -18,6 +18,10 @@
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-11 - OB Get now uses Is longint type argument
 //     to prevent crash when stored value is a non-Integer type.
+// Wayne Stewart, 2026-04-12 - Added OTr_zMapType type guard (shadow-key-first).
+//   4D stores both Longint and Real as Is real at the JSON level; without this
+//   guard, OTr_GetLong would silently succeed on a Real property. Guard returns
+//   an error, sets OK=0, and returns 0 when the shadow key is not Is longint:K8:6.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text)->$result_i : Integer
@@ -35,7 +39,12 @@ If (OTr_zIsValidHandle($inObject_i))
 	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False; \
 		->$parent_o; ->$leafKey_t))
 		If (OB Is defined($parent_o; $leafKey_t))
-			$result_i:=OB Get:C1224($parent_o; $leafKey_t; Is longint:K8:6)
+			If (OTr_zMapType($parent_o; $leafKey_t)=Is longint:K8:6)
+				$result_i:=OB Get:C1224($parent_o; $leafKey_t; Is longint:K8:6)
+			Else
+				OTr_zError("Type mismatch"; Current method name)
+				OTr_zSetOK(0)
+			End if
 		End if
 	End if
 End if

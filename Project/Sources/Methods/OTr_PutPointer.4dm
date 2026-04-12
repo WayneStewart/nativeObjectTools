@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
 // Project Method: OTr_PutPointer (inObject; inTag; inValue)
 
@@ -7,7 +7,7 @@
 // and stored as the object property value.
 
 // **VERY IMPORTANT NOTE**
-// This command must *NOT* be used with pointeers to local variables.
+// This command must *NOT* be used with pointers to local variables.
 
 // **ORIGINAL DOCUMENTATION**
 // 
@@ -47,13 +47,13 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-10 - Writes a shadow-type key
-//     (leafKey$type := 23) so OTr_zMapType can distinguish a
+//     (leafKey$type := Is pointer = 23) so OTr_zMapType can distinguish a
 //     serialised pointer from ordinary user text.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inValue_ptr : Pointer)
 
-OTr_zAddToCallStack(Current method name)
+OTr_zAddToCallStack(Current method name:C684)
 
 var $parent_o : Object
 var $leafKey_t : Text
@@ -61,15 +61,15 @@ var $leafKey_t : Text
 OTr_zLock
 
 If (OTr_zIsValidHandle($inObject_i))
-	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True; ->$parent_o; ->$leafKey_t))
-		OB SET($parent_o; $leafKey_t; OTr_uPointerToText($inValue_ptr))
-		OB SET($parent_o; OTr_zShadowKey($leafKey_t); 23)  // OT Pointer
-	End if
-Else
-	OTr_zError("Invalid handle"; Current method name)
+	If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; ->$parent_o; ->$leafKey_t))
+		OB SET:C1220($parent_o; $leafKey_t; OTr_uPointerToText($inValue_ptr))
+		OB SET:C1220($parent_o; OTr_zShadowKey($leafKey_t); Is pointer:K8:14)
+	End if 
+Else 
+	OTr_zError("Invalid handle"; Current method name:C684)
 	OTr_zSetOK(0)
-End if
+End if 
 
 OTr_zUnlock
 
-OTr_zRemoveFromCallStack(Current method name)
+OTr_zRemoveFromCallStack(Current method name:C684)

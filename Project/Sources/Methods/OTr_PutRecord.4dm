@@ -55,6 +55,9 @@
 //   date and time fields, matching the OTr_PutDate/OTr_PutTime strategy.
 //   OTr_uNativeDateInObject() probed once before the field loop (per-process,
 //   per-call). True → OB SET native; False → text via OTr_uDateToText/OTr_uTimeToText.
+// Wayne Stewart, 2026-04-12 - Write shadow-type key (leafKey$type := 115 = OT Is Record)
+//   on the snapshot OB SET so that OTr_zMapType can unambiguously identify a record
+//   snapshot sub-object as OT Record (115) rather than OT Object (114).
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inTable_i : Integer)
@@ -148,7 +151,8 @@ If (OTr_zIsValidHandle($inObject_i))
 			
 			If (OTr_zResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; True:C214; ->$parent_o; ->$leafKey_t))
 				OB SET:C1220($parent_o; $leafKey_t; $snapshot_o)
-			End if 
+				OB SET:C1220($parent_o; OTr_zShadowKey($leafKey_t); OT Is Record)
+			End if
 			
 		End if 
 		

@@ -179,17 +179,14 @@ OTr represents the evolution of these design patterns into a modern, native 4D i
 
 ## Status
 
-OTr is in **final testing** with substantial implementation progress:
+OTr v1.0 Beta 1 is feature-complete and in final pre-release verification:
 
 **Completed:**
-- **Phases 1–8** — Fully implemented and tested
-- **Phase 9** — Substantially complete
+- **Phases 1–9** — Fully implemented and tested
+- **Phase 10** — Logging and diagnostic support — implemented
+- **Phase 15** — Parallel OT vs OTr side-by-side testing — 30/30 pass
 
-**In Progress:**
-- **Phase 10** — Logging and diagnostic support
-- **Phase 15** — Parallel OT vs OTr testing and validation
-
-The implementation reproduces the ObjectTools API with high fidelity, enabling reliable migration from the legacy plugin. A public release is anticipated upon completion of final testing and Phase 15 validation.
+A public release is imminent. The implementation reproduces the ObjectTools API with high fidelity, enabling reliable migration from the legacy plugin.
 
 ## Support & Contribution
 

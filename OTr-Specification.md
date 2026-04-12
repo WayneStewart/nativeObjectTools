@@ -1,7 +1,7 @@
 # OTr — Native ObjectTools Replacement: Specification and Goals
 
-**Version:** 0.5
-**Date:** 2026-03-31
+**Version:** 0.6
+**Date:** 2026-04-12
 **Author:** Wayne Stewart / Claude
 
 > **Navigation:** [Jump to Specifications Index](#specifications-index) for a complete list of all phase specifications and retired documents.

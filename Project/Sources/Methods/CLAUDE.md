@@ -1,5 +1,12 @@
 # Claude Code Instructions for 4D Methods
 
+## Project Reference Documents
+
+**These documents must be read before writing or modifying any 4D method code in this project.**
+
+- [`4D-Method-Writing-Guide.md`](/Users/waynestewart/4D/Projects/OT Replacement/nativeObjectTools/4D-Method-Writing-Guide.md) — Canonical coding conventions for this codebase. Covers parameter naming, prohibited syntax, and structural patterns. In particular: **positional parameter syntax (`$1`, `$2`, `${3}`, etc.) is explicitly prohibited**; all parameters must use named `#DECLARE` syntax.
+- [`OTr-Types-Reference.md`](/Users/waynestewart/4D/Projects/OT Replacement/nativeObjectTools/OTr-Types-Reference.md) — Reference for OTr type constants, shadow key behaviour, and the type normalisation model used throughout the OTr API.
+
 ## Method Types
 
 4D has several kinds of methods:

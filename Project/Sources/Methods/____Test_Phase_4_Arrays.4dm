@@ -1,4 +1,4 @@
-﻿//%attributes = {"invisible":true,"shared":false}
+//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: ____Test_Phase_4_Arrays
 
@@ -698,9 +698,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_ClearAll
 	
 	var $summary_t : Text
-	$summary_t:="Phase 4 Array Tests"+Char:C90(Carriage return:K15:38)
-	$summary_t:=$summary_t+"Total:  "+String:C10($total_i)+Char:C90(Carriage return:K15:38)
-	$summary_t:=$summary_t+"Passed: "+String:C10($passed_i)+Char:C90(Carriage return:K15:38)
+	$summary_t:="Phase 4 Array Tests: "
+	$summary_t:=$summary_t+"Total:  "+String:C10($total_i)+", "
+	$summary_t:=$summary_t+"Passed: "+String:C10($passed_i)+", "
 	$summary_t:=$summary_t+"Failed: "+String:C10($failed_i)
 	
 	If ($failed_i>0)
