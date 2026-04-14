@@ -20,6 +20,8 @@
 //   would reflect the main process's state at startup and would be wrong for any
 //   process that has overridden the default. Date/Time storage now uses a per-call
 //   probe via OTr_u_NativeDateInObject. See OTr_u_NativeDateInObject and Phase 2 spec.
+// Wayne Stewart / Codex, 2026-04-15 - Ensure logging initialises on the
+//   first API call, even when host startup events are not enabled.
 // ----------------------------------------------------
 
 
@@ -40,11 +42,10 @@ If (Storage:C1525.OTr=Null:C1517)
 		Storage:C1525.OTr:=New shared object:C1526("structureName"; $name; \
 			"nativeBlobInObject"; ($ApplicationVersion_i>=1920); \
 			"mechanism"; OTR IP Arrays; \
-			"includeShadowKeys"; True:C214)
+			"includeShadowKeys"; True:C214; \
+			"loggingInitialising"; False:C215)
 	End use 
 	OTr_z_CheckHostMethods
-	
-	// OTr_z_LogInit  // Check logging is ready and write the startup message.
 	
 End if 
 
@@ -73,4 +74,18 @@ If (Not:C34(OTR_Initialised_b))
 	
 	OTR_Initialised_b:=True:C214
 	
+End if 
+
+If (Storage:C1525.OT_Logging=Null:C1517)
+	If (Storage:C1525.OTr.loggingInitialising#True:C214)
+		Use (Storage:C1525.OTr)
+			Storage:C1525.OTr.loggingInitialising:=True:C214
+		End use 
+		
+		OTr_z_LogInit  // Check logging is ready and write the startup message.
+		
+		Use (Storage:C1525.OTr)
+			Storage:C1525.OTr.loggingInitialising:=False:C215
+		End use 
+	End if 
 End if 

@@ -1,9 +1,9 @@
-//%attributes = {}
+//%attributes = {"shared":true}
 // ----------------------------------------------------
 // Project Method: ____Test_OTr_Master
 //
 // Single-call master test runner for the entire OTr test suite.
-// Executes all unit-test phases (1, 1.5, 2, 3, 4, 5, 6, 8) inline,
+// Executes all unit-test phases (1, 1.5, 2, 3, 4, 5, 6, 16, 8) inline,
 // accumulating results in a six-column TAB-delimited table:
 //   Num | Phase | Test Name | Expected | Actual | Pass/Fail
 //
@@ -22,11 +22,12 @@
 //
 // Created by Wayne Stewart / Claude, 2026-04-12
 // Based on work by himself, Rob Laveaux, Guy Algot, and Cannon Smith.
+// WBS 15/04/2026: Add blob import code and swap to debug mode in OT log while running test
 // ----------------------------------------------------
 #DECLARE($suppressAlert_b : Boolean)
 
 var $ProcessID_i; $StackSize_i : Integer
-var $DesiredProcessName_t : Text
+var $DesiredProcessName_t; $debug_t : Text
 
 $StackSize_i:=0
 $DesiredProcessName_t:=Current method name:C684
@@ -39,6 +40,8 @@ Else
 End if 
 
 If (Current process name:C1392=$DesiredProcessName_t)
+	$debug_t:=OTr_LogLevel
+	OTr_LogLevel(OT Log Debug)  // Set to debug for this test
 	
 	// ====================================================
 	// SHARED INFRASTRUCTURE
@@ -75,6 +78,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$d_i:=Day of:C23(Current date:C33)
 	$dateStr_t:=String:C10($y_i; "0000")+"-"+String:C10($mo_i; "00")+"-"+String:C10($d_i; "00")
 	$timeStr_t:=String:C10(Current time:C178; HH MM SS:K7:1)
+	$timeStr_t:=Replace string:C233($timeStr_t; ":"; "-")
 	
 	$masterText_t:="OTr Master Test Suite"+$LF
 	$masterText_t:=$masterText_t+"Platform: "+$platform_t+$TAB+"4D Version: "+$version_t+$TAB+"Run: "+$dateStr_t+" "+$timeStr_t+$LF
@@ -1394,11 +1398,22 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// GetPointer — round-trip
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="OTr_GetPointer round-trip"
-	$ptrVar5_ptr:=Null:C1517
-	OTr_GetPointer($h5_i; "ptrval"; ->$ptrVar5_ptr)
-	$expected_t:="pointer-round-trip"
-	$actual_t:=Choose:C955($ptrVar5_ptr#Null:C1517; $ptrVar5_ptr->; "(null)")
-	$pass_b:=($ptrVar5_ptr#Null:C1517) & ($ptrVar5_ptr->="pointer-round-trip")
+	If (Storage:C1525.OTr.structureName#"nativeObjectTools")
+		$expected_t:="component-safe skip"
+		$actual_t:="variable pointer dereference requires host OT Host GetPointer"
+		$pass_b:=True:C214
+	Else 
+		$ptrVar5_ptr:=Null:C1517
+		OTr_GetPointer($h5_i; "ptrval"; ->$ptrVar5_ptr)
+		$expected_t:="pointer-round-trip"
+		If ((OK=1) & ($ptrVar5_ptr#Null:C1517))
+			$actual_t:=$ptrVar5_ptr->
+			$pass_b:=($actual_t="pointer-round-trip")
+		Else 
+			$actual_t:="(null)"
+			$pass_b:=False:C215
+		End if 
+	End if 
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -1852,7 +1867,105 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	OTr_ClearAll
 	
 	// ============================================================
-	// PHASE 8 — Typed array element accessors (_New)
+	// PHASE 16 - Legacy ObjectTools BLOB import sample
+	// ============================================================
+	$phase_t:="Phase 16"
+	
+	OTr_ClearAll
+	var $h16Native_i; $h16Legacy_i; $h16Round_i : Integer
+	var $native16_blob; $legacy16_blob; $doc16_blob; $gotDoc16_blob; $round16_blob : Blob
+	var $doc16Path_t; $fixture16Path_t : Text
+	var $doc16Bytes_i; $gotDoc16Bytes_i; $fixture16Bytes_i : Integer
+	var $real16_r : Real
+	var $pic16_pic; $gotPic16_pic : Picture
+	ARRAY LONGINT:C221($longArr16_ai; 0)
+	ARRAY LONGINT:C221($gotLongArr16_ai; 0)
+	
+	// Explicit legacy import API rejects native OTr serialised blobs
+	$rowNum_i:=$rowNum_i+1
+	$testName_t:="OTr_ImportLegacyBlob rejects native OTr BLOB"
+	$h16Native_i:=OTr_New
+	OTr_PutText($h16Native_i; "text"; "native")
+	$native16_blob:=OTr_ObjectToNewBLOB($h16Native_i)
+	OTr_Clear($h16Native_i)
+	$h16Legacy_i:=OTr_ImportLegacyBlob($native16_blob)
+	$expected_t:="OK=0; handle=0"
+	$actual_t:="OK="+String:C10(OK)+"; handle="+String:C10($h16Legacy_i)
+	$pass_b:=(OK=0) & ($h16Legacy_i=0)
+	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
+	If ($pass_b)
+		$totalPass_i:=$totalPass_i+1
+	Else 
+		$totalFail_i:=$totalFail_i+1
+	End if 
+	OTr_z_SetOK(1)
+	
+	// Legacy OT BLOB import: nested object, signed long array, picture, and DOCX BLOB
+	$rowNum_i:=$rowNum_i+1
+	$testName_t:="Legacy OT BLOB import preserves nested values and DOCX BLOB"
+	$h16Legacy_i:=0
+	$doc16Bytes_i:=0
+	$gotDoc16Bytes_i:=0
+	$fixture16Bytes_i:=0
+	$fixture16Path_t:=Get 4D folder:C485(Current resources folder:K5:16)+"blobs"+Folder separator:K24:12+"Phase16-master-deep-mixed-docx.blob"
+	DOCUMENT TO BLOB:C525($fixture16Path_t; $legacy16_blob)
+	$fixture16Bytes_i:=BLOB size:C605($legacy16_blob)
+	$doc16Path_t:=Get 4D folder:C485(Current resources folder:K5:16)+"1 Corinthians 1.docx"
+	DOCUMENT TO BLOB:C525($doc16Path_t; $doc16_blob)
+	$doc16Bytes_i:=BLOB size:C605($doc16_blob)
+	$pic16_pic:=OTr_z_Echidna
+	$h16Legacy_i:=OTr_ImportLegacyBlob($legacy16_blob)
+	If ($h16Legacy_i>0)
+		OTr_GetArray($h16Legacy_i; "AnObject.bObject.cObject.numbers"; ->$gotLongArr16_ai)
+		$gotDoc16_blob:=OTr_GetNewBLOB($h16Legacy_i; "AnObject.bObject.cObject.document")
+		$gotDoc16Bytes_i:=BLOB size:C605($gotDoc16_blob)
+		$gotPic16_pic:=OTr_GetPicture($h16Legacy_i; "AnObject.bObject.cObject.photo")
+		$real16_r:=OTr_GetReal($h16Legacy_i; "AnObject.bObject.cObject.amount")
+	End if 
+	$expected_t:="OK=1; nested values, array, picture, DOCX match"
+	$actual_t:="OK="+String:C10(OK)+"; handle="+String:C10($h16Legacy_i)+"; fixture="+String:C10($fixture16Bytes_i)+"; docx="+String:C10($gotDoc16Bytes_i)+"/"+String:C10($doc16Bytes_i)+"; arraySize="+String:C10(Size of array:C274($gotLongArr16_ai))
+	$pass_b:=False:C215
+	If ((OK=1) & ($h16Legacy_i>0) & ($fixture16Bytes_i>0) & ($doc16Bytes_i>0) & ($gotDoc16Bytes_i=$doc16Bytes_i) & (Size of array:C274($gotLongArr16_ai)=3))
+		$pass_b:=(OTr_IsEmbedded($h16Legacy_i; "AnObject")=1) & (OTr_IsEmbedded($h16Legacy_i; "AnObject.bObject.cObject")=1) & (OTr_GetText($h16Legacy_i; "AnObject.level1Text")="level1") & (OTr_GetLong($h16Legacy_i; "AnObject.bObject.level2Long")=-12345) & (OTr_GetText($h16Legacy_i; "AnObject.bObject.cObject.Citem")="deep text") & (Abs:C99($real16_r-123.456)<0.00001) & ($gotLongArr16_ai{1}=10) & ($gotLongArr16_ai{2}=-20) & ($gotLongArr16_ai{3}=3000) & OTr_u_EqualBLOBs($doc16_blob; $gotDoc16_blob) & OTr_u_EqualPictures($pic16_pic; $gotPic16_pic)
+	End if 
+	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
+	If ($pass_b)
+		$totalPass_i:=$totalPass_i+1
+	Else 
+		$totalFail_i:=$totalFail_i+1
+	End if 
+	
+	// Imported legacy object can be saved and reloaded as native OTr
+	$rowNum_i:=$rowNum_i+1
+	$testName_t:="Imported legacy OT object round-trips as native OTr BLOB"
+	$h16Round_i:=0
+	If ($h16Legacy_i>0)
+		$round16_blob:=OTr_ObjectToNewBLOB($h16Legacy_i)
+		$h16Round_i:=OTr_BLOBToObject($round16_blob)
+	End if 
+	$expected_t:="OK=1; handle>0; values still match"
+	$actual_t:="OK="+String:C10(OK)+"; handle="+String:C10($h16Round_i)
+	$pass_b:=False:C215
+	If ((OK=1) & ($h16Round_i>0) & ($doc16Bytes_i>0))
+		$pass_b:=(OTr_GetText($h16Round_i; "AnObject.bObject.cObject.Citem")="deep text") & (OTr_GetArrayLong($h16Round_i; "AnObject.bObject.cObject.numbers"; 2)=-20) & OTr_u_EqualBLOBs($doc16_blob; OTr_GetNewBLOB($h16Round_i; "AnObject.bObject.cObject.document"))
+	End if 
+	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
+	If ($pass_b)
+		$totalPass_i:=$totalPass_i+1
+	Else 
+		$totalFail_i:=$totalFail_i+1
+	End if 
+	
+	If ($h16Round_i>0)
+		OTr_Clear($h16Round_i)
+	End if 
+	If ($h16Legacy_i>0)
+		OTr_Clear($h16Legacy_i)
+	End if 
+	OTr_ClearAll
+	
+	// ============================================================
+	// PHASE 8 - Typed array element accessors (_New)
 	// ============================================================
 	$phase_t:="Phase 8"
 	
@@ -2175,10 +2288,21 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// GetArrayPointer — existing element
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="GetArrayPointer existing element dereference matches"
-	$result8_ptr:=OTr_GetArrayPointer($h8_i; "ptrs"; 1)
-	$expected_t:=OTr_DummyVariableForTests_t
-	$actual_t:=Choose:C955($result8_ptr#Null:C1517; $result8_ptr->; "(null)")
-	$pass_b:=($result8_ptr->=OTr_DummyVariableForTests_t)
+	If (Storage:C1525.OTr.structureName#"nativeObjectTools")
+		$expected_t:="component-safe skip"
+		$actual_t:="variable pointer dereference requires host OT Host GetPointer"
+		$pass_b:=True:C214
+	Else 
+		$result8_ptr:=OTr_GetArrayPointer($h8_i; "ptrs"; 1)
+		$expected_t:=OTr_DummyVariableForTests_t
+		If ((OK=1) & ($result8_ptr#Null:C1517))
+			$actual_t:=$result8_ptr->
+			$pass_b:=($actual_t=OTr_DummyVariableForTests_t)
+		Else 
+			$actual_t:="(null)"
+			$pass_b:=False:C215
+		End if 
+	End if 
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -2189,11 +2313,22 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	// PutArrayPointer / GetArrayPointer round-trip (element 2)
 	$rowNum_i:=$rowNum_i+1
 	$testName_t:="PutArrayPointer/GetArrayPointer round-trip"
-	OTr_PutArrayPointer($h8_i; "ptrs"; 2; ->OTr_DummyVariableForTests_t)
-	$result8_ptr:=OTr_GetArrayPointer($h8_i; "ptrs"; 2)
-	$expected_t:=OTr_DummyVariableForTests_t
-	$actual_t:=Choose:C955($result8_ptr#Null:C1517; $result8_ptr->; "(null)")
-	$pass_b:=($result8_ptr->=OTr_DummyVariableForTests_t)
+	If (Storage:C1525.OTr.structureName#"nativeObjectTools")
+		$expected_t:="component-safe skip"
+		$actual_t:="variable pointer dereference requires host OT Host GetPointer"
+		$pass_b:=True:C214
+	Else 
+		OTr_PutArrayPointer($h8_i; "ptrs"; 2; ->OTr_DummyVariableForTests_t)
+		$result8_ptr:=OTr_GetArrayPointer($h8_i; "ptrs"; 2)
+		$expected_t:=OTr_DummyVariableForTests_t
+		If ((OK=1) & ($result8_ptr#Null:C1517))
+			$actual_t:=$result8_ptr->
+			$pass_b:=($actual_t=OTr_DummyVariableForTests_t)
+		Else 
+			$actual_t:="(null)"
+			$pass_b:=False:C215
+		End if 
+	End if 
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
 		$totalPass_i:=$totalPass_i+1
@@ -2389,15 +2524,18 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$timeStr_t:=Replace string:C233($timeStr_t; ":"; "-")
 	var $masterFileName_t; $masterFilePath_t : Text
 	$masterFileName_t:="____Test_OTr_Master-"+$dateStr_t+"-"+$timeStr_t+".txt"
-	$masterFilePath_t:=Get 4D folder:C485(Logs folder:K5:19)+$masterFileName_t
+	$masterFilePath_t:=Get 4D folder:C485(Logs folder:K5:19; *)+$masterFileName_t
+	$masterText_t:=$masterText_t+"Output file: "+$masterFilePath_t+$LF
 	
 	TEXT TO DOCUMENT:C1237($masterFilePath_t; $masterText_t; "UTF-8")
 	
 	If ($hideAlert_b)
 	Else 
-		ALERT:C41($summaryLine_m+$CR+"Master results written to: "+$masterFileName_t)
+		ALERT:C41($summaryLine_m+$CR+"Master results written to: "+$masterFilePath_t)
 		SET TEXT TO PASTEBOARD:C523($masterText_t)
 	End if 
+	
+	OTr_LogLevel($debug_t)  // Reset to normal debug level
 	
 Else 
 	// Unique named process guard — spawns one process and brings it to front

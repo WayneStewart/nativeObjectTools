@@ -665,6 +665,7 @@ If (False:C215)
 	C_LONGINT:C283(____Test_Phase_15_OT; $1)
 	
 	// Phase 16 OT BLOB compatibility tests
+	C_BOOLEAN:C305(____Make_Phase16_OTBlobFixtures; $1)
 	C_BOOLEAN:C305(____Test_Phase_16_OTBlob; $1)
 	C_BOOLEAN:C305(____Test_Phase_16a_OTBlobValues; $1)
 	C_BOOLEAN:C305(____Test_Phase_16b_OTBlobDeep; $1)
