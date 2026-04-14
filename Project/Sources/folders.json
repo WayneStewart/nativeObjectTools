@@ -1,16 +1,5 @@
 {
-	"Constants": {
-		"methods": [
-			"_DEL_OTr_CreateConstants",
-			"Constants__Readme",
-			"Constants_AddLong",
-			"Constants_AddReal",
-			"Constants_AddString",
-			"Constants_NewFile",
-			"Constants_NewGroup",
-			"Constants_SaveFile"
-		]
-	},
+	"Constants": {},
 	"Logging": {
 		"methods": [
 			"Compiler_Log",
@@ -33,7 +22,6 @@
 	"Miscellaneous": {
 		"methods": [
 			"__WriteDocumentation",
-			"Compiler_Constants",
 			"Fnd_FCS_ParseParameterLine",
 			"Fnd_FCS_WriteDocumentation"
 		]
