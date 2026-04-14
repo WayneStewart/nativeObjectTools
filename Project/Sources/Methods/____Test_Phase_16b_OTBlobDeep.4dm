@@ -121,7 +121,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		OT PutObject($level1OT_i; "bObject"; $level2OT_i)
 		OT PutObject($rootOT_i; "AnObject"; $level1OT_i)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($rootOT_i)
-		$rawPath_t:=Get 4D folder:C485(Logs folder:K5:19)+"Phase16b-OTBlob-01_deep_mixed_docx.blob"
+		$rawPath_t:=Get 4D folder:C485(Logs folder:K5:19; *)+"Phase16b-OTBlob-01_deep_mixed_docx.blob"
 		BLOB TO DOCUMENT:C526($rawPath_t; $legacyBlob_blob)
 		OT Clear($level3OT_i)
 		OT Clear($level2OT_i)
@@ -224,7 +224,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		OT PutObject($rootOT_i; "sibling"; $siblingOT_i)
 		OT PutText($rootOT_i; "after"; "after-value")
 		$legacyBlob_blob:=OT ObjectToNewBLOB($rootOT_i)
-		$rawPath_t:=Get 4D folder:C485(Logs folder:K5:19)+"Phase16b-OTBlob-02_sibling_deep_ordering.blob"
+		$rawPath_t:=Get 4D folder:C485(Logs folder:K5:19; *)+"Phase16b-OTBlob-02_sibling_deep_ordering.blob"
 		BLOB TO DOCUMENT:C526($rawPath_t; $legacyBlob_blob)
 		OT Clear($siblingOT_i)
 		OT Clear($level3OT_i)
@@ -274,7 +274,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if
 	
 	$report_t:=$report_t+Char:C90(Carriage return:K15:38)+$summary_t
-	$reportPath_t:=Get 4D folder:C485(Logs folder:K5:19)+"____Test_Phase_16b_OTBlobDeep.txt"
+	$reportPath_t:=Get 4D folder:C485(Logs folder:K5:19; *)+"____Test_Phase_16b_OTBlobDeep.txt"
 	TEXT TO DOCUMENT:C1237($reportPath_t; $report_t; "UTF-8")
 	
 	If ($hideAlert_b)

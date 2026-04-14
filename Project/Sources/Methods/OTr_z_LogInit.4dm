@@ -155,12 +155,30 @@ If (Storage:C1525.OT_Logging=Null:C1517)
 		End if 
 		
 		$applicationType_i:=Application type:C494
-		If ($applicationType_i=4D Remote mode:K5:5)
-			$applicationType_t:="Remote"
-		Else 
-			$applicationType_t:="Mono"
-		End if 
-		LOG ADD ENTRY("info"; "env"; "4D v"+String:C10(Application version:C493)+" ["+$applicationType_t+", "+$buildType_t+", Unicode mode]")
+		Case of 
+			: ($applicationType_i=4D Remote mode:K5:5)
+				$applicationType_t:="4D Remote mode"
+				
+			: ($applicationType_i=4D Server:K5:6)
+				$applicationType_t:="4D Server"
+				
+			: ($applicationType_i=4D Local mode:K5:1)
+				$applicationType_t:="4D Local mode"
+				
+			: ($applicationType_i=4D Volume desktop:K5:2)
+				$applicationType_t:="4D Volume desktop"
+				
+			: ($applicationType_i=6)  // I'm not certain this is possible
+				$applicationType_t:="tool4D"
+				
+			: ($applicationType_i=4D Desktop:K5:4)
+				$applicationType_t:="4D Desktop"
+				
+			Else 
+				$applicationType_t:="Unknown Environment"
+		End case 
+		
+		LOG ADD ENTRY("info"; "env"; "["+OTr_z_Get4DVersion+", "+$buildType_t+"]")
 		LOG ADD ENTRY("info"; "env"; "checked")
 		$logEnabled_b:=True:C214
 	Else 

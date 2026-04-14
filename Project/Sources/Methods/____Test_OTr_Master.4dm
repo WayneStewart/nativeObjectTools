@@ -2355,7 +2355,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $sbTable_t; $sbSummary_t : Text
 	var $sbFileName_t; $sbFilePath_t : Text
 	var $sbFolderPath_t : Text
-	$sbFolderPath_t:=Get 4D folder:C485(Logs folder:K5:19)
+	$sbFolderPath_t:=Get 4D folder:C485(Logs folder:K5:19; *)
 	
 	// ---- Phase 10 ----
 	$masterText_t:=$masterText_t+$LF+"--- Phase 10: Logging side-by-side ---"+$LF
