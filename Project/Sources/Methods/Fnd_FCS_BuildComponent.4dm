@@ -50,7 +50,7 @@ If (OK=1)
 	// Update the json
 	$info_o.CFBundleShortVersionString:=$versionNumber_t
 	$info_o.CFBundleGetInfoString:=$info_o.CFBundleName+" "+$versionNumber_t+", "+$year_t
-	//$info_o.NSHumanReadableCopyright:="Copyright © 2009-"+$year_t+", Walt Nelson"
+	//$info_o.NSHumanReadableCopyright:="Copyright © 2007-"+$year_t+", Wayne Stewart, portions by Cannon Smith and Rob Laveaux"
 	
 	$json_t:=JSON Stringify:C1217($info_o; *)
 	If (Test path name:C476($templatePath_t)=Is a document:K24:1)

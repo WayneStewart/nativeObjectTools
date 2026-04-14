@@ -131,7 +131,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$timeStr_t:=Replace string:C233($timeStr_t; ":"; "-")
 	$fileName_t:="____Test_Phase_15-"+$dateStr_t+"-"+$timeStr_t+".txt"
 	
-	$desktopPath_t:=Get 4D folder:C485(Logs folder:K5:19)
+	$desktopPath_t:=Get 4D folder:C485(Logs folder:K5:19; *)
 	$filePath_t:=$desktopPath_t+$fileName_t
 	
 	TEXT TO DOCUMENT:C1237($filePath_t; $tableText_t; "UTF-8")

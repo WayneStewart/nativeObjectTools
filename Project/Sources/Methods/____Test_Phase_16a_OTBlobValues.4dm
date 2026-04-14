@@ -614,7 +614,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if
 	
 	$report_t:=$report_t+Char:C90(Carriage return:K15:38)+$summary_t
-	$reportPath_t:=Get 4D folder:C485(Logs folder:K5:19)+"____Test_Phase_16a_OTBlobValues.txt"
+	$reportPath_t:=Get 4D folder:C485(Logs folder:K5:19; *)+"____Test_Phase_16a_OTBlobValues.txt"
 	TEXT TO DOCUMENT:C1237($reportPath_t; $report_t; "UTF-8")
 	
 	If ($hideAlert_b)
