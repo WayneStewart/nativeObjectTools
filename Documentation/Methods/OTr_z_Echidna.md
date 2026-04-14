@@ -1,0 +1,1 @@
+<!--OTr_z_echidna -> PictureResult : Picture : ⬅️ : A small picture of a young echidna-->## OTr\_z\_EchidnaOTr\_z\_echidna --> PictureReturns a picture of a echidnaAttributes: Private, Invisible, Preemptive indifferent| Parameter | Type |  | Description || --- | --- | --- | --- ||Result|Picture|⬅️|A small picture of a young echidna|

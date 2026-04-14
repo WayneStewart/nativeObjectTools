@@ -4,8 +4,25 @@
 
 // Finds a PNG or JPEG stream inside a legacy ObjectTools picture
 // payload and converts it into a native 4D picture.
+//
+// Access: Private
+//
+// Parameters:
+//   $inBlob_blob      : Blob    : Legacy ObjectTools object BLOB
+//   $inOffset_i       : Integer : Offset after picture marker 138
+//   $outEndOffset_ptr : Pointer : Receives offset immediately after image payload
+//   $outPicture_ptr   : Pointer : Receives decoded 4D Picture
+//
+// Returns:
+//   $result_b : Boolean : True when a PNG or JPEG picture was extracted
+//
+// Created by Wayne Stewart / Codex, 2026-04-14
+// Wayne Stewart / Codex, 2026-04-14 - Added PNG/JPEG extraction for OT picture payloads.
+// ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob; $inOffset_i : Integer; $outEndOffset_ptr : Pointer; $outPicture_ptr : Pointer)->$result_b : Boolean
+
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $scan_i; $mediaStart_i; $mediaEnd_i; $mediaSize_i; $blobSize_i : Integer
 var $chunkStart_i; $chunkOffset_i; $chunkLen_i; $nextChunk_i : Integer
@@ -72,3 +89,5 @@ If (($mediaStart_i>=0) & ($mediaEnd_i>$mediaStart_i))
 		$result_b:=True
 	End if
 End if
+
+OTr_z_RemoveFromCallStack(Current method name:C684)

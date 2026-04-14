@@ -3,9 +3,25 @@
 // Project Method: ____Test_Phase_16_OTBlob_Probe
 
 // Saves one generated ObjectTools BLOB, imports it through
-// OTr_BLOBToObject, and returns a compact pass/fail diagnostic.
+// OTr_ImportLegacyBlob, and returns a compact pass/fail diagnostic.
+//
+// Access: Private
+//
+// Parameters:
+//   $legacyBlob_blob : Blob : Generated legacy ObjectTools object BLOB
+//   $caseName_t      : Text : Test case name used in report and raw file name
+//
+// Returns:
+//   $result_t : Text : Pass/fail diagnostic for the generated BLOB
+//
+// Created by Wayne Stewart / Codex, 2026-04-14
+// Wayne Stewart / Codex, 2026-04-14 - Added shared Phase 16 OT BLOB probe.
+// Wayne Stewart / Codex, 2026-04-14 - Switched legacy import check to public OTr_ImportLegacyBlob API.
+// ----------------------------------------------------
 
 #DECLARE($legacyBlob_blob : Blob; $caseName_t : Text)->$result_t : Text
+
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $safeName_t; $path_t; $marker_t : Text
 var $otrH_i; $roundTripH_i : Integer
@@ -21,7 +37,7 @@ $path_t:=Get 4D folder:C485(Logs folder:K5:19)+"Phase16-OTBlob-"+$safeName_t+".b
 BLOB TO DOCUMENT:C526($path_t; $legacyBlob_blob)
 
 $marker_t:=OTr_z_OTBlobDescribeFirstItem($legacyBlob_blob)
-$otrH_i:=OTr_BLOBToObject($legacyBlob_blob)
+$otrH_i:=OTr_ImportLegacyBlob($legacyBlob_blob)
 
 If (OK=1) & ($otrH_i>0)
 	$otrBlob_blob:=OTr_ObjectToNewBLOB($otrH_i)
@@ -38,5 +54,7 @@ If (OK=1) & ($otrH_i>0)
 	End if
 	OTr_Clear($otrH_i)
 Else
-	$result_t:="Fail: OTr_BLOBToObject returned 0 or OK=0; "+$marker_t+"; raw="+$path_t
+	$result_t:="Fail: OTr_ImportLegacyBlob returned 0 or OK=0; "+$marker_t+"; raw="+$path_t
 End if
+
+OTr_z_RemoveFromCallStack(Current method name:C684)

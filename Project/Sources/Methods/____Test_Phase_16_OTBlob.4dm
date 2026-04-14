@@ -8,8 +8,21 @@
 // diagnostics for unsupported payload layouts.
 
 // PLATFORM REQUIREMENT: ObjectTools 5.0 must be installed as a plugin.
+//
+// Access: Private
+//
+// Parameters:
+//   $suppressAlert_b : Boolean : True to suppress the final alert
+//
+// Returns: Nothing
+//
+// Created by Wayne Stewart / Codex, 2026-04-14
+// Wayne Stewart / Codex, 2026-04-14 - Added Phase 16 OT BLOB marker discovery tests.
+// ----------------------------------------------------
 
 #DECLARE($suppressAlert_b : Boolean)
+
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $ProcessID_i; $StackSize_i : Integer
 var $DesiredProcessName_t : Text
@@ -398,3 +411,5 @@ Else
 	SHOW PROCESS:C325($ProcessID_i)
 	BRING TO FRONT:C326($ProcessID_i)
 End if
+
+OTr_z_RemoveFromCallStack(Current method name:C684)
