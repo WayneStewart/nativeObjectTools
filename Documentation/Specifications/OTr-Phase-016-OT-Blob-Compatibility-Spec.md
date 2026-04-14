@@ -18,7 +18,8 @@ The immediate compatibility goal is:
 1. Read an OT object BLOB.
 2. Convert supported OT item payloads into the native OTr object storage shape.
 3. Preserve value, type identity, array metadata, and nested structure.
-4. Return a clear failure (`OK=0`, handle `0`) for unsupported OT payload markers instead of partially importing corrupt data.
+4. Preserve the legacy `ioOffset` contract as far as the 4D method API permits.
+5. Return a clear failure (`OK=0`, handle `0`) for unsupported OT payload markers instead of partially importing corrupt data.
 
 This phase does not require OTr-generated BLOBs to be readable by the legacy OT plugin.
 
@@ -43,7 +44,63 @@ All other legacy OT payload markers must be treated as unproven until covered by
 
 ---
 
-## 3. Test Strategy
+## 3. Legacy Compatibility Contract
+
+The legacy ObjectTools documentation defines several behaviours that Phase 16 should preserve as closely as possible.
+
+### 3.1 Accepted Source Format
+
+`OTr_BLOBToObject` should only import legacy object payloads written by:
+
+- `OT ObjectToBLOB`
+- `OT ObjectToNewBLOB`
+
+It must not treat arbitrary `VARIABLE TO BLOB` payloads as legacy OT objects. Existing OTr-native BLOB import remains supported through the current compressed `VARIABLE TO BLOB` path.
+
+### 3.2 Offset Behaviour
+
+Legacy `OT BLOBToObject` accepts an optional `ioOffset`. If omitted, the offset defaults to zero.
+
+Desired OTr behaviour:
+
+- Calling `OTr_BLOBToObject($blob)` reads from byte `0`.
+- If an offset-compatible OTr API is added, it must read from the supplied offset.
+- On successful import, the offset-compatible API should advance the offset to the byte immediately after the imported object.
+- On failure, the offset-compatible API must leave the supplied offset untouched.
+
+4D project methods cannot exactly emulate every plugin-style in/out parameter call pattern. If exact `ioOffset` compatibility cannot be implemented through the existing public method signature, the limitation must be documented and an OTr-compatible alternative must be tested.
+
+### 3.3 Appended Object Behaviour
+
+The legacy `OT ObjectToBLOB` append mode can create a larger BLOB containing more than one serialized OT object, or valid serialized object bytes followed by unrelated bytes.
+
+Therefore:
+
+- Extra bytes after a valid object are not automatically an error.
+- Sequential import from appended OT object BLOBs should be tested if offset support is implemented.
+- Without offset support, OTr may reasonably import only the first object at byte `0`, but this limitation must be documented.
+
+### 3.4 Failure Semantics
+
+If the bytes at the read offset do not describe an OT object, or the payload type is unsupported:
+
+- Return handle `0`.
+- Set `OK=0`.
+- Leave any supplied offset unchanged.
+- Do not register a partial OTr handle.
+- Do not mutate existing valid handles.
+
+### 3.5 4D Version Condition
+
+The legacy warning about BLOB and Time arrays requiring 4D v14 or later does not block this component, because OTr runs on 4D v19 or later. Phase 16 must still test BLOB and Time arrays, but the expected result is normal import support, not a version-gated error.
+
+### 3.6 Earlier ObjectTools Versions
+
+Legacy ObjectTools claims transparent conversion of BLOBs created with earlier ObjectTools versions. If sample BLOBs from earlier OT versions are available, Phase 16 should include them as fixture inputs. If no fixtures are available, this remains a documented coverage gap.
+
+---
+
+## 4. Test Strategy
 
 Each test should generate a legacy OT object using the real ObjectTools plugin, export it with `OT ObjectToNewBLOB`, import it with `OTr_BLOBToObject`, and verify the result using the public OTr getters.
 
@@ -60,13 +117,14 @@ For unsupported payloads:
 
 - Confirm the returned handle is `0`.
 - Confirm `OK=0`.
+- Confirm the offset is unchanged, where an offset-compatible API is being tested.
 - Confirm no partial handle is left registered.
 
 ---
 
-## 4. Scalar Payload Coverage
+## 5. Scalar Payload Coverage
 
-### 4.1 Character / Text
+### 5.1 Character / Text
 
 Test cases:
 
@@ -83,7 +141,7 @@ Assertions:
 - `OTr_GetString` returns compatible text where expected.
 - `OTr_ItemType` returns `OT Is Character`.
 
-### 4.2 Long / Integer
+### 5.2 Long / Integer
 
 Test cases:
 
@@ -98,7 +156,7 @@ Assertions:
 - `OTr_GetLong` returns the exact value.
 - `OTr_ItemType` returns `Is longint`.
 
-### 4.3 Real
+### 5.3 Real
 
 Test cases:
 
@@ -113,7 +171,7 @@ Assertions:
 - `OTr_GetReal` returns the same numeric value within 4D real precision.
 - `OTr_ItemType` returns `Is real`.
 
-### 4.4 Boolean
+### 5.4 Boolean
 
 Test cases:
 
@@ -126,7 +184,7 @@ Assertions:
 - `OTr_GetBoolean` returns `0` for `False`.
 - `OTr_ItemType` returns `Is boolean`.
 
-### 4.5 Date
+### 5.5 Date
 
 Test cases:
 
@@ -140,7 +198,7 @@ Assertions:
 - `OTr_GetDate` returns the same date.
 - `OTr_ItemType` returns `Is date`.
 
-### 4.6 Time
+### 5.6 Time
 
 Test cases:
 
@@ -156,9 +214,9 @@ Assertions:
 
 ---
 
-## 5. Binary and Media Payload Coverage
+## 6. Binary and Media Payload Coverage
 
-### 5.1 BLOB
+### 6.1 BLOB
 
 Test cases:
 
@@ -173,7 +231,7 @@ Assertions:
 - `OTr_GetBLOB` pointer form returns byte-identical data.
 - `OTr_ItemType` returns `Is BLOB`.
 
-### 5.2 Picture
+### 6.2 Picture
 
 Test cases:
 
@@ -190,9 +248,9 @@ Assertions:
 
 ---
 
-## 6. Pointer, Record, and Variable Payload Coverage
+## 7. Pointer, Record, and Variable Payload Coverage
 
-### 6.1 Pointer
+### 7.1 Pointer
 
 Test cases:
 
@@ -205,7 +263,7 @@ Assertions:
 - Process/interprocess pointer names round-trip where OTr supports them.
 - Local pointer behaviour is documented explicitly. If import cannot safely preserve it, it must fail cleanly or import as an explicitly unsupported representation.
 
-### 6.2 Record
+### 7.2 Record
 
 Test cases:
 
@@ -221,7 +279,7 @@ Assertions:
 - `OTr_GetRecord` restores expected field values where supported.
 - `OTr_GetRecordTable` returns the expected table number/name behaviour.
 
-### 6.3 Variable
+### 7.3 Variable
 
 Test cases:
 
@@ -236,7 +294,7 @@ Assertions:
 
 ---
 
-## 7. Array Payload Coverage
+## 8. Array Payload Coverage
 
 For every array type, test:
 
@@ -272,7 +330,7 @@ Assertions:
 
 ---
 
-## 8. Embedded Object Coverage
+## 9. Embedded Object Coverage
 
 Test cases:
 
@@ -291,7 +349,7 @@ Assertions:
 
 ---
 
-## 9. Tag Name Coverage
+## 10. Tag Name Coverage
 
 Test cases:
 
@@ -313,7 +371,7 @@ Assertions:
 
 ---
 
-## 10. Ordering and Offset Coverage
+## 11. Ordering and Offset Coverage
 
 The OT binary format is offset-sensitive. Tests must include item ordering variants:
 
@@ -325,16 +383,22 @@ The OT binary format is offset-sensitive. Tests must include item ordering varia
 - Array before date.
 - Multiple arrays in a row.
 - Mixed scalar, binary, array, and embedded object payloads.
+- Valid OT object at offset `0` followed by trailing bytes.
+- Valid OT object at a non-zero offset.
+- Multiple valid OT objects appended into one BLOB.
 
 Assertions:
 
 - Every item after an array remains readable.
 - Every item after text/date/binary payloads remains readable.
 - No parser branch consumes bytes belonging to the next item.
+- Import from offset `0` works when no offset is supplied.
+- Import from non-zero offset works if an offset-compatible API is implemented.
+- Successful offset-based import advances the offset to the next unread byte.
 
 ---
 
-## 11. Failure Coverage
+## 12. Failure Coverage
 
 Test cases:
 
@@ -346,20 +410,23 @@ Test cases:
 - Truncated array descriptor.
 - Truncated array element payload.
 - Valid OT header with unsupported item marker.
-- Valid OT object with appended extra bytes.
-- Multiple OT objects appended into one BLOB, if generated via legacy append mode.
+- Invalid bytes at offset `0`.
+- Invalid bytes at a non-zero offset, if an offset-compatible API is implemented.
+- Valid first object followed by corrupt trailing bytes.
 
 Assertions:
 
 - Invalid input returns handle `0`.
 - `OK=0` is set.
+- Any supplied offset is left untouched on failure.
 - Error text identifies unsupported or invalid legacy OT data.
 - No partial handle is registered.
 - Existing valid handles remain unaffected.
+- A valid first object followed by corrupt trailing bytes imports successfully when reading only the first object.
 
 ---
 
-## 12. Minimum Next Test Method
+## 13. Minimum Next Test Method
 
 Create a focused generator/import test, for example `____Test_Phase_16_OTBlob`, that builds one OT object containing:
 
@@ -398,9 +465,27 @@ $roundTripHandle_i:=OTr_BLOBToObject($otrBlob_blob)
 
 This single method should expose the next set of unsupported OT markers and payload layouts to implement.
 
+Create a second focused method for the legacy offset contract, for example `____Test_Phase_16_OTBlobOffset`, once an offset-compatible API exists.
+
+Recommended offset cases:
+
+```4d
+// Default offset behaviour
+$h1_i:=OTr_BLOBToObject($legacyBlob_blob)
+
+// Desired offset-compatible behaviour, exact API TBD
+$offset_i:=0
+$h2_i:=OTr_BLOBToObject($appendedBlob_blob; ->$offset_i)
+// Assert $offset_i advanced after success.
+
+$badOffset_i:=$offset_i
+$hBad_i:=OTr_BLOBToObject($appendedBlob_blob; ->$badOffset_i)
+// Assert failure leaves $badOffset_i unchanged.
+```
+
 ---
 
-## 13. Acceptance Criteria
+## 14. Acceptance Criteria
 
 Phase 16 is complete when:
 
@@ -410,5 +495,9 @@ Phase 16 is complete when:
 - Binary/media payloads either import byte-equivalently or fail cleanly with documented limitations.
 - Pointer, record, and variable payloads have explicit tested behaviour.
 - Unsupported payload markers fail cleanly.
+- Offset compatibility is implemented or explicitly documented as a deliberate OTr API difference.
+- Failure leaves the caller-visible offset unchanged where offset compatibility is implemented.
+- Appended-object BLOB behaviour is tested.
+- Earlier ObjectTools-version BLOB fixtures are tested, or their absence is documented as a coverage gap.
 - At least two real-world OT BLOB samples import without using the legacy plugin at read time.
 - Imported OT BLOBs can be re-serialised with `OTr_ObjectToNewBLOB` and read back as normal OTr BLOBs.
