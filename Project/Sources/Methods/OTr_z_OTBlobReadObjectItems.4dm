@@ -5,8 +5,24 @@
 // Parses inItemCount legacy OT item records from ioOffset into a native
 // OTr object shape. Used for embedded ObjectTools objects, whose payload
 // stores item records without the top-level "Objects!" envelope.
+//
+// Access: Private
+//
+// Parameters:
+//   $inBlob_blob    : Blob    : Legacy ObjectTools object BLOB
+//   $ioOffset_ptr   : Pointer : Current read offset, advanced past parsed items
+//   $inItemCount_i  : Integer : Number of embedded item records to parse
+//
+// Returns:
+//   $result_o : Object : Native OTr object storage shape, or Null on failure
+//
+// Created by Wayne Stewart / Codex, 2026-04-14
+// Wayne Stewart / Codex, 2026-04-14 - Added recursive embedded OT object parser.
+// ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob; $ioOffset_ptr : Pointer; $inItemCount_i : Integer)->$result_o : Object
+
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $item_i; $keyLen_i; $typeByte_i; $textLen_i : Integer
 var $count_i; $descriptorBytes_i; $arrayStart_i; $payloadStart_i : Integer
@@ -88,10 +104,7 @@ While (($item_i<=$inItemCount_i) & ($ok_b))
 					
 				: ($typeByte_i=137)
 					$ioOffset_ptr->:=$ioOffset_ptr->+1
-					$long_i:=OTr_z_OTBlobReadUInt32BE($inBlob_blob; $ioOffset_ptr)
-					If ($long_i>2147483647)
-						$long_i:=$long_i-4294967296
-					End if
+					$long_i:=OTr_z_OTBlobReadInt32BE($inBlob_blob; $ioOffset_ptr)
 					OB SET($result_o; $key_t; $long_i)
 					OB SET($result_o; OTr_z_ShadowKey($key_t); Is longint)
 					If ($item_i<$inItemCount_i)
@@ -129,13 +142,7 @@ While (($item_i<=$inItemCount_i) & ($ok_b))
 					End if
 					
 				: ($typeByte_i=158)
-					$ioOffset_ptr->:=$ioOffset_ptr->+4
-					$count_i:=$inBlob_blob{$ioOffset_ptr->}
-					$ioOffset_ptr->:=$ioOffset_ptr->+1
-					If (($ioOffset_ptr->+$count_i)<=BLOB size($inBlob_blob))
-						SET BLOB SIZE($blob_blob; $count_i)
-						COPY BLOB($inBlob_blob; $blob_blob; $ioOffset_ptr->; 0; $count_i)
-						$ioOffset_ptr->:=$ioOffset_ptr->+$count_i
+					If (OTr_z_OTBlobReadBlobPayload($inBlob_blob; $ioOffset_ptr; ->$blob_blob))
 						If (Storage:C1525.OTr.nativeBlobInObject)
 							OB SET($result_o; $key_t; $blob_blob)
 						Else
@@ -190,10 +197,7 @@ While (($item_i<=$inItemCount_i) & ($ok_b))
 					$array_o:=New object("arrayType"; LongInt array; "numElements"; $count_i; "currentItem"; 0; "0"; 0)
 					$ioOffset_ptr->:=$payloadStart_i
 					For ($index_i; 1; $count_i)
-						$long_i:=OTr_z_OTBlobReadUInt32BE($inBlob_blob; $ioOffset_ptr)
-						If ($long_i>2147483647)
-							$long_i:=$long_i-4294967296
-						End if
+						$long_i:=OTr_z_OTBlobReadInt32BE($inBlob_blob; $ioOffset_ptr)
 						OB SET($array_o; String($index_i); $long_i)
 					End for
 					OB SET($result_o; $key_t; $array_o)
@@ -327,3 +331,5 @@ End while
 If (Not($ok_b))
 	$result_o:=Null
 End if
+
+OTr_z_RemoveFromCallStack(Current method name:C684)

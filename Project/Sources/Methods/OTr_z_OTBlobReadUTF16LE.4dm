@@ -4,8 +4,25 @@
 
 // Reads UTF-16LE text from a legacy ObjectTools BLOB and advances
 // ioOffset by inCharCount UTF-16 code units.
+//
+// Access: Private
+//
+// Parameters:
+//   $inBlob_blob    : Blob    : Legacy ObjectTools object BLOB
+//   $ioOffset_ptr   : Pointer : Current read offset, advanced past decoded text
+//   $inCharCount_i  : Integer : Number of UTF-16 code units to read
+//   $inDropNull_b   : Boolean : True to remove a trailing null character
+//
+// Returns:
+//   $value_t : Text : Decoded UTF-16LE text
+//
+// Created by Wayne Stewart / Codex, 2026-04-14
+// Wayne Stewart / Codex, 2026-04-14 - Added UTF-16LE reader for OT text payloads.
+// ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob; $ioOffset_ptr : Pointer; $inCharCount_i : Integer; $inDropNull_b : Boolean)->$value_t : Text
+
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $bytes_i : Integer
 var $storedBytes_i : Integer
@@ -43,3 +60,5 @@ If ($ioOffset_ptr#Null)
 		End if
 	End if
 End if
+
+OTr_z_RemoveFromCallStack(Current method name:C684)

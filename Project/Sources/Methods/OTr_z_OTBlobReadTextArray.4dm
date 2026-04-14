@@ -6,8 +6,25 @@
 // The descriptor block length in observed OT 5 BLOBs lands either on
 // the first Pascal UTF-16 string length word or on the first character;
 // try the nearby aligned offsets and accept the first complete parse.
+//
+// Access: Private
+//
+// Parameters:
+//   $inBlob_blob   : Blob    : Legacy ObjectTools object BLOB
+//   $inStart_i     : Integer : Candidate payload start offset
+//   $ioOffset_ptr  : Pointer : Receives offset immediately after parsed payload
+//   $inCount_i     : Integer : Number of text array elements to read
+//
+// Returns:
+//   $array_o : Object : Native OTr array object, or Null on failure
+//
+// Created by Wayne Stewart / Codex, 2026-04-14
+// Wayne Stewart / Codex, 2026-04-14 - Added OT character-array payload reader.
+// ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob; $inStart_i : Integer; $ioOffset_ptr : Pointer; $inCount_i : Integer)->$array_o : Object
+
+OTr_z_AddToCallStack(Current method name:C684)
 
 ARRAY LONGINT($delta_ai; 5)
 $delta_ai{1}:=0
@@ -59,6 +76,8 @@ For ($deltaIndex_i; 1; Size of array($delta_ai))
 			Else
 				$array_o:=Null
 			End if
-		End if
 	End if
+End if
 End for
+
+OTr_z_RemoveFromCallStack(Current method name:C684)

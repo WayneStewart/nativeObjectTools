@@ -6,14 +6,29 @@
 // BLOB. Phase 16 uses this while payload layouts are still being
 // mapped. The scanner knows how to skip proven scalar/text-array
 // payloads and stops at the first unsupported top-level marker.
+//
+// Access: Private
+//
+// Parameters:
+//   $inBlob_blob : Blob : Legacy ObjectTools object BLOB
+//
+// Returns:
+//   $description_t : Text : Compact marker and offset diagnostic text
+//
+// Created by Wayne Stewart / Codex, 2026-04-14
+// Wayne Stewart / Codex, 2026-04-14 - Added Phase 16 OT BLOB marker diagnostics.
+// ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob)->$description_t : Text
+
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $offset_i; $itemCount_i; $rootType_i; $keyLen_i; $typeByte_i : Integer
 var $item_i; $textLen_i; $count_i; $descriptorBytes_i; $arrayStart_i : Integer
 var $key_t : Text
 var $array_o : Object
 var $picture_pic : Picture
+var $blob_blob : Blob
 var $scan_b : Boolean
 
 $description_t:="Not a legacy OT object BLOB"
@@ -86,14 +101,15 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 									End if
 									
 								: ($typeByte_i=158)
-									$offset_i:=$offset_i+4
-									$count_i:=$inBlob_blob{$offset_i}
-									$offset_i:=$offset_i+1
-									$offset_i:=$offset_i+$count_i
-									If ($item_i<$itemCount_i)
-										While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
-											$offset_i:=$offset_i+1
-										End while
+									If (OTr_z_OTBlobReadBlobPayload($inBlob_blob; ->$offset_i; ->$blob_blob))
+										If ($item_i<$itemCount_i)
+											While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+												$offset_i:=$offset_i+1
+											End while
+										End if
+									Else
+										$description_t:=$description_t+" payload=<unreadable-blob>"
+										$scan_b:=False
 									End if
 									
 								: ($typeByte_i=138)
@@ -228,3 +244,5 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 		End if
 	End if
 End if
+
+OTr_z_RemoveFromCallStack(Current method name:C684)

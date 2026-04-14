@@ -1,1 +1,1 @@
-<!-- Does not require any parameters -->## \_\_\_\_\_\_\_\_DemoForAiOTr\_PutRecord()| Parameters || --- || Does not require any parameters |
+<!-- Does not require any parameters -->## \_\_\_\_\_\_\_\_DemoForAi| Parameters || --- || Does not require any parameters |

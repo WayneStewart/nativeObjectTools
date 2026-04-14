@@ -1,0 +1,1 @@
+<!--OTr_ImportLegacyBlob (inBLOB) -> Longint Does not require any parameters -->## OTr\_ImportLegacyBlobOTr\_ImportLegacyBlob (inBLOB) --> LongintImports a legacy ObjectTools object BLOB into a new OTr handle. This is the explicit public compatibility entry point for BLOBs| Parameters || --- || Does not require any parameters |

@@ -4,8 +4,23 @@
 
 // Reads an IEEE-754 binary64 value stored big-endian in a legacy
 // ObjectTools BLOB and advances ioOffset by 8 bytes.
+//
+// Access: Private
+//
+// Parameters:
+//   $inBlob_blob  : Blob    : Legacy ObjectTools object BLOB
+//   $ioOffset_ptr : Pointer : Current read offset, advanced by 8 bytes
+//
+// Returns:
+//   $value_r : Real : Decoded IEEE-754 binary64 value
+//
+// Created by Wayne Stewart / Codex, 2026-04-14
+// Wayne Stewart / Codex, 2026-04-14 - Added big-endian real decoder for OT payloads.
+// ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob; $ioOffset_ptr : Pointer)->$value_r : Real
+
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $b0_i; $b1_i; $b2_i; $b3_i; $b4_i; $b5_i; $b6_i; $b7_i : Integer
 var $sign_r; $mantissa_r; $factor_r : Real
@@ -63,3 +78,5 @@ If ($ioOffset_ptr#Null)
 		$ioOffset_ptr->:=$ioOffset_ptr->+8
 	End if
 End if
+
+OTr_z_RemoveFromCallStack(Current method name:C684)
