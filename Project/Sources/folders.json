@@ -160,6 +160,13 @@
 			"OTr_z_Koala",
 			"OTr_z_LogDirectory",
 			"OTr_z_LogInit",
+			"OTr_z_OTBlobIsObject",
+			"OTr_z_OTBlobReadKey",
+			"OTr_z_OTBlobReadTextArray",
+			"OTr_z_OTBlobReadUInt16LE",
+			"OTr_z_OTBlobReadUInt32LE",
+			"OTr_z_OTBlobReadUTF16LE",
+			"OTr_z_OTBlobToObject",
 			"OTr_z_timestampLocal",
 			"OTr_z_Wombat"
 		]
