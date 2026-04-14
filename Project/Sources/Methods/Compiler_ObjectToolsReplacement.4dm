@@ -567,9 +567,77 @@ If (False:C215)
 	
 	C_BLOB:C604(OTr_BLOBToObject; $1)
 	C_LONGINT:C283(OTr_BLOBToObject; $0)
+
+	C_BLOB:C604(OTr_ImportLegacyBlob; $1)
+	C_LONGINT:C283(OTr_ImportLegacyBlob; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobIsObject; $1)
+	C_BOOLEAN:C305(OTr_z_OTBlobIsObject; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobToObject; $1)
+	C_OBJECT:C1216(OTr_z_OTBlobToObject; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobReadUInt16LE; $1)
+	C_POINTER:C301(OTr_z_OTBlobReadUInt16LE; $2)
+	C_LONGINT:C283(OTr_z_OTBlobReadUInt16LE; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobReadUInt32LE; $1)
+	C_POINTER:C301(OTr_z_OTBlobReadUInt32LE; $2)
+	C_LONGINT:C283(OTr_z_OTBlobReadUInt32LE; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobReadUInt32BE; $1)
+	C_POINTER:C301(OTr_z_OTBlobReadUInt32BE; $2)
+	C_LONGINT:C283(OTr_z_OTBlobReadUInt32BE; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobReadInt32BE; $1)
+	C_POINTER:C301(OTr_z_OTBlobReadInt32BE; $2)
+	C_LONGINT:C283(OTr_z_OTBlobReadInt32BE; $0)
+
+	C_BLOB:C604(OTr_z_OTBlobReadBlobPayload; $1)
+	C_POINTER:C301(OTr_z_OTBlobReadBlobPayload; $2; $3)
+	C_BOOLEAN:C305(OTr_z_OTBlobReadBlobPayload; $0)
+
+	C_BLOB:C604(OTr_z_OTBlobReadRealBE; $1)
+	C_POINTER:C301(OTr_z_OTBlobReadRealBE; $2)
+	C_REAL:C285(OTr_z_OTBlobReadRealBE; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobReadPNGPicture; $1)
+	C_LONGINT:C283(OTr_z_OTBlobReadPNGPicture; $2)
+	C_POINTER:C301(OTr_z_OTBlobReadPNGPicture; $3; $4)
+	C_BOOLEAN:C305(OTr_z_OTBlobReadPNGPicture; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobReadWrappedPicture; $1)
+	C_LONGINT:C283(OTr_z_OTBlobReadWrappedPicture; $2)
+	C_POINTER:C301(OTr_z_OTBlobReadWrappedPicture; $3; $4)
+	C_BOOLEAN:C305(OTr_z_OTBlobReadWrappedPicture; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobReadUTF16LE; $1)
+	C_POINTER:C301(OTr_z_OTBlobReadUTF16LE; $2)
+	C_LONGINT:C283(OTr_z_OTBlobReadUTF16LE; $3)
+	C_BOOLEAN:C305(OTr_z_OTBlobReadUTF16LE; $4)
+	C_TEXT:C284(OTr_z_OTBlobReadUTF16LE; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobReadKey; $1)
+	C_POINTER:C301(OTr_z_OTBlobReadKey; $2)
+	C_LONGINT:C283(OTr_z_OTBlobReadKey; $3)
+	C_TEXT:C284(OTr_z_OTBlobReadKey; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobReadTextArray; $1)
+	C_LONGINT:C283(OTr_z_OTBlobReadTextArray; $2; $4)
+	C_POINTER:C301(OTr_z_OTBlobReadTextArray; $3)
+	C_OBJECT:C1216(OTr_z_OTBlobReadTextArray; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobReadObjectItems; $1)
+	C_POINTER:C301(OTr_z_OTBlobReadObjectItems; $2)
+	C_LONGINT:C283(OTr_z_OTBlobReadObjectItems; $3)
+	C_OBJECT:C1216(OTr_z_OTBlobReadObjectItems; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobDescribeFirstItem; $1)
+	C_TEXT:C284(OTr_z_OTBlobDescribeFirstItem; $0)
 	
 	C_PICTURE:C286(OTr_z_Wombat; $0)
 	C_PICTURE:C286(OTr_z_Koala; $0)
+	C_PICTURE:C286(OTr_z_Echidna; $0)
 	
 	// Phase 10 sub-methods
 	C_BOOLEAN:C305(____Test_Phase_10; $1)
@@ -595,6 +663,13 @@ If (False:C215)
 	C_BOOLEAN:C305(____Test_Phase_15; $1)
 	C_LONGINT:C283(____Test_Phase_15_OTr; $1)
 	C_LONGINT:C283(____Test_Phase_15_OT; $1)
+	
+	// Phase 16 OT BLOB compatibility tests
+	C_BOOLEAN:C305(____Test_Phase_16_OTBlob; $1)
+	C_BOOLEAN:C305(____Test_Phase_16a_OTBlobValues; $1)
+	C_BOOLEAN:C305(____Test_Phase_16b_OTBlobDeep; $1)
+	C_BLOB:C604(____Test_Phase_16_OTBlob_Probe; $1)
+	C_TEXT:C284(____Test_Phase_16_OTBlob_Probe; $0; $2)
 	
 	C_BOOLEAN:C305(____Test_OTr_Master; $1)
 	
