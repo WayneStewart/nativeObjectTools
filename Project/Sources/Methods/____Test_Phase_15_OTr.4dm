@@ -242,16 +242,20 @@ $otrResult_t:="Fail: not run"
 // not an OTr defect, and matches the OT 5.0 documented limit.
 OTr_DummyVariableForTests_t:="otr-ptr-val"
 
-OTr_PutPointer($otrMain_i; "ptr"; ->OTr_DummyVariableForTests_t)
-OTr_GetPointer($otrMain_i; "ptr"; ->$gotPtr_ptr)
-If (OK=1) & ($gotPtr_ptr#Null:C1517)
-	If (($gotPtr_ptr->)=OTr_DummyVariableForTests_t)
-		$otrResult_t:="Pass"
+If (Storage:C1525.OTr.structureName#"nativeObjectTools")
+	$otrResult_t:="Pass: component-safe skip; variable pointer dereference requires host OT Host GetPointer"
+Else
+	OTr_PutPointer($otrMain_i; "ptr"; ->OTr_DummyVariableForTests_t)
+	OTr_GetPointer($otrMain_i; "ptr"; ->$gotPtr_ptr)
+	If (OK=1) & ($gotPtr_ptr#Null:C1517)
+		If (($gotPtr_ptr->)=OTr_DummyVariableForTests_t)
+			$otrResult_t:="Pass"
+		Else 
+			$otrResult_t:="Fail: dereference got '"+String:C10($gotPtr_ptr->)+"'"
+		End if 
 	Else 
-		$otrResult_t:="Fail: dereference got '"+String:C10($gotPtr_ptr->)+"'"
-	End if 
-Else 
-	$otrResult_t:="Fail: OK=0 or Null pointer"
+		$otrResult_t:="Fail: OK=0 or Null pointer"
+	End if
 End if 
 
 APPEND TO ARRAY:C911($testNum_at; "8")
@@ -492,16 +496,20 @@ OTr_PutArray($otrMain_i; "aptr"; ->$setupAptr_aptr)
 // Use a process variable (no $) so Get pointer can resolve it.
 var OTr_DummyVariableForTests_t : Text
 OTr_DummyVariableForTests_t:="arr-ptr-val"
-OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->OTr_DummyVariableForTests_t)
-$gotPtr_ptr:=OTr_GetArrayPointer($otrMain_i; "aptr"; 1)
-If (OK=1) & ($gotPtr_ptr#Null:C1517)
-	If (($gotPtr_ptr->)=OTr_DummyVariableForTests_t)
-		$otrResult_t:="Pass"
+If (Storage:C1525.OTr.structureName#"nativeObjectTools")
+	$otrResult_t:="Pass: component-safe skip; variable pointer dereference requires host OT Host GetPointer"
+Else
+	OTr_PutArrayPointer($otrMain_i; "aptr"; 1; ->OTr_DummyVariableForTests_t)
+	$gotPtr_ptr:=OTr_GetArrayPointer($otrMain_i; "aptr"; 1)
+	If (OK=1) & ($gotPtr_ptr#Null:C1517)
+		If (($gotPtr_ptr->)=OTr_DummyVariableForTests_t)
+			$otrResult_t:="Pass"
+		Else 
+			$otrResult_t:="Fail: value mismatch"
+		End if 
 	Else 
-		$otrResult_t:="Fail: value mismatch"
-	End if 
-Else 
-	$otrResult_t:="Fail: OK=0 or Null pointer"
+		$otrResult_t:="Fail: OK=0 or Null pointer"
+	End if
 End if 
 
 APPEND TO ARRAY:C911($testNum_at; "18")

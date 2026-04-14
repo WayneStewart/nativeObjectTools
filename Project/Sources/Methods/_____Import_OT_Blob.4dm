@@ -1,4 +1,4 @@
-//%attributes = {}
+//%attributes = {"shared":true}
 
 var $Options_i; $newHandle_i : Integer
 var $FolderPath_t; $DocumentName_t; $DocumentPath_t : Text
