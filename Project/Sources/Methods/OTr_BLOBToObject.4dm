@@ -3,9 +3,9 @@
 // Project Method: OTr_BLOBToObject (inBLOB) --> Longint
 
 // Deserialises an OTr object from a BLOB previously made by
-// OTr_ObjectToBLOB or OTr_ObjectToNewBLOB.  a new handle is returned
-
-// **NOTE**: Blobs created by the Object Tools plugin are **NOT** compatible and can't be opened.
+// OTr_ObjectToBLOB or OTr_ObjectToNewBLOB. A new handle is returned.
+// Legacy ObjectTools object BLOBs are detected and converted into the
+// native OTr object storage shape when their item types are supported.
 
 // **ORIGINAL DOCUMENTATION**
 
@@ -39,6 +39,8 @@
 // Wayne Stewart, 2026-04-04 - Phase 7 parameter naming alignment.
 // Wayne Stewart, 2026-04-10 - Removed spurious OTr_z_SetOK(1) on
 //   success path (see OTr-OK0-Conditions specification).
+// Wayne Stewart, 2026-04-14 - Added legacy ObjectTools BLOB detection and
+//   conversion for character, date, and character-array item payloads.
 // ----------------------------------------------------
 
 #DECLARE($inBLOB_blob : Blob)->$handle_i : Integer
@@ -54,38 +56,50 @@ $handle_i:=0
 If (BLOB size:C605($inBLOB_blob)=0)
 	OTr_z_Error("BLOB is empty"; Current method name:C684)
 	OTr_z_SetOK(0)
-	
-Else 
-	
-	$work_blob:=$inBLOB_blob
-	BLOB PROPERTIES:C536($work_blob; $compressed_i)
-	If ($compressed_i#Is not compressed:K22:11)
-		EXPAND BLOB:C535($work_blob)
-	End if 
-	
-	BLOB TO VARIABLE:C533($work_blob; $obj_o)
-	
-	If (OK=0)
-		OTr_z_Error("BLOB does not contain a valid OTr object"; Current method name:C684)
+
+Else
+
+	If (OTr_z_OTBlobIsObject($inBLOB_blob))
+
+		$obj_o:=OTr_z_OTBlobToObject($inBLOB_blob)
+
+	Else
+
+		$work_blob:=$inBLOB_blob
+		BLOB PROPERTIES:C536($work_blob; $compressed_i)
+		If ($compressed_i#Is not compressed:K22:11)
+			EXPAND BLOB:C535($work_blob)
+		End if
+
+		BLOB TO VARIABLE:C533($work_blob; $obj_o)
+
+	End if
+
+	If ($obj_o=Null:C1517)
+		If (OTr_z_OTBlobIsObject($inBLOB_blob))
+			OTr_z_Error("BLOB contains unsupported legacy OT object data"; Current method name:C684)
+		Else
+			OTr_z_Error("BLOB does not contain a valid OTr object"; Current method name:C684)
+		End if
 		OTr_z_SetOK(0)
-		
-	Else 
-		
+
+	Else
+
 		OTr_z_Lock
-		
+
 		$handle_i:=Find in array:C230(<>OTR_InUse_ab; False:C215)
 		If ($handle_i=-1)
 			$handle_i:=Size of array:C274(<>OTR_InUse_ab)+1
 			INSERT IN ARRAY:C227(<>OTR_InUse_ab; $handle_i; 1)
 			INSERT IN ARRAY:C227(<>OTR_Objects_ao; $handle_i; 1)
-		End if 
+		End if
 		<>OTR_InUse_ab{$handle_i}:=True:C214
 		<>OTR_Objects_ao{$handle_i}:=$obj_o
-		
+
 		OTr_z_Unlock
-		
-	End if 
-	
-End if 
+
+	End if
+
+End if
 
 OTr_z_RemoveFromCallStack(Current method name:C684)

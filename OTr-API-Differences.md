@@ -1,7 +1,7 @@
 # OTr API Differences from ObjectTools 5.0
 
-**Version:** 1.0  
-**Date:** 2026-04-12  
+**Version:** 1.0
+**Date:** 2026-04-12
 **Status:** Current
 
 ---
@@ -115,10 +115,10 @@ These methods retain a compatible calling signature but exhibit materially diffe
 
 | | ObjectTools 5.0 | OTr |
 |---|---|---|
-| **Format** | Proprietary binary format (magic bytes, internal structure) | JSON-based serialisation with type metadata |
-| **Cross-compatibility** | — | Legacy OT BLOBs cannot be loaded by OTr; OTr BLOBs cannot be loaded by OT |
+| **Format** | Proprietary binary format (magic bytes, internal structure) | Compressed 4D-native object serialisation with type metadata |
+| **Cross-compatibility** | — | OTr can import supported legacy OT object BLOBs; OTr BLOBs cannot be loaded by OT |
 
-**Impact:** BLOBs serialised by ObjectTools 5.0 are not readable by OTr, and vice versa. A migration path is required for any persisted OT BLOBs. The recommended approach is to load each BLOB with the legacy plugin, export its content as JSON text using `OT SaveToText`, and then re-import it with `OTr_LoadFromText`.
+**Impact:** OTr detects ObjectTools object BLOBs and converts supported item payloads into native OTr storage when `OTr_BLOBToObject` is called. The current importer supports the legacy character, date, and character-array payloads covered by the supplied migration samples. Unsupported legacy item markers fail cleanly with `OK=0`. OTr-generated BLOBs remain OTr-only.
 
 ---
 
@@ -196,7 +196,7 @@ These methods retain a compatible calling signature but exhibit materially diffe
 | `OT BLOBToObject(blob; ioOffset)` | `OTr_BLOBToObject(blob)` | Changed signature | `ioOffset` parameter removed; always reads from byte 0 |
 | `OT GetArrayPicture(obj; tag; idx; outPic)` | `OTr_GetArrayPicture(obj; tag; idx)` | Changed signature | Picture returned as function result |
 | `OT PutRecord` / `OT GetRecord` | `OTr_PutRecord` / `OTr_GetRecord` | Changed behaviour | Snapshot semantics replace live reference semantics |
-| `OT ObjectToBLOB` / `OT BLOBToObject` | `OTr_ObjectToBLOB` / `OTr_BLOBToObject` | Changed behaviour | JSON format; incompatible with legacy OT BLOBs |
+| `OT ObjectToBLOB` / `OT BLOBToObject` | `OTr_ObjectToBLOB` / `OTr_BLOBToObject` | Changed behaviour | OTr can import supported legacy OT BLOB payloads; OTr BLOBs remain OTr-only |
 | Size introspection methods | OTr equivalents | Changed behaviour | JSON byte length rather than in-memory structure size |
 | `OT SaveToText` / `OT LoadFromText` | `OTr_SaveToText` / `OTr_LoadFromText` | Changed behaviour | JSON format; incompatible with legacy OT text exports |
 | Boolean-returning methods | OTr equivalents | Changed behaviour | Returns Integer (0/1) rather than native Boolean |
