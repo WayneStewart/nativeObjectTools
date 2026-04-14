@@ -24,7 +24,7 @@ If ($DocumentName_t#"")
 		ALERT:C41("Something went wrong")
 		
 	Else 
-		OTr_z_ObjectViewer
+		OTr_ObjectViewer
 		
 	End if 
 	

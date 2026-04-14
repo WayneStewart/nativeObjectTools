@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true}
+//%attributes = {"invisible":true,"shared":true}
 // objectViewer
 // Created by Wayne Stewart (2026-04-14)
 //  Method is an autostart type
