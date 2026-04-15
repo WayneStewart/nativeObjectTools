@@ -5,6 +5,12 @@
 // Returns an approximation of the memory size of an OTr object. Note: byte counts
 // will not match the legacy plugin exactly.
 
+// **WARNING: Changed Behaviour**
+
+// The value is based on OTr's native 4D serialisation of the object,
+// not the in-memory byte size of the legacy ObjectTools plugin
+// structure. Treat values as OTr-only relative estimates.
+
 // **ORIGINAL DOCUMENTATION**
 
 // *OT ObjectSize* returns the total size of an object in memory. If *inObject* is not a

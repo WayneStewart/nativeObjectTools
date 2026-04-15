@@ -3,12 +3,22 @@
 // Project Method: OTr_LoadFromText (inJSON) --> Longint
 
 // Parses a JSON string and stores the resulting object in
-// a new OTr handle. If the top-level JSON value is an array,
+// a new OTr handle. 
+
+// If the top-level JSON value is an array,
 // it is automatically wrapped in an object keyed "OBJ" to
-// preserve OTr's object-at-root convention. JSON parse
-// errors are caught silently; check the return value to
+// preserve OTr's object-at-root convention. 
+
+// JSON parse errors are caught silently; check the return value to
 // know whether parsing succeeded.
+
 // Returns 0 if inJSON is empty or cannot be parsed.
+
+// **NOTE:** there is no equivalent Object Tools command
+
+// Input must be OTr JSON text, such as text produced by OTr_SaveToText.
+// Legacy ObjectTools text serialisation is not compatible with this
+// loader.
 
 // Access: Shared
 
@@ -16,8 +26,7 @@
 //   $inJSON_t : Text : JSON string to parse
 
 // Returns:
-//   $handle_i : Integer : New OTr handle, \
-//                         or 0 if parsing failed
+//   $handle_i : Integer : New OTr handle, or 0 if parsing failed
 
 // Created by Wayne Stewart, 2026-04-05
 // Based on work by himself, Rob Laveaux, and Cannon Smith.

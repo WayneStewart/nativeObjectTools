@@ -4,6 +4,8 @@
 
 // Returns 1 when running in compiled mode; otherwise 0.
 
+// **NOTE:** this is just running the 4D command: Is compiled mode(*)
+
 // Access: Shared
 
 // Returns:
@@ -20,7 +22,7 @@ var $compiled_b : Boolean
 
 OTr_z_AddToCallStack(Current method name:C684)
 
-$compiled_b:=Is compiled mode:C492
+$compiled_b:=Is compiled mode:C492(*)
 
 $isCompiled_i:=Num:C11($compiled_b)
 

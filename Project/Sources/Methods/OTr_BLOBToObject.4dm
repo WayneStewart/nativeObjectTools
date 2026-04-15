@@ -7,6 +7,13 @@
 // Legacy ObjectTools object BLOBs are detected and converted into the
 // native OTr object storage shape when their item types are supported.
 
+// **WARNING: Changed Behaviour**
+
+// The legacy ioOffset parameter is not present; reading always starts
+// at byte 0. If legacy code read from a non-zero offset, slice the BLOB
+// before calling this method. OTr can import supported legacy OT object
+// BLOB payloads, but OTr-generated BLOBs remain OTr-only.
+
 // **ORIGINAL DOCUMENTATION**
 
 // *OT BLOBToObject* retrieves an object from a *BLOB* into a new object
