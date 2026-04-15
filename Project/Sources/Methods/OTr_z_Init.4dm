@@ -27,14 +27,17 @@
 
 If (Storage:C1525.OTr=Null:C1517)
 	
-	var $fullpath : Object
-	var $name : Text
+	var $fullpath_o : Object
+	var $name; $fullpath_t; $registrationCode_t : Text
 	var $ApplicationVersion_i : Integer
 	
 	If (Application type:C494#4D Remote mode:K5:5)
-		$fullpath:=Path to object:C1547(Structure file:C489(*))
-		$name:=$fullpath.name
+		$fullpath_o:=Path to object:C1547(Structure file:C489(*))
+		$name:=$fullpath_o.name
 	End if 
+	
+	$fullpath_t:=Get 4D folder:C485(Current resources folder:K5:16)+"Secret Key.txt"
+	$registrationCode_t:=Document to text:C1236($fullpath_o)
 	
 	$ApplicationVersion_i:=Num:C11(Application version:C493)
 	
@@ -44,6 +47,7 @@ If (Storage:C1525.OTr=Null:C1517)
 			"mechanism"; OTR IP Arrays; \
 			"includeShadowKeys"; True:C214; \
 			"loggingInitialising"; False:C215; \
+			"registrationCode"; $registrationCode_t; \
 			"level"; "off")
 	End use 
 	OTr_z_CheckHostMethods

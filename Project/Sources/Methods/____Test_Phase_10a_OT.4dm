@@ -63,7 +63,7 @@
 //ARRAY LONGINT(longArr_ai; 0)
 
 //$ready_b:=True
-//$reg_i:=OT Register("20C9-EMQv-BJBl-D20M")
+//$reg_i:=OT Register(storage.OTr.registrationCode)
 //$testOtH_i:=OT New
 
 //If ($testOtH_i=0)

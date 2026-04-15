@@ -28,9 +28,9 @@ OTr_z_AddToCallStack(Current method name:C684)
 var $hideAlert_b : Boolean
 If (Count parameters:C259<1)
 	$hideAlert_b:=False:C215
-Else
+Else 
 	$hideAlert_b:=$suppressAlert_b
-End if
+End if 
 
 var $reg_i : Integer
 var $rootOT_i; $level1OT_i; $level2OT_i; $level3OT_i; $siblingOT_i : Integer
@@ -47,11 +47,11 @@ $resourcesPath_t:=Get 4D folder:C485(Current resources folder:K5:16)
 $blobFolderPath_t:=$resourcesPath_t+"blobs"+Folder separator:K24:12
 CREATE FOLDER:C475($blobFolderPath_t; *)
 
-$reg_i:=OT Register("20C9-EMQv-BJBl-D20M")
+$reg_i:=OT Register(Storage:C1525.OTr.registrationCode)
 $rootOT_i:=OT New
 If ($rootOT_i=0)
 	$summary_t:="Phase 16 OT BLOB fixture generation skipped: ObjectTools 5.0 is not available or not registered."
-Else
+Else 
 	OT Clear($rootOT_i)
 	
 	// Deep mixed object with DOCX BLOB and JPG picture.
@@ -141,10 +141,10 @@ Else
 	OT Clear($rootOT_i)
 	
 	$summary_t:="Phase 16 OT BLOB fixtures generated in "+$blobFolderPath_t
-End if
+End if 
 
-If (Not($hideAlert_b))
+If (Not:C34($hideAlert_b))
 	ALERT:C41($summary_t)
-End if
+End if 
 
 OTr_z_RemoveFromCallStack(Current method name:C684)
