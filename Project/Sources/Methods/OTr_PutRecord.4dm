@@ -9,6 +9,12 @@
 // Pictures and BLOBs as base64-encoded text strings.
 // Adapted from OBJ_FromRecord by Cannon Smith.
 
+// **WARNING: Changed Behaviour**
+
+// OTr stores a snapshot of the current record's field values at the
+// moment OTr_PutRecord is called. Later database record changes are
+// not reflected in the stored item unless OTr_PutRecord is called again.
+
 // **ORIGINAL DOCUMENTATION**
 
 // *OT PutRecord* puts the current record into object in a packed format. The contents

@@ -5,6 +5,12 @@
 // Serialises the stored object to a UTF-8 JSON file on disk.
 // Existing files are overwritten without warning.
 
+// **WARNING: Changed Behaviour**
+
+// The file format is OTr JSON, not the legacy ObjectTools file/text
+// serialisation. Files written here are intended for OTr_LoadFromFile
+// and are not compatible with legacy ObjectTools.
+
 // Note: TEXT TO DOCUMENT with "UTF-8" writes a BOM at the start
 //   of the file. This is harmless for inspection purposes; if
 //   you later parse the file with JSON Parse, 4D handles the

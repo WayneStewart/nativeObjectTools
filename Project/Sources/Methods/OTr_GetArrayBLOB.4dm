@@ -5,6 +5,13 @@
 // Retrieves a single element from a Blob array item.
 // Returns an empty BLOB on any error or out-of-range index.
 
+// **WARNING: Changed Behaviour**
+
+// The legacy output-parameter form of OT GetArrayBLOB cannot be
+// implemented directly in a native 4D component because BLOB output
+// parameters are passed by value. OTr_GetArrayBLOB therefore returns
+// the requested array element as the function result.
+
 // **ORIGINAL DOCUMENTATION**
 
 // *OT GetArrayBLOB* gets a value in *inObject* from the array item referenced by *inTag*.

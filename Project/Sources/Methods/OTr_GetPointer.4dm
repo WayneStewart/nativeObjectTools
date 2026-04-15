@@ -7,7 +7,7 @@
 // deserialised via OTr_u_TextToPointer. Returns a Null
 // pointer on any error or missing tag.
 
-// **VERY IMPORTANT NOTE**
+// **WARNING: Changed Behaviour**
 
 // This command must *NOT* be used with pointers to local variables.
 
@@ -19,7 +19,7 @@
 // Passing a plain Pointer variable without -> gives the method only a
 // local copy; the caller's variable is never updated.
 //
-// This differs from OTr_GetPointer, which as a compiled plugin command
+// This differs from OT GetPointer, which as a compiled plugin command
 // can write directly to its output parameter via C-level memory access
 // and therefore accepts a plain variable without ->.
 //
