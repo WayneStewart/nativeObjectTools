@@ -5,7 +5,8 @@
 // Returns compact marker diagnostics for a legacy ObjectTools object
 // BLOB. Phase 16 uses this while payload layouts are still being
 // mapped. The scanner knows how to skip proven scalar/text-array
-// payloads and stops at the first unsupported top-level marker.
+// payloads, including the compact ASCII-key Guy samples, and stops at the
+// first unsupported top-level marker.
 //
 // Access: Private
 //
@@ -17,6 +18,7 @@
 //
 // Created by Wayne Stewart / Codex, 2026-04-14
 // Wayne Stewart / Codex, 2026-04-14 - Added Phase 16 OT BLOB marker diagnostics.
+// Wayne Stewart / Codex, 2026-04-15 - Added compact marker 2/18 diagnostics.
 // ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob)->$description_t : Text
@@ -25,16 +27,18 @@ OTr_z_AddToCallStack(Current method name:C684)
 
 var $offset_i; $itemCount_i; $rootType_i; $keyLen_i; $typeByte_i : Integer
 var $item_i; $textLen_i; $count_i; $descriptorBytes_i; $arrayStart_i : Integer
+var $index_i; $descriptorStart_i; $payloadOffset_i; $elementLen_i : Integer
 var $key_t : Text
 var $array_o : Object
 var $picture_pic : Picture
 var $blob_blob : Blob
-var $scan_b : Boolean
+var $scan_b; $compact_b : Boolean
 
 $description_t:="Not a legacy OT object BLOB"
 
 If (OTr_z_OTBlobIsObject($inBlob_blob))
 	$offset_i:=14
+	$compact_b:=($inBlob_blob{14}=7) & ($inBlob_blob{15}=1)
 	OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 	$rootType_i:=OTr_z_OTBlobReadUInt32LE($inBlob_blob; ->$offset_i)
 	$itemCount_i:=OTr_z_OTBlobReadUInt32LE($inBlob_blob; ->$offset_i)
@@ -51,9 +55,24 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 			End if
 			
 			If (($offset_i+2)<=BLOB size:C605($inBlob_blob))
-				$keyLen_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+				If ($compact_b)
+					$keyLen_i:=$inBlob_blob{$offset_i}
+					$offset_i:=$offset_i+1
+				Else
+					$keyLen_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+				End if
 				If ($keyLen_i>0)
-					$key_t:=OTr_z_OTBlobReadKey($inBlob_blob; ->$offset_i; $keyLen_i)
+					If ($compact_b)
+						$key_t:=""
+						If (($offset_i+$keyLen_i)<=BLOB size:C605($inBlob_blob))
+							For ($index_i; 1; $keyLen_i)
+								$key_t:=$key_t+Char:C90($inBlob_blob{$offset_i})
+								$offset_i:=$offset_i+1
+							End for
+						End if
+					Else
+						$key_t:=OTr_z_OTBlobReadKey($inBlob_blob; ->$offset_i; $keyLen_i)
+					End if
 					If ($key_t#"")
 						If ($offset_i<BLOB size:C605($inBlob_blob))
 							$typeByte_i:=$inBlob_blob{$offset_i}
@@ -61,6 +80,48 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 							$offset_i:=$offset_i+1
 							
 							Case of
+								: (($compact_b) & ($typeByte_i=2))
+									$offset_i:=$offset_i+2
+									If ($offset_i<BLOB size:C605($inBlob_blob))
+										$textLen_i:=$inBlob_blob{$offset_i}
+										$offset_i:=$offset_i+1+$textLen_i
+									Else
+										$description_t:=$description_t+" payload=<unreadable-text>"
+										$scan_b:=False
+									End if
+									If ($item_i<$itemCount_i)
+										While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+											$offset_i:=$offset_i+1
+										End while
+									End if
+									
+								: (($compact_b) & ($typeByte_i=18))
+									$offset_i:=$offset_i+4
+									If ($offset_i<BLOB size:C605($inBlob_blob))
+										$count_i:=$inBlob_blob{$offset_i}
+										$offset_i:=$offset_i+1
+										$descriptorStart_i:=$offset_i+17
+										$payloadOffset_i:=$descriptorStart_i+($count_i*6)-1
+										For ($index_i; 1; $count_i)
+											If (($descriptorStart_i+(($index_i-1)*6))<BLOB size:C605($inBlob_blob))
+												$elementLen_i:=$inBlob_blob{$descriptorStart_i+(($index_i-1)*6)}
+												$payloadOffset_i:=$payloadOffset_i+$elementLen_i
+											Else
+												$description_t:=$description_t+" payload=<unreadable-array>"
+												$scan_b:=False
+											End if
+										End for
+										$offset_i:=$payloadOffset_i
+										If ($item_i<$itemCount_i)
+											While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+												$offset_i:=$offset_i+1
+											End while
+										End if
+									Else
+										$description_t:=$description_t+" payload=<unreadable-array>"
+										$scan_b:=False
+									End if
+									
 								: ($typeByte_i=161)
 									$offset_i:=$offset_i+4
 									$textLen_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
@@ -223,9 +284,24 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 		// keyed on firstKey/firstMarker.
 		$offset_i:=24
 		If (($offset_i+2)<=BLOB size:C605($inBlob_blob))
-			$keyLen_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+			If ($compact_b)
+				$keyLen_i:=$inBlob_blob{$offset_i}
+				$offset_i:=$offset_i+1
+			Else
+				$keyLen_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+			End if
 			If ($keyLen_i>0)
-				$key_t:=OTr_z_OTBlobReadKey($inBlob_blob; ->$offset_i; $keyLen_i)
+				If ($compact_b)
+					$key_t:=""
+					If (($offset_i+$keyLen_i)<=BLOB size:C605($inBlob_blob))
+						For ($index_i; 1; $keyLen_i)
+							$key_t:=$key_t+Char:C90($inBlob_blob{$offset_i})
+							$offset_i:=$offset_i+1
+						End for
+					End if
+				Else
+					$key_t:=OTr_z_OTBlobReadKey($inBlob_blob; ->$offset_i; $keyLen_i)
+				End if
 				If ($key_t#"")
 					If ($offset_i<BLOB size:C605($inBlob_blob))
 						$typeByte_i:=$inBlob_blob{$offset_i}

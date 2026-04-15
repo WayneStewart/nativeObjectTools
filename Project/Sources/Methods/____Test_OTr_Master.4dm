@@ -1872,14 +1872,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$phase_t:="Phase 16"
 	
 	OTr_ClearAll
-	var $h16Native_i; $h16Legacy_i; $h16Round_i : Integer
-	var $native16_blob; $legacy16_blob; $doc16_blob; $gotDoc16_blob; $round16_blob : Blob
-	var $doc16Path_t; $fixture16Path_t : Text
-	var $doc16Bytes_i; $gotDoc16Bytes_i; $fixture16Bytes_i : Integer
+	var $h16Native_i; $h16Legacy_i; $h16Round_i; $h16Compact_i : Integer
+	var $native16_blob; $legacy16_blob; $doc16_blob; $gotDoc16_blob; $round16_blob; $compact16_blob : Blob
+	var $doc16Path_t; $fixture16Path_t; $compact16Path_t : Text
+	var $doc16Bytes_i; $gotDoc16Bytes_i; $fixture16Bytes_i; $compact16Index_i : Integer
 	var $real16_r : Real
+	var $compact16Pass_b : Boolean
 	var $pic16_pic; $gotPic16_pic : Picture
 	ARRAY LONGINT:C221($longArr16_ai; 0)
 	ARRAY LONGINT:C221($gotLongArr16_ai; 0)
+	ARRAY TEXT:C222($gotTextArr16_at; 0)
 	
 	// Explicit legacy import API rejects native OTr serialised blobs
 	$rowNum_i:=$rowNum_i+1
@@ -1961,6 +1963,38 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	If ($h16Legacy_i>0)
 		OTr_Clear($h16Legacy_i)
+	End if 
+	OTr_ClearAll
+	
+	// Compact legacy Guy examples use ASCII keys and old text/text-array markers.
+	$rowNum_i:=$rowNum_i+1
+	$testName_t:="Compact Guy OT BLOB examples import text array and name"
+	$expected_t:="examples 2 and 3: name=2014; songs[1]=415; songs[10]=442"
+	$actual_t:=""
+	$pass_b:=True:C214
+	For ($compact16Index_i; 2; 3)
+		$compact16Path_t:=Get 4D folder:C485(Current resources folder:K5:16)+"blobs"+Folder separator:K24:12+"Phase16-guy-example-"+String:C10($compact16Index_i)+"-compact.blob"
+		DOCUMENT TO BLOB:C525($compact16Path_t; $compact16_blob)
+		$h16Compact_i:=OTr_ImportLegacyBlob($compact16_blob)
+		ARRAY TEXT:C222($gotTextArr16_at; 0)
+		$compact16Pass_b:=False:C215
+		If ($h16Compact_i>0)
+			OTr_GetArray($h16Compact_i; "songs"; ->$gotTextArr16_at)
+			If (Size of array:C274($gotTextArr16_at)=10)
+				$compact16Pass_b:=(OTr_GetText($h16Compact_i; "name")="2014") & ($gotTextArr16_at{1}="415") & ($gotTextArr16_at{10}="442")
+			End if 
+		End if 
+		$actual_t:=$actual_t+"ex"+String:C10($compact16Index_i)+" handle="+String:C10($h16Compact_i)+" size="+String:C10(Size of array:C274($gotTextArr16_at))+"; "
+		$pass_b:=$pass_b & $compact16Pass_b
+		If ($h16Compact_i>0)
+			OTr_Clear($h16Compact_i)
+		End if 
+	End for 
+	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
+	If ($pass_b)
+		$totalPass_i:=$totalPass_i+1
+	Else 
+		$totalFail_i:=$totalFail_i+1
 	End if 
 	OTr_ClearAll
 	
