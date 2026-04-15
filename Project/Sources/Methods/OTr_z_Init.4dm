@@ -43,7 +43,8 @@ If (Storage:C1525.OTr=Null:C1517)
 			"nativeBlobInObject"; ($ApplicationVersion_i>=1920); \
 			"mechanism"; OTR IP Arrays; \
 			"includeShadowKeys"; True:C214; \
-			"loggingInitialising"; False:C215)
+			"loggingInitialising"; False:C215; \
+			"level"; "off")
 	End use 
 	OTr_z_CheckHostMethods
 	

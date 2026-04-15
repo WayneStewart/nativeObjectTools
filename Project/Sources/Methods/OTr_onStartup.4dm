@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":true}
 // ----------------------------------------------------
-// Project Method: OTr_Startup
+// Project Method: OTr_onStartup
 
 // Initialises the OTr system and writes the opening log entry
 //    this is not strictly necessary at startup except we are trying to

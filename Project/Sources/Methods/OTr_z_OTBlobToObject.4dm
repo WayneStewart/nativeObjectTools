@@ -42,48 +42,48 @@ var $blob_blob : Blob
 var $picture_pic : Picture
 var $ok_b : Boolean
 
-$result_o:=Null
-$ok_b:=False
+$result_o:=Null:C1517
+$ok_b:=False:C215
 
 If (OTr_z_OTBlobIsObject($inBlob_blob))
 	$offset_i:=14
 	OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 	$rootType_i:=OTr_z_OTBlobReadUInt32LE($inBlob_blob; ->$offset_i)
 	$itemCount_i:=OTr_z_OTBlobReadUInt32LE($inBlob_blob; ->$offset_i)
-
+	
 	If (($rootType_i=OT Is Object) & ($itemCount_i>=0))
-		$result_o:=New object
-		$ok_b:=True
+		$result_o:=New object:C1471
+		$ok_b:=True:C214
 		$item_i:=1
-
+		
 		While (($item_i<=$itemCount_i) & ($ok_b))
-			If (($offset_i+2)>BLOB size($inBlob_blob))
-				$ok_b:=False
-			Else
+			If (($offset_i+2)>BLOB size:C605($inBlob_blob))
+				$ok_b:=False:C215
+			Else 
 				$keyLen_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
-				If (($keyLen_i<=0) | (($offset_i+(($keyLen_i*2)-1))>=BLOB size($inBlob_blob)))
-					$ok_b:=False
-				Else
+				If (($keyLen_i<=0) | (($offset_i+(($keyLen_i*2)-1))>=BLOB size:C605($inBlob_blob)))
+					$ok_b:=False:C215
+				Else 
 					$key_t:=OTr_z_OTBlobReadKey($inBlob_blob; ->$offset_i; $keyLen_i)
 					$typeByte_i:=$inBlob_blob{$offset_i}
 					$offset_i:=$offset_i+1
-
-					Case of
+					
+					Case of 
 						: ($typeByte_i=161)
 							$offset_i:=$offset_i+4
 							$textLen_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
-							$value_t:=OTr_z_OTBlobReadUTF16LE($inBlob_blob; ->$offset_i; $textLen_i; True)
-							OB SET($result_o; $key_t; $value_t)
-							OB SET($result_o; OTr_z_ShadowKey($key_t); OT Is Character)
-
+							$value_t:=OTr_z_OTBlobReadUTF16LE($inBlob_blob; ->$offset_i; $textLen_i; True:C214)
+							OB SET:C1220($result_o; $key_t; $value_t)
+							OB SET:C1220($result_o; OTr_z_ShadowKey($key_t); OT Is Character)
+							
 							If ($item_i<$itemCount_i)
-								If (($offset_i+1)<BLOB size($inBlob_blob))
+								If (($offset_i+1)<BLOB size:C605($inBlob_blob))
 									If (($inBlob_blob{$offset_i}=0) & ($inBlob_blob{$offset_i+1}=0))
 										$offset_i:=$offset_i+2
-									End if
-								End if
-							End if
-
+									End if 
+								End if 
+							End if 
+							
 						: ($typeByte_i=132)
 							$offset_i:=$offset_i+2
 							$day_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
@@ -91,130 +91,130 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 							$offset_i:=$offset_i+1
 							$year_i:=($inBlob_blob{$offset_i}*256)+$inBlob_blob{$offset_i+1}
 							$offset_i:=$offset_i+5
-
-							$yyyy_t:=String($year_i)
-							While (Length($yyyy_t)<4)
+							
+							$yyyy_t:=String:C10($year_i)
+							While (Length:C16($yyyy_t)<4)
 								$yyyy_t:="0"+$yyyy_t
-							End while
-							$mm_t:=String($month_i)
-							If (Length($mm_t)<2)
+							End while 
+							$mm_t:=String:C10($month_i)
+							If (Length:C16($mm_t)<2)
 								$mm_t:="0"+$mm_t
-							End if
-							$dd_t:=String($day_i)
-							If (Length($dd_t)<2)
+							End if 
+							$dd_t:=String:C10($day_i)
+							If (Length:C16($dd_t)<2)
 								$dd_t:="0"+$dd_t
-							End if
-
-							OB SET($result_o; $key_t; $yyyy_t+"-"+$mm_t+"-"+$dd_t)
-							OB SET($result_o; OTr_z_ShadowKey($key_t); Is date)
-
+							End if 
+							
+							OB SET:C1220($result_o; $key_t; $yyyy_t+"-"+$mm_t+"-"+$dd_t)
+							OB SET:C1220($result_o; OTr_z_ShadowKey($key_t); Is date:K8:7)
+							
 						: ($typeByte_i=129)
-							If (($offset_i+8)<BLOB size($inBlob_blob))
+							If (($offset_i+8)<BLOB size:C605($inBlob_blob))
 								$offset_i:=$offset_i+1
 								$real_r:=OTr_z_OTBlobReadRealBE($inBlob_blob; ->$offset_i)
-								OB SET($result_o; $key_t; $real_r)
-								OB SET($result_o; OTr_z_ShadowKey($key_t); Is real)
+								OB SET:C1220($result_o; $key_t; $real_r)
+								OB SET:C1220($result_o; OTr_z_ShadowKey($key_t); Is real:K8:4)
 								If ($item_i<$itemCount_i)
-									While (($offset_i<BLOB size($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 										$offset_i:=$offset_i+1
-									End while
-								End if
-							Else
-								$ok_b:=False
-							End if
-
+									End while 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
 						: ($typeByte_i=137)
-							If (($offset_i+4)<BLOB size($inBlob_blob))
+							If (($offset_i+4)<BLOB size:C605($inBlob_blob))
 								$offset_i:=$offset_i+1
 								$long_i:=OTr_z_OTBlobReadInt32BE($inBlob_blob; ->$offset_i)
-								OB SET($result_o; $key_t; $long_i)
-								OB SET($result_o; OTr_z_ShadowKey($key_t); Is longint)
+								OB SET:C1220($result_o; $key_t; $long_i)
+								OB SET:C1220($result_o; OTr_z_ShadowKey($key_t); Is longint:K8:6)
 								If ($item_i<$itemCount_i)
-									While (($offset_i<BLOB size($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 										$offset_i:=$offset_i+1
-									End while
-								End if
-							Else
-								$ok_b:=False
-							End if
-
+									End while 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
 						: ($typeByte_i=134)
-							If (($offset_i+1)<BLOB size($inBlob_blob))
+							If (($offset_i+1)<BLOB size:C605($inBlob_blob))
 								$offset_i:=$offset_i+1
-								OB SET($result_o; $key_t; ($inBlob_blob{$offset_i}#0))
-								OB SET($result_o; OTr_z_ShadowKey($key_t); Is boolean)
+								OB SET:C1220($result_o; $key_t; ($inBlob_blob{$offset_i}#0))
+								OB SET:C1220($result_o; OTr_z_ShadowKey($key_t); Is boolean:K8:9)
 								$offset_i:=$offset_i+1
 								If ($item_i<$itemCount_i)
-									While (($offset_i<BLOB size($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 										$offset_i:=$offset_i+1
-									End while
-								End if
-							Else
-								$ok_b:=False
-							End if
-
+									End while 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
 						: ($typeByte_i=139)
-							If (($offset_i+4)<BLOB size($inBlob_blob))
+							If (($offset_i+4)<BLOB size:C605($inBlob_blob))
 								$offset_i:=$offset_i+1
 								$timeSeconds_i:=OTr_z_OTBlobReadUInt32BE($inBlob_blob; ->$offset_i)
 								$hour_i:=$timeSeconds_i\3600
 								$minute_i:=($timeSeconds_i%3600)\60
 								$second_i:=$timeSeconds_i%60
-								$hh_t:=String($hour_i)
-								If (Length($hh_t)<2)
+								$hh_t:=String:C10($hour_i)
+								If (Length:C16($hh_t)<2)
 									$hh_t:="0"+$hh_t
-								End if
-								$mn_t:=String($minute_i)
-								If (Length($mn_t)<2)
+								End if 
+								$mn_t:=String:C10($minute_i)
+								If (Length:C16($mn_t)<2)
 									$mn_t:="0"+$mn_t
-								End if
-								$ss_t:=String($second_i)
-								If (Length($ss_t)<2)
+								End if 
+								$ss_t:=String:C10($second_i)
+								If (Length:C16($ss_t)<2)
 									$ss_t:="0"+$ss_t
-								End if
-								OB SET($result_o; $key_t; $hh_t+":"+$mn_t+":"+$ss_t)
-								OB SET($result_o; OTr_z_ShadowKey($key_t); Is time)
+								End if 
+								OB SET:C1220($result_o; $key_t; $hh_t+":"+$mn_t+":"+$ss_t)
+								OB SET:C1220($result_o; OTr_z_ShadowKey($key_t); Is time:K8:8)
 								If ($item_i<$itemCount_i)
-									While (($offset_i<BLOB size($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 										$offset_i:=$offset_i+1
-									End while
-								End if
-							Else
-								$ok_b:=False
-							End if
-
+									End while 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
 						: ($typeByte_i=158)
 							If (OTr_z_OTBlobReadBlobPayload($inBlob_blob; ->$offset_i; ->$blob_blob))
 								If (Storage:C1525.OTr.nativeBlobInObject)
-									OB SET($result_o; $key_t; $blob_blob)
-								Else
-									OB SET($result_o; $key_t; OTr_u_BlobToText($blob_blob))
-								End if
-								OB SET($result_o; OTr_z_ShadowKey($key_t); Is BLOB)
+									OB SET:C1220($result_o; $key_t; $blob_blob)
+								Else 
+									OB SET:C1220($result_o; $key_t; OTr_u_BlobToText($blob_blob))
+								End if 
+								OB SET:C1220($result_o; OTr_z_ShadowKey($key_t); Is BLOB:K8:12)
 								OTr_z_SetOK(1)
 								If ($item_i<$itemCount_i)
-									While (($offset_i<BLOB size($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 										$offset_i:=$offset_i+1
-									End while
-								End if
-							Else
-								$ok_b:=False
-							End if
-
+									End while 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
 						: ($typeByte_i=138)
 							If (OTr_z_OTBlobReadWrappedPicture($inBlob_blob; $offset_i; ->$offset_i; ->$picture_pic))
-								OB SET($result_o; $key_t; $picture_pic)
-								OB SET($result_o; OTr_z_ShadowKey($key_t); Is picture:K8:10)
+								OB SET:C1220($result_o; $key_t; $picture_pic)
+								OB SET:C1220($result_o; OTr_z_ShadowKey($key_t); Is picture:K8:10)
 								OTr_z_SetOK(1)
 								If ($item_i<$itemCount_i)
-									While (($offset_i<BLOB size($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 										$offset_i:=$offset_i+1
-									End while
-								End if
-							Else
-								$ok_b:=False
-							End if
-
+									End while 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
 						: ($typeByte_i=162)
 							$offset_i:=$offset_i+4
 							$count_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
@@ -223,13 +223,13 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 							$offset_i:=$offset_i+4
 							$arrayStart_i:=$offset_i+$descriptorBytes_i
 							$array_o:=OTr_z_OTBlobReadTextArray($inBlob_blob; $arrayStart_i; ->$offset_i; $count_i)
-
-							If ($array_o=Null)
-								$ok_b:=False
-							Else
-								OB SET($result_o; $key_t; $array_o)
-							End if
-
+							
+							If ($array_o=Null:C1517)
+								$ok_b:=False:C215
+							Else 
+								OB SET:C1220($result_o; $key_t; $array_o)
+							End if 
+							
 						: ($typeByte_i=144)
 							$offset_i:=$offset_i+4
 							$count_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
@@ -237,23 +237,23 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 							$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 							$offset_i:=$offset_i+4
 							$payloadStart_i:=$offset_i-1
-							If (($payloadStart_i>=0) & (($payloadStart_i+($count_i*4))<=BLOB size($inBlob_blob)))
-								$array_o:=New object("arrayType"; LongInt array; "numElements"; $count_i; "currentItem"; 0; "0"; 0)
+							If (($payloadStart_i>=0) & (($payloadStart_i+($count_i*4))<=BLOB size:C605($inBlob_blob)))
+								$array_o:=New object:C1471("arrayType"; LongInt array:K8:19; "numElements"; $count_i; "currentItem"; 0; "0"; 0)
 								$offset_i:=$payloadStart_i
 								For ($index_i; 1; $count_i)
 									$long_i:=OTr_z_OTBlobReadInt32BE($inBlob_blob; ->$offset_i)
-									OB SET($array_o; String($index_i); $long_i)
-								End for
-								OB SET($result_o; $key_t; $array_o)
+									OB SET:C1220($array_o; String:C10($index_i); $long_i)
+								End for 
+								OB SET:C1220($result_o; $key_t; $array_o)
 								If ($item_i<$itemCount_i)
-									While (($offset_i<BLOB size($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 										$offset_i:=$offset_i+1
-									End while
-								End if
-							Else
-								$ok_b:=False
-							End if
-
+									End while 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
 						: ($typeByte_i=142)
 							$offset_i:=$offset_i+4
 							$count_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
@@ -261,23 +261,23 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 							$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 							$offset_i:=$offset_i+4
 							$payloadStart_i:=$offset_i+3
-							If (($payloadStart_i>=0) & (($payloadStart_i+($count_i*8))<=BLOB size($inBlob_blob)))
-								$array_o:=New object("arrayType"; Real array; "numElements"; $count_i; "currentItem"; 0; "0"; 0)
+							If (($payloadStart_i>=0) & (($payloadStart_i+($count_i*8))<=BLOB size:C605($inBlob_blob)))
+								$array_o:=New object:C1471("arrayType"; Real array:K8:17; "numElements"; $count_i; "currentItem"; 0; "0"; 0)
 								$offset_i:=$payloadStart_i
 								For ($index_i; 1; $count_i)
 									$real_r:=OTr_z_OTBlobReadRealBE($inBlob_blob; ->$offset_i)
-									OB SET($array_o; String($index_i); $real_r)
-								End for
-								OB SET($result_o; $key_t; $array_o)
+									OB SET:C1220($array_o; String:C10($index_i); $real_r)
+								End for 
+								OB SET:C1220($result_o; $key_t; $array_o)
 								If ($item_i<$itemCount_i)
-									While (($offset_i<BLOB size($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 										$offset_i:=$offset_i+1
-									End while
-								End if
-							Else
-								$ok_b:=False
-							End if
-
+									End while 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
 						: ($typeByte_i=145)
 							$offset_i:=$offset_i+4
 							$count_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
@@ -285,8 +285,8 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 							$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 							$offset_i:=$offset_i+4
 							$payloadStart_i:=$offset_i+2
-							If (($payloadStart_i>=0) & (($payloadStart_i+($count_i*5)+($count_i-1))<=BLOB size($inBlob_blob)))
-								$array_o:=New object("arrayType"; Date array; "numElements"; $count_i; "currentItem"; 0; "0"; "0000-00-00")
+							If (($payloadStart_i>=0) & (($payloadStart_i+($count_i*5)+($count_i-1))<=BLOB size:C605($inBlob_blob)))
+								$array_o:=New object:C1471("arrayType"; Date array:K8:20; "numElements"; $count_i; "currentItem"; 0; "0"; "0000-00-00")
 								$offset_i:=$payloadStart_i
 								For ($index_i; 1; $count_i)
 									$day_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
@@ -296,31 +296,31 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 									$offset_i:=$offset_i+2
 									If ($index_i<$count_i)
 										$offset_i:=$offset_i+1
-									End if
-									$yyyy_t:=String($year_i)
-									While (Length($yyyy_t)<4)
+									End if 
+									$yyyy_t:=String:C10($year_i)
+									While (Length:C16($yyyy_t)<4)
 										$yyyy_t:="0"+$yyyy_t
-									End while
-									$mm_t:=String($month_i)
-									If (Length($mm_t)<2)
+									End while 
+									$mm_t:=String:C10($month_i)
+									If (Length:C16($mm_t)<2)
 										$mm_t:="0"+$mm_t
-									End if
-									$dd_t:=String($day_i)
-									If (Length($dd_t)<2)
+									End if 
+									$dd_t:=String:C10($day_i)
+									If (Length:C16($dd_t)<2)
 										$dd_t:="0"+$dd_t
-									End if
-									OB SET($array_o; String($index_i); $yyyy_t+"-"+$mm_t+"-"+$dd_t)
-								End for
-								OB SET($result_o; $key_t; $array_o)
+									End if 
+									OB SET:C1220($array_o; String:C10($index_i); $yyyy_t+"-"+$mm_t+"-"+$dd_t)
+								End for 
+								OB SET:C1220($result_o; $key_t; $array_o)
 								If ($item_i<$itemCount_i)
-									While (($offset_i<BLOB size($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 										$offset_i:=$offset_i+1
-									End while
-								End if
-							Else
-								$ok_b:=False
-							End if
-
+									End while 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
 						: ($typeByte_i=160)
 							$offset_i:=$offset_i+4
 							$count_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
@@ -328,94 +328,100 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 							$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 							$offset_i:=$offset_i+4
 							$payloadStart_i:=$offset_i-1
-							If (($payloadStart_i>=0) & (($payloadStart_i+($count_i*4))<=BLOB size($inBlob_blob)))
-								$array_o:=New object("arrayType"; Time array; "numElements"; $count_i; "currentItem"; 0; "0"; "00:00:00")
+							If (($payloadStart_i>=0) & (($payloadStart_i+($count_i*4))<=BLOB size:C605($inBlob_blob)))
+								$array_o:=New object:C1471("arrayType"; Time array:K8:29; "numElements"; $count_i; "currentItem"; 0; "0"; "00:00:00")
 								$offset_i:=$payloadStart_i
 								For ($index_i; 1; $count_i)
 									$timeSeconds_i:=OTr_z_OTBlobReadUInt32BE($inBlob_blob; ->$offset_i)
 									$hour_i:=$timeSeconds_i\3600
 									$minute_i:=($timeSeconds_i%3600)\60
 									$second_i:=$timeSeconds_i%60
-									$hh_t:=String($hour_i)
-									If (Length($hh_t)<2)
+									$hh_t:=String:C10($hour_i)
+									If (Length:C16($hh_t)<2)
 										$hh_t:="0"+$hh_t
-									End if
-									$mn_t:=String($minute_i)
-									If (Length($mn_t)<2)
+									End if 
+									$mn_t:=String:C10($minute_i)
+									If (Length:C16($mn_t)<2)
 										$mn_t:="0"+$mn_t
-									End if
-									$ss_t:=String($second_i)
-									If (Length($ss_t)<2)
+									End if 
+									$ss_t:=String:C10($second_i)
+									If (Length:C16($ss_t)<2)
 										$ss_t:="0"+$ss_t
-									End if
-									OB SET($array_o; String($index_i); $hh_t+":"+$mn_t+":"+$ss_t)
-								End for
-								OB SET($result_o; $key_t; $array_o)
+									End if 
+									OB SET:C1220($array_o; String:C10($index_i); $hh_t+":"+$mn_t+":"+$ss_t)
+								End for 
+								OB SET:C1220($result_o; $key_t; $array_o)
 								If ($item_i<$itemCount_i)
-									While (($offset_i<BLOB size($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 										$offset_i:=$offset_i+1
-									End while
-								End if
-							Else
-								$ok_b:=False
-							End if
-
+									End while 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
 						: ($typeByte_i=150)
 							$offset_i:=$offset_i+4
 							$count_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 							$offset_i:=$offset_i+8
-							$array_o:=New object("arrayType"; Boolean array; "numElements"; $count_i; "currentItem"; 0; "0"; False)
+							$array_o:=New object:C1471("arrayType"; Boolean array:K8:21; "numElements"; $count_i; "currentItem"; 0; "0"; False:C215)
 							$offset_i:=$offset_i+1
-							If ($offset_i<BLOB size($inBlob_blob))
+							If ($offset_i<BLOB size:C605($inBlob_blob))
 								For ($index_i; 1; $count_i)
 									$factor_i:=1
 									For ($bit_i; 1; $index_i)
 										$factor_i:=$factor_i*2
-									End for
-									OB SET($array_o; String($index_i); ((($inBlob_blob{$offset_i}\$factor_i)%2)#0))
-								End for
+									End for 
+									OB SET:C1220($array_o; String:C10($index_i); ((($inBlob_blob{$offset_i}\$factor_i)%2)#0))
+								End for 
 								$offset_i:=$offset_i+1
-								OB SET($result_o; $key_t; $array_o)
+								OB SET:C1220($result_o; $key_t; $array_o)
 								If ($item_i<$itemCount_i)
-									While (($offset_i<BLOB size($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 										$offset_i:=$offset_i+1
-									End while
-								End if
-							Else
-								$ok_b:=False
-							End if
-
+									End while 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
 						: ($typeByte_i=114)
-							If (($offset_i+6)<BLOB size($inBlob_blob))
+							If (($offset_i+6)<BLOB size:C605($inBlob_blob))
 								$childCount_i:=OTr_z_OTBlobReadUInt32BE($inBlob_blob; ->$offset_i)
 								$offset_i:=$offset_i+3
 								$child_o:=OTr_z_OTBlobReadObjectItems($inBlob_blob; ->$offset_i; $childCount_i)
-								If ($child_o=Null)
-									$ok_b:=False
-								Else
-									OB SET($result_o; $key_t; $child_o)
+								If ($child_o=Null:C1517)
+									$ok_b:=False:C215
+								Else 
+									OB SET:C1220($result_o; $key_t; $child_o)
 									If ($item_i<$itemCount_i)
-										While (($offset_i<BLOB size($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+										While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 											$offset_i:=$offset_i+1
-										End while
-									End if
-								End if
-							Else
-								$ok_b:=False
-							End if
-
-						Else
-							$ok_b:=False
-					End case
-				End if
-			End if
+										End while 
+									End if 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
+						Else 
+							$ok_b:=False:C215
+					End case 
+				End if 
+			End if 
 			$item_i:=$item_i+1
-		End while
-	End if
-End if
+		End while 
+	End if 
+End if 
 
-If (Not($ok_b))
-	$result_o:=Null
-End if
+If (Not:C34($ok_b))
+	$result_o:=Null:C1517
+End if 
+
+If ($result_o=Null:C1517)
+	OTr_z_Error("Invalid object"; Current method name:C684)
+Else 
+	OTr_z_Error("Valid object"; Current method name:C684)
+End if 
 
 OTr_z_RemoveFromCallStack(Current method name:C684)
