@@ -1998,6 +1998,37 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	End if 
 	OTr_ClearAll
 	
+	// Larger standard Guy text array with zero-length descriptor entries.
+	$rowNum_i:=$rowNum_i+1
+	$testName_t:="Guy OT BLOB example 4 imports sparse windows text array"
+	$expected_t:="size=83; windows[1]=WKSPC_SaveWindows; [2]=(empty); [5]=(empty); [83]=WKB_Test OT replace_Forms"
+	$actual_t:=""
+	$pass_b:=False:C215
+	$compact16Path_t:=Get 4D folder:C485(Current resources folder:K5:16)+"blobs"+Folder separator:K24:12+"Phase16-guy-example-4-windows.blob"
+	DOCUMENT TO BLOB:C525($compact16Path_t; $compact16_blob)
+	$h16Compact_i:=OTr_ImportLegacyBlob($compact16_blob)
+	ARRAY TEXT:C222($gotTextArr16_at; 0)
+	If ($h16Compact_i>0)
+		OTr_GetArray($h16Compact_i; "windows"; ->$gotTextArr16_at)
+		If (Size of array:C274($gotTextArr16_at)=83)
+			$pass_b:=($gotTextArr16_at{1}="WKSPC_SaveWindows") & ($gotTextArr16_at{2}="") & ($gotTextArr16_at{5}="") & ($gotTextArr16_at{83}="WKB_Test OT replace_Forms")
+		End if 
+	End if 
+	$actual_t:="OK="+String:C10(OK)+"; handle="+String:C10($h16Compact_i)+"; size="+String:C10(Size of array:C274($gotTextArr16_at))
+	If (Size of array:C274($gotTextArr16_at)>=83)
+		$actual_t:=$actual_t+"; first="+$gotTextArr16_at{1}+"; second="+Choose:C955($gotTextArr16_at{2}=""; "(empty)"; $gotTextArr16_at{2})+"; fifth="+Choose:C955($gotTextArr16_at{5}=""; "(empty)"; $gotTextArr16_at{5})+"; last="+$gotTextArr16_at{83}
+	End if 
+	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
+	If ($pass_b)
+		$totalPass_i:=$totalPass_i+1
+	Else 
+		$totalFail_i:=$totalFail_i+1
+	End if 
+	If ($h16Compact_i>0)
+		OTr_Clear($h16Compact_i)
+	End if 
+	OTr_ClearAll
+	
 	// ============================================================
 	// PHASE 8 - Typed array element accessors (_New)
 	// ============================================================

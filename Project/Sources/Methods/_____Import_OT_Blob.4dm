@@ -9,7 +9,10 @@ ARRAY TEXT:C222($paths_at; 0)
 // look up file
 $Options_i:=Allow alias files:K24:10+Package open:K24:8+Use sheet window:K24:11
 $FolderPath_t:=System folder:C487(Desktop:K41:16)
-$DocumentName_t:=Select document:C905($FolderPath_t; ""; "Select a Blob"; $Options_i; $paths_at)
+//$DocumentName_t:=Select document($FolderPath_t; ""; "Select a Blob"; $Options_i; $paths_at)
+
+$DocumentName_t:=Select document:C905(23; ""; "Select a Blob"; $Options_i; $paths_at)
+
 
 // Import the blob
 If ($DocumentName_t#"")
