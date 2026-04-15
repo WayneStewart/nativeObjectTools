@@ -10,12 +10,14 @@
 // base64 text and decoded via OTr_u_TextToBlob. Writes an
 // empty BLOB on any error or missing tag.
 
-// **IMPLEMENTATION NOTE**
+// **WARNING: Changed Behaviour**
+
 // In native 4D, BLOB parameters are passed by value, so a
 // plain Blob parameter cannot be written back to the caller.
 // The outBLOB parameter is therefore a Pointer, and callers
-// must pass ->myBlobVar (pointer-to-BLOB syntax). The method
-// writes the result back via $outBLOB_ptr->:=.
+// must pass ->myBlobVar (pointer-to-BLOB syntax). 
+
+// The method writes the result back via $outBLOB_ptr->
 //
 // This matches the idiom used by OTr_GetPointer.
 // The legacy plugin command accepted a plain BLOB variable
@@ -25,7 +27,9 @@
 // Correct usage:
 // ```
 //   var myBlob : Blob
-//   OTr_GetBLOB(handle; "tag"; ->myBlob)
+//   var myPointer_ptr : Pointer
+//   myPointer_ptr :=-> myBlob
+//   OTr_GetBLOB(handle; "tag"; myPointer_ptr)
 // ```
 //
 // Alternatively, use OTr_GetNewBLOB which returns the BLOB
