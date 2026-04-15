@@ -36,8 +36,13 @@ If (Storage:C1525.OTr=Null:C1517)
 		$name:=$fullpath_o.name
 	End if 
 	
+	
 	$fullpath_t:=Get 4D folder:C485(Current resources folder:K5:16)+"Secret Key.txt"
-	$registrationCode_t:=Document to text:C1236($fullpath_o)
+	If (Test path name:C476($fullpath_t)=Is a document:K24:1)
+		$registrationCode_t:=Document to text:C1236($fullpath_t)
+	Else 
+		$registrationCode_t:="No code available"
+	End if 
 	
 	$ApplicationVersion_i:=Num:C11(Application version:C493)
 	

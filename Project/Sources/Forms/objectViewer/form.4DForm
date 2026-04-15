@@ -134,12 +134,13 @@
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/Button.4dm"
+					"method": "ObjectMethods/Button.4dm",
+					"sizingY": "move"
 				}
 			}
 		}
 	],
-	"geometryStamp": 85,
+	"geometryStamp": 86,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
