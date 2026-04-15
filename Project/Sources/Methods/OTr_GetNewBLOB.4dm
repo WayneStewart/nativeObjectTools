@@ -5,6 +5,12 @@
 // Retrieves a BLOB value from the specified tag path as a function result.
 // Returns an empty BLOB on any error or missing tag.
 
+// **WARNING: Changed Behaviour**
+
+// This is the function-result form to use when migrating code that
+// previously relied on the legacy OT GetBLOB output-parameter command.
+// Assign the returned BLOB directly to the target variable or field.
+
 // **ORIGINAL DOCUMENTATION**
 
 // *OT GetNewBLOB* gets a value in *inObject* from the item referenced by *inTag*.

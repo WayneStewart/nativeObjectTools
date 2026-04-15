@@ -11,6 +11,12 @@
 // fields are decoded from base64.
 // Adapted from OBJ_ToRecord by Cannon Smith.
 
+// **WARNING: Changed Behaviour**
+
+// OTr_GetRecord restores the snapshot previously stored by OTr_PutRecord.
+// It does not read live field values from the database object originally
+// used to create the stored item.
+
 // **ORIGINAL DOCUMENTATION**
 
 // *OT GetRecord* sets the current record of a table from the packed record data in

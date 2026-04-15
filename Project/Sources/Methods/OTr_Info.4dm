@@ -3,6 +3,8 @@
 
 // Returns requested information to the host.
 
+// **NOTE:** there is no equivalent Object Tools command
+
 // Access: Shared
 
 // Parameters: 

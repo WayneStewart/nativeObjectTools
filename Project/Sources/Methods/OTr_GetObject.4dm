@@ -5,6 +5,12 @@
 // Retrieves an embedded object by tag path, copies it to a new OTr
 // handle, and returns that handle.
 
+// **WARNING: Changed Behaviour**
+
+// The returned handle contains a deep copy of the embedded object.
+// Changes made to the returned object are not written back to the
+// parent item unless OTr_PutObject is called explicitly.
+
 // **ORIGINAL DOCUMENTATION**
 
 // *OT GetObject* gets an object value in object from the item referenced by *inTag*. If

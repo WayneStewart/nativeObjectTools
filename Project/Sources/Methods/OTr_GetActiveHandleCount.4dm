@@ -4,6 +4,8 @@
 
 // Returns the number of currently active OTr handles.
 
+// **NOTE:** there is no equivalent Object Tools command
+
 // Access: Shared
 
 // Returns:
@@ -13,8 +15,8 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // ----------------------------------------------------
 
-#DECLARE -> $outCount_i : Integer
+#DECLARE->$outCount_i : Integer
 
-ARRAY LONGINT($handles_ai; 0)
+ARRAY LONGINT:C221($handles_ai; 0)
 OTr_GetHandleList(->$handles_ai)
-$outCount_i:=Size of array($handles_ai)
+$outCount_i:=Size of array:C274($handles_ai)
