@@ -69,6 +69,7 @@ If (Storage:C1525.OT_Logging=Null:C1517)
 	Use (Storage:C1525)
 		Storage:C1525.OT_Logging:=New shared object:C1526()
 	End use 
+	
 	Use (Storage:C1525.OT_Logging)
 		Storage:C1525.OT_Logging.directory:=$logDirectory_t  // Where the logs are saved
 		Storage:C1525.OT_Logging.session:=$session_t  // Base name of the log file
@@ -110,7 +111,7 @@ If (Storage:C1525.OT_Logging=Null:C1517)
 	LOG ENABLE(True:C214)
 	
 	LOG ADD ENTRY("info"; "env"; "*****************************************************************")
-	LOG ADD ENTRY("info"; "env"; "  ObjectTools")
+	LOG ADD ENTRY("info"; "env"; "  ObjectTools Replacement")
 	LOG ADD ENTRY("info"; "env"; "*****************************************************************")
 	LOG ADD ENTRY("info"; "env"; "checking log level path: "+$logLevelFile_t)
 	LOG ADD ENTRY("info"; "env"; "checking log level path: "+$legacyLevelFile_t)
