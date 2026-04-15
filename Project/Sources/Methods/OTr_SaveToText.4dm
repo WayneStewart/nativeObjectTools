@@ -5,6 +5,13 @@
 // Returns the stored object as a JSON string. Useful for
 // inspection and testing.
 
+// **WARNING: Changed Behaviour**
+
+// The text format is OTr JSON, not the legacy ObjectTools text
+// serialisation. Text produced by ObjectTools is not compatible with
+// OTr_LoadFromText, and text produced here is not compatible with
+// legacy ObjectTools.
+
 // Access: Shared
 
 // Parameters:

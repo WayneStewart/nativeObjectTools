@@ -7,6 +7,12 @@
 // method because it avoids the by-reference BLOB parameter
 // issues associated with OTr_ObjectToBLOB.
 
+// **WARNING: Changed Behaviour**
+
+// The returned BLOB uses OTr's native serialisation format. It can be
+// loaded by OTr_BLOBToObject, but it is not readable by the legacy
+// ObjectTools plugin.
+
 // **ORIGINAL DOCUMENTATION**
 
 // *OT ObjectToNewBLOB* stores an object into a new *BLOB*.

@@ -8,6 +8,8 @@
 // reading via BLOB TO VARIABLE.
 // Returns 0 if the blob is empty or cannot be decoded.
 
+// **NOTE:** there is no equivalent Object Tools command
+
 // Access: Shared
 
 // Parameters:

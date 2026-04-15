@@ -4,6 +4,12 @@
 
 // Stores a deep copy of another handle's object at the given tag path.
 
+// **WARNING: Changed Behaviour**
+
+// OTr stores a deep copy of the source object. Subsequent changes to
+// the source handle are not reflected in the embedded item unless
+// OTr_PutObject is called again.
+
 // **ORIGINAL DOCUMENTATION**
 
 // OT PutObject puts * *inObject into inObject* *.

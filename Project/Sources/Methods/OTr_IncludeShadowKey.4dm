@@ -11,7 +11,9 @@
 // plain text). Including them in exports preserves full type
 // fidelity on round-trip; excluding them produces cleaner output
 // for consumption by non-OTr systems.
-//
+
+// **NOTE:** there is no equivalent Object Tools command
+
 // Default: True (include shadow keys).
 //
 // Call with no argument to read the current setting.
