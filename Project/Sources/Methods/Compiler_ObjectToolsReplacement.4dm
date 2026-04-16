@@ -601,6 +601,14 @@ If (False:C215)
 	C_POINTER:C301(OTr_z_OTBlobReadRealBE; $2)
 	C_REAL:C285(OTr_z_OTBlobReadRealBE; $0)
 	
+	C_BLOB:C604(OTr_z_OTBlobReadRealLE; $1)
+	C_POINTER:C301(OTr_z_OTBlobReadRealLE; $2)
+	C_REAL:C285(OTr_z_OTBlobReadRealLE; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobReadInt32LE; $1)
+	C_POINTER:C301(OTr_z_OTBlobReadInt32LE; $2)
+	C_LONGINT:C283(OTr_z_OTBlobReadInt32LE; $0)
+	
 	C_BLOB:C604(OTr_z_OTBlobReadPNGPicture; $1)
 	C_LONGINT:C283(OTr_z_OTBlobReadPNGPicture; $2)
 	C_POINTER:C301(OTr_z_OTBlobReadPNGPicture; $3; $4)
@@ -631,6 +639,10 @@ If (False:C215)
 	C_POINTER:C301(OTr_z_OTBlobReadObjectItems; $2)
 	C_LONGINT:C283(OTr_z_OTBlobReadObjectItems; $3)
 	C_OBJECT:C1216(OTr_z_OTBlobReadObjectItems; $0)
+	
+	C_BLOB:C604(OTr_z_OTBlobReadRecord; $1)
+	C_POINTER:C301(OTr_z_OTBlobReadRecord; $2)
+	C_OBJECT:C1216(OTr_z_OTBlobReadRecord; $0)
 	
 	C_BLOB:C604(OTr_z_OTBlobDescribeFirstItem; $1)
 	C_TEXT:C284(OTr_z_OTBlobDescribeFirstItem; $0)

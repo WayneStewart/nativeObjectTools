@@ -7,9 +7,9 @@
 //
 // Supports the Phase 16 proven legacy OT payload markers for text, date,
 // longint, real, boolean, time, BLOB, PNG/JPEG picture, text array,
-// longint array, real array, boolean array, date array, time array, and
-// embedded objects. Also supports the compact Guy sample layout with ASCII
-// keys, marker 2 text, and marker 18 text arrays.
+// longint array, real array, boolean array, date array, time array,
+// records, and embedded objects. Also supports the compact Guy sample
+// layout with ASCII keys, marker 2 text, and marker 18 text arrays.
 //
 // Access: Private
 //
@@ -23,6 +23,7 @@
 // Wayne Stewart / Codex, 2026-04-14 - Phase 16 legacy ObjectTools BLOB importer.
 // Wayne Stewart / Codex, 2026-04-15 - Added compact ASCII-key legacy layout
 //   used by Guy Examples 2 and 3.
+// Wayne Stewart / Codex, 2026-04-16 - Added OT packed record marker 115.
 // ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob)->$result_o : Object
@@ -41,7 +42,7 @@ var $hour_i; $minute_i; $second_i : Integer
 var $key_t; $value_t; $yyyy_t; $mm_t; $dd_t : Text
 var $hh_t; $mn_t; $ss_t : Text
 var $real_r : Real
-var $array_o; $child_o : Object
+var $array_o; $child_o; $record_o : Object
 var $blob_blob : Blob
 var $picture_pic : Picture
 var $ok_b; $compact_b : Boolean
@@ -289,6 +290,20 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 								End if 
 							Else 
 								$ok_b:=False:C215
+							End if 
+							
+						: ($typeByte_i=115)
+							$record_o:=OTr_z_OTBlobReadRecord($inBlob_blob; ->$offset_i)
+							If ($record_o=Null:C1517)
+								$ok_b:=False:C215
+							Else 
+								OB SET:C1220($result_o; $key_t; $record_o)
+								OB SET:C1220($result_o; OTr_z_ShadowKey($key_t); OT Is Record)
+								If ($item_i<$itemCount_i)
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+										$offset_i:=$offset_i+1
+									End while 
+								End if 
 							End if 
 							
 						: ($typeByte_i=138)
