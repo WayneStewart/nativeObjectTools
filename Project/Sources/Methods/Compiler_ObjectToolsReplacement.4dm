@@ -36,7 +36,9 @@ If (Not:C34(OTR_Initialised_b))
 	ARRAY TEXT:C222(OTR_callStack_at; 0)
 	var OTR_LockCount_i : Integer
 	var OTr_DummyVariableForTests_t : Text
-	//var vtCC_XMLTopLevelRef : Text
+	
+	ARRAY LONGINT:C221(OTr_LongArrayForTests_ai; 0)
+	ARRAY TEXT:C222(OTr_TextArrayForTests_at; 0)
 	
 	Compiler_OTrSortProcess  // These are the arrays used in the sorting routines
 	
@@ -46,6 +48,10 @@ End if
 
 
 If (False:C215)
+	
+	C_BOOLEAN:C305(OTr_z_PluginShouldWork; $0)
+	
+	C_BOOLEAN:C305(OTr_z_Comment_Uncomment_OT_Code; $1)
 	C_TEXT:C284(OTr_SetErrorHandler; $0)
 	C_TEXT:C284(OTr_SetErrorHandler; $1)
 	
@@ -567,7 +573,7 @@ If (False:C215)
 	
 	C_BLOB:C604(OTr_BLOBToObject; $1)
 	C_LONGINT:C283(OTr_BLOBToObject; $0)
-
+	
 	C_BLOB:C604(OTr_ImportLegacyBlob; $1)
 	C_LONGINT:C283(OTr_ImportLegacyBlob; $0)
 	
@@ -592,11 +598,11 @@ If (False:C215)
 	C_BLOB:C604(OTr_z_OTBlobReadInt32BE; $1)
 	C_POINTER:C301(OTr_z_OTBlobReadInt32BE; $2)
 	C_LONGINT:C283(OTr_z_OTBlobReadInt32BE; $0)
-
+	
 	C_BLOB:C604(OTr_z_OTBlobReadBlobPayload; $1)
 	C_POINTER:C301(OTr_z_OTBlobReadBlobPayload; $2; $3)
 	C_BOOLEAN:C305(OTr_z_OTBlobReadBlobPayload; $0)
-
+	
 	C_BLOB:C604(OTr_z_OTBlobReadRealBE; $1)
 	C_POINTER:C301(OTr_z_OTBlobReadRealBE; $2)
 	C_REAL:C285(OTr_z_OTBlobReadRealBE; $0)

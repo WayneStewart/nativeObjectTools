@@ -23,6 +23,9 @@
 
 #DECLARE($suppressAlert_b : Boolean)
 
+// ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ====
+
+
 OTr_z_AddToCallStack(Current method name:C684)
 
 var $hideAlert_b : Boolean
@@ -148,3 +151,5 @@ If (Not:C34($hideAlert_b))
 End if 
 
 OTr_z_RemoveFromCallStack(Current method name:C684)
+
+// ==== END OT BLOCK ====
