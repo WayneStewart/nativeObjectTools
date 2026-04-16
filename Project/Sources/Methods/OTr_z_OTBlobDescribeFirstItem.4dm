@@ -19,6 +19,7 @@
 // Created by Wayne Stewart / Codex, 2026-04-14
 // Wayne Stewart / Codex, 2026-04-14 - Added Phase 16 OT BLOB marker diagnostics.
 // Wayne Stewart / Codex, 2026-04-15 - Added compact marker 2/18 diagnostics.
+// Wayne Stewart / Codex, 2026-04-16 - Added record marker 115 diagnostics.
 // ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob)->$description_t : Text
@@ -171,6 +172,19 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 									Else
 										$description_t:=$description_t+" payload=<unreadable-blob>"
 										$scan_b:=False
+									End if
+									
+								: ($typeByte_i=115)
+									$array_o:=OTr_z_OTBlobReadRecord($inBlob_blob; ->$offset_i)
+									If ($array_o=Null)
+										$description_t:=$description_t+" payload=<unreadable-record>"
+										$scan_b:=False
+									Else
+										If ($item_i<$itemCount_i)
+											While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+												$offset_i:=$offset_i+1
+											End while
+										End if
 									End if
 									
 								: ($typeByte_i=138)
