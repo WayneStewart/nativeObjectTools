@@ -1,0 +1,16 @@
+{
+  "description": "Methods containing ObjectTools plugin blocks that can be wrapped with /* ... */ for Tahoe 26.4+ compile safety.",
+  "beginDelimiter": "// ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ====",
+  "endDelimiter": "// ==== END OT BLOCK ====",
+  "methods": [
+    "____Test_Phase_10_OT",
+    "____Test_Phase_10a_OT",
+    "____Test_Phase_10b_OT",
+    "____Test_Phase_10c_OT",
+    "____Test_Phase_15_OT",
+    "____Make_Phase16_OTBlobFixtures",
+    "____Test_Phase_16_OTBlob",
+    "____Test_Phase_16a_OTBlobValues",
+    "____Test_Phase_16b_OTBlobDeep"
+  ]
+}

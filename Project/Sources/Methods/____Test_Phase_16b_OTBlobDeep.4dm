@@ -21,6 +21,9 @@
 
 #DECLARE($suppressAlert_b : Boolean)
 
+// ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ====
+
+
 OTr_z_AddToCallStack(Current method name:C684)
 
 var $ProcessID_i; $StackSize_i : Integer
@@ -176,7 +179,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 			End if 
 		End if 
 		If ($pass_b)
-			$desktopDocPath_t:=Get 4D folder:C485(Desktop folder)+"Phase16b-Extracted-1-Corinthians-1.docx"
+			$desktopDocPath_t:=System folder:C487(Desktop:K41:16)+"Phase16b-Extracted-1-Corinthians-1.docx"
 			BLOB TO DOCUMENT:C526($desktopDocPath_t; $gotDocBlob_blob)
 			$pass_b:=(OK=1)
 		End if 
@@ -291,3 +294,5 @@ Else
 End if 
 
 OTr_z_RemoveFromCallStack(Current method name:C684)
+
+// ==== END OT BLOCK ====

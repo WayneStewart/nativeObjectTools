@@ -22,6 +22,9 @@
 
 #DECLARE($suppressAlert_b : Boolean)
 
+// ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ====
+
+
 OTr_z_AddToCallStack(Current method name:C684)
 
 var $ProcessID_i; $StackSize_i : Integer
@@ -413,3 +416,5 @@ Else
 End if 
 
 OTr_z_RemoveFromCallStack(Current method name:C684)
+
+// ==== END OT BLOCK ====

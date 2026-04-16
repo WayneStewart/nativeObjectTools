@@ -120,10 +120,10 @@ If (Current process name:C1392=$processName_t)
 		$line_i:=Find in array:C230($methodLines_at; "// Created by@")
 		If ($line_i<1)
 			$line_i:=Find in array:C230($methodLines_at; "//  Created by@")  // two-space variant
-		End if
+		End if 
 		If ($line_i>0)
 			DELETE FROM ARRAY:C228($methodLines_at; $line_i; MAXTEXTLENBEFOREV11:K35:3)  // Get rid of the code section
-		End if
+		End if 
 		
 		// Delete block lines
 		$MethodCode_t:=Replace string:C233($MethodCode_t; "  // ----------------------------------------------------\r"; "")
@@ -155,7 +155,7 @@ If (Current process name:C1392=$processName_t)
 			$parameterBlock_i:=Find in array:C230($methodLines_at; "// Parameters:@")+1
 			If ($parameterBlock_i<2)
 				$parameterBlock_i:=Find in array:C230($methodLines_at; "// Parameters:@"; 1)+1
-			End if
+			End if 
 			$parameterline_t:=$methodLines_at{$parameterBlock_i}
 			
 			Repeat 
@@ -192,11 +192,12 @@ If (Current process name:C1392=$processName_t)
 					$nextline_t:=""
 				End if 
 				
-/* Exit loop if
-1. Run out of lines
-2. Two blank lines in a row
-3. Found returns section (when present)
-*/
+				// Exit loop if
+				//1. Run out of lines
+				//2. Two blank lines in a row
+				//3. Found returns section (when present)
+				
+				
 			Until ($parameterBlock_i>$numberofLines_i)\
 				 | (($parameterline_t="") & ($nextline_t=""))\
 				 | (($returns_i>0) & ($parameterline_t="@Returns@"))
@@ -213,104 +214,104 @@ If (Current process name:C1392=$processName_t)
 			$parameterBlock_i:=Find in array:C230($methodLines_at; "// Returns:@"; $parameterBlock_i)
 			If ($parameterBlock_i<1)
 				$parameterBlock_i:=Find in array:C230($methodLines_at; "// Returns:@")
-			End if
+			End if 
 			// Reject matches on double-commented lines (//// Returns:)
 			If ($parameterBlock_i>0)
 				If (Substring:C12($methodLines_at{$parameterBlock_i}; 1; 4)="////")
 					$parameterBlock_i:=-1
-				End if
-			End if
+				End if 
+			End if 
 			If ($parameterBlock_i<1)
 				$returns_i:=0
-			End if
-
-			If ($returns_i>0)
-			$parameterline_t:=$methodLines_at{$parameterBlock_i}
-			$returnsBlock_t:=""
-			$paramName_t:="Result"
-			$paramType_t:=""
+			End if 
 			
-			Repeat 
-				$parameterline_t:=Replace string:C233($parameterline_t; "// Returns: "; "")
-				$parameterline_t:=Replace string:C233($parameterline_t; "// Returns:"; "")
-				$parameterline_t:=Replace string:C233($parameterline_t; "//    $"; "$")
-				$parameterline_t:=Replace string:C233($parameterline_t; "//   $"; "$")
-				$parameterline_t:=Replace string:C233($parameterline_t; "//  $"; "$")
-				$parameterline_t:=Replace string:C233($parameterline_t; "// $"; "$")
-				$parameterline_t:=Replace string:C233($parameterline_t; "// "; "")
+			If ($returns_i>0)
+				$parameterline_t:=$methodLines_at{$parameterBlock_i}
+				$returnsBlock_t:=""
+				$paramName_t:="Result"
+				$paramType_t:=""
 				
-				If (Length:C16($parameterline_t)>0)
-					// Detect declare-style return variable even when no Parameters block was present
-					If ((Substring:C12($parameterline_t; 1; 1)="$") & (Position:C15(Substring:C12($parameterline_t; 2; 1); "0123456789")=0))
-						$isDeclareStyle_b:=True:C214
-					End if
-					If ($isDeclareStyle_b)
-						$Position_i:=Position:C15(" : "; $parameterline_t)
-						If (($Position_i>1) & (Substring:C12($parameterline_t; 1; 1)="$"))
-							$line_i:=Position:C15(" : "; $parameterline_t; $Position_i+3)
-							If ($line_i>0)
-								$paramType_t:=Substring:C12($parameterline_t; $Position_i+3; $line_i-($Position_i+3))
-								$parameterline_t:=Substring:C12($parameterline_t; $line_i+3)
-							End if 
-							If (Length:C16($returnsBlock_t)>0)
-								$returnsBlock_t:=$returnsBlock_t+" "+$parameterline_t
-							Else 
-								$returnsBlock_t:=$parameterline_t
-							End if 
-						Else 
-							If (Length:C16($returnsBlock_t)>0)
-								$returnsBlock_t:=$returnsBlock_t+" "+$parameterline_t
-							Else 
-								$returnsBlock_t:=$parameterline_t
-							End if 
+				Repeat 
+					$parameterline_t:=Replace string:C233($parameterline_t; "// Returns: "; "")
+					$parameterline_t:=Replace string:C233($parameterline_t; "// Returns:"; "")
+					$parameterline_t:=Replace string:C233($parameterline_t; "//    $"; "$")
+					$parameterline_t:=Replace string:C233($parameterline_t; "//   $"; "$")
+					$parameterline_t:=Replace string:C233($parameterline_t; "//  $"; "$")
+					$parameterline_t:=Replace string:C233($parameterline_t; "// $"; "$")
+					$parameterline_t:=Replace string:C233($parameterline_t; "// "; "")
+					
+					If (Length:C16($parameterline_t)>0)
+						// Detect declare-style return variable even when no Parameters block was present
+						If ((Substring:C12($parameterline_t; 1; 1)="$") & (Position:C15(Substring:C12($parameterline_t; 2; 1); "0123456789")=0))
+							$isDeclareStyle_b:=True:C214
 						End if 
-					Else 
-						If (Substring:C12($parameterline_t; 1; 2)="$0")
+						If ($isDeclareStyle_b)
 							$Position_i:=Position:C15(" : "; $parameterline_t)
-							If ($Position_i>1)
+							If (($Position_i>1) & (Substring:C12($parameterline_t; 1; 1)="$"))
 								$line_i:=Position:C15(" : "; $parameterline_t; $Position_i+3)
 								If ($line_i>0)
-									$paramName_t:=Substring:C12($parameterline_t; 1; $Position_i-1)
 									$paramType_t:=Substring:C12($parameterline_t; $Position_i+3; $line_i-($Position_i+3))
 									$parameterline_t:=Substring:C12($parameterline_t; $line_i+3)
 								End if 
+								If (Length:C16($returnsBlock_t)>0)
+									$returnsBlock_t:=$returnsBlock_t+" "+$parameterline_t
+								Else 
+									$returnsBlock_t:=$parameterline_t
+								End if 
+							Else 
+								If (Length:C16($returnsBlock_t)>0)
+									$returnsBlock_t:=$returnsBlock_t+" "+$parameterline_t
+								Else 
+									$returnsBlock_t:=$parameterline_t
+								End if 
+							End if 
+						Else 
+							If (Substring:C12($parameterline_t; 1; 2)="$0")
+								$Position_i:=Position:C15(" : "; $parameterline_t)
+								If ($Position_i>1)
+									$line_i:=Position:C15(" : "; $parameterline_t; $Position_i+3)
+									If ($line_i>0)
+										$paramName_t:=Substring:C12($parameterline_t; 1; $Position_i-1)
+										$paramType_t:=Substring:C12($parameterline_t; $Position_i+3; $line_i-($Position_i+3))
+										$parameterline_t:=Substring:C12($parameterline_t; $line_i+3)
+									End if 
+								End if 
+							End if 
+							If (Length:C16($returnsBlock_t)>0)
+								$returnsBlock_t:=$returnsBlock_t+" "+$parameterline_t
+							Else 
+								$returnsBlock_t:=$parameterline_t
 							End if 
 						End if 
-						If (Length:C16($returnsBlock_t)>0)
-							$returnsBlock_t:=$returnsBlock_t+" "+$parameterline_t
-						Else 
-							$returnsBlock_t:=$parameterline_t
-						End if 
 					End if 
-				End if 
-				$parameterBlock_i:=$parameterBlock_i+1
+					$parameterBlock_i:=$parameterBlock_i+1
+					
+					// This has a more complicated end condition because we may get an out of range error
+					If ($parameterBlock_i<=$numberofLines_i)
+						$parameterline_t:=$methodLines_at{$parameterBlock_i}
+					Else 
+						$parameterline_t:=""
+					End if 
+					
+					$nextLine_i:=$parameterBlock_i+1
+					If ($nextLine_i<=$numberofLines_i)
+						$nextline_t:=$methodLines_at{$nextLine_i}
+					Else 
+						$nextline_t:=""
+					End if 
+					
+					// Exit loop if
+					//1. Run out of lines
+					//2. Two blank lines in a row
+					//3. Hmmm…
+					
+				Until ($parameterBlock_i>$numberofLines_i)\
+					 | (($parameterline_t="") & ($nextline_t=""))
 				
-				// This has a more complicated end condition because we may get an out of range error
-				If ($parameterBlock_i<=$numberofLines_i)
-					$parameterline_t:=$methodLines_at{$parameterBlock_i}
-				Else 
-					$parameterline_t:=""
-				End if 
-				
-				$nextLine_i:=$parameterBlock_i+1
-				If ($nextLine_i<=$numberofLines_i)
-					$nextline_t:=$methodLines_at{$nextLine_i}
-				Else 
-					$nextline_t:=""
-				End if 
-				
-/* Exit loop if
-1. Run out of lines
-2. Two blank lines in a row
-3. Hmmm…
-*/
-			Until ($parameterBlock_i>$numberofLines_i)\
-				 | (($parameterline_t="") & ($nextline_t=""))
-
-			End if  // inner If ($returns_i>0)
-
-		End if  // outer If ($returns_i>0)
-
+			End if   // inner If ($returns_i>0)
+			
+		End if   // outer If ($returns_i>0)
+		
 		If (Length:C16($returnsBlock_t)>0)
 			$parameterline_t:="|"+$paramName_t+"|"
 			If (Length:C16($paramType_t)>0)
@@ -353,11 +354,11 @@ If (Current process name:C1392=$processName_t)
 			$Attributes_t:=$Attributes_t+"Invisible, "
 		End if 
 		
-/* Compatibility note: The published4DMobile property is deprecated as for 4D v18.
-If ($Attributes_o.published4DMobile#Null)
-$Attributes_t:=$Attributes_t+"4D Mobile, "
-End if
-*/
+		//Compatibility note: The published4DMobile property is deprecated as for 4D v18.
+		//If ($Attributes_o.published4DMobile#Null)
+		//$Attributes_t:=$Attributes_t+"4D Mobile, "
+		//End if
+		
 		
 		Case of 
 			: ($Attributes_o.preemptive="capable")
@@ -535,10 +536,10 @@ End if
 								If ($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)}#"")
 									If (Substring:C12($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)}; 1; 2)#"- ")
 										APPEND TO ARRAY:C911($formattedCommentLines_at; "")
-									End if
-								End if
+									End if 
+								End if 
 								$currentParagraph_t:=""
-							Else
+							Else 
 								// No pending paragraph — only add blank line if previous output was not a bullet
 								If (Size of array:C274($formattedCommentLines_at)>0)
 									If ($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)}="")
@@ -547,11 +548,11 @@ End if
 											If (Substring:C12($formattedCommentLines_at{Size of array:C274($formattedCommentLines_at)-1}; 1; 2)="- ")
 												// Previous non-blank was a bullet — remove the blank line to keep list tight
 												DELETE FROM ARRAY:C228($formattedCommentLines_at; Size of array:C274($formattedCommentLines_at); 1)
-											End if
-										End if
-									End if
-								End if
-							End if
+											End if 
+										End if 
+									End if 
+								End if 
+							End if 
 							APPEND TO ARRAY:C911($formattedCommentLines_at; $trimmedLine_t)
 						Else 
 							If (Length:C16($currentParagraph_t)=0)
@@ -654,48 +655,48 @@ End if
 		ALERT:C41($alert_t; "Great")
 	End if 
 	
-Else
-
+Else 
+	
 	var $launchMethodName_t : Text
 	var $launchToolTip_b; $launchExcludePrivate_b; $launchSilent_b : Boolean
-
+	
 	If (Count parameters:C259<1)
 		$launchMethodName_t:=""
-	Else
+	Else 
 		$launchMethodName_t:=$MethodName_t
-	End if
+	End if 
 	If (Count parameters:C259<2)
 		$launchToolTip_b:=True:C214
-	Else
+	Else 
 		$launchToolTip_b:=$ToolTip_b
-	End if
+	End if 
 	If (Count parameters:C259<3)
 		$launchExcludePrivate_b:=True:C214
-	Else
+	Else 
 		$launchExcludePrivate_b:=$excludePrivate_b
-	End if
+	End if 
 	If (Count parameters:C259<4)
 		$launchSilent_b:=True:C214
-	Else
+	Else 
 		$launchSilent_b:=$silent_b
-	End if
-
+	End if 
+	
 	If ($launchExcludePrivate_b)  // Delete the existing documentation folder
 		$documentationPath_t:=Get 4D folder:C485(Database folder:K5:14)+"Documentation"+Folder separator:K24:12+"Methods"+Folder separator:K24:12
 		If (Test path name:C476($documentationPath_t)=Is a folder:K24:2)
 			DELETE FOLDER:C693($documentationPath_t; Delete with contents:K24:24)
-		End if
+		End if 
 		CREATE FOLDER:C475($documentationPath_t)
-	End if
-
-
+	End if 
+	
+	
 	// This version allows for any number of processes
 	// $ProcessID_i:=New Process(Current method name;$StackSize_i;Current method name;0)
-
+	
 	// On the other hand, this version allows for one unique process
 	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $processName_t; $launchMethodName_t; $launchToolTip_b; $launchExcludePrivate_b; $launchSilent_b; *)
-
+	
 	RESUME PROCESS:C320($ProcessID_i)
 	SHOW PROCESS:C325($ProcessID_i)
 	BRING TO FRONT:C326($ProcessID_i)
-End if
+End if 
