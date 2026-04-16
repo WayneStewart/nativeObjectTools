@@ -5,8 +5,11 @@
 // Loads an object from a GZIPed JSON blob (written by
 // OTr_SaveToGZIP) into a new OTr handle. The blob is
 // expanded and decoded as UTF-8 text before being parsed
-// as JSON. Delegates parsing to OTr_LoadFromText.
+// as JSON. 
+
 // Returns 0 if the blob is empty or cannot be decoded.
+
+// **NOTE:** there is no equivalent Object Tools command
 
 // Access: Shared
 

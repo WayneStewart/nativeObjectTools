@@ -5,10 +5,8 @@
 // Reads a UTF-8 JSON file from disk and loads it into a
 // new OTr handle. The file must have been written as a
 // plain UTF-8 JSON text file (e.g. by OTr_SaveToFile).
-// Delegates all parsing to OTr_LoadFromText, including
-// BOM stripping and top-level array wrapping.
-// Returns 0 if the file does not exist or contains
-// invalid JSON.
+
+// **NOTE:** there is no equivalent Object Tools command
 
 // Access: Shared
 

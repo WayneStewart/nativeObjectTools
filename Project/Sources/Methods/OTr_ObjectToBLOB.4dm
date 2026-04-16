@@ -6,10 +6,12 @@
 // with GZIP compression. The object's contents (including natively
 // stored BLOBs and Pictures) are fully self-contained.
 // 
+// **WARNING: Changed Behaviour**
+
 // Because 4D passes BLOBs by value, *ioBLOB* must be passed as a
 // Pointer to a BLOB variable: OTr_ObjectToBLOB($h; ->$myBlob).
-
-// **DO NOT USE THIS COMMAND,** Use OTr_ObjectToNewBLOB for the simpler function-result form.
+// OTr-generated BLOBs use OTr's native serialisation format and are
+// not readable by the legacy ObjectTools plugin.
 
 // **ORIGINAL DOCUMENTATION**
 

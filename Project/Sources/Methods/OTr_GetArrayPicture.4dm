@@ -5,6 +5,12 @@
 // Retrieves a single element from a Picture array item.
 // Returns an empty Picture on any error or out-of-range index.
 
+// **WARNING: Changed Behaviour**
+
+// The legacy OT GetArrayPicture command returned the Picture through
+// an output parameter. OTr_GetArrayPicture returns the requested array
+// element as the function result.
+
 // **ORIGINAL DOCUMENTATION**
 
 // *OT GetArrayPicture* gets a value in *inObject* from the array item referenced by

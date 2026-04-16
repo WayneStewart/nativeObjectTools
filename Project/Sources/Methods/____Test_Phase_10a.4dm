@@ -83,7 +83,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$timeStr_t:=Replace string:C233($timeStr_t; ":"; "-")
 	$fileName_t:="____Test_Phase_10a-"+$dateStr_t+"-"+$timeStr_t+".txt"
 	
-	$folderPath_t:=Get 4D folder:C485(Logs folder:K5:19)
+	$folderPath_t:=Get 4D folder:C485(Logs folder:K5:19; *)
 	$filePath_t:=$folderPath_t+$fileName_t
 	
 	TEXT TO DOCUMENT:C1237($filePath_t; $tableText_t; "UTF-8")

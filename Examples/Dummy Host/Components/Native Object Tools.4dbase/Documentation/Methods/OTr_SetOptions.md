@@ -1,1 +1,0 @@
-<!--OTr_SetOptions (inOptions)inOptions : Integer : ➡️ : New OTr options bit field (inOptions)-->## OTr\_SetOptionsOTr\_SetOptions (inOptions)Sets the current OTr options bit field.Attributes: Shared, Invisible, Preemptive indifferent| Parameter | Type |  | Description || --- | --- | --- | --- ||inOptions|Integer|➡️|New OTr options bit field (inOptions)|

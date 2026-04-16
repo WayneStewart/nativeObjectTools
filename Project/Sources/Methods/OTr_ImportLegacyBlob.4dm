@@ -5,8 +5,10 @@
 // Imports a legacy ObjectTools object BLOB into a new OTr handle.
 //
 // This is the explicit public compatibility entry point for BLOBs
-// created by the legacy ObjectTools plugin with OT ObjectToBLOB or
-// OT ObjectToNewBLOB. The imported object is converted into native OTr
+// exported by the legacy ObjectTools plugin with OT ObjectToBLOB or
+// OT ObjectToNewBLOB. 
+
+// The imported object is converted into native OTr
 // storage and can then be accessed with normal OTr getters and saved
 // with OTr_ObjectToBLOB or OTr_ObjectToNewBLOB.
 //
@@ -31,13 +33,13 @@ $handle_i:=0
 If (BLOB size:C605($inBLOB_blob)=0)
 	OTr_z_Error("BLOB is empty"; Current method name:C684)
 	OTr_z_SetOK(0)
-Else
+Else 
 	If (OTr_z_OTBlobIsObject($inBLOB_blob))
 		$handle_i:=OTr_BLOBToObject($inBLOB_blob)
-	Else
+	Else 
 		OTr_z_Error("BLOB is not a legacy ObjectTools object BLOB"; Current method name:C684)
 		OTr_z_SetOK(0)
-	End if
-End if
+	End if 
+End if 
 
 OTr_z_RemoveFromCallStack(Current method name:C684)

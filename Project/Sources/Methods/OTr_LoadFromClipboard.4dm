@@ -3,10 +3,11 @@
 // Project Method: OTr_LoadFromClipboard () --> Longint
 
 // Reads a JSON string from the system clipboard and loads
-// it into a new OTr handle. Delegates all parsing to
-// OTr_LoadFromText, including BOM stripping and top-level
-// array wrapping.
+// it into a new OTr handle. 
+
 // Returns 0 if the clipboard contains no text or invalid JSON.
+
+// **NOTE:** there is no equivalent Object Tools command
 
 // Access: Shared
 

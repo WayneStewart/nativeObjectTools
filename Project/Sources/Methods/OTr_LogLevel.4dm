@@ -20,7 +20,10 @@
 
 #DECLARE($setLogLevel_t : Text; $permanent_b : Boolean)->$getLogLevel_t : Text
 
+
 OTr_z_AddToCallStack(Current method name:C684)
+
+OTr_z_LogInit()  // Add this here in case on host database is not turned on
 
 var $parametersCount_i : Integer
 var $currentLoggingLevel_t; $initialLoggingLevel_t : Text

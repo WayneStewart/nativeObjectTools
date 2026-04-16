@@ -3,6 +3,8 @@
 
 // Returns requested information to the host.
 
+// **NOTE:** there is no equivalent Object Tools command
+
 // Access: Shared
 
 // Parameters: 
@@ -23,7 +25,7 @@ Case of
 		$reply_t:="Error: No parameter passed."
 		
 	: ($request_t="version")
-		$reply_t:="1.0 Beta 1"
+		$reply_t:="1.0 Beta 3"
 		
 	: ($request_t="name")
 		$reply_t:="Object Tools Replacement"

@@ -20,18 +20,28 @@
 //   would reflect the main process's state at startup and would be wrong for any
 //   process that has overridden the default. Date/Time storage now uses a per-call
 //   probe via OTr_u_NativeDateInObject. See OTr_u_NativeDateInObject and Phase 2 spec.
+// Wayne Stewart / Codex, 2026-04-15 - Ensure logging initialises on the
+//   first API call, even when host startup events are not enabled.
 // ----------------------------------------------------
 
 
 If (Storage:C1525.OTr=Null:C1517)
 	
-	var $fullpath : Object
-	var $name : Text
+	var $fullpath_o : Object
+	var $name; $fullpath_t; $registrationCode_t : Text
 	var $ApplicationVersion_i : Integer
 	
 	If (Application type:C494#4D Remote mode:K5:5)
-		$fullpath:=Path to object:C1547(Structure file:C489(*))
-		$name:=$fullpath.name
+		$fullpath_o:=Path to object:C1547(Structure file:C489(*))
+		$name:=$fullpath_o.name
+	End if 
+	
+	
+	$fullpath_t:=Get 4D folder:C485(Current resources folder:K5:16)+"Secret Key.txt"
+	If (Test path name:C476($fullpath_t)=Is a document:K24:1)
+		$registrationCode_t:=Document to text:C1236($fullpath_t)
+	Else 
+		$registrationCode_t:="No code available"
 	End if 
 	
 	$ApplicationVersion_i:=Num:C11(Application version:C493)
@@ -40,11 +50,12 @@ If (Storage:C1525.OTr=Null:C1517)
 		Storage:C1525.OTr:=New shared object:C1526("structureName"; $name; \
 			"nativeBlobInObject"; ($ApplicationVersion_i>=1920); \
 			"mechanism"; OTR IP Arrays; \
-			"includeShadowKeys"; True:C214)
+			"includeShadowKeys"; True:C214; \
+			"loggingInitialising"; False:C215; \
+			"registrationCode"; $registrationCode_t; \
+			"level"; "off")
 	End use 
 	OTr_z_CheckHostMethods
-	
-	// OTr_z_LogInit  // Check logging is ready and write the startup message.
 	
 End if 
 
@@ -73,4 +84,18 @@ If (Not:C34(OTR_Initialised_b))
 	
 	OTR_Initialised_b:=True:C214
 	
+End if 
+
+If (Storage:C1525.OT_Logging=Null:C1517)
+	If (Storage:C1525.OTr.loggingInitialising#True:C214)
+		Use (Storage:C1525.OTr)
+			Storage:C1525.OTr.loggingInitialising:=True:C214
+		End use 
+		
+		OTr_z_LogInit  // Check logging is ready and write the startup message.
+		
+		Use (Storage:C1525.OTr)
+			Storage:C1525.OTr.loggingInitialising:=False:C215
+		End use 
+	End if 
 End if 
