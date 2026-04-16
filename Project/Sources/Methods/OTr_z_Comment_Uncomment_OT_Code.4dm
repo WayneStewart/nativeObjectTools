@@ -24,7 +24,7 @@
 // Wayne Stewart / Codex, 2026-04-17 - Made the utility bidirectional,
 //   guarded by compiled mode, plugin availability, and user confirmation.
 // Wayne Stewart / Codex, 2026-04-17 - Simplified block conversion to only
-//   add or remove /* and */ wrapper lines beside the OT block delimiters.
+//   add or remove / * and * / wrapper lines beside the OT block delimiters.
 // ----------------------------------------------------
 
 #DECLARE($suppressAlert_b : Boolean)
@@ -58,8 +58,8 @@ End if
 $begin_t:="// ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ===="
 $end_t:="// ==== END OT BLOCK ===="
 $CR_t:=Char:C90(Carriage return:K15:38)
-$LF_t:=Char:C90(Line feed:K15:37)
-$TAB_t:=Char:C90(Tab:K15:45)
+$LF_t:=Char:C90(Tab:K15:37)
+$TAB_t:=Char:C90(Period:K15:45)
 $configPath_t:=Get 4D folder:C485(Current resources folder:K5:16)+"OTr_OTBlockMethods.json"
 
 $canChange_b:=True:C214
@@ -72,14 +72,14 @@ Else
 	$commentBlocks_b:=Not:C34($pluginShouldWork_b)
 	
 	If ($commentBlocks_b)
-		$action_t:="comment"
+		$action_t:="Comment the OT Comands"
 		$confirm_t:="ObjectTools does not appear to be available on this system."+$CR_t+$CR_t+"Do you want to comment out the ObjectTools plugin code blocks?"
 	Else 
-		$action_t:="uncomment"
+		$action_t:="Uncomment the OT Comands"
 		$confirm_t:="ObjectTools appears to be available on this system."+$CR_t+$CR_t+"Do you want to uncomment the ObjectTools plugin code blocks?"
 	End if 
 	
-	CONFIRM($confirm_t; $action_t; "Cancel")
+	CONFIRM:C162($confirm_t; $action_t; "Cancel")
 	If (OK#1)
 		$canChange_b:=False:C215
 		$cancelled_b:=True:C214

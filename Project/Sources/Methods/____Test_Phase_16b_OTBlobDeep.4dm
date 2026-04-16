@@ -147,27 +147,60 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		End if 
 		
 		$pass_b:=False:C215
-		If ((OK=1) & ($otrH_i>0)\
-			 & (OTr_IsEmbedded($otrH_i; "AnObject")=1)\
-			 & (OTr_IsEmbedded($otrH_i; "AnObject.bObject")=1)\
-			 & (OTr_IsEmbedded($otrH_i; "AnObject.bObject.cObject")=1)\
-			 & (OTr_ItemCount($otrH_i; "AnObject.bObject.cObject")=11)\
-			 & (OTr_GetText($otrH_i; "AnObject.level1Text")="level1")\
-			 & (OTr_GetLong($otrH_i; "AnObject.bObject.level2Long")=-12345)\
-			 & (OTr_GetText($otrH_i; "AnObject.bObject.cObject.Citem")="deep text")\
-			 & (Abs:C99($real_r-123.456)<0.00001)\
-			 & (OTr_GetBoolean($otrH_i; "AnObject.bObject.cObject.flag")=1)\
-			 & (OTr_GetDate($otrH_i; "AnObject.bObject.cObject.when")=!2026-04-14!)\
-			 & (OTr_GetTime($otrH_i; "AnObject.bObject.cObject.clock")=?12:34:56?)\
-			 & (OTr_u_EqualBLOBs($testBlob_blob; $gotBlob_blob))\
-			 & (OTr_u_EqualBLOBs($docBlob_blob; $gotDocBlob_blob))\
-			 & (OTr_u_EqualPictures($testPic_pic; $gotPic_pic))\
-			 & (Size of array:C274($gotTextArray_at)=3)\
-			 & (Size of array:C274($gotLongArray_ai)=3)\
-			 & (Size of array:C274($gotBooleanArray_ab)=3))
-			$pass_b:=(($gotTextArray_at{1}="deep-alpha") & ($gotTextArray_at{2}="deep-bravo") & ($gotTextArray_at{3}="deep-charlie")\
-				 & ($gotLongArray_ai{1}=10) & ($gotLongArray_ai{2}=-20) & ($gotLongArray_ai{3}=3000)\
-				 & ($gotBooleanArray_ab{1}=True:C214) & ($gotBooleanArray_ab{2}=False:C215) & ($gotBooleanArray_ab{3}=True:C214))
+		$pass_b:=((OK=1) & ($otrH_i>0))
+		If ($pass_b)
+			$pass_b:=(OTr_IsEmbedded($otrH_i; "AnObject")=1)
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_IsEmbedded($otrH_i; "AnObject.bObject")=1)
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_IsEmbedded($otrH_i; "AnObject.bObject.cObject")=1)
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_ItemCount($otrH_i; "AnObject.bObject.cObject")=11)
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_GetText($otrH_i; "AnObject.level1Text")="level1")
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_GetLong($otrH_i; "AnObject.bObject.level2Long")=-12345)
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_GetText($otrH_i; "AnObject.bObject.cObject.Citem")="deep text")
+		End if 
+		If ($pass_b)
+			$pass_b:=(Abs:C99($real_r-123.456)<0.00001)
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_GetBoolean($otrH_i; "AnObject.bObject.cObject.flag")=1)
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_GetDate($otrH_i; "AnObject.bObject.cObject.when")=!2026-04-14!)
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_GetTime($otrH_i; "AnObject.bObject.cObject.clock")=?12:34:56?)
+		End if 
+		If ($pass_b)
+			$pass_b:=OTr_u_EqualBLOBs($testBlob_blob; $gotBlob_blob)
+		End if 
+		If ($pass_b)
+			$pass_b:=OTr_u_EqualBLOBs($docBlob_blob; $gotDocBlob_blob)
+		End if 
+		If ($pass_b)
+			$pass_b:=OTr_u_EqualPictures($testPic_pic; $gotPic_pic)
+		End if 
+		If ($pass_b)
+			$pass_b:=((Size of array:C274($gotTextArray_at)=3) & (Size of array:C274($gotLongArray_ai)=3) & (Size of array:C274($gotBooleanArray_ab)=3))
+		End if 
+		If ($pass_b)
+			$pass_b:=(($gotTextArray_at{1}="deep-alpha") & ($gotTextArray_at{2}="deep-bravo") & ($gotTextArray_at{3}="deep-charlie"))
+		End if 
+		If ($pass_b)
+			$pass_b:=(($gotLongArray_ai{1}=10) & ($gotLongArray_ai{2}=-20) & ($gotLongArray_ai{3}=3000))
+		End if 
+		If ($pass_b)
+			$pass_b:=(($gotBooleanArray_ab{1}=True:C214) & ($gotBooleanArray_ab{2}=False:C215) & ($gotBooleanArray_ab{3}=True:C214))
 		End if 
 		
 		If ($pass_b)
@@ -245,17 +278,36 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		End if 
 		
 		$pass_b:=False:C215
-		If ((OK=1) & ($otrH_i>0)\
-			 & (OTr_ItemCount($otrH_i)=4)\
-			 & (OTr_GetText($otrH_i; "before")="before-value")\
-			 & (OTr_GetText($otrH_i; "after")="after-value")\
-			 & (OTr_GetText($otrH_i; "first.second.middle")="middle-value")\
-			 & (OTr_GetText($otrH_i; "first.second.third.leaf")="leaf-value")\
-			 & (OTr_GetText($otrH_i; "sibling.siblingText")="sibling-value")\
-			 & (OTr_GetLong($otrH_i; "sibling.siblingLong")=777)\
-			 & (Size of array:C274($gotTextArray_at)=2)\
-			 & (Size of array:C274($gotLongArray_ai)=2))
-			$pass_b:=(($gotTextArray_at{1}="left-one") & ($gotTextArray_at{2}="left-two") & ($gotLongArray_ai{1}=-1) & ($gotLongArray_ai{2}=-2))
+		$pass_b:=((OK=1) & ($otrH_i>0))
+		If ($pass_b)
+			$pass_b:=(OTr_ItemCount($otrH_i)=4)
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_GetText($otrH_i; "before")="before-value")
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_GetText($otrH_i; "after")="after-value")
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_GetText($otrH_i; "first.second.middle")="middle-value")
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_GetText($otrH_i; "first.second.third.leaf")="leaf-value")
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_GetText($otrH_i; "sibling.siblingText")="sibling-value")
+		End if 
+		If ($pass_b)
+			$pass_b:=(OTr_GetLong($otrH_i; "sibling.siblingLong")=777)
+		End if 
+		If ($pass_b)
+			$pass_b:=((Size of array:C274($gotTextArray_at)=2) & (Size of array:C274($gotLongArray_ai)=2))
+		End if 
+		If ($pass_b)
+			$pass_b:=(($gotTextArray_at{1}="left-one") & ($gotTextArray_at{2}="left-two"))
+		End if 
+		If ($pass_b)
+			$pass_b:=(($gotLongArray_ai{1}=-1) & ($gotLongArray_ai{2}=-2))
 		End if 
 		
 		If ($otrH_i>0)
