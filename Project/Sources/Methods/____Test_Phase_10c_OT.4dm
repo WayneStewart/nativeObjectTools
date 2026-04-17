@@ -28,6 +28,7 @@
 #DECLARE($accum_i : Integer)
 
 // ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ====
+/*
 
 var $h_i : Integer
 var $r_i : Integer
@@ -51,18 +52,18 @@ var $otCmd_t : Text
 var $otResult_t : Text
 
 // Process variable required for OT GetArray (OT plugin limitation)
-ARRAY LONGINT:C221(OTr_LongArrayForTests_ai; 0)
+ARRAY LONGINT(OTr_LongArrayForTests_ai; 0)
 
 // ====================================================
 // PLUGIN AVAILABILITY CHECK
 // ====================================================
-$ready_b:=True:C214
-$reg_i:=OT Register(Storage:C1525.OTr.registrationCode)
+$ready_b:=True
+$reg_i:=OT Register(Storage.OTr.registrationCode)
 $h_i:=OT New
 
 If ($h_i=0)
-	ALERT:C41("ObjectTools 5.0 is not available or not registered."+Char:C90(Carriage return:K15:38)+"OT columns will be marked as skipped.")
-	$ready_b:=False:C215
+	ALERT("ObjectTools 5.0 is not available or not registered."+Char(Carriage return)+"OT columns will be marked as skipped.")
+	$ready_b:=False
 	$count_i:=OTr_SizeOfArray($accum_i; "testName")
 	For ($n_i; 1; $count_i)
 		OTr_PutArrayText($accum_i; "otCmd"; $n_i; "Plugin not available")
@@ -85,13 +86,13 @@ If ($ready_b)
 	OT PutLong($h_i; "scalar"; 123)
 	OT PutString($h_i; "textItem"; "abc")
 	
-	ARRAY LONGINT:C221($longArr_ai; 3)
+	ARRAY LONGINT($longArr_ai; 3)
 	$longArr_ai{1}:=10
 	$longArr_ai{2}:=20
 	$longArr_ai{3}:=30
 	OT PutArray($h_i; "longArr"; $longArr_ai)
 	
-	ARRAY TEXT:C222($textArr_at; 2)
+	ARRAY TEXT($textArr_at; 2)
 	$textArr_at{1}:="x"
 	$textArr_at{2}:="y"
 	OT PutArray($h_i; "textArr"; $textArr_at)
@@ -106,7 +107,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT Copy(99999)
 	$otCmd_t:="OT Copy(99999)"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -118,7 +119,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArray(99999; "arr"; $longArr_ai)
 	$otCmd_t:="OT PutArray(99999; \"arr\"; $longArr_ai)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -126,7 +127,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArray($h_i; "scalar"; $longArr_ai)
 	$otCmd_t:="OT PutArray($h_i; \"scalar\"; $longArr_ai)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -138,7 +139,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayBLOB(99999; "longArr"; 1; $r_blob)
 	$otCmd_t:="OT PutArrayBLOB(99999; \"longArr\"; 1; $r_blob)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -146,7 +147,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayBLOB($h_i; "longArr"; 99; $r_blob)
 	$otCmd_t:="OT PutArrayBLOB($h_i; \"longArr\"; 99; $r_blob)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -158,7 +159,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayBoolean(99999; "longArr"; 1; 1)
 	$otCmd_t:="OT PutArrayBoolean(99999; \"longArr\"; 1; 1)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -166,7 +167,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayBoolean($h_i; "longArr"; 1; 1)
 	$otCmd_t:="OT PutArrayBoolean($h_i; \"longArr\"; 1; 1)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -178,7 +179,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayDate(99999; "longArr"; 1; !2026-01-01!)
 	$otCmd_t:="OT PutArrayDate(99999; \"longArr\"; 1; !2026-01-01!)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -186,7 +187,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayDate($h_i; "longArr"; 1; !2026-01-01!)
 	$otCmd_t:="OT PutArrayDate($h_i; \"longArr\"; 1; !2026-01-01!)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -198,7 +199,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayLong(99999; "longArr"; 1; 777)
 	$otCmd_t:="OT PutArrayLong(99999; \"longArr\"; 1; 777)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -206,7 +207,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayLong($h_i; "textArr"; 1; 777)
 	$otCmd_t:="OT PutArrayLong($h_i; \"textArr\"; 1; 777)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -218,7 +219,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayPicture(99999; "longArr"; 1; $r_pic)
 	$otCmd_t:="OT PutArrayPicture(99999; \"longArr\"; 1; <picture>)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -226,7 +227,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayPicture($h_i; "longArr"; 1; $r_pic)
 	$otCmd_t:="OT PutArrayPicture($h_i; \"longArr\"; 1; <picture>)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -238,7 +239,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayPointer(99999; "longArr"; 1; ->$r_i)
 	$otCmd_t:="OT PutArrayPointer(99999; \"longArr\"; 1; ->$r_i)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -246,7 +247,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayPointer($h_i; "longArr"; 1; ->$r_i)
 	$otCmd_t:="OT PutArrayPointer($h_i; \"longArr\"; 1; ->$r_i)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -258,7 +259,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayReal(99999; "longArr"; 1; 3.14)
 	$otCmd_t:="OT PutArrayReal(99999; \"longArr\"; 1; 3.14)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -266,7 +267,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayReal($h_i; "textArr"; 1; 3.14)
 	$otCmd_t:="OT PutArrayReal($h_i; \"textArr\"; 1; 3.14)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -278,7 +279,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayString(99999; "textArr"; 1; "z")
 	$otCmd_t:="OT PutArrayString(99999; \"textArr\"; 1; \"z\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -286,7 +287,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayString($h_i; "longArr"; 1; "z")
 	$otCmd_t:="OT PutArrayString($h_i; \"longArr\"; 1; \"z\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -298,7 +299,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayText(99999; "textArr"; 1; "z")
 	$otCmd_t:="OT PutArrayText(99999; \"textArr\"; 1; \"z\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -306,7 +307,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayText($h_i; "longArr"; 1; "z")
 	$otCmd_t:="OT PutArrayText($h_i; \"longArr\"; 1; \"z\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -318,7 +319,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayTime(99999; "longArr"; 1; ?10:00:00?)
 	$otCmd_t:="OT PutArrayTime(99999; \"longArr\"; 1; ?10:00:00?)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -326,7 +327,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutArrayTime($h_i; "textArr"; 1; ?10:00:00?)
 	$otCmd_t:="OT PutArrayTime($h_i; \"textArr\"; 1; ?10:00:00?)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -338,7 +339,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutBLOB(99999; "tag"; $r_blob)
 	$otCmd_t:="OT PutBLOB(99999; \"tag\"; $r_blob)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -346,7 +347,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutBLOB($h_i; "scalar"; $r_blob)
 	$otCmd_t:="OT PutBLOB($h_i; \"scalar\"; $r_blob)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -358,7 +359,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutBoolean(99999; "tag"; 1)
 	$otCmd_t:="OT PutBoolean(99999; \"tag\"; 1)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -366,7 +367,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutBoolean($h_i; "scalar"; 1)
 	$otCmd_t:="OT PutBoolean($h_i; \"scalar\"; 1)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -378,7 +379,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutDate(99999; "tag"; !2026-01-01!)
 	$otCmd_t:="OT PutDate(99999; \"tag\"; !2026-01-01!)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -386,7 +387,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutDate($h_i; "scalar"; !2026-01-01!)
 	$otCmd_t:="OT PutDate($h_i; \"scalar\"; !2026-01-01!)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -398,7 +399,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutLong(99999; "tag"; 42)
 	$otCmd_t:="OT PutLong(99999; \"tag\"; 42)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -406,7 +407,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutLong($h_i; "textItem"; 42)
 	$otCmd_t:="OT PutLong($h_i; \"textItem\"; 42)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -418,7 +419,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutPointer(99999; "tag"; ->$r_i)
 	$otCmd_t:="OT PutPointer(99999; \"tag\"; ->$r_i)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -426,7 +427,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutPointer($h_i; "scalar"; ->$r_i)
 	$otCmd_t:="OT PutPointer($h_i; \"scalar\"; ->$r_i)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -438,7 +439,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutReal(99999; "tag"; 3.14)
 	$otCmd_t:="OT PutReal(99999; \"tag\"; 3.14)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -446,7 +447,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutReal($h_i; "textItem"; 3.14)
 	$otCmd_t:="OT PutReal($h_i; \"textItem\"; 3.14)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -458,7 +459,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutString(99999; "tag"; "val")
 	$otCmd_t:="OT PutString(99999; \"tag\"; \"val\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -466,7 +467,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutString($h_i; "scalar"; "val")
 	$otCmd_t:="OT PutString($h_i; \"scalar\"; \"val\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -478,7 +479,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutText(99999; "tag"; "val")
 	$otCmd_t:="OT PutText(99999; \"tag\"; \"val\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -486,7 +487,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutText($h_i; "scalar"; "val")
 	$otCmd_t:="OT PutText($h_i; \"scalar\"; \"val\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -498,7 +499,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutTime(99999; "tag"; ?10:00:00?)
 	$otCmd_t:="OT PutTime(99999; \"tag\"; ?10:00:00?)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -506,7 +507,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutTime($h_i; "scalar"; ?10:00:00?)
 	$otCmd_t:="OT PutTime($h_i; \"scalar\"; ?10:00:00?)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -519,7 +520,7 @@ If ($ready_b)
 	$varLong_i:=42
 	OT PutVariable(99999; "tag"; ->$varLong_i)
 	$otCmd_t:="OT PutVariable(99999; \"tag\"; ->$varLong_i)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -530,7 +531,7 @@ If ($ready_b)
 	$varText_t:=""
 	OT GetVariable($h_i; "varMixed"; ->$varText_t)
 	$otCmd_t:="OT PutVariable Long / OT GetVariable into Text"
-	$otResult_t:="text=\""+$varText_t+"\" OK="+String:C10(OK)
+	$otResult_t:="text=\""+$varText_t+"\" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -542,7 +543,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT GetArray(99999; "longArr"; OTr_LongArrayForTests_ai)
 	$otCmd_t:="OT GetArray(99999; \"longArr\"; outOtArr_ai)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -550,7 +551,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT GetArray($h_i; "scalar"; OTr_LongArrayForTests_ai)
 	$otCmd_t:="OT GetArray($h_i; \"scalar\"; outOtArr_ai)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -562,7 +563,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_blob:=OT GetArrayBLOB(99999; "longArr"; 1)
 	$otCmd_t:="OT GetArrayBLOB(99999; \"longArr\"; 1)"
-	$otResult_t:="blobSize="+String:C10(BLOB size:C605($r_blob))+" OK="+String:C10(OK)
+	$otResult_t:="blobSize="+String(BLOB size($r_blob))+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -570,7 +571,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_blob:=OT GetArrayBLOB($h_i; "textArr"; 1)
 	$otCmd_t:="OT GetArrayBLOB($h_i; \"textArr\"; 1)"
-	$otResult_t:="blobSize="+String:C10(BLOB size:C605($r_blob))+" OK="+String:C10(OK)
+	$otResult_t:="blobSize="+String(BLOB size($r_blob))+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -582,7 +583,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT GetArrayBoolean(99999; "longArr"; 1)
 	$otCmd_t:="OT GetArrayBoolean(99999; \"longArr\"; 1)"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -590,7 +591,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT GetArrayBoolean($h_i; "longArr"; 99)
 	$otCmd_t:="OT GetArrayBoolean($h_i; \"longArr\"; 99)"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -602,7 +603,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_d:=OT GetArrayDate(99999; "longArr"; 1)
 	$otCmd_t:="OT GetArrayDate(99999; \"longArr\"; 1)"
-	$otResult_t:="returned "+String:C10($r_d)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_d)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -610,7 +611,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_d:=OT GetArrayDate($h_i; "longArr"; 1)
 	$otCmd_t:="OT GetArrayDate($h_i; \"longArr\"; 1)"
-	$otResult_t:="returned "+String:C10($r_d)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_d)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -622,7 +623,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT GetArrayLong(99999; "longArr"; 1)
 	$otCmd_t:="OT GetArrayLong(99999; \"longArr\"; 1)"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -630,7 +631,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT GetArrayLong($h_i; "longArr"; 99)
 	$otCmd_t:="OT GetArrayLong($h_i; \"longArr\"; 99)"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -642,7 +643,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_pic:=OT GetArrayPicture(99999; "longArr"; 1)
 	$otCmd_t:="OT GetArrayPicture(99999; \"longArr\"; 1)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -650,7 +651,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_pic:=OT GetArrayPicture($h_i; "longArr"; 1)
 	$otCmd_t:="OT GetArrayPicture($h_i; \"longArr\"; 1)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -660,19 +661,19 @@ If ($ready_b)
 	
 	// 56. OT GetArrayPointer — invalid handle
 	$n_i:=$n_i+1
-	$r_ptr:=Null:C1517
+	$r_ptr:=Null
 	OT GetArrayPointer(99999; "longArr"; 1; $r_ptr)
 	$otCmd_t:="OT GetArrayPointer(99999; \"longArr\"; 1; $r_ptr)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
 	// 57. OT GetArrayPointer — type mismatch
 	$n_i:=$n_i+1
-	$r_ptr:=Null:C1517
+	$r_ptr:=Null
 	OT GetArrayPointer($h_i; "longArr"; 1; $r_ptr)
 	$otCmd_t:="OT GetArrayPointer($h_i; \"longArr\"; 1; $r_ptr)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -684,7 +685,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_r:=OT GetArrayReal(99999; "longArr"; 1)
 	$otCmd_t:="OT GetArrayReal(99999; \"longArr\"; 1)"
-	$otResult_t:="returned "+String:C10($r_r)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_r)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -692,7 +693,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_r:=OT GetArrayReal($h_i; "textArr"; 1)
 	$otCmd_t:="OT GetArrayReal($h_i; \"textArr\"; 1)"
-	$otResult_t:="returned "+String:C10($r_r)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_r)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -704,7 +705,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_t:=OT GetArrayString(99999; "textArr"; 1)
 	$otCmd_t:="OT GetArrayString(99999; \"textArr\"; 1)"
-	$otResult_t:="returned \""+$r_t+"\" OK="+String:C10(OK)
+	$otResult_t:="returned \""+$r_t+"\" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -712,7 +713,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_t:=OT GetArrayString($h_i; "longArr"; 1)
 	$otCmd_t:="OT GetArrayString($h_i; \"longArr\"; 1)"
-	$otResult_t:="returned \""+$r_t+"\" OK="+String:C10(OK)
+	$otResult_t:="returned \""+$r_t+"\" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -724,7 +725,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_t:=OT GetArrayText(99999; "textArr"; 1)
 	$otCmd_t:="OT GetArrayText(99999; \"textArr\"; 1)"
-	$otResult_t:="returned \""+$r_t+"\" OK="+String:C10(OK)
+	$otResult_t:="returned \""+$r_t+"\" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -732,7 +733,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_t:=OT GetArrayText($h_i; "longArr"; 1)
 	$otCmd_t:="OT GetArrayText($h_i; \"longArr\"; 1)"
-	$otResult_t:="returned \""+$r_t+"\" OK="+String:C10(OK)
+	$otResult_t:="returned \""+$r_t+"\" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -744,7 +745,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_h:=OT GetArrayTime(99999; "longArr"; 1)
 	$otCmd_t:="OT GetArrayTime(99999; \"longArr\"; 1)"
-	$otResult_t:="returned "+String:C10($r_h)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_h)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -752,7 +753,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_h:=OT GetArrayTime($h_i; "longArr"; 1)
 	$otCmd_t:="OT GetArrayTime($h_i; \"longArr\"; 1)"
-	$otResult_t:="returned "+String:C10($r_h)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_h)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -764,7 +765,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT GetBLOB(99999; "scalar"; $r_blob)
 	$otCmd_t:="OT GetBLOB(99999; \"scalar\"; $r_blob)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -772,7 +773,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT GetBLOB($h_i; "scalar"; $r_blob)
 	$otCmd_t:="OT GetBLOB($h_i; \"scalar\"; $r_blob)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -784,7 +785,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT GetBoolean(99999; "scalar")
 	$otCmd_t:="OT GetBoolean(99999; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -792,7 +793,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT GetBoolean($h_i; "textItem")
 	$otCmd_t:="OT GetBoolean($h_i; \"textItem\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -804,7 +805,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_d:=OT GetDate(99999; "scalar")
 	$otCmd_t:="OT GetDate(99999; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_d)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_d)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -812,7 +813,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_d:=OT GetDate($h_i; "scalar")
 	$otCmd_t:="OT GetDate($h_i; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_d)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_d)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -824,7 +825,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT GetLong(99999; "scalar")
 	$otCmd_t:="OT GetLong(99999; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -832,7 +833,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT GetLong($h_i; "doesNotExist")
 	$otCmd_t:="OT GetLong($h_i; \"doesNotExist\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -840,7 +841,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT GetLong($h_i; "textItem")
 	$otCmd_t:="OT GetLong($h_i; \"textItem\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -852,7 +853,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_blob:=OT GetNewBLOB(99999; "scalar")
 	$otCmd_t:="OT GetNewBLOB(99999; \"scalar\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -860,7 +861,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_blob:=OT GetNewBLOB($h_i; "scalar")
 	$otCmd_t:="OT GetNewBLOB($h_i; \"scalar\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -872,7 +873,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT GetObject(99999; "scalar")
 	$otCmd_t:="OT GetObject(99999; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -880,7 +881,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT GetObject($h_i; "scalar")
 	$otCmd_t:="OT GetObject($h_i; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -892,7 +893,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_pic:=OT GetPicture(99999; "scalar")
 	$otCmd_t:="OT GetPicture(99999; \"scalar\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -900,7 +901,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_pic:=OT GetPicture($h_i; "scalar")
 	$otCmd_t:="OT GetPicture($h_i; \"scalar\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -910,28 +911,28 @@ If ($ready_b)
 	
 	// 81. OT GetPointer — invalid handle
 	$n_i:=$n_i+1
-	$r_ptr:=Null:C1517
+	$r_ptr:=Null
 	OT GetPointer(99999; "scalar"; $r_ptr)
 	$otCmd_t:="OT GetPointer(99999; \"scalar\"; $r_ptr)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
 	// 82. OT GetPointer — missing tag
 	$n_i:=$n_i+1
-	$r_ptr:=Null:C1517
+	$r_ptr:=Null
 	OT GetPointer($h_i; "missingPtr"; $r_ptr)
 	$otCmd_t:="OT GetPointer($h_i; \"missingPtr\"; $r_ptr)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
 	// 83. OT GetPointer — type mismatch (scalar is Long, not Pointer)
 	$n_i:=$n_i+1
-	$r_ptr:=Null:C1517
+	$r_ptr:=Null
 	OT GetPointer($h_i; "scalar"; $r_ptr)
 	$otCmd_t:="OT GetPointer($h_i; \"scalar\"; $r_ptr)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -943,7 +944,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_r:=OT GetReal(99999; "scalar")
 	$otCmd_t:="OT GetReal(99999; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_r)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_r)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -951,7 +952,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_r:=OT GetReal($h_i; "textItem")
 	$otCmd_t:="OT GetReal($h_i; \"textItem\")"
-	$otResult_t:="returned "+String:C10($r_r)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_r)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -963,7 +964,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_t:=OT GetString(99999; "textItem")
 	$otCmd_t:="OT GetString(99999; \"textItem\")"
-	$otResult_t:="returned \""+$r_t+"\" OK="+String:C10(OK)
+	$otResult_t:="returned \""+$r_t+"\" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -976,12 +977,12 @@ If ($ready_b)
 	$h_i:=OT New
 	OT PutLong($h_i; "scalar"; 123)
 	OT PutString($h_i; "textItem"; "abc")
-	ARRAY LONGINT:C221($longArr_ai; 3)
+	ARRAY LONGINT($longArr_ai; 3)
 	$longArr_ai{1}:=10
 	$longArr_ai{2}:=20
 	$longArr_ai{3}:=30
 	OT PutArray($h_i; "longArr"; $longArr_ai)
-	ARRAY TEXT:C222($textArr_at; 2)
+	ARRAY TEXT($textArr_at; 2)
 	$textArr_at{1}:="x"
 	$textArr_at{2}:="y"
 	OT PutArray($h_i; "textArr"; $textArr_at)
@@ -990,7 +991,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_t:=OT GetString($h_i; "scalar")
 	$otCmd_t:="OT GetString($h_i; \"scalar\")"
-	$otResult_t:="returned \""+$r_t+"\" OK="+String:C10(OK)
+	$otResult_t:="returned \""+$r_t+"\" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1002,7 +1003,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_t:=OT GetText(99999; "textItem")
 	$otCmd_t:="OT GetText(99999; \"textItem\")"
-	$otResult_t:="returned \""+$r_t+"\" OK="+String:C10(OK)
+	$otResult_t:="returned \""+$r_t+"\" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1010,7 +1011,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_t:=OT GetText($h_i; "scalar")
 	$otCmd_t:="OT GetText($h_i; \"scalar\")"
-	$otResult_t:="returned \""+$r_t+"\" OK="+String:C10(OK)
+	$otResult_t:="returned \""+$r_t+"\" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1022,7 +1023,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_h:=OT GetTime(99999; "scalar")
 	$otCmd_t:="OT GetTime(99999; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_h)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_h)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1030,7 +1031,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_h:=OT GetTime($h_i; "scalar")
 	$otCmd_t:="OT GetTime($h_i; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_h)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_h)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1042,7 +1043,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT DeleteElement(99999; "longArr"; 1)
 	$otCmd_t:="OT DeleteElement(99999; \"longArr\"; 1)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1050,7 +1051,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT DeleteElement($h_i; "scalar"; 1)
 	$otCmd_t:="OT DeleteElement($h_i; \"scalar\"; 1)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1058,7 +1059,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT FindInArray(99999; "longArr"; "10")
 	$otCmd_t:="OT FindInArray(99999; \"longArr\"; \"10\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1066,7 +1067,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT InsertElement(99999; "longArr"; 1)
 	$otCmd_t:="OT InsertElement(99999; \"longArr\"; 1)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1074,7 +1075,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT ResizeArray(99999; "longArr"; 5)
 	$otCmd_t:="OT ResizeArray(99999; \"longArr\"; 5)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1082,7 +1083,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT SizeOfArray(99999; "longArr")
 	$otCmd_t:="OT SizeOfArray(99999; \"longArr\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1090,7 +1091,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT SizeOfArray($h_i; "missingArray")
 	$otCmd_t:="OT SizeOfArray($h_i; \"missingArray\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1098,7 +1099,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT SortArrays(99999; "longArr"; ">"; ""; ""; ""; ""; ""; ""; ""; ""; ""; "")
 	$otCmd_t:="OT SortArrays(99999; \"longArr\"; \">\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1110,7 +1111,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT ItemCount(99999)
 	$otCmd_t:="OT ItemCount(99999)"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1118,7 +1119,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT ObjectSize(99999)
 	$otCmd_t:="OT ObjectSize(99999)"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1126,7 +1127,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT ItemExists(99999; "scalar")
 	$otCmd_t:="OT ItemExists(99999; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1134,7 +1135,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT ItemType(99999; "scalar")
 	$otCmd_t:="OT ItemType(99999; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1142,7 +1143,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT IsEmbedded(99999; "scalar")
 	$otCmd_t:="OT IsEmbedded(99999; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1152,13 +1153,13 @@ If ($ready_b)
 	
 	// 105. OT GetAllProperties — invalid handle
 	$n_i:=$n_i+1
-	ARRAY TEXT:C222($outNames_at; 0)
-	ARRAY LONGINT:C221($outTypes_ai; 0)
-	ARRAY LONGINT:C221($outSizes_ai; 0)
-	ARRAY LONGINT:C221($outData_ai; 0)
+	ARRAY TEXT($outNames_at; 0)
+	ARRAY LONGINT($outTypes_ai; 0)
+	ARRAY LONGINT($outSizes_ai; 0)
+	ARRAY LONGINT($outData_ai; 0)
 	OT GetAllProperties(99999; $outNames_at; $outTypes_ai; $outSizes_ai; $outData_ai)
 	$otCmd_t:="OT GetAllProperties(99999; ...)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1166,7 +1167,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT GetAllNamedProperties(99999; ""; $outNames_at; $outTypes_ai; $outSizes_ai; $outData_ai)
 	$otCmd_t:="OT GetAllNamedProperties(99999; \"\"; ...)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1178,7 +1179,7 @@ If ($ready_b)
 	var $outDataSize_i : Integer
 	OT GetItemProperties(99999; 1; $outName_t; $outType_i; $outItemSize_i; $outDataSize_i)
 	$otCmd_t:="OT GetItemProperties(99999; 1; ...)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1187,7 +1188,7 @@ If ($ready_b)
 	var $outIndex_i : Integer
 	OT GetNamedProperties(99999; "scalar"; $outType_i; $outItemSize_i; $outDataSize_i; $outIndex_i)
 	$otCmd_t:="OT GetNamedProperties(99999; \"scalar\"; ...)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1199,7 +1200,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT CompareItems(99999; "scalar"; $h_i; "scalar")
 	$otCmd_t:="OT CompareItems(99999; \"scalar\"; $h_i; \"scalar\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1207,7 +1208,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_i:=OT CompareItems($h_i; "scalar"; $h_i; "textItem")
 	$otCmd_t:="OT CompareItems($h_i; \"scalar\"; $h_i; \"textItem\")"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1215,7 +1216,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT RenameItem(99999; "scalar"; "renamed")
 	$otCmd_t:="OT RenameItem(99999; \"scalar\"; \"renamed\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1223,7 +1224,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT RenameItem($h_i; "scalar"; "textItem")
 	$otCmd_t:="OT RenameItem($h_i; \"scalar\"; \"textItem\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1231,7 +1232,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT CopyItem(99999; "scalar"; $h_i; "copyDest")
 	$otCmd_t:="OT CopyItem(99999; \"scalar\"; $h_i; \"copyDest\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1239,7 +1240,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT CopyItem($h_i; "scalar"; $h_i; "textItem")
 	$otCmd_t:="OT CopyItem($h_i; \"scalar\"; $h_i; \"textItem\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1247,7 +1248,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT DeleteItem(99999; "scalar")
 	$otCmd_t:="OT DeleteItem(99999; \"scalar\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1255,7 +1256,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT DeleteItem($h_i; "doesNotExist")
 	$otCmd_t:="OT DeleteItem($h_i; \"doesNotExist\")"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1267,7 +1268,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT ObjectToBLOB(99999; $ioBLOB_blob)
 	$otCmd_t:="OT ObjectToBLOB(99999; $ioBLOB_blob)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1275,16 +1276,16 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$r_blob:=OT ObjectToNewBLOB(99999)
 	$otCmd_t:="OT ObjectToNewBLOB(99999)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
 	// 119. OT BLOBToObject — invalid BLOB (not a serialised object)
 	$n_i:=$n_i+1
-	TEXT TO BLOB:C554("this is not a serialised object"; $badBlob_blob)
+	TEXT TO BLOB("this is not a serialised object"; $badBlob_blob)
 	$r_i:=OT BLOBToObject($badBlob_blob)
 	$otCmd_t:="OT BLOBToObject(<invalid blob>)"
-	$otResult_t:="returned "+String:C10($r_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($r_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1296,7 +1297,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	OT PutLong($h_i; "scalar.child"; 9)
 	$otCmd_t:="OT PutLong($h_i; \"scalar.child\"; 9)"
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -1307,4 +1308,5 @@ If ($ready_b)
 	
 End if 
 
+*/
 // ==== END OT BLOCK ====

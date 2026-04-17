@@ -23,24 +23,25 @@
 #DECLARE($suppressAlert_b : Boolean)
 
 // ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ====
+/*
 
 
-OTr_z_AddToCallStack(Current method name:C684)
+OTr_z_AddToCallStack(Current method name)
 
 var $ProcessID_i; $StackSize_i : Integer
 var $DesiredProcessName_t : Text
 var $hideAlert_b : Boolean
 
 $StackSize_i:=0
-$DesiredProcessName_t:=Current method name:C684
+$DesiredProcessName_t:=Current method name
 
-If (Count parameters:C259<1)
-	$hideAlert_b:=False:C215
+If (Count parameters<1)
+	$hideAlert_b:=False
 Else 
 	$hideAlert_b:=$suppressAlert_b
 End if 
 
-If (Current process name:C1392=$DesiredProcessName_t)
+If (Current process name=$DesiredProcessName_t)
 	
 	var $otH_i; $childH_i; $reg_i : Integer
 	var $total_i; $passed_i; $failed_i : Integer
@@ -48,24 +49,24 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $legacyBlob_blob; $testBlob_blob : Blob
 	var $testPic_pic : Picture
 	
-	ARRAY TEXT:C222($textArray_at; 0)
-	ARRAY LONGINT:C221($longArray_ai; 0)
-	ARRAY REAL:C219($realArray_ar; 0)
-	ARRAY BOOLEAN:C223($booleanArray_ab; 0)
-	ARRAY DATE:C224($dateArray_ad; 0)
-	ARRAY TIME:C1223($timeArray_ah; 0)
+	ARRAY TEXT($textArray_at; 0)
+	ARRAY LONGINT($longArray_ai; 0)
+	ARRAY REAL($realArray_ar; 0)
+	ARRAY BOOLEAN($booleanArray_ab; 0)
+	ARRAY DATE($dateArray_ad; 0)
+	ARRAY TIME($timeArray_ah; 0)
 	
 	OTr_ClearAll
 	$total_i:=0
 	$passed_i:=0
 	$failed_i:=0
-	$report_t:="Phase 16 OT BLOB compatibility discovery"+Char:C90(Carriage return:K15:38)
-	$report_t:=$report_t+"Raw generated BLOBs are written to the 4D Logs folder."+Char:C90(Carriage return:K15:38)+Char:C90(Carriage return:K15:38)
+	$report_t:="Phase 16 OT BLOB compatibility discovery"+Char(Carriage return)
+	$report_t:=$report_t+"Raw generated BLOBs are written to the 4D Logs folder."+Char(Carriage return)+Char(Carriage return)
 	
-	$reg_i:=OT Register(Storage:C1525.OTr.registrationCode)
+	$reg_i:=OT Register(Storage.OTr.registrationCode)
 	$otH_i:=OT New
 	If ($otH_i=0)
-		$summary_t:="Phase 16 OT BLOB Tests"+Char:C90(Carriage return:K15:38)+"Skip: ObjectTools 5.0 is not available or not registered."
+		$summary_t:="Phase 16 OT BLOB Tests"+Char(Carriage return)+"Skip: ObjectTools 5.0 is not available or not registered."
 	Else 
 		OT Clear($otH_i)
 		
@@ -79,12 +80,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="02 date scalar"
@@ -93,16 +94,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="03 text array"
-		ARRAY TEXT:C222($textArray_at; 3)
+		ARRAY TEXT($textArray_at; 3)
 		$textArray_at{1}:="alpha"
 		$textArray_at{2}:="bravo"
 		$textArray_at{3}:="charlie"
@@ -111,12 +112,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		// ====================================================
 		//MARK:- Additional scalar payloads
@@ -128,12 +129,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="05 real scalar"
@@ -142,26 +143,26 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="06 boolean scalar"
 		$otH_i:=OT New
-		OT PutBoolean($otH_i; "boolean"; Num:C11(True:C214))
+		OT PutBoolean($otH_i; "boolean"; Num(True))
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="07 time scalar"
@@ -170,19 +171,19 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		// ====================================================
 		//MARK:- Binary and media payloads
 		// ====================================================
 		$total_i:=$total_i+1
 		$caseName_t:="08 blob scalar"
-		SET BLOB SIZE:C606($testBlob_blob; 4)
+		SET BLOB SIZE($testBlob_blob; 4)
 		$testBlob_blob{0}:=0
 		$testBlob_blob{1}:=65
 		$testBlob_blob{2}:=0
@@ -192,12 +193,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="09 picture scalar png"
@@ -207,12 +208,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="10 picture scalar jpg"
@@ -222,19 +223,19 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		// ====================================================
 		//MARK:- Additional array payloads
 		// ====================================================
 		$total_i:=$total_i+1
 		$caseName_t:="11 long array"
-		ARRAY LONGINT:C221($longArray_ai; 3)
+		ARRAY LONGINT($longArray_ai; 3)
 		$longArray_ai{1}:=10
 		$longArray_ai{2}:=-20
 		$longArray_ai{3}:=3000
@@ -243,16 +244,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="12 real array"
-		ARRAY REAL:C219($realArray_ar; 3)
+		ARRAY REAL($realArray_ar; 3)
 		$realArray_ar{1}:=1.5
 		$realArray_ar{2}:=-2.25
 		$realArray_ar{3}:=9.75
@@ -261,34 +262,34 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="13 boolean array"
-		ARRAY BOOLEAN:C223($booleanArray_ab; 3)
-		$booleanArray_ab{1}:=True:C214
-		$booleanArray_ab{2}:=False:C215
-		$booleanArray_ab{3}:=True:C214
+		ARRAY BOOLEAN($booleanArray_ab; 3)
+		$booleanArray_ab{1}:=True
+		$booleanArray_ab{2}:=False
+		$booleanArray_ab{3}:=True
 		$otH_i:=OT New
 		OT PutArray($otH_i; "booleanArray"; $booleanArray_ab)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="14 date array"
-		ARRAY DATE:C224($dateArray_ad; 3)
+		ARRAY DATE($dateArray_ad; 3)
 		$dateArray_ad{1}:=!2026-04-14!
 		$dateArray_ad{2}:=!1863-06-22!
 		$dateArray_ad{3}:=!2030-12-31!
@@ -297,16 +298,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="15 time array"
-		ARRAY TIME:C1223($timeArray_ah; 3)
+		ARRAY TIME($timeArray_ah; 3)
 		$timeArray_ah{1}:=?00:00:00?
 		$timeArray_ah{2}:=?10:30:45?
 		$timeArray_ah{3}:=?23:59:58?
@@ -315,12 +316,12 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		// ====================================================
 		//MARK:- Embedded object payloads
@@ -335,16 +336,16 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		OT Clear($childH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="17 embedded object text array"
-		ARRAY TEXT:C222($textArray_at; 2)
+		ARRAY TEXT($textArray_at; 2)
 		$textArray_at{1}:="child-alpha"
 		$textArray_at{2}:="child-bravo"
 		$otH_i:=OT New
@@ -355,22 +356,22 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		OT Clear($childH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
 		// ====================================================
 		//MARK:- Mixed object ordering smoke test
 		// ====================================================
 		$total_i:=$total_i+1
 		$caseName_t:="18 mixed scalar array embedded"
-		ARRAY TEXT:C222($textArray_at; 2)
+		ARRAY TEXT($textArray_at; 2)
 		$textArray_at{1}:="mix-alpha"
 		$textArray_at{2}:="mix-bravo"
-		ARRAY LONGINT:C221($longArray_ai; 2)
+		ARRAY LONGINT($longArray_ai; 2)
 		$longArray_ai{1}:=100
 		$longArray_ai{2}:=200
 		$otH_i:=OT New
@@ -385,36 +386,37 @@ If (Current process name:C1392=$DesiredProcessName_t)
 		OT Clear($childH_i)
 		OT Clear($otH_i)
 		$result_t:=____Test_Phase_16_OTBlob_Probe($legacyBlob_blob; $caseName_t)
-		If (Substring:C12($result_t; 1; 4)="Pass")
+		If (Substring($result_t; 1; 4)="Pass")
 			$passed_i:=$passed_i+1
 		Else 
 			$failed_i:=$failed_i+1
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
 		
-		$summary_t:="Phase 16 OT BLOB Tests"+Char:C90(Carriage return:K15:38)
-		$summary_t:=$summary_t+"Total:  "+String:C10($total_i)+Char:C90(Carriage return:K15:38)
-		$summary_t:=$summary_t+"Passed: "+String:C10($passed_i)+Char:C90(Carriage return:K15:38)
-		$summary_t:=$summary_t+"Failed: "+String:C10($failed_i)
+		$summary_t:="Phase 16 OT BLOB Tests"+Char(Carriage return)
+		$summary_t:=$summary_t+"Total:  "+String($total_i)+Char(Carriage return)
+		$summary_t:=$summary_t+"Passed: "+String($passed_i)+Char(Carriage return)
+		$summary_t:=$summary_t+"Failed: "+String($failed_i)
 	End if 
 	
-	$report_t:=$report_t+Char:C90(Carriage return:K15:38)+$summary_t
-	$reportPath_t:=Get 4D folder:C485(Logs folder:K5:19; *)+"____Test_Phase_16_OTBlob.txt"
-	TEXT TO DOCUMENT:C1237($reportPath_t; $report_t; "UTF-8")
+	$report_t:=$report_t+Char(Carriage return)+$summary_t
+	$reportPath_t:=Get 4D folder(Logs folder; *)+"____Test_Phase_16_OTBlob.txt"
+	TEXT TO DOCUMENT($reportPath_t; $report_t; "UTF-8")
 	
 	If ($hideAlert_b)
 	Else 
-		ALERT:C41($summary_t+Char:C90(Carriage return:K15:38)+"Report written to: "+$reportPath_t)
-		SET TEXT TO PASTEBOARD:C523($report_t)
+		ALERT($summary_t+Char(Carriage return)+"Report written to: "+$reportPath_t)
+		SET TEXT TO PASTEBOARD($report_t)
 	End if 
 	
 Else 
-	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $DesiredProcessName_t; $hideAlert_b; *)
-	RESUME PROCESS:C320($ProcessID_i)
-	SHOW PROCESS:C325($ProcessID_i)
-	BRING TO FRONT:C326($ProcessID_i)
+	$ProcessID_i:=New process(Current method name; $StackSize_i; $DesiredProcessName_t; $hideAlert_b; *)
+	RESUME PROCESS($ProcessID_i)
+	SHOW PROCESS($ProcessID_i)
+	BRING TO FRONT($ProcessID_i)
 End if 
 
-OTr_z_RemoveFromCallStack(Current method name:C684)
+OTr_z_RemoveFromCallStack(Current method name)
 
+*/
 // ==== END OT BLOCK ====

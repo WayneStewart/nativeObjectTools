@@ -30,6 +30,7 @@
 #DECLARE($accum_i : Integer)
 
 // ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ====
+/*
 
 var $otMain_i : Integer
 var $testOtH_i : Integer
@@ -72,28 +73,28 @@ var $otArrBool_i : Integer
 var $otCmd_t : Text
 var $otResult_t : Text
 
-ARRAY LONGINT:C221($setupAl_ai; 0)
-ARRAY TEXT:C222($setupAs_at; 0)
-ARRAY REAL:C219($setupAr_arr; 0)
-ARRAY BOOLEAN:C223($setupAb_ab; 0)
-ARRAY POINTER:C280($setupAptr_aptr; 0)
-ARRAY PICTURE:C279($setupApic_apic; 0)
-ARRAY LONGINT:C221($setupSort_ai; 0)
+ARRAY LONGINT($setupAl_ai; 0)
+ARRAY TEXT($setupAs_at; 0)
+ARRAY REAL($setupAr_arr; 0)
+ARRAY BOOLEAN($setupAb_ab; 0)
+ARRAY POINTER($setupAptr_aptr; 0)
+ARRAY PICTURE($setupApic_apic; 0)
+ARRAY LONGINT($setupSort_ai; 0)
 
 // Arrays without $ are process variables (required for OT
 // commands that take untyped array parameters by reference).
-ARRAY TEXT:C222(OTr_TextArrayForTests_at; 0)
+ARRAY TEXT(OTr_TextArrayForTests_at; 0)
 
 // ----------------------------------------------------
 // Check plugin availability
 // ----------------------------------------------------
-$ready_b:=True:C214
-$reg_i:=OT Register(Storage:C1525.OTr.registrationCode)
+$ready_b:=True
+$reg_i:=OT Register(Storage.OTr.registrationCode)
 $testOtH_i:=OT New
 
 If ($testOtH_i=0)
-	ALERT:C41("ObjectTools 5.0 is not available or not registered."+Char:C90(Carriage return:K15:38)+"OT columns will be marked as skipped.")
-	$ready_b:=False:C215
+	ALERT("ObjectTools 5.0 is not available or not registered."+Char(Carriage return)+"OT columns will be marked as skipped.")
+	$ready_b:=False
 	$count_i:=OTr_SizeOfArray($accum_i; "testNum")
 	For ($n_i; 1; $count_i)
 		OTr_PutArrayText($accum_i; "otCmd"; $n_i; "Plugin not available")
@@ -157,7 +158,7 @@ If ($ready_b)
 	If ($gotLong_i=424242)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: got "+String:C10($gotLong_i)
+		$otResult_t:="Fail: got "+String($gotLong_i)
 	End if 
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
@@ -175,7 +176,7 @@ If ($ready_b)
 	If ($gotReal_r=3.14159)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: got "+String:C10($gotReal_r)
+		$otResult_t:="Fail: got "+String($gotReal_r)
 	End if 
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
@@ -188,12 +189,12 @@ If ($ready_b)
 	$otCmd_t:="OT PutBoolean / OT GetBoolean"
 	$otResult_t:="Fail: not run"
 	
-	OT PutBoolean($otMain_i; "flag"; Num:C11(True:C214))
+	OT PutBoolean($otMain_i; "flag"; Num(True))
 	$gotBool_i:=OT GetBoolean($otMain_i; "flag")
 	If ($gotBool_i=1)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: got "+String:C10($gotBool_i)
+		$otResult_t:="Fail: got "+String($gotBool_i)
 	End if 
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
@@ -212,7 +213,7 @@ If ($ready_b)
 	If ($gotDate_d=$testDate_d)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: got "+String:C10($gotDate_d)
+		$otResult_t:="Fail: got "+String($gotDate_d)
 	End if 
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
@@ -231,7 +232,7 @@ If ($ready_b)
 	If ($gotTime_h=$testTime_h)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: got "+String:C10($gotTime_h)
+		$otResult_t:="Fail: got "+String($gotTime_h)
 	End if 
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
@@ -251,7 +252,7 @@ If ($ready_b)
 	
 	OT PutPointer($otMain_i; "ptr"; $ptrVar)
 	OT GetPointer($otMain_i; "ptr"; $ptrVarOut)
-	If (OK=1) & ($ptrVarOut#Null:C1517) & (($ptrVarOut->)=OTr_DummyVariableForTests_t)
+	If (OK=1) & ($ptrVarOut#Null) & (($ptrVarOut->)=OTr_DummyVariableForTests_t)
 		$otResult_t:="Pass"
 	Else 
 		$otResult_t:="Fail: dereference mismatch or OK=0"
@@ -285,7 +286,7 @@ If ($ready_b)
 	$otCmd_t:="OT PutPicture / OT GetPicture"
 	$otResult_t:="Fail: not run"
 	
-	If (Picture size:C356($wombat_pic)=0)
+	If (Picture size($wombat_pic)=0)
 		$otResult_t:="Skip: Wombat picture not loaded"
 	Else 
 		OT PutPicture($otMain_i; "pic9a"; $wombat_pic)
@@ -306,7 +307,7 @@ If ($ready_b)
 	$n_i:=$n_i+1
 	$otCmd_t:="OT PutBLOB / OT GetNewBLOB"
 	$otResult_t:="Fail: not run"
-	CONVERT FROM TEXT:C1011("compat-blob-data"; "UTF-8"; $testBlob_blob)
+	CONVERT FROM TEXT("compat-blob-data"; "UTF-8"; $testBlob_blob)
 	
 	OT PutBLOB($otMain_i; "blob"; $testBlob_blob)
 	$gotBlob_blob:=OT GetNewBLOB($otMain_i; "blob")
@@ -347,18 +348,18 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	
 	// Create and save a record so OT PutRecord has a current record.
-	CREATE RECORD:C68([Table_1:1])
+	CREATE RECORD([Table_1:1])
 	[Table_1:1]Name:2:="Wayne"
-	SAVE RECORD:C53([Table_1:1])
+	SAVE RECORD([Table_1:1])
 	
 	var $tablePtr : Pointer
 	$tablePtr:=->[Table_1:1]
 	OT PutRecord($otMain_i; "rec"; $tablePtr)
 	
-	CREATE RECORD:C68([Table_1:1])
+	CREATE RECORD([Table_1:1])
 	OT GetRecord($otMain_i; "rec")
-	[Table_1:1]ID:1:=Sequence number:C244([Table_1:1])
-	SAVE RECORD:C53([Table_1:1])
+	[Table_1:1]ID:1:=Sequence number([Table_1:1])
+	SAVE RECORD([Table_1:1])
 	
 	If (OK=1)
 		$otResult_t:="Pass"
@@ -395,7 +396,7 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	
 	// Declare a 3-element LongInt array (§25 reuses indices 2 and 3)
-	ARRAY LONGINT:C221($setupAl_ai; 3)
+	ARRAY LONGINT($setupAl_ai; 3)
 	OT PutArray($otMain_i; "al"; $setupAl_ai)
 	
 	OT PutArrayLong($otMain_i; "al"; 1; 100)
@@ -403,7 +404,7 @@ If ($ready_b)
 	If ($otArrVal_i=100)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: got "+String:C10($otArrVal_i)
+		$otResult_t:="Fail: got "+String($otArrVal_i)
 	End if 
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
@@ -416,7 +417,7 @@ If ($ready_b)
 	$otCmd_t:="OT PutArrayString / OT GetArrayString"
 	$otResult_t:="Fail: not run"
 	
-	ARRAY TEXT:C222($setupAs_at; 1)
+	ARRAY TEXT($setupAs_at; 1)
 	OT PutArray($otMain_i; "as"; $setupAs_at)
 	
 	OT PutArrayString($otMain_i; "as"; 1; "arr-str-val")
@@ -437,7 +438,7 @@ If ($ready_b)
 	$otCmd_t:="OT PutArrayReal / OT GetArrayReal"
 	$otResult_t:="Fail: not run"
 	
-	ARRAY REAL:C219($setupAr_arr; 1)
+	ARRAY REAL($setupAr_arr; 1)
 	OT PutArray($otMain_i; "ar"; $setupAr_arr)
 	
 	OT PutArrayReal($otMain_i; "ar"; 1; 9.99)
@@ -445,7 +446,7 @@ If ($ready_b)
 	If ($otArrReal_r=9.99)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: got "+String:C10($otArrReal_r)
+		$otResult_t:="Fail: got "+String($otArrReal_r)
 	End if 
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
@@ -458,15 +459,15 @@ If ($ready_b)
 	$otCmd_t:="OT PutArrayBoolean / OT GetArrayBoolean"
 	$otResult_t:="Fail: not run"
 	
-	ARRAY BOOLEAN:C223($setupAb_ab; 1)
+	ARRAY BOOLEAN($setupAb_ab; 1)
 	OT PutArray($otMain_i; "ab"; $setupAb_ab)
 	
-	OT PutArrayBoolean($otMain_i; "ab"; 1; Num:C11(True:C214))
+	OT PutArrayBoolean($otMain_i; "ab"; 1; Num(True))
 	$otArrBool_i:=OT GetArrayBoolean($otMain_i; "ab"; 1)
 	If ($otArrBool_i=1)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: got "+String:C10($otArrBool_i)
+		$otResult_t:="Fail: got "+String($otArrBool_i)
 	End if 
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
@@ -481,13 +482,13 @@ If ($ready_b)
 	OTr_DummyVariableForTests_t:="arr-ptr-val"
 	
 	var $otArrPtrOut_ptr : Pointer
-	ARRAY POINTER:C280($setupAptr_aptr; 1)
+	ARRAY POINTER($setupAptr_aptr; 1)
 	OT PutArray($otMain_i; "aptr"; $setupAptr_aptr)
 	
 	OT PutArrayPointer($otMain_i; "aptr"; 1; ->OTr_DummyVariableForTests_t)
 	OT GetArrayPointer($otMain_i; "aptr"; 1; $otArrPtrOut_ptr)
 	If (OK=1)
-		If ($otArrPtrOut_ptr#Null:C1517)
+		If ($otArrPtrOut_ptr#Null)
 			If ($otArrPtrOut_ptr->="arr-ptr-val")
 				$otResult_t:="Pass"
 			Else 
@@ -513,12 +514,12 @@ If ($ready_b)
 	// Intentional difference: OT re-encodes array pictures
 	// internally; exact equality cannot be assumed. Test checks
 	// that a non-empty picture is returned (round-trip succeeds).
-	ARRAY PICTURE:C279($setupApic_apic; 1)
+	ARRAY PICTURE($setupApic_apic; 1)
 	OT PutArray($otMain_i; "apic"; $setupApic_apic)
 	
 	OT PutArrayPicture($otMain_i; "apic"; 1; $wombat_pic)
 	$otArrPicOut_pic:=OT GetArrayPicture($otMain_i; "apic"; 1)
-	If (Picture size:C356($otArrPicOut_pic)>0)
+	If (Picture size($otArrPicOut_pic)>0)
 		$otResult_t:="Pass"
 	Else 
 		$otResult_t:="Fail: empty picture returned"
@@ -534,7 +535,7 @@ If ($ready_b)
 	$otCmd_t:="OT PutArrayPicture / OT GetArrayPicture"
 	$otResult_t:="Fail: not run"
 	
-	If (Picture size:C356($wombat_pic)=0)
+	If (Picture size($wombat_pic)=0)
 		$otResult_t:="Skip: Wombat picture not loaded"
 	Else 
 		OT PutArrayPicture($otMain_i; "apic"; 1; $wombat_pic)
@@ -583,7 +584,7 @@ If ($ready_b)
 	If ($otCount_i=3)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: got "+String:C10($otCount_i)
+		$otResult_t:="Fail: got "+String($otCount_i)
 	End if 
 	
 	OT Clear($h3_i)
@@ -602,12 +603,12 @@ If ($ready_b)
 	OT PutString($h3_i; "p1"; "v1")
 	OT PutString($h3_i; "p2"; "v2")
 	
-	ARRAY TEXT:C222(OTr_TextArrayForTests_at; 0)
+	ARRAY TEXT(OTr_TextArrayForTests_at; 0)
 	OT GetAllProperties($h3_i; OTr_TextArrayForTests_at)
-	If (Size of array:C274(OTr_TextArrayForTests_at)=2)
+	If (Size of array(OTr_TextArrayForTests_at)=2)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: got "+String:C10(Size of array:C274(OTr_TextArrayForTests_at))+" names"
+		$otResult_t:="Fail: got "+String(Size of array(OTr_TextArrayForTests_at))+" names"
 	End if 
 	
 	OT Clear($h3_i)
@@ -677,7 +678,7 @@ If ($ready_b)
 	If ($otArrSize_i=3)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: got "+String:C10($otArrSize_i)
+		$otResult_t:="Fail: got "+String($otArrSize_i)
 	End if 
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
@@ -691,7 +692,7 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	
 	$h3_i:=OT New
-	ARRAY LONGINT:C221($setupSort_ai; 3)
+	ARRAY LONGINT($setupSort_ai; 3)
 	OT PutArray($h3_i; "sort"; $setupSort_ai)
 	
 	OT PutArrayLong($h3_i; "sort"; 1; 30)
@@ -702,7 +703,7 @@ If ($ready_b)
 	If ($gotLong_i=10)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: first element after sort = "+String:C10($gotLong_i)
+		$otResult_t:="Fail: first element after sort = "+String($gotLong_i)
 	End if 
 	
 	OT Clear($h3_i)
@@ -720,7 +721,7 @@ If ($ready_b)
 	// Values will not match OTr (§4.3); both must be non-zero.
 	$otSize_i:=OT ObjectSize($otMain_i)
 	If ($otSize_i>0)
-		$otResult_t:="Pass (size="+String:C10($otSize_i)+")"
+		$otResult_t:="Pass (size="+String($otSize_i)+")"
 	Else 
 		$otResult_t:="Fail: returned 0"
 	End if 
@@ -762,7 +763,7 @@ If ($ready_b)
 	
 	// Values will differ from OTr; both must be non-empty.
 	$otVer_t:=OT GetVersion
-	If (Length:C16($otVer_t)>0)
+	If (Length($otVer_t)>0)
 		$otResult_t:="Pass (v="+$otVer_t+")"
 	Else 
 		$otResult_t:="Fail: empty version"
@@ -786,7 +787,7 @@ If ($ready_b)
 	If ($readOtOpts_i=$testOpts_i)
 		$otResult_t:="Pass"
 	Else 
-		$otResult_t:="Fail: read "+String:C10($readOtOpts_i)+" expected "+String:C10($testOpts_i)
+		$otResult_t:="Fail: read "+String($readOtOpts_i)+" expected "+String($testOpts_i)
 	End if 
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
@@ -801,4 +802,5 @@ End if
 
 
 
+*/
 // ==== END OT BLOCK ====

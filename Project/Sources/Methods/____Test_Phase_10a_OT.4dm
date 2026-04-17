@@ -21,6 +21,7 @@
 #DECLARE($accum_i : Integer)
 
 // ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ====
+/*
 
 var $otMain_i : Integer
 var $testOtH_i : Integer
@@ -52,23 +53,23 @@ var $find_i : Integer
 var $otCmd_t : Text
 var $otResult_t : Text
 
-ARRAY TEXT:C222($names_at; 0)
-ARRAY LONGINT:C221($types_ai; 0)
-ARRAY LONGINT:C221($itemSizes_ai; 0)
-ARRAY LONGINT:C221($dataSizes_ai; 0)
-ARRAY LONGINT:C221($longArr_ai; 0)
-ARRAY LONGINT:C221($longArrOut_ai; 0)
+ARRAY TEXT($names_at; 0)
+ARRAY LONGINT($types_ai; 0)
+ARRAY LONGINT($itemSizes_ai; 0)
+ARRAY LONGINT($dataSizes_ai; 0)
+ARRAY LONGINT($longArr_ai; 0)
+ARRAY LONGINT($longArrOut_ai; 0)
 
 // Process variable required for OT GetArray
-ARRAY LONGINT:C221(OTr_LongArrayForTests_ai; 0)
+ARRAY LONGINT(OTr_LongArrayForTests_ai; 0)
 
-$ready_b:=True:C214
-$reg_i:=OT Register(Storage:C1525.OTr.registrationCode)
+$ready_b:=True
+$reg_i:=OT Register(Storage.OTr.registrationCode)
 $testOtH_i:=OT New
 
 If ($testOtH_i=0)
-	ALERT:C41("ObjectTools 5.0 is not available or not registered."+Char:C90(Carriage return:K15:38)+"OT columns will be marked as skipped.")
-	$ready_b:=False:C215
+	ALERT("ObjectTools 5.0 is not available or not registered."+Char(Carriage return)+"OT columns will be marked as skipped.")
+	$ready_b:=False
 	$count_i:=OTr_SizeOfArray($accum_i; "testName")
 	For ($n_i; 1; $count_i)
 		OTr_PutArrayText($accum_i; "otCmd"; $n_i; "Plugin not available")
@@ -84,7 +85,7 @@ If ($ready_b)
 	$testTime_h:=?10:30:45?
 	OTr_DummyVariableForTests_t:="phase10a"
 	$wombat_pic:=OTr_z_Wombat
-	TEXT TO BLOB:C554("phase10a-blob"; $gotBlob_blob)
+	TEXT TO BLOB("phase10a-blob"; $gotBlob_blob)
 	$n_i:=0
 	
 	$n_i:=$n_i+1
@@ -92,7 +93,7 @@ If ($ready_b)
 	$version_t:=OT GetVersion
 	$compiled_i:=OT CompiledApplication
 	$opts_i:=OT GetOptions
-	$otResult_t:="version="+$version_t+" compiled="+String:C10($compiled_i)+" options="+String:C10($opts_i)
+	$otResult_t:="version="+$version_t+" compiled="+String($compiled_i)+" options="+String($opts_i)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -107,20 +108,20 @@ If ($ready_b)
 	$gotBool_i:=OT GetBoolean($otMain_i; "bool")
 	$n_i:=$n_i+1
 	$otCmd_t:="OT Put/Get String Long Real Boolean Date Time"
-	$otResult_t:=OT GetString($otMain_i; "str")+" / "+String:C10($gotLong_i)+" / "+String:C10($gotReal_r)+" / "+String:C10($gotBool_i)
+	$otResult_t:=OT GetString($otMain_i; "str")+" / "+String($gotLong_i)+" / "+String($gotReal_r)+" / "+String($gotBool_i)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
 	OT PutPointer($otMain_i; "ptr"; ->OTr_DummyVariableForTests_t)
 	OT PutBLOB($otMain_i; "blob"; $gotBlob_blob)
 	OT PutPicture($otMain_i; "pic"; $wombat_pic)
-	$ptrOut_ptr:=Null:C1517
+	$ptrOut_ptr:=Null
 	OT GetPointer($otMain_i; "ptr"; $ptrOut_ptr)
 	$roundBlob_blob:=OT GetNewBLOB($otMain_i; "blob")
 	$gotPic_pic:=OT GetPicture($otMain_i; "pic")
 	$n_i:=$n_i+1
 	$otCmd_t:="OT Put/GetPointer GetNewBLOB Put/GetPicture"
-	$otResult_t:="ptrOK="+String:C10(OK)+" blobSize="+String:C10(BLOB size:C605($roundBlob_blob))+" pic="+Choose:C955($gotPic_pic#Null:C1517; "yes"; "no")
+	$otResult_t:="ptrOK="+String(OK)+" blobSize="+String(BLOB size($roundBlob_blob))+" pic="+Choose($gotPic_pic#Null; "yes"; "no")
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -130,7 +131,7 @@ If ($ready_b)
 	$h2_i:=OT GetObject($otMain_i; "child")
 	$n_i:=$n_i+1
 	$otCmd_t:="OT PutObject / OT GetObject"
-	$otResult_t:="childHandle="+String:C10($h2_i)+" childName="+OT GetString($h2_i; "childName")
+	$otResult_t:="childHandle="+String($h2_i)+" childName="+OT GetString($h2_i; "childName")
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	If ($testOtH_i#0)
@@ -146,11 +147,11 @@ If ($ready_b)
 	OT GetVariable($otMain_i; "varLong"; ->$varLong_i)
 	$n_i:=$n_i+1
 	$otCmd_t:="OT PutVariable / OT GetVariable"
-	$otResult_t:="varLong="+String:C10($varLong_i)+" OK="+String:C10(OK)
+	$otResult_t:="varLong="+String($varLong_i)+" OK="+String(OK)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
-	ARRAY LONGINT:C221($longArr_ai; 3)
+	ARRAY LONGINT($longArr_ai; 3)
 	$longArr_ai{1}:=10
 	$longArr_ai{2}:=20
 	$longArr_ai{3}:=30
@@ -163,21 +164,21 @@ If ($ready_b)
 	$gotLong_i:=OT GetArrayLong($otMain_i; "arr"; 2)
 	$n_i:=$n_i+1
 	$otCmd_t:="OT PutArray / PutArrayLong / InsertElement / DeleteElement / SizeOfArray / GetArrayLong"
-	$otResult_t:="size="+String:C10($arraySize_i)+" elem2="+String:C10($gotLong_i)
+	$otResult_t:="size="+String($arraySize_i)+" elem2="+String($gotLong_i)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
-	ARRAY LONGINT:C221(OTr_LongArrayForTests_ai; 3)
+	ARRAY LONGINT(OTr_LongArrayForTests_ai; 3)
 	OTr_LongArrayForTests_ai{1}:=10
 	OTr_LongArrayForTests_ai{2}:=20
 	OTr_LongArrayForTests_ai{3}:=30
 	OT ResizeArray($otMain_i; "arr"; 5)
 	OT PutArrayLong($otMain_i; "arr"; 5; 555)
 	OT GetArray($otMain_i; "arr"; OTr_LongArrayForTests_ai)
-	$find_i:=OT FindInArray($otMain_i; "arr"; String:C10(555))
+	$find_i:=OT FindInArray($otMain_i; "arr"; String(555))
 	$n_i:=$n_i+1
 	$otCmd_t:="OT ResizeArray / GetArray / FindInArray"
-	$otResult_t:="size="+String:C10(Size of array:C274(OTr_LongArrayForTests_ai))+" find555="+String:C10($find_i)
+	$otResult_t:="size="+String(Size of array(OTr_LongArrayForTests_ai))+" find555="+String($find_i)
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -185,18 +186,18 @@ If ($ready_b)
 	$itemType_i:=OT ItemType($otMain_i; "str")
 	$n_i:=$n_i+1
 	$otCmd_t:="OT IsObject / ItemCount / ItemType / ObjectSize"
-	$otResult_t:="isObject="+String:C10(OT IsObject($otMain_i))+" itemCount="+String:C10($itemCount_i)+" itemType(str)="+String:C10($itemType_i)+" size="+String:C10(OT ObjectSize($otMain_i))
+	$otResult_t:="isObject="+String(OT IsObject($otMain_i))+" itemCount="+String($itemCount_i)+" itemType(str)="+String($itemType_i)+" size="+String(OT ObjectSize($otMain_i))
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
-	ARRAY TEXT:C222($names_at; 0)
-	ARRAY LONGINT:C221($types_ai; 0)
-	ARRAY LONGINT:C221($itemSizes_ai; 0)
-	ARRAY LONGINT:C221($dataSizes_ai; 0)
+	ARRAY TEXT($names_at; 0)
+	ARRAY LONGINT($types_ai; 0)
+	ARRAY LONGINT($itemSizes_ai; 0)
+	ARRAY LONGINT($dataSizes_ai; 0)
 	OT GetAllProperties($otMain_i; $names_at; $types_ai; $itemSizes_ai; $dataSizes_ai)
 	$n_i:=$n_i+1
 	$otCmd_t:="OT GetAllProperties / ItemExists / IsEmbedded"
-	$otResult_t:="allProps="+String:C10(Size of array:C274($names_at))+" exists(str)="+String:C10(OT ItemExists($otMain_i; "str"))+" embedded(child)="+String:C10(OT IsEmbedded($otMain_i; "child"))
+	$otResult_t:="allProps="+String(Size of array($names_at))+" exists(str)="+String(OT ItemExists($otMain_i; "str"))+" embedded(child)="+String(OT IsEmbedded($otMain_i; "child"))
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -206,7 +207,7 @@ If ($ready_b)
 	OT DeleteItem($otMain_i; "strRenamed")
 	$n_i:=$n_i+1
 	$otCmd_t:="OT CopyItem / CompareItems / RenameItem / DeleteItem"
-	$otResult_t:="compare="+String:C10($compare_i)+" existsAfterDelete="+String:C10(OT ItemExists($otMain_i; "strRenamed"))
+	$otResult_t:="compare="+String($compare_i)+" existsAfterDelete="+String(OT ItemExists($otMain_i; "strRenamed"))
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
@@ -214,22 +215,23 @@ If ($ready_b)
 	$testOtH_i:=OT BLOBToObject($gotBlob_blob)
 	$n_i:=$n_i+1
 	$otCmd_t:="OT ObjectToBLOB / BLOBToObject"
-	$otResult_t:="blobSize="+String:C10(BLOB size:C605($gotBlob_blob))+" newHandle="+String:C10($testOtH_i)+" getStr="+OT GetString($testOtH_i; "str")
+	$otResult_t:="blobSize="+String(BLOB size($gotBlob_blob))+" newHandle="+String($testOtH_i)+" getStr="+OT GetString($testOtH_i; "str")
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	If ($testOtH_i#0)
 		OT Clear($testOtH_i)
 	End if 
 	
-	ARRAY LONGINT:C221($longArrOut_ai; 0)
+	ARRAY LONGINT($longArrOut_ai; 0)
 	OT GetHandleList($longArrOut_ai)
 	$n_i:=$n_i+1
 	$otCmd_t:="OT GetHandleList"
-	$otResult_t:="handles="+String:C10(Size of array:C274($longArrOut_ai))
+	$otResult_t:="handles="+String(Size of array($longArrOut_ai))
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
 	
 	OT Clear($otMain_i)
 End if 
 
+*/
 // ==== END OT BLOCK ====
