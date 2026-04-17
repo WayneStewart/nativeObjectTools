@@ -24,6 +24,8 @@
 // Wayne Stewart / Codex, 2026-04-15 - Added compact ASCII-key legacy layout
 //   used by Guy Examples 2 and 3.
 // Wayne Stewart / Codex, 2026-04-16 - Added OT packed record marker 115.
+// Wayne Stewart / Codex, 2026-04-18 - Added descriptor-aligned array payloads
+//   and OT marker 143 16-bit integer arrays used by Guy EX6 SubRec.
 // ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob)->$result_o : Object
@@ -326,8 +328,13 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 							$offset_i:=$offset_i+8
 							$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 							$offset_i:=$offset_i+4
-							$arrayStart_i:=$offset_i+$descriptorBytes_i
-							$array_o:=OTr_z_OTBlobReadTextArray($inBlob_blob; $arrayStart_i; ->$offset_i; $count_i)
+							If ($count_i=0)
+								$array_o:=New object:C1471("arrayType"; Text array:K8:16; "numElements"; 0; "currentItem"; 0; "0"; "")
+								$offset_i:=$offset_i+$descriptorBytes_i-2
+							Else 
+								$arrayStart_i:=$offset_i+$descriptorBytes_i
+								$array_o:=OTr_z_OTBlobReadTextArray($inBlob_blob; $arrayStart_i; ->$offset_i; $count_i)
+							End if 
 							
 							If ($array_o=Null:C1517)
 								$ok_b:=False:C215
@@ -341,12 +348,42 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 							$offset_i:=$offset_i+8
 							$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 							$offset_i:=$offset_i+4
-							$payloadStart_i:=$offset_i-1
+							$payloadStart_i:=$offset_i+$descriptorBytes_i-($count_i*4)-4
+							If (($payloadStart_i<0) | (($payloadStart_i+($count_i*4))>BLOB size:C605($inBlob_blob)))
+								$payloadStart_i:=$offset_i-1
+							End if 
 							If (($payloadStart_i>=0) & (($payloadStart_i+($count_i*4))<=BLOB size:C605($inBlob_blob)))
 								$array_o:=New object:C1471("arrayType"; LongInt array:K8:19; "numElements"; $count_i; "currentItem"; 0; "0"; 0)
 								$offset_i:=$payloadStart_i
 								For ($index_i; 1; $count_i)
 									$long_i:=OTr_z_OTBlobReadInt32BE($inBlob_blob; ->$offset_i)
+									OB SET:C1220($array_o; String:C10($index_i); $long_i)
+								End for 
+								OB SET:C1220($result_o; $key_t; $array_o)
+								If ($item_i<$itemCount_i)
+									While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+										$offset_i:=$offset_i+1
+									End while 
+								End if 
+							Else 
+								$ok_b:=False:C215
+							End if 
+							
+						: ($typeByte_i=143)
+							$offset_i:=$offset_i+4
+							$count_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+							$offset_i:=$offset_i+8
+							$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+							$offset_i:=$offset_i+4
+							$payloadStart_i:=$offset_i+$descriptorBytes_i-($count_i*2)-2
+							If (($payloadStart_i<0) | (($payloadStart_i+($count_i*2))>BLOB size:C605($inBlob_blob)))
+								$payloadStart_i:=$offset_i
+							End if 
+							If (($payloadStart_i>=0) & (($payloadStart_i+($count_i*2))<=BLOB size:C605($inBlob_blob)))
+								$array_o:=New object:C1471("arrayType"; LongInt array:K8:19; "numElements"; $count_i; "currentItem"; 0; "0"; 0)
+								$offset_i:=$payloadStart_i
+								For ($index_i; 1; $count_i)
+									$long_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 									OB SET:C1220($array_o; String:C10($index_i); $long_i)
 								End for 
 								OB SET:C1220($result_o; $key_t; $array_o)
@@ -365,7 +402,10 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 							$offset_i:=$offset_i+8
 							$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 							$offset_i:=$offset_i+4
-							$payloadStart_i:=$offset_i+3
+							$payloadStart_i:=$offset_i+$descriptorBytes_i-($count_i*8)-3
+							If (($payloadStart_i<0) | (($payloadStart_i+($count_i*8))>BLOB size:C605($inBlob_blob)))
+								$payloadStart_i:=$offset_i+3
+							End if 
 							If (($payloadStart_i>=0) & (($payloadStart_i+($count_i*8))<=BLOB size:C605($inBlob_blob)))
 								$array_o:=New object:C1471("arrayType"; Real array:K8:17; "numElements"; $count_i; "currentItem"; 0; "0"; 0)
 								$offset_i:=$payloadStart_i
