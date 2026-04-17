@@ -28,6 +28,7 @@
 #DECLARE($accum_i : Integer)
 
 // ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ====
+/*
 
 var $otMain_i : Integer
 var $testOtH_i : Integer
@@ -45,13 +46,13 @@ var $otResult_t : Text
 // ----------------------------------------------------
 // Check plugin availability
 // ----------------------------------------------------
-$ready_b:=True:C214
-$reg_i:=OT Register(Storage:C1525.OTr.registrationCode)
+$ready_b:=True
+$reg_i:=OT Register(Storage.OTr.registrationCode)
 $testOtH_i:=OT New
 
 If ($testOtH_i=0)
-	ALERT:C41("ObjectTools 5.0 is not available or not registered."+Char:C90(Carriage return:K15:38)+"OT columns will be marked as skipped.")
-	$ready_b:=False:C215
+	ALERT("ObjectTools 5.0 is not available or not registered."+Char(Carriage return)+"OT columns will be marked as skipped.")
+	$ready_b:=False
 	$count_i:=OTr_SizeOfArray($accum_i; "testName")
 	For ($n_i; 1; $count_i)
 		OTr_PutArrayText($accum_i; "otCmd"; $n_i; "Plugin not available")
@@ -78,7 +79,7 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	
 	$gotLong_i:=OT GetLong(99999; "missing")
-	$otResult_t:="returned "+String:C10($gotLong_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($gotLong_i)+" OK="+String(OK)
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
@@ -91,7 +92,7 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	
 	$gotLong_i:=OT GetLong($otMain_i; "doesNotExist")
-	$otResult_t:="returned "+String:C10($gotLong_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($gotLong_i)+" OK="+String(OK)
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
@@ -104,7 +105,7 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	
 	OT PutArrayLong($otMain_i; "scalar"; 1; 777)
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
@@ -117,7 +118,7 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	
 	$size_i:=OT SizeOfArray($otMain_i; "missingArray")
-	$otResult_t:="returned "+String:C10($size_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($size_i)+" OK="+String(OK)
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
@@ -130,7 +131,7 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	
 	$compare_i:=OT CompareItems($otMain_i; "scalar"; $otMain_i; "textItem")
-	$otResult_t:="returned "+String:C10($compare_i)+" OK="+String:C10(OK)
+	$otResult_t:="returned "+String($compare_i)+" OK="+String(OK)
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
@@ -143,7 +144,7 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	
 	OT PutLong($otMain_i; "scalar.child"; 9)
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
@@ -155,9 +156,9 @@ If ($ready_b)
 	$otCmd_t:="OT GetPointer($otMain_i; \"missingPtr\"; $gotPtr_ptr)"
 	$otResult_t:="Fail: not run"
 	
-	$gotPtr_ptr:=Null:C1517
+	$gotPtr_ptr:=Null
 	OT GetPointer($otMain_i; "missingPtr"; $gotPtr_ptr)
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
@@ -170,7 +171,7 @@ If ($ready_b)
 	$otResult_t:="Fail: not run"
 	
 	OT DeleteItem($otMain_i; "missingDelete")
-	$otResult_t:="OK="+String:C10(OK)
+	$otResult_t:="OK="+String(OK)
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
@@ -182,8 +183,8 @@ If ($ready_b)
 	$otCmd_t:="OT Register(\"20C9-EMQv-BJBl-D20M\")"
 	$otResult_t:="Fail: not run"
 	
-	$reg_i:=OT Register(Storage:C1525.OTr.registrationCode)
-	$otResult_t:="returned "+String:C10($reg_i)+" OK="+String:C10(OK)
+	$reg_i:=OT Register(Storage.OTr.registrationCode)
+	$otResult_t:="returned "+String($reg_i)+" OK="+String(OK)
 	
 	OTr_PutArrayText($accum_i; "otCmd"; $n_i; $otCmd_t)
 	OTr_PutArrayText($accum_i; "otResult"; $n_i; $otResult_t)
@@ -195,4 +196,5 @@ If ($ready_b)
 	
 End if 
 
+*/
 // ==== END OT BLOCK ====
