@@ -18,6 +18,8 @@
 //
 // Created by Wayne Stewart / Codex, 2026-04-14
 // Wayne Stewart / Codex, 2026-04-14 - Added recursive embedded OT object parser.
+// Wayne Stewart / Codex, 2026-04-18 - Added descriptor-aligned array payloads
+//   and OT marker 143 16-bit integer arrays used by Guy EX6 SubRec.
 // ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob; $ioOffset_ptr : Pointer; $inItemCount_i : Integer)->$result_o : Object
@@ -179,8 +181,13 @@ While (($item_i<=$inItemCount_i) & ($ok_b))
 					$ioOffset_ptr->:=$ioOffset_ptr->+8
 					$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; $ioOffset_ptr)
 					$ioOffset_ptr->:=$ioOffset_ptr->+4
-					$arrayStart_i:=$ioOffset_ptr->+$descriptorBytes_i
-					$array_o:=OTr_z_OTBlobReadTextArray($inBlob_blob; $arrayStart_i; $ioOffset_ptr; $count_i)
+					If ($count_i=0)
+						$array_o:=New object("arrayType"; Text array; "numElements"; 0; "currentItem"; 0; "0"; "")
+						$ioOffset_ptr->:=$ioOffset_ptr->+$descriptorBytes_i-2
+					Else
+						$arrayStart_i:=$ioOffset_ptr->+$descriptorBytes_i
+						$array_o:=OTr_z_OTBlobReadTextArray($inBlob_blob; $arrayStart_i; $ioOffset_ptr; $count_i)
+					End if
 					If ($array_o=Null)
 						$ok_b:=False
 					Else
@@ -193,11 +200,37 @@ While (($item_i<=$inItemCount_i) & ($ok_b))
 					$ioOffset_ptr->:=$ioOffset_ptr->+8
 					$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; $ioOffset_ptr)
 					$ioOffset_ptr->:=$ioOffset_ptr->+4
-					$payloadStart_i:=$ioOffset_ptr->-1
+					$payloadStart_i:=$ioOffset_ptr->+$descriptorBytes_i-($count_i*4)-4
+					If (($payloadStart_i<0) | (($payloadStart_i+($count_i*4))>BLOB size($inBlob_blob)))
+						$payloadStart_i:=$ioOffset_ptr->-1
+					End if
 					$array_o:=New object("arrayType"; LongInt array; "numElements"; $count_i; "currentItem"; 0; "0"; 0)
 					$ioOffset_ptr->:=$payloadStart_i
 					For ($index_i; 1; $count_i)
 						$long_i:=OTr_z_OTBlobReadInt32BE($inBlob_blob; $ioOffset_ptr)
+						OB SET($array_o; String($index_i); $long_i)
+					End for
+					OB SET($result_o; $key_t; $array_o)
+					If ($item_i<$inItemCount_i)
+						While (($ioOffset_ptr-><BLOB size($inBlob_blob)) & ($inBlob_blob{$ioOffset_ptr->}=0))
+							$ioOffset_ptr->:=$ioOffset_ptr->+1
+						End while
+					End if
+					
+				: ($typeByte_i=143)
+					$ioOffset_ptr->:=$ioOffset_ptr->+4
+					$count_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; $ioOffset_ptr)
+					$ioOffset_ptr->:=$ioOffset_ptr->+8
+					$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; $ioOffset_ptr)
+					$ioOffset_ptr->:=$ioOffset_ptr->+4
+					$payloadStart_i:=$ioOffset_ptr->+$descriptorBytes_i-($count_i*2)-2
+					If (($payloadStart_i<0) | (($payloadStart_i+($count_i*2))>BLOB size($inBlob_blob)))
+						$payloadStart_i:=$ioOffset_ptr->+0
+					End if
+					$array_o:=New object("arrayType"; LongInt array; "numElements"; $count_i; "currentItem"; 0; "0"; 0)
+					$ioOffset_ptr->:=$payloadStart_i
+					For ($index_i; 1; $count_i)
+						$long_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; $ioOffset_ptr)
 						OB SET($array_o; String($index_i); $long_i)
 					End for
 					OB SET($result_o; $key_t; $array_o)
@@ -213,7 +246,10 @@ While (($item_i<=$inItemCount_i) & ($ok_b))
 					$ioOffset_ptr->:=$ioOffset_ptr->+8
 					$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; $ioOffset_ptr)
 					$ioOffset_ptr->:=$ioOffset_ptr->+4
-					$payloadStart_i:=$ioOffset_ptr->+3
+					$payloadStart_i:=$ioOffset_ptr->+$descriptorBytes_i-($count_i*8)-3
+					If (($payloadStart_i<0) | (($payloadStart_i+($count_i*8))>BLOB size($inBlob_blob)))
+						$payloadStart_i:=$ioOffset_ptr->+3
+					End if
 					$array_o:=New object("arrayType"; Real array; "numElements"; $count_i; "currentItem"; 0; "0"; 0)
 					$ioOffset_ptr->:=$payloadStart_i
 					For ($index_i; 1; $count_i)

@@ -20,6 +20,8 @@
 // Wayne Stewart / Codex, 2026-04-14 - Added Phase 16 OT BLOB marker diagnostics.
 // Wayne Stewart / Codex, 2026-04-15 - Added compact marker 2/18 diagnostics.
 // Wayne Stewart / Codex, 2026-04-16 - Added record marker 115 diagnostics.
+// Wayne Stewart / Codex, 2026-04-18 - Added descriptor-aligned arrays and
+//   marker 143 diagnostics for Guy EX6 SubRec.
 // ----------------------------------------------------
 
 #DECLARE($inBlob_blob : Blob)->$description_t : Text
@@ -28,6 +30,7 @@ OTr_z_AddToCallStack(Current method name:C684)
 
 var $offset_i; $itemCount_i; $rootType_i; $keyLen_i; $typeByte_i : Integer
 var $item_i; $textLen_i; $count_i; $descriptorBytes_i; $arrayStart_i : Integer
+var $payloadStart_i : Integer
 var $index_i; $descriptorStart_i; $payloadOffset_i; $elementLen_i : Integer
 var $key_t : Text
 var $array_o : Object
@@ -205,14 +208,53 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 									$offset_i:=$offset_i+8
 									$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 									$offset_i:=$offset_i+4
-									$arrayStart_i:=$offset_i+$descriptorBytes_i
-									$array_o:=OTr_z_OTBlobReadTextArray($inBlob_blob; $arrayStart_i; ->$offset_i; $count_i)
+									If ($count_i=0)
+										$array_o:=New object("arrayType"; Text array; "numElements"; 0; "currentItem"; 0; "0"; "")
+										$offset_i:=$offset_i+$descriptorBytes_i-2
+									Else
+										$arrayStart_i:=$offset_i+$descriptorBytes_i
+										$array_o:=OTr_z_OTBlobReadTextArray($inBlob_blob; $arrayStart_i; ->$offset_i; $count_i)
+									End if
 									If ($array_o=Null)
 										$description_t:=$description_t+" payload=<unreadable>"
 										$scan_b:=False
 									End if
 									
-								: (($typeByte_i=144) | ($typeByte_i=160))
+								: ($typeByte_i=144)
+									$offset_i:=$offset_i+4
+									$count_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+									$offset_i:=$offset_i+8
+									$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+									$offset_i:=$offset_i+4
+									$payloadStart_i:=$offset_i+$descriptorBytes_i-($count_i*4)-4
+									If (($payloadStart_i<0) | (($payloadStart_i+($count_i*4))>BLOB size:C605($inBlob_blob)))
+										$payloadStart_i:=$offset_i-1
+									End if
+									$offset_i:=$payloadStart_i+($count_i*4)
+									If ($item_i<$itemCount_i)
+										While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+											$offset_i:=$offset_i+1
+										End while
+									End if
+									
+								: ($typeByte_i=143)
+									$offset_i:=$offset_i+4
+									$count_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+									$offset_i:=$offset_i+8
+									$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+									$offset_i:=$offset_i+4
+									$payloadStart_i:=$offset_i+$descriptorBytes_i-($count_i*2)-2
+									If (($payloadStart_i<0) | (($payloadStart_i+($count_i*2))>BLOB size:C605($inBlob_blob)))
+										$payloadStart_i:=$offset_i
+									End if
+									$offset_i:=$payloadStart_i+($count_i*2)
+									If ($item_i<$itemCount_i)
+										While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
+											$offset_i:=$offset_i+1
+										End while
+									End if
+									
+								: ($typeByte_i=160)
 									$offset_i:=$offset_i+4
 									$count_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 									$offset_i:=$offset_i+8
@@ -231,7 +273,11 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 									$offset_i:=$offset_i+8
 									$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 									$offset_i:=$offset_i+4
-									$offset_i:=($offset_i+3)+($count_i*8)
+									$payloadStart_i:=$offset_i+$descriptorBytes_i-($count_i*8)-3
+									If (($payloadStart_i<0) | (($payloadStart_i+($count_i*8))>BLOB size:C605($inBlob_blob)))
+										$payloadStart_i:=$offset_i+3
+									End if
+									$offset_i:=$payloadStart_i+($count_i*8)
 									If ($item_i<$itemCount_i)
 										While (($offset_i<BLOB size:C605($inBlob_blob)) & ($inBlob_blob{$offset_i}=0))
 											$offset_i:=$offset_i+1
