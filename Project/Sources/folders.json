@@ -26,8 +26,9 @@
 			"Fnd_FCS_WriteDocumentation"
 		]
 	},
-	"OT API Methods": {
+	"OT API": {
 		"methods": [
+			"_____Import_OT_Blob",
 			"OTr_ArrayType",
 			"OTr_BLOBToObject",
 			"OTr_Clear",
@@ -73,6 +74,7 @@
 			"OTr_GetTime",
 			"OTr_GetVariable",
 			"OTr_GetVersion",
+			"OTr_ImportLegacyBlob",
 			"OTr_IncludeShadowKey",
 			"OTr_Info",
 			"OTr_InsertElement",
@@ -93,6 +95,7 @@
 			"OTr_ObjectSize",
 			"OTr_ObjectToBLOB",
 			"OTr_ObjectToNewBLOB",
+			"OTr_ObjectViewer",
 			"OTr_onExit",
 			"OTr_onStartup",
 			"OTr_PutArray",
@@ -136,27 +139,75 @@
 			"OTr_SetOptions",
 			"OTr_SizeOfArray",
 			"OTr_SortArrays"
+		],
+		"forms": [
+			"objectViewer"
 		]
 	},
-	"OT Private Methods": {
+	"OT Blob Import": {
+		"methods": [
+			"OTr_x_OTBlobReadUInt32LE"
+		]
+	},
+	"OT Private": {
 		"methods": [
 			"Compiler_ObjectToolsReplacement",
 			"Compiler_OTrSortInterprocess",
 			"Compiler_OTrSortProcess",
+			"OTr_x_OTBlobIsObject",
+			"OTr_x_OTBlobReadArray",
+			"OTr_x_OTBlobReadBlobPayload",
+			"OTr_x_OTBlobReadInt16BE",
+			"OTr_x_OTBlobReadInt32BE",
+			"OTr_x_OTBlobReadInt32LE",
+			"OTr_x_OTBlobReadObjectItems",
+			"OTr_x_OTBlobReadRealBE",
+			"OTr_x_OTBlobReadRealLE",
+			"OTr_x_OTBlobReadRecord",
+			"OTr_x_OTBlobReadSerializedText",
+			"OTr_x_OTBlobReadUInt16BE",
+			"OTr_x_OTBlobReadUInt16LE",
+			"OTr_x_OTBlobReadUInt32BE",
+			"OTr_x_OTBlobReadUTF16BE",
+			"OTr_x_OTBlobReadUTF16LE",
+			"OTr_x_OTBlobReadWrappedPicture",
+			"OTr_x_OTBlobToObject",
+			"OTr_z_AddToCallStack",
+			"OTr_z_ArrayFromObject",
+			"OTr_z_ArrayType",
 			"OTr_z_CheckHostMethods",
+			"OTr_z_Comment_Uncomment_OT_Code",
+			"OTr_z_Echidna",
+			"OTr_z_ErrIgnore",
+			"OTr_z_Error",
 			"OTr_z_Get4DVersion",
+			"OTr_z_Init",
+			"OTr_z_IsShadowKey",
+			"OTr_z_IsValidHandle",
 			"OTr_z_Koala",
+			"OTr_z_Lock",
 			"OTr_z_LogDirectory",
+			"OTr_z_LogFileName",
+			"OTr_z_LogGetCallStack",
 			"OTr_z_LogInit",
-			"OTr_z_OTBlobIsObject",
-			"OTr_z_OTBlobReadKey",
-			"OTr_z_OTBlobReadTextArray",
-			"OTr_z_OTBlobReadUInt16LE",
-			"OTr_z_OTBlobReadUInt32LE",
-			"OTr_z_OTBlobReadUTF16LE",
-			"OTr_z_OTBlobToObject",
+			"OTr_z_LogLevelToInt",
+			"OTr_z_LogShutdown",
+			"OTr_z_LogWrite",
+			"OTr_z_MapType",
+			"OTr_z_PluginShouldWork",
+			"OTr_z_RemoveFromCallStack",
+			"OTr_z_ResolvePath",
+			"OTr_z_SetOK",
+			"OTr_z_ShadowKey",
+			"OTr_z_SortFillSlot",
+			"OTr_z_SortSlotPointer",
+			"OTr_z_SortValidatePair",
 			"OTr_z_timestampLocal",
-			"OTr_z_Wombat"
+			"OTr_z_Unlock",
+			"OTr_z_Wombat",
+			"OTr_z_XMLReadObject",
+			"OTr_z_XMLWriteObject",
+			"OTr_z_XMLWriteObjectSAX"
 		]
 	},
 	"OT Testing": {
@@ -165,6 +216,8 @@
 		],
 		"methods": [
 			"________DemoForAi",
+			"____Make_Phase16_OTBlobFixtures",
+			"____Test_OTr_Master",
 			"____Test_Phase_1",
 			"____Test_Phase_1_5",
 			"____Test_Phase_10",
@@ -182,6 +235,10 @@
 			"____Test_Phase_15",
 			"____Test_Phase_15_OT",
 			"____Test_Phase_15_OTr",
+			"____Test_Phase_16_OTBlob",
+			"____Test_Phase_16_OTBlob_Probe",
+			"____Test_Phase_16a_OTBlobValues",
+			"____Test_Phase_16b_OTBlobDeep",
 			"____Test_Phase_2",
 			"____Test_Phase_3",
 			"____Test_Phase_4_Arrays",
@@ -192,10 +249,42 @@
 			"___templateAutoStart"
 		]
 	},
-	"OT Utility Methods": {
+	"OT Utility": {
 		"methods": [
+			"__BuildComponent",
+			"Compiler_FCS",
+			"Fnd_FCS_BuildComponent",
 			"Is a method",
-			"OTr_u_AccessArrayElement"
+			"OTr_u_AccessArrayElement",
+			"OTr_u_BlobToText",
+			"OTr_u_DateToText",
+			"OTr_u_EqualBLOBs",
+			"OTr_u_EqualObjects",
+			"OTr_u_EqualPictures",
+			"OTr_u_EqualStrings",
+			"OTr_u_MapType",
+			"OTr_u_NativeDateInObject",
+			"OTr_u_NewValueForEmbeddedType",
+			"OTr_u_PointerToText",
+			"OTr_u_TextToBlob",
+			"OTr_u_TextToDate",
+			"OTr_u_TextToPointer",
+			"OTr_u_TextToTime",
+			"OTr_u_TimeToText"
+		]
+	},
+	"OTr web Testing": {
+		"methods": [
+			"OTr_w_CompileResultForJSON",
+			"OTr_w_GuyBlobExport",
+			"OTr_w_IsLocalRequest",
+			"OTr_w_Phase16Diag",
+			"OTr_w_RestartProjectWorker",
+			"OTr_w_Run",
+			"OTr_w_RunCompileOnMain",
+			"OTr_w_RunUnitTestWorker",
+			"util_compileProject",
+			"util_restartProject"
 		]
 	},
 	"trash": {}
