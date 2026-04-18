@@ -691,6 +691,7 @@ If (False:C215)
 	C_TEXT:C284(____Test_Phase_16_OTBlob_Probe; $0; $2)
 	
 	C_BOOLEAN:C305(____Test_OTr_Master; $1)
+	C_OBJECT:C1216(____Test_OTr_Master; $0)
 	
 	C_TEXT:C284(OTr_z_timestampLocal; $1; $0)
 	
@@ -700,4 +701,15 @@ If (False:C215)
 	
 	C_TEXT:C284(Is a method; $1)
 	C_BOOLEAN:C305(Is a method; $0)
+
+	// Codex live testing bridge
+	C_TEXT:C284(Codex_Run; $1; $2)
+	C_OBJECT:C1216(Codex_Run; $0)
+	C_OBJECT:C1216(util_compileProject; $0)
+	C_OBJECT:C1216(Codex_z_CompileResultForJSON; $0; $1)
+	C_TEXT:C284(Codex_z_IsLocalRequest; $1)
+	C_BOOLEAN:C305(Codex_z_IsLocalRequest; $0)
+	C_OBJECT:C1216(Codex_z_RunCompileOnMain; $1)
+	C_OBJECT:C1216(Codex_z_RunUnitTestWorker; $1)
+	C_OBJECT:C1216(Codex_z_Phase16Diag; $1)
 End if 

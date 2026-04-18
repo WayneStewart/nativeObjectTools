@@ -18,16 +18,18 @@
 //   ____Test_OTr_Master-YYYY-MM-DD-HH-MM-SS.txt
 //
 // Access: Private
-// Returns: Nothing (results written to Logs folder; summary ALERT at end)
+// Returns: Object summary (results written to Logs folder; summary ALERT at end)
 //
 // Created by Wayne Stewart / Claude, 2026-04-12
 // Based on work by himself, Rob Laveaux, Guy Algot, and Cannon Smith.
 // WBS 15/04/2026: Add blob import code and swap to debug mode in OT log while running test
 // ----------------------------------------------------
-#DECLARE($suppressAlert_b : Boolean)
+#DECLARE($suppressAlert_b : Boolean)->$result_o : Object
 
 var $ProcessID_i; $StackSize_i : Integer
 var $DesiredProcessName_t; $debug_t : Text
+
+$result_o:=New object:C1471("ok"; False:C215; "method"; Current method name:C684)
 
 $StackSize_i:=0
 $DesiredProcessName_t:=Current method name:C684
@@ -2594,6 +2596,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	
 	TEXT TO DOCUMENT:C1237($masterFilePath_t; $masterText_t; "UTF-8")
 	
+	$result_o.ok:=($totalFail_i=0)
+	$result_o.totalTests:=$totalPass_i+$totalFail_i
+	$result_o.passCount:=$totalPass_i
+	$result_o.failCount:=$totalFail_i
+	$result_o.summary:=$summaryLine_m
+	$result_o.logFile:=$masterFileName_t
+	$result_o.logPath:=$masterFilePath_t
+
 	If ($hideAlert_b)
 	Else 
 		ALERT:C41($summaryLine_m+$CR+"Master results written to: "+$masterFilePath_t)
@@ -2605,8 +2615,9 @@ If (Current process name:C1392=$DesiredProcessName_t)
 Else 
 	// Unique named process guard — spawns one process and brings it to front
 	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $DesiredProcessName_t; $hideAlert_b; *)
+	$result_o.queued:=True:C214
+	$result_o.processID:=$ProcessID_i
 	RESUME PROCESS:C320($ProcessID_i)
 	SHOW PROCESS:C325($ProcessID_i)
 	BRING TO FRONT:C326($ProcessID_i)
 End if 
-

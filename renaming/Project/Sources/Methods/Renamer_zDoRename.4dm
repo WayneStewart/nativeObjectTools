@@ -83,6 +83,10 @@ var $trimmed_t : Text
 var $pass4_count_i : Integer
 var $firstKey_t : Text
 var $slashPos_i : Integer
+var $formsFolder_t : Text
+var $formName_t : Text
+var $objMethodsFolder_t : Text
+var $j_i : Integer
 
 // ── Initialise ────────────────────────────────────────────────────────────────
 
@@ -230,6 +234,84 @@ Else
 End if 
 
 // ═════════════════════════════════════════════════════════════════════════════
+// PASS 1c — Update file CONTENTS (Forms folder tree)
+// Form object methods live under Sources/Forms/<formName>/ObjectMethods/ and
+// Sources/Forms/<formName>/method.4dm — none are renamed, but their call sites
+// must be updated.  FOLDER LIST gives us the form subfolders; we then scan
+// each for .4dm files at the top level and inside ObjectMethods/.
+// ═════════════════════════════════════════════════════════════════════════════
+
+APPEND TO ARRAY($log_at; "")
+APPEND TO ARRAY($log_at; "=== PASS 1c: Updating file contents (Forms) ===")
+
+$formsFolder_t := $sourcesFolder_t + "Forms" + $separator_t
+
+If (Test path name($formsFolder_t) = Is a folder)
+
+	ARRAY TEXT($formFolders_at; 0)
+	FOLDER LIST($formsFolder_t; $formFolders_at)
+
+	$i_i := 1
+	While ($i_i <= Size of array($formFolders_at))
+		$formName_t := $formFolders_at{$i_i}
+
+		// Process form-level method.4dm
+		$filePath_t := $formsFolder_t + $formName_t + $separator_t + "method.4dm"
+		If (Test path name($filePath_t) = Is a document)
+			$fileBody_t := Document to text($filePath_t; "UTF-8")
+			$originalBody_t := $fileBody_t
+			$k_i := 0
+			While ($k_i < $keys_ac.length)
+				$oldName_t := $keys_ac[$k_i]
+				$newName_t := String(OB Get($mapping_o; $oldName_t))
+				$fileBody_t := Replace string($fileBody_t; $oldName_t; $newName_t)
+				$k_i += 1
+			End while
+			If ($fileBody_t # $originalBody_t)
+				TEXT TO DOCUMENT($filePath_t; $fileBody_t; "UTF-8")
+				$pass1_count_i += 1
+				APPEND TO ARRAY($log_at; "  [PASS 1c] Updated: " + $formName_t + "/method.4dm")
+			End if
+		End if
+
+		// Process ObjectMethods subfolder
+		$objMethodsFolder_t := $formsFolder_t + $formName_t + $separator_t + "ObjectMethods" + $separator_t
+		If (Test path name($objMethodsFolder_t) = Is a folder)
+			ARRAY TEXT($objFiles_at; 0)
+			DOCUMENT LIST($objMethodsFolder_t; $objFiles_at)
+			$j_i := 1
+			While ($j_i <= Size of array($objFiles_at))
+				$fileName_t := $objFiles_at{$j_i}
+				If (Position(".4dm"; $fileName_t) > 0)
+					$filePath_t := $objMethodsFolder_t + $fileName_t
+					$fileBody_t := Document to text($filePath_t; "UTF-8")
+					$originalBody_t := $fileBody_t
+					$k_i := 0
+					While ($k_i < $keys_ac.length)
+						$oldName_t := $keys_ac[$k_i]
+						$newName_t := String(OB Get($mapping_o; $oldName_t))
+						$fileBody_t := Replace string($fileBody_t; $oldName_t; $newName_t)
+						$k_i += 1
+					End while
+					If ($fileBody_t # $originalBody_t)
+						TEXT TO DOCUMENT($filePath_t; $fileBody_t; "UTF-8")
+						$pass1_count_i += 1
+						APPEND TO ARRAY($log_at; "  [PASS 1c] Updated: " + $formName_t + "/ObjectMethods/" + $fileName_t)
+					End if
+				End if
+				$j_i += 1
+			End while
+		End if
+
+		$i_i += 1
+	End while
+
+Else
+	APPEND TO ARRAY($log_at; "  [PASS 1c] Forms folder not found -- skipped.")
+	APPEND TO ARRAY($log_at; "  Path checked: " + $formsFolder_t)
+End if
+
+// ═════════════════════════════════════════════════════════════════════════════
 // PASS 2 — Rename FILES
 // Now rename the .4dm files whose names appear as keys in the mapping.
 // ═════════════════════════════════════════════════════════════════════════════
@@ -354,19 +436,20 @@ While ($i_i <= Size of array($allFiles4_at))
 			End if
 
 			// Transform lines inside the block (excluding the sentinel lines themselves)
+			// Forward pass prefixes non-blank, non-comment lines with "//~" (a marker
+			// that distinguishes machine-added comments from original source comments).
+			// Reverse pass strips only "//~" markers, leaving genuine "//" comments intact.
 			If ($inBlock_b & (Position("BEGIN OTr BLOCK"; $trimmed_t) = 0))
 				If ($isForward_b)
 					// Forward: comment out non-blank, non-already-commented lines
-					If ((Length($trimmed_t) > 0) & (Substring($trimmed_t; 1; 2) # "//"))
-						$line_t := "//" + $line_t
+					If ((Length($trimmed_t) > 0) & (Substring($trimmed_t; 1; 3) # "//~") & (Substring($trimmed_t; 1; 2) # "//"))
+						$line_t := "//~" + $line_t
 					End if
 				Else
-					// Reverse: strip leading "//" from commented lines
-					If (Substring($trimmed_t; 1; 2) = "//")
-						// Find position of "//" in the original (possibly indented) line
-						// and remove exactly those two characters
-						$slashPos_i := Position("//"; $line_t)
-						$line_t := Substring($line_t; 1; $slashPos_i - 1) + Substring($line_t; $slashPos_i + 2)
+					// Reverse: strip only "//~" markers added by the forward pass
+					If (Substring($trimmed_t; 1; 3) = "//~")
+						$slashPos_i := Position("//~"; $line_t)
+						$line_t := Substring($line_t; 1; $slashPos_i - 1) + Substring($line_t; $slashPos_i + 3)
 					End if
 				End if
 			End if
