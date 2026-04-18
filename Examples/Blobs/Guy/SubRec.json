@@ -1,0 +1,378 @@
+﻿{
+	"Payoff_Interest_PerDiem_Arr": {
+		"arrayType": 14,
+		"numElements": 0,
+		"currentItem": 0,
+		"0": 0
+	},
+	"Payoff_Interest_Amount_Arr": {
+		"arrayType": 14,
+		"numElements": 0,
+		"currentItem": 0,
+		"0": 0
+	},
+	"Payoff_Fee_Discretion_Arr": {
+		"arrayType": 14,
+		"numElements": 0,
+		"currentItem": 0,
+		"0": 0
+	},
+	"Payoff_Fee_Reconveyance_Arr": {
+		"arrayType": 14,
+		"numElements": 0,
+		"currentItem": 0,
+		"0": 0
+	},
+	"Payoff_FMV_Current": 0,
+	"Payoff_FMV_Current$type": 1,
+	"Proceeds_Use": "",
+	"Proceeds_Use$type": 112,
+	"AppraisalFee_Amount": 0,
+	"AppraisalFee_Amount$type": 1,
+	"CreditReportFee_Amount": 0,
+	"CreditReportFee_Amount$type": 1,
+	"Payoff_Fee_Label_Arr": {
+		"arrayType": 18,
+		"numElements": 0,
+		"currentItem": 0,
+		"0": ""
+	},
+	"AppraisalFee_Levy": false,
+	"AppraisalFee_Levy$type": 6,
+	"Payoff_Fee_Recording_Arr": {
+		"arrayType": 14,
+		"numElements": 0,
+		"currentItem": 0,
+		"0": 0
+	},
+	"CreditReportFee_Levy": false,
+	"CreditReportFee_Levy$type": 6,
+	"Borrower_CashIn": false,
+	"Borrower_CashIn$type": 6,
+	"DocPath_Engine_Final": ":C:Chiou_A_10671:Subordination:2026-02-22 13-58-16:Subordination_10671.020.xlsm",
+	"DocPath_Engine_Final$type": 112,
+	"LoanSU_Ex_DeferredInterestEnginePath_Arr": {
+		"arrayType": 18,
+		"numElements": 3,
+		"currentItem": 0,
+		"0": "",
+		"1": ":C:Chiou_A_10671:Subordination:2026-02-22 13-58-16:Chiou_10671_040_DefInt.xlsm",
+		"2": "",
+		"3": ""
+	},
+	"Coborrower_IsTrustee": false,
+	"Coborrower_IsTrustee$type": 6,
+	"Borrower_IsTrustee": false,
+	"Borrower_IsTrustee$type": 6,
+	"Prop_Tax_Supplemental": 0,
+	"Prop_Tax_Supplemental$type": 1,
+	"EscrowOfficer_Contact_ID": 6619,
+	"EscrowOfficer_Contact_ID$type": 9,
+	"Title_Co_Company_ID": 3351,
+	"Title_Co_Company_ID$type": 9,
+	"Escrow_Number": "4312-7365995",
+	"Escrow_Number$type": 112,
+	"Insurance_Autocalc": true,
+	"Insurance_Autocalc$type": 6,
+	"Appraisal_ID": 11776,
+	"Appraisal_ID$type": 9,
+	"Insurance_Amount": 850,
+	"Insurance_Amount$type": 1,
+	"Loan_OutNew_LoanOfficerContactID_Arr": {
+		"arrayType": 16,
+		"numElements": 1,
+		"currentItem": 0,
+		"0": 0,
+		"1": 4744
+	},
+	"Loan_OutEx_IsPaidOff_Arr": {
+		"arrayType": 22,
+		"numElements": 2,
+		"currentItem": 0,
+		"0": false,
+		"1": false,
+		"2": false
+	},
+	"Loan_OutNew_MonthlyPayment_Arr": {
+		"arrayType": 14,
+		"numElements": 1,
+		"currentItem": 0,
+		"0": 0,
+		"1": 11298.47
+	},
+	"Tax_Fee_Levy": false,
+	"Tax_Fee_Levy$type": 6,
+	"Loan_OutNew_Rate_Arr": {
+		"arrayType": 14,
+		"numElements": 1,
+		"currentItem": 0,
+		"0": 0,
+		"1": 0.057500001043
+	},
+	"LoanSU_Ex_IDPersisted_Arr": {
+		"arrayType": 16,
+		"numElements": 3,
+		"currentItem": 0,
+		"0": 0,
+		"1": 23164,
+		"2": 23165,
+		"3": 23166
+	},
+	"Loan_OutNew_LoanTypeOther_Arr": {
+		"arrayType": 18,
+		"numElements": 1,
+		"currentItem": 0,
+		"0": "",
+		"1": ""
+	},
+	"Aff_HAP": 1111.12,
+	"Aff_HAP$type": 1,
+	"Loan_OutEx_PrinOrig_Arr": {
+		"arrayType": 14,
+		"numElements": 2,
+		"currentItem": 0,
+		"0": 0,
+		"1": 1800000,
+		"2": 0
+	},
+	"Loan_OutNew_Principal_Arr": {
+		"arrayType": 14,
+		"numElements": 1,
+		"currentItem": 0,
+		"0": 0,
+		"1": 1936085
+	},
+	"Estimated_COE_Date": "2026-03-22",
+	"Estimated_COE_Date$type": 4,
+	"Payoff_Fee_Statement_Arr": {
+		"arrayType": 14,
+		"numElements": 0,
+		"currentItem": 0,
+		"0": 0
+	},
+	"Loan_OutEx_AtPurchase_Arr": {
+		"arrayType": 22,
+		"numElements": 2,
+		"currentItem": 0,
+		"0": false,
+		"1": true,
+		"2": false
+	},
+	"Loan_OutEx_LienPos_Arr": {
+		"arrayType": 16,
+		"numElements": 2,
+		"currentItem": 0,
+		"0": 0,
+		"1": 1,
+		"2": 0
+	},
+	"Prop_Tax_1st_Install": 4322.92,
+	"Prop_Tax_1st_Install$type": 1,
+	"Loan_OutNew_LoanTypeID_Arr": {
+		"arrayType": 16,
+		"numElements": 1,
+		"currentItem": 0,
+		"0": 0,
+		"1": 8
+	},
+	"Loan_OutEx_Rate_Arr": {
+		"arrayType": 14,
+		"numElements": 2,
+		"currentItem": 0,
+		"0": 0,
+		"1": 0.0625,
+		"2": 0
+	},
+	"Loan_OutEx_LoanTypeOther_Arr": {
+		"arrayType": 18,
+		"numElements": 2,
+		"currentItem": 0,
+		"0": "",
+		"1": "",
+		"2": ""
+	},
+	"LoanSU_Ex_PrinCurrent_Arr": {
+		"arrayType": 14,
+		"numElements": 3,
+		"currentItem": 0,
+		"0": 0,
+		"1": 250000,
+		"2": 300000,
+		"3": 20000
+	},
+	"Loan_OutEx_Name_Arr": {
+		"arrayType": 18,
+		"numElements": 2,
+		"currentItem": 0,
+		"0": "",
+		"1": "First Mortgage",
+		"2": ""
+	},
+	"Is_Long_Subord": true,
+	"Is_Long_Subord$type": 6,
+	"LoanSU_Ex_PayoffAmt_Arr": {
+		"arrayType": 14,
+		"numElements": 3,
+		"currentItem": 0,
+		"0": 0,
+		"1": 0,
+		"2": 0,
+		"3": 0
+	},
+	"AppraisalFee_Payee": "",
+	"AppraisalFee_Payee$type": 112,
+	"Aff_HazardEQInsurance": 415,
+	"Aff_HazardEQInsurance$type": 1,
+	"LoanSU_Ex_ImprovsAdj_Arr": {
+		"arrayType": 14,
+		"numElements": 3,
+		"currentItem": 0,
+		"0": 0,
+		"1": 0,
+		"2": 0,
+		"3": 0
+	},
+	"Aff_UW_Value": 0,
+	"Aff_UW_Value$type": 1,
+	"Loan_OutNew_LenderID_Arr": {
+		"arrayType": 16,
+		"numElements": 1,
+		"currentItem": 0,
+		"0": 0,
+		"1": 3751
+	},
+	"Aff_Purchase_Refi_Date": "2025-04-21",
+	"Aff_Purchase_Refi_Date$type": 4,
+	"Loan_OutEx_PayingOff_Arr": {
+		"arrayType": 22,
+		"numElements": 2,
+		"currentItem": 0,
+		"0": false,
+		"1": true,
+		"2": false
+	},
+	"Loan_OutNew_TermMonths_Arr": {
+		"arrayType": 16,
+		"numElements": 1,
+		"currentItem": 0,
+		"0": 0,
+		"1": 360
+	},
+	"Loan_OutEx_LoanTypeID_Arr": {
+		"arrayType": 16,
+		"numElements": 2,
+		"currentItem": 0,
+		"0": 0,
+		"1": 8,
+		"2": 0
+	},
+	"LoanSU_Ex_RealtorFee_Arr": {
+		"arrayType": 14,
+		"numElements": 3,
+		"currentItem": 0,
+		"0": 0,
+		"1": 0,
+		"2": 0,
+		"3": 0
+	},
+	"Aff_OtherDebt": 10965.74,
+	"Aff_OtherDebt$type": 1,
+	"LoanSU_PdOff_Select_Arr": {
+		"arrayType": 22,
+		"numElements": 0,
+		"currentItem": 0,
+		"0": false
+	},
+	"LoanSU_Ex_PrepymtAmt_Arr": {
+		"arrayType": 14,
+		"numElements": 3,
+		"currentItem": 0,
+		"0": 0,
+		"1": 0,
+		"2": 0,
+		"3": 0
+	},
+	"Aff_HouseholdIncome": 67226.17,
+	"Aff_HouseholdIncome$type": 1,
+	"HOA_Fees": 0,
+	"HOA_Fees$type": 1,
+	"Insurance_Rate": 0.002,
+	"Insurance_Rate$type": 1,
+	"Aff_PropertyTaxes": 4322.92,
+	"Aff_PropertyTaxes$type": 1,
+	"Aff_AssocFees": 0,
+	"Aff_AssocFees$type": 1,
+	"Prelim_Title_Report_Date": "2026-01-26",
+	"Prelim_Title_Report_Date$type": 4,
+	"LoanSU_Ex_Option_Arr": {
+		"arrayType": 18,
+		"numElements": 3,
+		"currentItem": 0,
+		"0": "",
+		"1": "",
+		"2": "",
+		"3": ""
+	},
+	"Loan_OutNew_BenefName_Arr": {
+		"arrayType": 18,
+		"numElements": 1,
+		"currentItem": 0,
+		"0": "",
+		"1": "Stanford Federal Credit Union, A Credit Union"
+	},
+	"Date_Created": "2026-02-22",
+	"Date_Created$type": 4,
+	"Subord_Fee_Levy": true,
+	"Subord_Fee_Levy$type": 6,
+	"LoanSU_PdOff_Payment_Arr": {
+		"arrayType": 14,
+		"numElements": 0,
+		"currentItem": 0,
+		"0": 0
+	},
+	"Loan_OutNew_LienPos_Arr": {
+		"arrayType": 16,
+		"numElements": 1,
+		"currentItem": 0,
+		"0": 0,
+		"1": 1
+	},
+	"Prelim_Workbook_Path": "Macintosh HD:Users:erikahar:Library:Group Containers:UBF8T346G9.Office:User Content.localized:temp:Detail_2026-02-22_13-33-18.xlsm",
+	"Prelim_Workbook_Path$type": 112,
+	"Aff_GroundRent": 0,
+	"Aff_GroundRent$type": 1,
+	"Loan_OutEx_MonthlyPayment_Arr": {
+		"arrayType": 14,
+		"numElements": 2,
+		"currentItem": 0,
+		"0": 0,
+		"1": 11082.91,
+		"2": 0
+	},
+	"Loan_OutEx_TermMonths_Arr": {
+		"arrayType": 16,
+		"numElements": 2,
+		"currentItem": 0,
+		"0": 0,
+		"1": 360,
+		"2": 0
+	},
+	"Loan_OutEx_PrinCurr_Arr": {
+		"arrayType": 14,
+		"numElements": 2,
+		"currentItem": 0,
+		"0": 0,
+		"1": 1800000,
+		"2": 0
+	},
+	"Borrower_Ownership": "",
+	"Borrower_Ownership$type": 112,
+	"LoanSU_PdOff_ID_Arr": {
+		"arrayType": 16,
+		"numElements": 0,
+		"currentItem": 0,
+		"0": 0
+	},
+	"BLOB_Version": 28,
+	"BLOB_Version$type": 9
+}

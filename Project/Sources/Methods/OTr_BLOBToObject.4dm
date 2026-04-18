@@ -66,13 +66,13 @@ If (BLOB size:C605($inBLOB_blob)=0)
 	
 Else 
 	
-	If (OTr_z_OTBlobIsObject($inBLOB_blob))
+	If (OTr_x_OTBlobIsObject($inBLOB_blob))
 		
-		$obj_o:=OTr_z_OTBlobToObject($inBLOB_blob)
+		$obj_o:=OTr_x_OTBlobToObject($inBLOB_blob)
 		
 	Else 
 		
-		OTr_z_Error("BLOB not legacy format return OTr_z_OTBlobIsObject($inBLOB_blob) false"; Current method name:C684)
+		OTr_z_Error("BLOB not legacy format return OTr_x_OTBlobIsObject($inBLOB_blob) false"; Current method name:C684)
 		
 		$work_blob:=$inBLOB_blob
 		BLOB PROPERTIES:C536($work_blob; $compressed_i)
@@ -85,7 +85,7 @@ Else
 	End if 
 	
 	If ($obj_o=Null:C1517)
-		If (OTr_z_OTBlobIsObject($inBLOB_blob))
+		If (OTr_x_OTBlobIsObject($inBLOB_blob))
 			OTr_z_Error("BLOB contains unsupported legacy OT object data"; Current method name:C684)
 		Else 
 			OTr_z_Error("BLOB does not contain a valid OTr object"; Current method name:C684)

@@ -12,11 +12,11 @@ End if
 
 Case of
 	: ($path_t="/codex/ping")
-		$response_o:=Codex_Run("ping"; $ipBrowser_t)
+		$response_o:=OTr_w_Run("ping"; $ipBrowser_t)
 
 	: (Substring:C12($path_t; 1; 11)="/codex/run/")
 		$method_t:=Substring:C12($path_t; 12)
-		$response_o:=Codex_Run($method_t; $ipBrowser_t)
+		$response_o:=OTr_w_Run($method_t; $ipBrowser_t)
 
 	Else
 		$response_o:=New object:C1471
