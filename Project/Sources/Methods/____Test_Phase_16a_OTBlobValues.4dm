@@ -22,25 +22,24 @@
 #DECLARE($suppressAlert_b : Boolean)
 
 // ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ====
-/*
 
 
-OTr_z_AddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $ProcessID_i; $StackSize_i : Integer
 var $DesiredProcessName_t : Text
 var $hideAlert_b : Boolean
 
 $StackSize_i:=0
-$DesiredProcessName_t:=Current method name
+$DesiredProcessName_t:=Current method name:C684
 
-If (Count parameters<1)
-	$hideAlert_b:=False
+If (Count parameters:C259<1)
+	$hideAlert_b:=False:C215
 Else 
 	$hideAlert_b:=$suppressAlert_b
 End if 
 
-If (Current process name=$DesiredProcessName_t)
+If (Current process name:C1392=$DesiredProcessName_t)
 	
 	var $otH_i; $childH_i; $otrH_i; $childOTrH_i; $reg_i : Integer
 	var $total_i; $passed_i; $failed_i : Integer
@@ -51,30 +50,30 @@ If (Current process name=$DesiredProcessName_t)
 	var $real_r; $real1_r; $real2_r; $real3_r : Real
 	var $size_i; $arrayType_i; $itemType_i; $long1_i; $long2_i; $long3_i : Integer
 	
-	ARRAY TEXT($textArray_at; 0)
-	ARRAY TEXT($gotTextArray_at; 0)
-	ARRAY LONGINT($longArray_ai; 0)
-	ARRAY LONGINT($gotLongArray_ai; 0)
-	ARRAY REAL($realArray_ar; 0)
-	ARRAY REAL($gotRealArray_ar; 0)
-	ARRAY BOOLEAN($booleanArray_ab; 0)
-	ARRAY BOOLEAN($gotBooleanArray_ab; 0)
-	ARRAY DATE($dateArray_ad; 0)
-	ARRAY DATE($gotDateArray_ad; 0)
-	ARRAY TIME($timeArray_ah; 0)
-	ARRAY TIME($gotTimeArray_ah; 0)
+	ARRAY TEXT:C222($textArray_at; 0)
+	ARRAY TEXT:C222($gotTextArray_at; 0)
+	ARRAY LONGINT:C221($longArray_ai; 0)
+	ARRAY LONGINT:C221($gotLongArray_ai; 0)
+	ARRAY REAL:C219($realArray_ar; 0)
+	ARRAY REAL:C219($gotRealArray_ar; 0)
+	ARRAY BOOLEAN:C223($booleanArray_ab; 0)
+	ARRAY BOOLEAN:C223($gotBooleanArray_ab; 0)
+	ARRAY DATE:C224($dateArray_ad; 0)
+	ARRAY DATE:C224($gotDateArray_ad; 0)
+	ARRAY TIME:C1223($timeArray_ah; 0)
+	ARRAY TIME:C1223($gotTimeArray_ah; 0)
 	
 	OTr_ClearAll
 	$total_i:=0
 	$passed_i:=0
 	$failed_i:=0
-	$report_t:="Phase 16a OT BLOB value verification"+Char(Carriage return)
-	$report_t:=$report_t+"Generated legacy OT BLOBs are imported and checked with OTr getters."+Char(Carriage return)+Char(Carriage return)
+	$report_t:="Phase 16a OT BLOB value verification"+Char:C90(Carriage return:K15:38)
+	$report_t:=$report_t+"Generated legacy OT BLOBs are imported and checked with OTr getters."+Char:C90(Carriage return:K15:38)+Char:C90(Carriage return:K15:38)
 	
-	$reg_i:=OT Register(Storage.OTr.registrationCode)
+	$reg_i:=OT Register(Storage:C1525.OTr.registrationCode)
 	$otH_i:=OT New
 	If ($otH_i=0)
-		$summary_t:="Phase 16a OT BLOB Value Tests"+Char(Carriage return)+"Skip: ObjectTools 5.0 is not available or not registered."
+		$summary_t:="Phase 16a OT BLOB Value Tests"+Char:C90(Carriage return:K15:38)+"Skip: ObjectTools 5.0 is not available or not registered."
 	Else 
 		OT Clear($otH_i)
 		
@@ -96,7 +95,7 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: OTr_GetText did not match expected value"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="02 date scalar value"
@@ -116,15 +115,15 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: OTr_GetDate did not match expected value"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="03 text array values"
-		ARRAY TEXT($textArray_at; 3)
+		ARRAY TEXT:C222($textArray_at; 3)
 		$textArray_at{1}:="alpha"
 		$textArray_at{2}:="bravo"
 		$textArray_at{3}:="charlie"
-		ARRAY TEXT($gotTextArray_at; 0)
+		ARRAY TEXT:C222($gotTextArray_at; 0)
 		$otH_i:=OT New
 		OT PutArray($otH_i; "textArray"; $textArray_at)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
@@ -133,8 +132,8 @@ If (Current process name=$DesiredProcessName_t)
 		If ((OK=1) & ($otrH_i>0))
 			OTr_GetArray($otrH_i; "textArray"; ->$gotTextArray_at)
 		End if 
-		$pass_b:=False
-		If ((OK=1) & (Size of array($gotTextArray_at)=3))
+		$pass_b:=False:C215
+		If ((OK=1) & (Size of array:C274($gotTextArray_at)=3))
 			$pass_b:=(($gotTextArray_at{1}="alpha") & ($gotTextArray_at{2}="bravo") & ($gotTextArray_at{3}="charlie"))
 		End if 
 		If ($otrH_i>0)
@@ -147,7 +146,7 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: OTr_GetArray text values did not match"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="04 long scalar value"
@@ -167,7 +166,7 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: OTr_GetLong did not match expected value"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="05 real scalar value"
@@ -181,7 +180,7 @@ If (Current process name=$DesiredProcessName_t)
 			$itemType_i:=OTr_ItemType($otrH_i; "real")
 		End if 
 		$real_r:=OTr_GetReal($otrH_i; "real")
-		$pass_b:=((OK=1) & ($otrH_i>0) & (Abs($real_r-3.14159)<0.00001))
+		$pass_b:=((OK=1) & ($otrH_i>0) & (Abs:C99($real_r-3.14159)<0.00001))
 		If ($otrH_i>0)
 			OTr_Clear($otrH_i)
 		End if 
@@ -190,14 +189,14 @@ If (Current process name=$DesiredProcessName_t)
 			$result_t:="Pass"
 		Else 
 			$failed_i:=$failed_i+1
-			$result_t:="Fail: OTr_GetReal did not match expected value; got="+String($real_r)+"; expected=3.14159; itemType="+String($itemType_i)
+			$result_t:="Fail: OTr_GetReal did not match expected value; got="+String:C10($real_r)+"; expected=3.14159; itemType="+String:C10($itemType_i)
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="06 boolean scalar value"
 		$otH_i:=OT New
-		OT PutBoolean($otH_i; "boolean"; Num(True))
+		OT PutBoolean($otH_i; "boolean"; Num:C11(True:C214))
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
 		OT Clear($otH_i)
 		$otrH_i:=OTr_BLOBToObject($legacyBlob_blob)
@@ -212,7 +211,7 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: OTr_GetBoolean did not match expected value"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="07 time scalar value"
@@ -232,11 +231,11 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: OTr_GetTime did not match expected value"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="08 blob scalar value"
-		SET BLOB SIZE($testBlob_blob; 4)
+		SET BLOB SIZE:C606($testBlob_blob; 4)
 		$testBlob_blob{0}:=0
 		$testBlob_blob{1}:=65
 		$testBlob_blob{2}:=0
@@ -260,7 +259,7 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: OTr_GetNewBLOB did not match expected bytes"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="09 picture scalar png value"
@@ -284,7 +283,7 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: OTr_GetPicture PNG did not match expected picture"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="10 picture scalar jpg value"
@@ -308,15 +307,15 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: OTr_GetPicture JPG did not match expected picture"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="11 long array values"
-		ARRAY LONGINT($longArray_ai; 3)
+		ARRAY LONGINT:C221($longArray_ai; 3)
 		$longArray_ai{1}:=10
 		$longArray_ai{2}:=-20
 		$longArray_ai{3}:=3000
-		ARRAY LONGINT($gotLongArray_ai; 0)
+		ARRAY LONGINT:C221($gotLongArray_ai; 0)
 		$otH_i:=OT New
 		OT PutArray($otH_i; "longArray"; $longArray_ai)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
@@ -335,8 +334,8 @@ If (Current process name=$DesiredProcessName_t)
 			$long3_i:=OTr_GetArrayLong($otrH_i; "longArray"; 3)
 			OTr_GetArray($otrH_i; "longArray"; ->$gotLongArray_ai)
 		End if 
-		$pass_b:=False
-		If ((OK=1) & (Size of array($gotLongArray_ai)=3))
+		$pass_b:=False:C215
+		If ((OK=1) & (Size of array:C274($gotLongArray_ai)=3))
 			$pass_b:=(($gotLongArray_ai{1}=10) & ($gotLongArray_ai{2}=-20) & ($gotLongArray_ai{3}=3000))
 		End if 
 		If ($otrH_i>0)
@@ -347,20 +346,20 @@ If (Current process name=$DesiredProcessName_t)
 			$result_t:="Pass"
 		Else 
 			$failed_i:=$failed_i+1
-			$result_t:="Fail: OTr_GetArray long values did not match; arrayType="+String($arrayType_i)+"; size="+String($size_i)+"; restoredSize="+String(Size of array($gotLongArray_ai))+"; elementGetters="+String($long1_i)+","+String($long2_i)+","+String($long3_i)
-			If (Size of array($gotLongArray_ai)>=3)
-				$result_t:=$result_t+"; restored="+String($gotLongArray_ai{1})+","+String($gotLongArray_ai{2})+","+String($gotLongArray_ai{3})
+			$result_t:="Fail: OTr_GetArray long values did not match; arrayType="+String:C10($arrayType_i)+"; size="+String:C10($size_i)+"; restoredSize="+String:C10(Size of array:C274($gotLongArray_ai))+"; elementGetters="+String:C10($long1_i)+","+String:C10($long2_i)+","+String:C10($long3_i)
+			If (Size of array:C274($gotLongArray_ai)>=3)
+				$result_t:=$result_t+"; restored="+String:C10($gotLongArray_ai{1})+","+String:C10($gotLongArray_ai{2})+","+String:C10($gotLongArray_ai{3})
 			End if 
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="12 real array values"
-		ARRAY REAL($realArray_ar; 3)
+		ARRAY REAL:C219($realArray_ar; 3)
 		$realArray_ar{1}:=1.5
 		$realArray_ar{2}:=-2.25
 		$realArray_ar{3}:=9.75
-		ARRAY REAL($gotRealArray_ar; 0)
+		ARRAY REAL:C219($gotRealArray_ar; 0)
 		$otH_i:=OT New
 		OT PutArray($otH_i; "realArray"; $realArray_ar)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
@@ -379,9 +378,9 @@ If (Current process name=$DesiredProcessName_t)
 			$real3_r:=OTr_GetArrayReal($otrH_i; "realArray"; 3)
 			OTr_GetArray($otrH_i; "realArray"; ->$gotRealArray_ar)
 		End if 
-		$pass_b:=False
-		If ((OK=1) & (Size of array($gotRealArray_ar)=3))
-			$pass_b:=((Abs($gotRealArray_ar{1}-1.5)<0.00001) & (Abs($gotRealArray_ar{2}+2.25)<0.00001) & (Abs($gotRealArray_ar{3}-9.75)<0.00001))
+		$pass_b:=False:C215
+		If ((OK=1) & (Size of array:C274($gotRealArray_ar)=3))
+			$pass_b:=((Abs:C99($gotRealArray_ar{1}-1.5)<0.00001) & (Abs:C99($gotRealArray_ar{2}+2.25)<0.00001) & (Abs:C99($gotRealArray_ar{3}-9.75)<0.00001))
 		End if 
 		If ($otrH_i>0)
 			OTr_Clear($otrH_i)
@@ -391,20 +390,20 @@ If (Current process name=$DesiredProcessName_t)
 			$result_t:="Pass"
 		Else 
 			$failed_i:=$failed_i+1
-			$result_t:="Fail: OTr_GetArray real values did not match; arrayType="+String($arrayType_i)+"; size="+String($size_i)+"; restoredSize="+String(Size of array($gotRealArray_ar))+"; elementGetters="+String($real1_r)+","+String($real2_r)+","+String($real3_r)
-			If (Size of array($gotRealArray_ar)>=3)
-				$result_t:=$result_t+"; restored="+String($gotRealArray_ar{1})+","+String($gotRealArray_ar{2})+","+String($gotRealArray_ar{3})
+			$result_t:="Fail: OTr_GetArray real values did not match; arrayType="+String:C10($arrayType_i)+"; size="+String:C10($size_i)+"; restoredSize="+String:C10(Size of array:C274($gotRealArray_ar))+"; elementGetters="+String:C10($real1_r)+","+String:C10($real2_r)+","+String:C10($real3_r)
+			If (Size of array:C274($gotRealArray_ar)>=3)
+				$result_t:=$result_t+"; restored="+String:C10($gotRealArray_ar{1})+","+String:C10($gotRealArray_ar{2})+","+String:C10($gotRealArray_ar{3})
 			End if 
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="13 boolean array values"
-		ARRAY BOOLEAN($booleanArray_ab; 3)
-		$booleanArray_ab{1}:=True
-		$booleanArray_ab{2}:=False
-		$booleanArray_ab{3}:=True
-		ARRAY BOOLEAN($gotBooleanArray_ab; 0)
+		ARRAY BOOLEAN:C223($booleanArray_ab; 3)
+		$booleanArray_ab{1}:=True:C214
+		$booleanArray_ab{2}:=False:C215
+		$booleanArray_ab{3}:=True:C214
+		ARRAY BOOLEAN:C223($gotBooleanArray_ab; 0)
 		$otH_i:=OT New
 		OT PutArray($otH_i; "booleanArray"; $booleanArray_ab)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
@@ -413,9 +412,9 @@ If (Current process name=$DesiredProcessName_t)
 		If ((OK=1) & ($otrH_i>0))
 			OTr_GetArray($otrH_i; "booleanArray"; ->$gotBooleanArray_ab)
 		End if 
-		$pass_b:=False
-		If ((OK=1) & (Size of array($gotBooleanArray_ab)=3))
-			$pass_b:=(($gotBooleanArray_ab{1}=True) & ($gotBooleanArray_ab{2}=False) & ($gotBooleanArray_ab{3}=True))
+		$pass_b:=False:C215
+		If ((OK=1) & (Size of array:C274($gotBooleanArray_ab)=3))
+			$pass_b:=(($gotBooleanArray_ab{1}=True:C214) & ($gotBooleanArray_ab{2}=False:C215) & ($gotBooleanArray_ab{3}=True:C214))
 		End if 
 		If ($otrH_i>0)
 			OTr_Clear($otrH_i)
@@ -427,15 +426,15 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: OTr_GetArray boolean values did not match"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="14 date array values"
-		ARRAY DATE($dateArray_ad; 3)
+		ARRAY DATE:C224($dateArray_ad; 3)
 		$dateArray_ad{1}:=!2026-04-14!
 		$dateArray_ad{2}:=!1863-06-22!
 		$dateArray_ad{3}:=!2030-12-31!
-		ARRAY DATE($gotDateArray_ad; 0)
+		ARRAY DATE:C224($gotDateArray_ad; 0)
 		$otH_i:=OT New
 		OT PutArray($otH_i; "dateArray"; $dateArray_ad)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
@@ -444,8 +443,8 @@ If (Current process name=$DesiredProcessName_t)
 		If ((OK=1) & ($otrH_i>0))
 			OTr_GetArray($otrH_i; "dateArray"; ->$gotDateArray_ad)
 		End if 
-		$pass_b:=False
-		If ((OK=1) & (Size of array($gotDateArray_ad)=3))
+		$pass_b:=False:C215
+		If ((OK=1) & (Size of array:C274($gotDateArray_ad)=3))
 			$pass_b:=(($gotDateArray_ad{1}=!2026-04-14!) & ($gotDateArray_ad{2}=!1863-06-22!) & ($gotDateArray_ad{3}=!2030-12-31!))
 		End if 
 		If ($otrH_i>0)
@@ -458,15 +457,15 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: OTr_GetArray date values did not match"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="15 time array values"
-		ARRAY TIME($timeArray_ah; 3)
+		ARRAY TIME:C1223($timeArray_ah; 3)
 		$timeArray_ah{1}:=?00:00:00?
 		$timeArray_ah{2}:=?10:30:45?
 		$timeArray_ah{3}:=?23:59:58?
-		ARRAY TIME($gotTimeArray_ah; 0)
+		ARRAY TIME:C1223($gotTimeArray_ah; 0)
 		$otH_i:=OT New
 		OT PutArray($otH_i; "timeArray"; $timeArray_ah)
 		$legacyBlob_blob:=OT ObjectToNewBLOB($otH_i)
@@ -475,8 +474,8 @@ If (Current process name=$DesiredProcessName_t)
 		If ((OK=1) & ($otrH_i>0))
 			OTr_GetArray($otrH_i; "timeArray"; ->$gotTimeArray_ah)
 		End if 
-		$pass_b:=False
-		If ((OK=1) & (Size of array($gotTimeArray_ah)=3))
+		$pass_b:=False:C215
+		If ((OK=1) & (Size of array:C274($gotTimeArray_ah)=3))
 			$pass_b:=(($gotTimeArray_ah{1}=?00:00:00?) & ($gotTimeArray_ah{2}=?10:30:45?) & ($gotTimeArray_ah{3}=?23:59:58?))
 		End if 
 		If ($otrH_i>0)
@@ -489,7 +488,7 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: OTr_GetArray time values did not match"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="16 embedded object text value"
@@ -505,7 +504,7 @@ If (Current process name=$DesiredProcessName_t)
 		If ((OK=1) & ($otrH_i>0))
 			$childOTrH_i:=OTr_GetObject($otrH_i; "embeddedObject")
 		End if 
-		$pass_b:=False
+		$pass_b:=False:C215
 		If ((OK=1) & ($childOTrH_i>0))
 			$pass_b:=(OTr_GetText($childOTrH_i; "text")="embedded-text")
 		End if 
@@ -522,14 +521,14 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: embedded OTr_GetObject/OTr_GetText did not match"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="17 embedded object text array values"
-		ARRAY TEXT($textArray_at; 2)
+		ARRAY TEXT:C222($textArray_at; 2)
 		$textArray_at{1}:="child-alpha"
 		$textArray_at{2}:="child-bravo"
-		ARRAY TEXT($gotTextArray_at; 0)
+		ARRAY TEXT:C222($gotTextArray_at; 0)
 		$otH_i:=OT New
 		$childH_i:=OT New
 		OT PutArray($childH_i; "textArray"; $textArray_at)
@@ -545,8 +544,8 @@ If (Current process name=$DesiredProcessName_t)
 				OTr_GetArray($childOTrH_i; "textArray"; ->$gotTextArray_at)
 			End if 
 		End if 
-		$pass_b:=False
-		If ((OK=1) & ($childOTrH_i>0) & (Size of array($gotTextArray_at)=2))
+		$pass_b:=False:C215
+		If ((OK=1) & ($childOTrH_i>0) & (Size of array:C274($gotTextArray_at)=2))
 			$pass_b:=(($gotTextArray_at{1}="child-alpha") & ($gotTextArray_at{2}="child-bravo"))
 		End if 
 		If ($childOTrH_i>0)
@@ -562,18 +561,18 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: embedded OTr_GetArray text values did not match"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
 		$total_i:=$total_i+1
 		$caseName_t:="18 mixed object values"
-		ARRAY TEXT($textArray_at; 2)
+		ARRAY TEXT:C222($textArray_at; 2)
 		$textArray_at{1}:="mix-alpha"
 		$textArray_at{2}:="mix-bravo"
-		ARRAY LONGINT($longArray_ai; 2)
+		ARRAY LONGINT:C221($longArray_ai; 2)
 		$longArray_ai{1}:=100
 		$longArray_ai{2}:=200
-		ARRAY TEXT($gotTextArray_at; 0)
-		ARRAY LONGINT($gotLongArray_ai; 0)
+		ARRAY TEXT:C222($gotTextArray_at; 0)
+		ARRAY LONGINT:C221($gotLongArray_ai; 0)
 		$otH_i:=OT New
 		$childH_i:=OT New
 		OT PutText($otH_i; "text"; "mixed")
@@ -592,8 +591,8 @@ If (Current process name=$DesiredProcessName_t)
 			OTr_GetArray($otrH_i; "longArray"; ->$gotLongArray_ai)
 			$childOTrH_i:=OTr_GetObject($otrH_i; "embeddedObject")
 		End if 
-		$pass_b:=False
-		If ((OK=1) & ($otrH_i>0) & ($childOTrH_i>0) & (Size of array($gotTextArray_at)=2) & (Size of array($gotLongArray_ai)=2))
+		$pass_b:=False:C215
+		If ((OK=1) & ($otrH_i>0) & ($childOTrH_i>0) & (Size of array:C274($gotTextArray_at)=2) & (Size of array:C274($gotLongArray_ai)=2))
 			$pass_b:=((OTr_GetText($otrH_i; "text")="mixed") & (OTr_GetLong($otrH_i; "long")=42) & ($gotTextArray_at{1}="mix-alpha") & ($gotTextArray_at{2}="mix-bravo") & ($gotLongArray_ai{1}=100) & ($gotLongArray_ai{2}=200) & (OTr_GetText($childOTrH_i; "text")="child"))
 		End if 
 		If ($childOTrH_i>0)
@@ -609,32 +608,31 @@ If (Current process name=$DesiredProcessName_t)
 			$failed_i:=$failed_i+1
 			$result_t:="Fail: mixed object getter values did not match"
 		End if 
-		$report_t:=$report_t+$caseName_t+": "+$result_t+Char(Carriage return)
+		$report_t:=$report_t+$caseName_t+": "+$result_t+Char:C90(Carriage return:K15:38)
 		
-		$summary_t:="Phase 16a OT BLOB Value Tests"+Char(Carriage return)
-		$summary_t:=$summary_t+"Total:  "+String($total_i)+Char(Carriage return)
-		$summary_t:=$summary_t+"Passed: "+String($passed_i)+Char(Carriage return)
-		$summary_t:=$summary_t+"Failed: "+String($failed_i)
+		$summary_t:="Phase 16a OT BLOB Value Tests"+Char:C90(Carriage return:K15:38)
+		$summary_t:=$summary_t+"Total:  "+String:C10($total_i)+Char:C90(Carriage return:K15:38)
+		$summary_t:=$summary_t+"Passed: "+String:C10($passed_i)+Char:C90(Carriage return:K15:38)
+		$summary_t:=$summary_t+"Failed: "+String:C10($failed_i)
 	End if 
 	
-	$report_t:=$report_t+Char(Carriage return)+$summary_t
-	$reportPath_t:=Get 4D folder(Logs folder; *)+"____Test_Phase_16a_OTBlobValues.txt"
-	TEXT TO DOCUMENT($reportPath_t; $report_t; "UTF-8")
+	$report_t:=$report_t+Char:C90(Carriage return:K15:38)+$summary_t
+	$reportPath_t:=Get 4D folder:C485(Logs folder:K5:19; *)+"____Test_Phase_16a_OTBlobValues.txt"
+	TEXT TO DOCUMENT:C1237($reportPath_t; $report_t; "UTF-8")
 	
 	If ($hideAlert_b)
 	Else 
-		ALERT($summary_t+Char(Carriage return)+"Report written to: "+$reportPath_t)
-		SET TEXT TO PASTEBOARD($report_t)
+		ALERT:C41($summary_t+Char:C90(Carriage return:K15:38)+"Report written to: "+$reportPath_t)
+		SET TEXT TO PASTEBOARD:C523($report_t)
 	End if 
 	
 Else 
-	$ProcessID_i:=New process(Current method name; $StackSize_i; $DesiredProcessName_t; $hideAlert_b; *)
-	RESUME PROCESS($ProcessID_i)
-	SHOW PROCESS($ProcessID_i)
-	BRING TO FRONT($ProcessID_i)
+	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $DesiredProcessName_t; $hideAlert_b; *)
+	RESUME PROCESS:C320($ProcessID_i)
+	SHOW PROCESS:C325($ProcessID_i)
+	BRING TO FRONT:C326($ProcessID_i)
 End if 
 
-OTr_z_RemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)
 
-*/
 // ==== END OT BLOCK ====

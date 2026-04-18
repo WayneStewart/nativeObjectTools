@@ -1,4 +1,17 @@
 {
+	"Codex Live Testing": {
+		"methods": [
+			"Codex_Run",
+			"Codex_z_CompileResultForJSON",
+			"Codex_z_IsLocalRequest",
+			"Codex_z_Phase16Diag",
+			"Codex_z_RunCompileOnMain",
+			"Codex_z_RestartProjectWorker",
+			"Codex_z_RunUnitTestWorker",
+			"util_compileProject",
+			"util_restartProject"
+		]
+	},
 	"Constants": {},
 	"Logging": {
 		"methods": [
@@ -160,9 +173,6 @@
 		]
 	},
 	"OT Testing": {
-		"tables": [
-			"Table_1"
-		],
 		"methods": [
 			"________DemoForAi",
 			"____Test_Phase_1",

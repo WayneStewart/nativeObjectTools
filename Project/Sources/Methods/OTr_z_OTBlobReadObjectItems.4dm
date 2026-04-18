@@ -200,7 +200,7 @@ While (($item_i<=$inItemCount_i) & ($ok_b))
 					$ioOffset_ptr->:=$ioOffset_ptr->+8
 					$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; $ioOffset_ptr)
 					$ioOffset_ptr->:=$ioOffset_ptr->+4
-					$payloadStart_i:=$ioOffset_ptr->+$descriptorBytes_i-($count_i*4)-4
+					$payloadStart_i:=$ioOffset_ptr->+$descriptorBytes_i-($count_i*4)-5
 					If (($payloadStart_i<0) | (($payloadStart_i+($count_i*4))>BLOB size($inBlob_blob)))
 						$payloadStart_i:=$ioOffset_ptr->-1
 					End if

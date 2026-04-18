@@ -348,7 +348,7 @@ If (OTr_z_OTBlobIsObject($inBlob_blob))
 							$offset_i:=$offset_i+8
 							$descriptorBytes_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 							$offset_i:=$offset_i+4
-							$payloadStart_i:=$offset_i+$descriptorBytes_i-($count_i*4)-4
+							$payloadStart_i:=$offset_i+$descriptorBytes_i-($count_i*4)-5
 							If (($payloadStart_i<0) | (($payloadStart_i+($count_i*4))>BLOB size:C605($inBlob_blob)))
 								$payloadStart_i:=$offset_i-1
 							End if 

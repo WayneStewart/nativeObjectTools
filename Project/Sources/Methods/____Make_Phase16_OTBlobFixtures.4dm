@@ -24,14 +24,13 @@
 #DECLARE($suppressAlert_b : Boolean)
 
 // ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ====
-/*
 
 
-OTr_z_AddToCallStack(Current method name)
+OTr_z_AddToCallStack(Current method name:C684)
 
 var $hideAlert_b : Boolean
-If (Count parameters<1)
-	$hideAlert_b:=False
+If (Count parameters:C259<1)
+	$hideAlert_b:=False:C215
 Else 
 	$hideAlert_b:=$suppressAlert_b
 End if 
@@ -43,15 +42,15 @@ var $docPath_t : Text
 var $legacyBlob_blob; $testBlob_blob; $docBlob_blob : Blob
 var $testPic_pic : Picture
 
-ARRAY TEXT($textArray_at; 0)
-ARRAY LONGINT($longArray_ai; 0)
-ARRAY BOOLEAN($booleanArray_ab; 0)
+ARRAY TEXT:C222($textArray_at; 0)
+ARRAY LONGINT:C221($longArray_ai; 0)
+ARRAY BOOLEAN:C223($booleanArray_ab; 0)
 
-$resourcesPath_t:=Get 4D folder(Current resources folder)
-$blobFolderPath_t:=$resourcesPath_t+"blobs"+Folder separator
-CREATE FOLDER($blobFolderPath_t; *)
+$resourcesPath_t:=Get 4D folder:C485(Current resources folder:K5:16)
+$blobFolderPath_t:=$resourcesPath_t+"blobs"+Folder separator:K24:12
+CREATE FOLDER:C475($blobFolderPath_t; *)
 
-$reg_i:=OT Register(Storage.OTr.registrationCode)
+$reg_i:=OT Register(Storage:C1525.OTr.registrationCode)
 $rootOT_i:=OT New
 If ($rootOT_i=0)
 	$summary_t:="Phase 16 OT BLOB fixture generation skipped: ObjectTools 5.0 is not available or not registered."
@@ -59,26 +58,26 @@ Else
 	OT Clear($rootOT_i)
 	
 	// Deep mixed object with DOCX BLOB and JPG picture.
-	ARRAY TEXT($textArray_at; 3)
+	ARRAY TEXT:C222($textArray_at; 3)
 	$textArray_at{1}:="deep-alpha"
 	$textArray_at{2}:="deep-bravo"
 	$textArray_at{3}:="deep-charlie"
-	ARRAY LONGINT($longArray_ai; 3)
+	ARRAY LONGINT:C221($longArray_ai; 3)
 	$longArray_ai{1}:=10
 	$longArray_ai{2}:=-20
 	$longArray_ai{3}:=3000
-	ARRAY BOOLEAN($booleanArray_ab; 3)
-	$booleanArray_ab{1}:=True
-	$booleanArray_ab{2}:=False
-	$booleanArray_ab{3}:=True
-	SET BLOB SIZE($testBlob_blob; 5)
+	ARRAY BOOLEAN:C223($booleanArray_ab; 3)
+	$booleanArray_ab{1}:=True:C214
+	$booleanArray_ab{2}:=False:C215
+	$booleanArray_ab{3}:=True:C214
+	SET BLOB SIZE:C606($testBlob_blob; 5)
 	$testBlob_blob{0}:=1
 	$testBlob_blob{1}:=2
 	$testBlob_blob{2}:=0
 	$testBlob_blob{3}:=255
 	$testBlob_blob{4}:=42
 	$docPath_t:=$resourcesPath_t+"1 Corinthians 1.docx"
-	DOCUMENT TO BLOB($docPath_t; $docBlob_blob)
+	DOCUMENT TO BLOB:C525($docPath_t; $docBlob_blob)
 	$testPic_pic:=OTr_z_Echidna
 	
 	$rootOT_i:=OT New
@@ -90,7 +89,7 @@ Else
 	OT PutLong($level2OT_i; "level2Long"; -12345)
 	OT PutText($level3OT_i; "Citem"; "deep text")
 	OT PutReal($level3OT_i; "amount"; 123.456)
-	OT PutBoolean($level3OT_i; "flag"; Num(True))
+	OT PutBoolean($level3OT_i; "flag"; Num:C11(True:C214))
 	OT PutDate($level3OT_i; "when"; !2026-04-14!)
 	OT PutTime($level3OT_i; "clock"; ?12:34:56?)
 	OT PutBLOB($level3OT_i; "data"; $testBlob_blob)
@@ -104,17 +103,17 @@ Else
 	OT PutObject($rootOT_i; "AnObject"; $level1OT_i)
 	$legacyBlob_blob:=OT ObjectToNewBLOB($rootOT_i)
 	$outPath_t:=$blobFolderPath_t+"Phase16-master-deep-mixed-docx.blob"
-	BLOB TO DOCUMENT($outPath_t; $legacyBlob_blob)
+	BLOB TO DOCUMENT:C526($outPath_t; $legacyBlob_blob)
 	OT Clear($level3OT_i)
 	OT Clear($level2OT_i)
 	OT Clear($level1OT_i)
 	OT Clear($rootOT_i)
 	
 	// Sibling deep object fixture for order and dotted-path coverage.
-	ARRAY TEXT($textArray_at; 2)
+	ARRAY TEXT:C222($textArray_at; 2)
 	$textArray_at{1}:="left-one"
 	$textArray_at{2}:="left-two"
-	ARRAY LONGINT($longArray_ai; 2)
+	ARRAY LONGINT:C221($longArray_ai; 2)
 	$longArray_ai{1}:=-1
 	$longArray_ai{2}:=-2
 	
@@ -137,7 +136,7 @@ Else
 	OT PutText($rootOT_i; "after"; "after-value")
 	$legacyBlob_blob:=OT ObjectToNewBLOB($rootOT_i)
 	$outPath_t:=$blobFolderPath_t+"Phase16-master-sibling-deep-ordering.blob"
-	BLOB TO DOCUMENT($outPath_t; $legacyBlob_blob)
+	BLOB TO DOCUMENT:C526($outPath_t; $legacyBlob_blob)
 	OT Clear($siblingOT_i)
 	OT Clear($level3OT_i)
 	OT Clear($level2OT_i)
@@ -147,11 +146,10 @@ Else
 	$summary_t:="Phase 16 OT BLOB fixtures generated in "+$blobFolderPath_t
 End if 
 
-If (Not($hideAlert_b))
-	ALERT($summary_t)
+If (Not:C34($hideAlert_b))
+	ALERT:C41($summary_t)
 End if 
 
-OTr_z_RemoveFromCallStack(Current method name)
+OTr_z_RemoveFromCallStack(Current method name:C684)
 
-*/
 // ==== END OT BLOCK ====
