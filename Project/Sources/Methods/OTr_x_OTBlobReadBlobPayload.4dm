@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr_z_OTBlobReadBlobPayload (inBlob; ioOffset; outBlob) --> Boolean
+// Project Method: OTr_x_OTBlobReadBlobPayload (inBlob; ioOffset; outBlob) --> Boolean
 
 // Reads a legacy ObjectTools BLOB payload after marker 158.
 // Proven layout:
@@ -31,7 +31,7 @@ $result_b:=False:C215
 If ($ioOffset_ptr#Null)
 	If (($ioOffset_ptr->+5)<=BLOB size($inBlob_blob))
 		$ioOffset_ptr->:=$ioOffset_ptr->+1
-		$count_i:=OTr_z_OTBlobReadUInt32BE($inBlob_blob; $ioOffset_ptr)
+		$count_i:=OTr_x_OTBlobReadUInt32BE($inBlob_blob; $ioOffset_ptr)
 		
 		If (($count_i>=0) & (($ioOffset_ptr->+$count_i)<=BLOB size($inBlob_blob)))
 			SET BLOB SIZE($outBlob_ptr->; $count_i)

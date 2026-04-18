@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"preemptive":"capable"}
 // ----------------------------------------------------
-// Project Method: Codex_Run (methodName; clientIP) --> Object
+// Project Method: OTr_w_Run (methodName; clientIP) --> Object
 //
 // Loopback-only dispatcher for local Codex testing calls made through
 // the 4D web server. Keep this method whitelisted: do not expose
@@ -20,7 +20,7 @@ $response_o.method:=$method_t
 $response_o.clientIP:=$clientIP_t
 $response_o.applicationVersion:=Application version:C493
 
-If (Not:C34(Codex_z_IsLocalRequest($clientIP_t)))
+If (Not:C34(OTr_w_IsLocalRequest($clientIP_t)))
 	$response_o.error:="Denied: Codex bridge only accepts loopback requests."
 Else
 	Case of
@@ -32,7 +32,7 @@ Else
 
 		: ($method_t="util_compileProject")
 			$signal_o:=New signal:C1641("Codex util_compileProject")
-			CALL WORKER:C1389(1; "Codex_z_RunCompileOnMain"; $signal_o)
+			CALL WORKER:C1389(1; "OTr_w_RunCompileOnMain"; $signal_o)
 			$signaled_b:=$signal_o.wait(120)
 			If ($signaled_b)
 				$resultJSON_t:=$signal_o.resultJSON
@@ -49,7 +49,7 @@ Else
 			Use ($signal_o)
 				$signal_o.methodName:=$testMethod_t
 			End use
-			CALL WORKER:C1389($testMethod_t; "Codex_z_RunUnitTestWorker"; $signal_o)
+			CALL WORKER:C1389($testMethod_t; "OTr_w_RunUnitTestWorker"; $signal_o)
 			$signaled_b:=$signal_o.wait(600)
 			If ($signaled_b)
 				$resultJSON_t:=$signal_o.resultJSON
@@ -60,13 +60,26 @@ Else
 				$response_o.error:="Timed out waiting for unit tests to complete."
 			End if
 
+		: ($method_t="guyBlobExport")
+			$signal_o:=New signal:C1641("Codex Guy BLOB export")
+			CALL WORKER:C1389(1; "OTr_w_GuyBlobExport"; $signal_o)
+			$signaled_b:=$signal_o.wait(600)
+			If ($signaled_b)
+				$resultJSON_t:=$signal_o.resultJSON
+				$result_o:=JSON Parse:C1218($resultJSON_t; Is object:K8:27)
+				$response_o.ok:=$result_o.ok
+				$response_o.result:=$result_o
+			Else
+				$response_o.error:="Timed out waiting for Guy BLOB export to complete."
+			End if
+
 		: ($method_t="util_restartProject")
 			$result_o:=New object:C1471
 			$result_o.message:="Restart requested."
 			$result_o.delayTicks:=60
 			$response_o.ok:=True:C214
 			$response_o.result:=$result_o
-			CALL WORKER:C1389("Codex Restart"; "Codex_z_RestartProjectWorker")
+			CALL WORKER:C1389("Codex Restart"; "OTr_w_RestartProjectWorker")
 
 		: ($method_t="makePhase16Fixtures")
 			$result_o:=New object:C1471
@@ -77,7 +90,7 @@ Else
 
 		: ($method_t="phase16Diag")
 			$signal_o:=New signal:C1641("Codex Phase 16 diag")
-			CALL WORKER:C1389(1; "Codex_z_Phase16Diag"; $signal_o)
+			CALL WORKER:C1389(1; "OTr_w_Phase16Diag"; $signal_o)
 			$signaled_b:=$signal_o.wait(120)
 			If ($signaled_b)
 				$resultJSON_t:=$signal_o.resultJSON
@@ -90,6 +103,6 @@ Else
 
 		Else
 			$response_o.error:="Method is not whitelisted for Codex bridge calls."
-			$response_o.allowed:=New collection:C1472("ping"; "util_compileProject"; "unitTests"; "____Test_OTr_Master"; "util_restartProject"; "makePhase16Fixtures"; "phase16Diag")
+			$response_o.allowed:=New collection:C1472("ping"; "util_compileProject"; "unitTests"; "____Test_OTr_Master"; "guyBlobExport"; "util_restartProject"; "makePhase16Fixtures"; "phase16Diag")
 	End case
 End if

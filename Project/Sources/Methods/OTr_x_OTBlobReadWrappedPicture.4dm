@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr_z_OTBlobReadWrappedPicture (inBlob; inOffset; outEndOffset; outPicture) --> Boolean
+// Project Method: OTr_x_OTBlobReadWrappedPicture (inBlob; inOffset; outEndOffset; outPicture) --> Boolean
 
 // Finds a PNG or JPEG stream inside a legacy ObjectTools picture
 // payload and converts it into a native 4D picture.
@@ -55,7 +55,7 @@ Case of
 		$chunkStart_i:=$mediaStart_i+8
 		While (($chunkStart_i+11)<$blobSize_i) & ($mediaEnd_i<0)
 			$chunkOffset_i:=$chunkStart_i
-			$chunkLen_i:=OTr_z_OTBlobReadUInt32BE($inBlob_blob; ->$chunkOffset_i)
+			$chunkLen_i:=OTr_x_OTBlobReadUInt32BE($inBlob_blob; ->$chunkOffset_i)
 			$nextChunk_i:=$chunkStart_i+12+$chunkLen_i
 			If ($nextChunk_i>$blobSize_i)
 				$chunkStart_i:=$blobSize_i

@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr_z_OTBlobIsObject (inBlob) --> Boolean
+// Project Method: OTr_x_OTBlobIsObject (inBlob) --> Boolean
 
 // Detects the ObjectTools object BLOB envelope used by OT ObjectToBLOB
 // and OT ObjectToNewBLOB.

@@ -1,7 +1,0 @@
-$vl_objHdl:=OT BLOBToObject([ReceiptItems]jukeboxSongs)	
-OT GetArray($vl_objHdl; "songs"; $songListID_aT)
-customerName_vT:=OT GetText($vl_objHdl; "customer")
-If (customerName_vT="")
-	customerName_vT:=OT GetText($vl_objHdl; "name")
-End if 
-OT Clear($vl_objHdl)

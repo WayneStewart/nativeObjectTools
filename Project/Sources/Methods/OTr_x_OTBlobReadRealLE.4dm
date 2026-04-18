@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr_z_OTBlobReadRealLE (inBlob; ioOffset) --> Real
+// Project Method: OTr_x_OTBlobReadRealLE (inBlob; ioOffset) --> Real
 
 // Reads an IEEE-754 binary64 value stored little-endian in a legacy
 // ObjectTools BLOB and advances ioOffset by 8 bytes.

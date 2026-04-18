@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr_z_OTBlobReadUInt16LE (inBlob; ioOffset) --> Integer
+// Project Method: OTr_x_OTBlobReadUInt16LE (inBlob; ioOffset) --> Integer
 
 // Reads an unsigned 16-bit little-endian value from a legacy
 // ObjectTools BLOB and advances ioOffset by 2 bytes.

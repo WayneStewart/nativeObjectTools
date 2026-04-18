@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: Codex_z_CompileResultForJSON (compileResult) --> Object
+// Project Method: OTr_w_CompileResultForJSON (compileResult) --> Object
 //
 // Produces a JSON-safe summary of Compile project results. The native
 // compiler result can include objects such as 4D.File that are not useful

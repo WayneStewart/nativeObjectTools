@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"preemptive":"capable"}
 // ----------------------------------------------------
-// Project Method: Codex_z_IsLocalRequest (clientIP) --> Boolean
+// Project Method: OTr_w_IsLocalRequest (clientIP) --> Boolean
 //
 // Accepts loopback forms commonly reported by 4D's web server.
 // ----------------------------------------------------

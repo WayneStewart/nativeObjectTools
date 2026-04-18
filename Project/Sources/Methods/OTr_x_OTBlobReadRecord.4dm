@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr_z_OTBlobReadRecord (inBlob; ioOffset) --> Object
+// Project Method: OTr_x_OTBlobReadRecord (inBlob; ioOffset) --> Object
 
 // Reads a legacy ObjectTools packed record payload (marker 115) into
 // the native OTr record snapshot shape.
@@ -46,8 +46,8 @@ If ($ioOffset_ptr#Null)
 	If (($offset_i+7)<BLOB size($inBlob_blob))
 		$tableNum_i:=($inBlob_blob{$offset_i}*256)+$inBlob_blob{$offset_i+1}
 		$offset_i:=$offset_i+2
-		$recordNum_i:=OTr_z_OTBlobReadUInt32BE($inBlob_blob; ->$offset_i)
-		$flags_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+		$recordNum_i:=OTr_x_OTBlobReadUInt32BE($inBlob_blob; ->$offset_i)
+		$flags_i:=OTr_x_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 		
 		$record_o:=New object("__tableNum"; $tableNum_i; "__recordNum"; $recordNum_i; "__flags"; $flags_i)
 		$fields_o:=New object
@@ -64,8 +64,8 @@ If ($ioOffset_ptr#Null)
 		
 		$ok_b:=True
 		While (($ok_b) & (($offset_i+3)<BLOB size($inBlob_blob)))
-			$fieldNum_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
-			$fieldType_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+			$fieldNum_i:=OTr_x_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+			$fieldType_i:=OTr_x_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 			
 			If (($fieldNum_i=0) & ($fieldType_i=0))
 				$offset_i:=BLOB size($inBlob_blob)
@@ -84,7 +84,7 @@ If ($ioOffset_ptr#Null)
 				Case of
 					: ($fieldType_i=1)
 						If (($offset_i+1)<BLOB size($inBlob_blob))
-							$value_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+							$value_i:=OTr_x_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 							OB SET($record_o; $fieldKey_t; $value_i)
 							OB SET($fields_o; String($fieldNum_i); $fieldKey_t)
 							$fieldCount_i:=$fieldCount_i+1
@@ -97,7 +97,7 @@ If ($ioOffset_ptr#Null)
 						
 					: ($fieldType_i=3)
 						If (($offset_i+1)<BLOB size($inBlob_blob))
-							$value_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+							$value_i:=OTr_x_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 							$value_b:=($value_i#0)
 							OB SET($record_o; $fieldKey_t; $value_b)
 							OB SET($fields_o; String($fieldNum_i); $fieldKey_t)
@@ -111,7 +111,7 @@ If ($ioOffset_ptr#Null)
 						
 					: ($fieldType_i=4)
 						If (($offset_i+3)<BLOB size($inBlob_blob))
-							$value_i:=OTr_z_OTBlobReadInt32LE($inBlob_blob; ->$offset_i)
+							$value_i:=OTr_x_OTBlobReadInt32LE($inBlob_blob; ->$offset_i)
 							OB SET($record_o; $fieldKey_t; $value_i)
 							OB SET($fields_o; String($fieldNum_i); $fieldKey_t)
 							$fieldCount_i:=$fieldCount_i+1
@@ -124,7 +124,7 @@ If ($ioOffset_ptr#Null)
 						
 					: ($fieldType_i=6)
 						If (($offset_i+7)<BLOB size($inBlob_blob))
-							$value_r:=OTr_z_OTBlobReadRealLE($inBlob_blob; ->$offset_i)
+							$value_r:=OTr_x_OTBlobReadRealLE($inBlob_blob; ->$offset_i)
 							OB SET($record_o; $fieldKey_t; $value_r)
 							OB SET($fields_o; String($fieldNum_i); $fieldKey_t)
 							$fieldCount_i:=$fieldCount_i+1
@@ -137,7 +137,7 @@ If ($ioOffset_ptr#Null)
 						
 					: ($fieldType_i=8)
 						If (($offset_i+7)<BLOB size($inBlob_blob))
-							$year_i:=OTr_z_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
+							$year_i:=OTr_x_OTBlobReadUInt16LE($inBlob_blob; ->$offset_i)
 							$month_i:=$inBlob_blob{$offset_i}
 							$day_i:=$inBlob_blob{$offset_i+1}
 							$offset_i:=$offset_i+6
@@ -177,12 +177,12 @@ If ($ioOffset_ptr#Null)
 						
 					: ($fieldType_i=10)
 						If (($offset_i+3)<BLOB size($inBlob_blob))
-							$textLen_i:=OTr_z_OTBlobReadInt32LE($inBlob_blob; ->$offset_i)
+							$textLen_i:=OTr_x_OTBlobReadInt32LE($inBlob_blob; ->$offset_i)
 							If ($textLen_i<0)
 								$textLen_i:=0-$textLen_i
 							End if
 							If (($offset_i+(($textLen_i*2)-1))<BLOB size($inBlob_blob))
-								$value_t:=OTr_z_OTBlobReadUTF16LE($inBlob_blob; ->$offset_i; $textLen_i; True)
+								$value_t:=OTr_x_OTBlobReadUTF16LE($inBlob_blob; ->$offset_i; $textLen_i; True)
 								OB SET($record_o; $fieldKey_t; $value_t)
 								OB SET($fields_o; String($fieldNum_i); $fieldKey_t)
 								$fieldCount_i:=$fieldCount_i+1

@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: Codex_z_RestartProjectWorker
+// Project Method: OTr_w_RestartProjectWorker
 //
 // Gives the HTTP bridge a moment to send its JSON response, then asks
 // the main process to restart 4D.

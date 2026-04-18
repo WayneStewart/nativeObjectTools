@@ -1,9 +1,9 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: Codex_z_RunUnitTestWorker (signal)
+// Project Method: OTr_w_RunUnitTestWorker (signal)
 //
 // Runs whitelisted unit tests in a cooperative worker and signals the
-// JSON-safe result back to Codex_Run.
+// JSON-safe result back to OTr_w_Run.
 // ----------------------------------------------------
 
 #DECLARE($signal_o : Object)

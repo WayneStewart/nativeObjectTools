@@ -36,7 +36,7 @@ $safeName_t:=Replace string:C233($safeName_t; "."; "_")
 $path_t:=Get 4D folder:C485(Logs folder:K5:19; *)+"Phase16-OTBlob-"+$safeName_t+".blob"
 BLOB TO DOCUMENT:C526($path_t; $legacyBlob_blob)
 
-$marker_t:=OTr_z_OTBlobDescribeFirstItem($legacyBlob_blob)
+$marker_t:="legacy OT BLOB bytes="+String:C10(BLOB size:C605($legacyBlob_blob))
 $otrH_i:=OTr_ImportLegacyBlob($legacyBlob_blob)
 
 If (OK=1) & ($otrH_i>0)

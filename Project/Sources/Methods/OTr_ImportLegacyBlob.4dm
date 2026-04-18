@@ -34,7 +34,7 @@ If (BLOB size:C605($inBLOB_blob)=0)
 	OTr_z_Error("BLOB is empty"; Current method name:C684)
 	OTr_z_SetOK(0)
 Else 
-	If (OTr_z_OTBlobIsObject($inBLOB_blob))
+	If (OTr_x_OTBlobIsObject($inBLOB_blob))
 		$handle_i:=OTr_BLOBToObject($inBLOB_blob)
 	Else 
 		OTr_z_Error("BLOB is not a legacy ObjectTools object BLOB"; Current method name:C684)

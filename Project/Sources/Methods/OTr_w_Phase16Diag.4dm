@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: Codex_z_Phase16Diag (signal)
+// Project Method: OTr_w_Phase16Diag (signal)
 //
 // Imports the Phase 16 deep fixture and reports each master-suite
 // predicate separately.
@@ -17,7 +17,7 @@ var $real_r : Real
 
 ARRAY LONGINT:C221($numbers_ai; 0)
 
-$result_o:=New object:C1471("ok"; False:C215; "method"; "Codex_z_Phase16Diag")
+$result_o:=New object:C1471("ok"; False:C215; "method"; "OTr_w_Phase16Diag")
 $checks_o:=New object:C1471
 $result_o.checks:=$checks_o
 

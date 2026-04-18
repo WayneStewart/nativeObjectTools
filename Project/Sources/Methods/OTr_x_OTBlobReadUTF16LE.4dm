@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
-// Project Method: OTr_z_OTBlobReadUTF16LE (inBlob; ioOffset; inCharCount; inDropNull) --> Text
+// Project Method: OTr_x_OTBlobReadUTF16LE (inBlob; ioOffset; inCharCount; inDropNull) --> Text
 
 // Reads UTF-16LE text from a legacy ObjectTools BLOB and advances
 // ioOffset by inCharCount UTF-16 code units.
