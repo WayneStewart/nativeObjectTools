@@ -1914,7 +1914,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$fixture16Path_t:=Get 4D folder:C485(Current resources folder:K5:16)+"blobs"+Folder separator:K24:12+"Phase16-master-deep-mixed-docx.blob"
 	DOCUMENT TO BLOB:C525($fixture16Path_t; $legacy16_blob)
 	$fixture16Bytes_i:=BLOB size:C605($legacy16_blob)
-	$doc16Path_t:=Get 4D folder:C485(Current resources folder:K5:16)+"1 Corinthians 1.docx"
+	$doc16Path_t:=Get 4D folder:C485(Database folder:K5:14)+"Examples"+Folder separator:K24:12+"1 Corinthians 1.docx"
 	DOCUMENT TO BLOB:C525($doc16Path_t; $doc16_blob)
 	$doc16Bytes_i:=BLOB size:C605($doc16_blob)
 	$pic16_pic:=OTr_z_Echidna

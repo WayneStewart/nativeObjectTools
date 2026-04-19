@@ -76,7 +76,7 @@ Else
 	$testBlob_blob{2}:=0
 	$testBlob_blob{3}:=255
 	$testBlob_blob{4}:=42
-	$docPath_t:=$resourcesPath_t+"1 Corinthians 1.docx"
+	$docPath_t:=Get 4D folder:C485(Database folder:K5:14)+"Examples"+Folder separator:K24:12+"1 Corinthians 1.docx"
 	DOCUMENT TO BLOB:C525($docPath_t; $docBlob_blob)
 	$testPic_pic:=OTr_z_Echidna
 	

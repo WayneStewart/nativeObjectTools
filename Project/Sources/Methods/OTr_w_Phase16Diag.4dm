@@ -22,7 +22,7 @@ $checks_o:=New object:C1471
 $result_o.checks:=$checks_o
 
 $fixturePath_t:=Get 4D folder:C485(Current resources folder:K5:16)+"blobs"+Folder separator:K24:12+"Phase16-master-deep-mixed-docx.blob"
-$docPath_t:=Get 4D folder:C485(Current resources folder:K5:16)+"1 Corinthians 1.docx"
+$docPath_t:=Get 4D folder:C485(Database folder:K5:14)+"Examples"+Folder separator:K24:12+"1 Corinthians 1.docx"
 
 DOCUMENT TO BLOB:C525($fixturePath_t; $legacy_blob)
 DOCUMENT TO BLOB:C525($docPath_t; $doc_blob)
