@@ -1,0 +1,1 @@
+<!--OTr_w_RestartProjectWorker Does not require any parameters -->## OTr\_w\_RestartProjectWorkerOTr\_w\_RestartProjectWorker // Gives the HTTP bridge a moment to send its JSON response, then asks the main process to restart 4D.DELAY PROCESS(Current process; 60) CALL WORKER(1; "util\_restartProject")| Parameters || --- || Does not require any parameters |
