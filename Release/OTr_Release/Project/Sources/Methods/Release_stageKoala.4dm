@@ -44,38 +44,43 @@ var $i_i : Integer
 var $keepFile_t : Text
 var $dirPath_t : Text
 var $filePath_t : Text
+var $done_b : Boolean
 ARRAY TEXT($fileList_at; 0)
 
 $sentinelPath_t:=$sentinelDir_t+"stage-koala.txt"
 $ok_b:=False
+$done_b:=False
 
 // ---------------------------------------------------------------------------
 // 1. Read exclusions.json from the project's Resources folder
 // ---------------------------------------------------------------------------
 
-$exclusionsPath_t:=Get 4D folder(Current resources folder)+"exclusions.json"
+If (Not($done_b))
 
-If (Test path name($exclusionsPath_t)#Is a document)
-	TEXT TO DOCUMENT($sentinelPath_t; \
-		"stageKoala failed"+Char(13)+"exclusions.json not found at: "+$exclusionsPath_t; \
-		"UTF-8")
-	$ok_b:=False
-	return
+	$exclusionsPath_t:=Get 4D folder(Current resources folder)+"exclusions.json"
+
+	If (Test path name($exclusionsPath_t)#Is a document)
+		TEXT TO DOCUMENT($sentinelPath_t; \
+			"stageKoala failed"+Char(13)+"exclusions.json not found at: "+$exclusionsPath_t; \
+			"UTF-8")
+		$done_b:=True
+	End if
+
 End if
 
-$json_t:=Document to text($exclusionsPath_t; "UTF-8")
-$exclusions_o:=JSON Parse($json_t; Is object)
+If (Not($done_b))
 
-If ($exclusions_o=Null)
-	TEXT TO DOCUMENT($sentinelPath_t; \
-		"stageKoala failed"+Char(13)+"exclusions.json could not be parsed"; \
-		"UTF-8")
-	$ok_b:=False
-	return
+	$json_t:=Document to text($exclusionsPath_t; "UTF-8")
+	$exclusions_o:=JSON Parse($json_t; Is object)
+
+	If ($exclusions_o=Null)
+		TEXT TO DOCUMENT($sentinelPath_t; \
+			"stageKoala failed"+Char(13)+"exclusions.json could not be parsed"; \
+			"UTF-8")
+		$done_b:=True
+	End if
+
 End if
-
-$alwaysStrip_c:=$exclusions_o["alwaysStrip"]
-$retainOnly_c:=$exclusions_o["retainOnly"]
 
 // ---------------------------------------------------------------------------
 // 2. Determine source and staging paths
@@ -83,72 +88,84 @@ $retainOnly_c:=$exclusions_o["retainOnly"]
 //    Repo root = two levels up
 // ---------------------------------------------------------------------------
 
-$sourceDir_t:=Get 4D folder(Database folder)
-$sourceDir_t:=Replace string($sourceDir_t; \
-	"Release"+Folder separator+"OTr_Release"+Folder separator; "")
+If (Not($done_b))
 
-$stagingDir_t:=Replace string($sourceDir_t; \
-	"nativeObjectTools"+Folder separator; \
-	"staging-koala"+Folder separator)
+	$sourceDir_t:=Get 4D folder(Database folder)
+	$sourceDir_t:=Replace string($sourceDir_t; \
+		"Release"+Folder separator+"OTr_Release"+Folder separator; "")
 
-// ---------------------------------------------------------------------------
-// 3. Build rsync command with --exclude flags
-// ---------------------------------------------------------------------------
+	$stagingDir_t:=Replace string($sourceDir_t; \
+		"nativeObjectTools"+Folder separator; \
+		"staging-koala"+Folder separator)
 
-$rsyncArgs_t:="--archive --delete"
+	$alwaysStrip_c:=$exclusions_o["alwaysStrip"]
+	$retainOnly_c:=$exclusions_o["retainOnly"]
 
-For each ($pattern_t; $alwaysStrip_c)
-	$rsyncArgs_t:=$rsyncArgs_t+" --exclude="+Char(34)+$pattern_t+Char(34)
-End for each
+	// ---------------------------------------------------------------------------
+	// 3. Build rsync command with --exclude flags
+	// ---------------------------------------------------------------------------
 
-$rsyncArgs_t:=$rsyncArgs_t+" --exclude="+Char(34)+"Release/OTr_Release/"+Char(34)
-$rsyncArgs_t:=$rsyncArgs_t+" --exclude="+Char(34)+".git/"+Char(34)
+	$rsyncArgs_t:="--archive --delete"
 
-$rsyncCmd_t:="rsync "+$rsyncArgs_t+" "+Char(34)+$sourceDir_t+Char(34)+" "+Char(34)+$stagingDir_t+Char(34)
+	For each ($pattern_t; $alwaysStrip_c)
+		$rsyncArgs_t:=$rsyncArgs_t+" --exclude="+Char(34)+$pattern_t+Char(34)
+	End for each
 
-LAUNCH EXTERNAL PROCESS($rsyncCmd_t; $stdout_t; $stderr_t)
+	$rsyncArgs_t:=$rsyncArgs_t+" --exclude="+Char(34)+"Release/OTr_Release/"+Char(34)
+	$rsyncArgs_t:=$rsyncArgs_t+" --exclude="+Char(34)+".git/"+Char(34)
 
-If (OK#1)
-	TEXT TO DOCUMENT($sentinelPath_t; \
-		"stageKoala failed"+Char(13)+"rsync failed"+Char(13)+$stderr_t; \
-		"UTF-8")
-	$ok_b:=False
-	return
+	$rsyncCmd_t:="rsync "+$rsyncArgs_t+" "+Char(34)+$sourceDir_t+Char(34)+" "+Char(34)+$stagingDir_t+Char(34)
+
+	LAUNCH EXTERNAL PROCESS($rsyncCmd_t; $stdout_t; $stderr_t)
+
+	If (OK#1)
+		TEXT TO DOCUMENT($sentinelPath_t; \
+			"stageKoala failed"+Char(13)+"rsync failed"+Char(13)+$stderr_t; \
+			"UTF-8")
+		$done_b:=True
+	End if
+
 End if
 
 // ---------------------------------------------------------------------------
 // 4. Apply retainOnly rules
 // ---------------------------------------------------------------------------
 
-For each ($retainRule_o; $retainOnly_c)
+If (Not($done_b))
 
-	$dirPath_t:=$stagingDir_t+$retainRule_o["directory"]
-	$keepFiles_c:=$retainRule_o["keep"]
+	For each ($retainRule_o; $retainOnly_c)
 
-	If (Test path name($dirPath_t)=Is a folder)
+		$dirPath_t:=$stagingDir_t+$retainRule_o["directory"]
+		$keepFiles_c:=$retainRule_o["keep"]
 
-		$keepSet_c:=New collection
+		If (Test path name($dirPath_t)=Is a folder)
 
-		For each ($keepFile_t; $keepFiles_c)
-			$keepSet_c.push(Lowercase($keepFile_t))
-		End for each
+			$keepSet_c:=New collection
 
-		DOCUMENT LIST($dirPath_t; $fileList_at)
+			For each ($keepFile_t; $keepFiles_c)
+				$keepSet_c.push(Lowercase($keepFile_t))
+			End for each
 
-		For ($i_i; 1; Size of array($fileList_at))
-			If ($keepSet_c.indexOf(Lowercase($fileList_at{$i_i}))<0)
-				$filePath_t:=$dirPath_t+$fileList_at{$i_i}
-				DELETE DOCUMENT($filePath_t)
-			End if
-		End for
+			DOCUMENT LIST($dirPath_t; $fileList_at)
 
-	End if
+			For ($i_i; 1; Size of array($fileList_at))
+				If ($keepSet_c.indexOf(Lowercase($fileList_at{$i_i}))<0)
+					$filePath_t:=$dirPath_t+$fileList_at{$i_i}
+					DELETE DOCUMENT($filePath_t)
+				End if
+			End for
 
-End for each
+		End if
+
+	End for each
+
+End if
 
 // ---------------------------------------------------------------------------
 // 5. Write success sentinel
 // ---------------------------------------------------------------------------
 
-TEXT TO DOCUMENT($sentinelPath_t; "stageKoala passed"; "UTF-8")
-$ok_b:=True
+If (Not($done_b))
+	TEXT TO DOCUMENT($sentinelPath_t; "stageKoala passed"; "UTF-8")
+	$ok_b:=True
+End if

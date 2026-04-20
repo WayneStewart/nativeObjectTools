@@ -32,13 +32,21 @@ var $error_o : Object
 var $errorDetail_t : Text
 var $line_t : Text
 var $i_i : Integer
+var $stdout_t : Text
+var $stderr_t : Text
+var $done_b : Boolean
 
-GET ENVIRONMENT VARIABLE("RELEASE_VARIANT"; $variant_t)    // "OTr" or "OT"
-GET ENVIRONMENT VARIABLE("RELEASE_4D_VERSION"; $version_t) // "19", "20", or "21"
+// Read env vars via shell — GET ENVIRONMENT VARIABLE is not available in this build
+LAUNCH EXTERNAL PROCESS("printenv RELEASE_VARIANT"; $variant_t; $stderr_t)
+$variant_t:=Replace string($variant_t; Char(10); "")  // strip trailing newline
+
+LAUNCH EXTERNAL PROCESS("printenv RELEASE_4D_VERSION"; $version_t; $stderr_t)
+$version_t:=Replace string($version_t; Char(10); "")  // strip trailing newline
 
 $sentinelName_t:="compile-"+$version_t+"-"+$variant_t
 $sentinelPath_t:=$sentinelDir_t+$sentinelName_t+".txt"
 $ok_b:=False
+$done_b:=False
 
 // ---------------------------------------------------------------------------
 // 1. Locate the appropriate buildApp settings file
@@ -46,84 +54,99 @@ $ok_b:=False
 //    Repo root = two levels up; settings live at repo-root/Release/BuildSettings/
 // ---------------------------------------------------------------------------
 
-$settingsPath_t:=Get 4D folder(Database folder)
-$settingsPath_t:=Replace string($settingsPath_t; \
-	"Release"+Folder separator+"OTr_Release"+Folder separator; "")
-$settingsPath_t:=$settingsPath_t+"Release"+Folder separator+"BuildSettings"+Folder separator
-$settingsPath_t:=$settingsPath_t+"buildApp-"+$version_t+"-"+$variant_t+".4DSettings"
+If (Not($done_b))
 
-If (Test path name($settingsPath_t)#Is a document)
-	TEXT TO DOCUMENT($sentinelPath_t; \
-		$sentinelName_t+" failed"+Char(13)+"Settings file not found: "+$settingsPath_t; \
-		"UTF-8")
-	$ok_b:=False
-	return
+	$settingsPath_t:=Get 4D folder(Database folder)
+	$settingsPath_t:=Replace string($settingsPath_t; \
+		"Release"+Folder separator+"OTr_Release"+Folder separator; "")
+	$settingsPath_t:=$settingsPath_t+"Release"+Folder separator+"BuildSettings"+Folder separator
+	$settingsPath_t:=$settingsPath_t+"buildApp-"+$version_t+"-"+$variant_t+".4DSettings"
+
+	If (Test path name($settingsPath_t)#Is a document)
+		TEXT TO DOCUMENT($sentinelPath_t; \
+			$sentinelName_t+" failed"+Char(13)+"Settings file not found: "+$settingsPath_t; \
+			"UTF-8")
+		$done_b:=True
+	End if
+
 End if
 
 // ---------------------------------------------------------------------------
 // 2. Locate the staged project
 // ---------------------------------------------------------------------------
 
-$stagingDir_t:=Get 4D folder(Database folder)
-$stagingDir_t:=Replace string($stagingDir_t; \
-	"Release"+Folder separator+"OTr_Release"+Folder separator; "")
+If (Not($done_b))
 
-If ($variant_t="OTr")
+	$stagingDir_t:=Get 4D folder(Database folder)
 	$stagingDir_t:=Replace string($stagingDir_t; \
-		"nativeObjectTools"+Folder separator; \
-		"staging-koala"+Folder separator)
-Else
-	$stagingDir_t:=Replace string($stagingDir_t; \
-		"nativeObjectTools"+Folder separator; \
-		"staging-platypus"+Folder separator)
-End if
+		"Release"+Folder separator+"OTr_Release"+Folder separator; "")
 
-$projectPath_t:=$stagingDir_t+"Project"+Folder separator+"nativeObjectTools.4DProject"
+	If ($variant_t="OTr")
+		$stagingDir_t:=Replace string($stagingDir_t; \
+			"nativeObjectTools"+Folder separator; \
+			"staging-koala"+Folder separator)
+	Else
+		$stagingDir_t:=Replace string($stagingDir_t; \
+			"nativeObjectTools"+Folder separator; \
+			"staging-platypus"+Folder separator)
+	End if
 
-If (Test path name($projectPath_t)#Is a document)
-	TEXT TO DOCUMENT($sentinelPath_t; \
-		$sentinelName_t+" failed"+Char(13)+"Project file not found: "+$projectPath_t; \
-		"UTF-8")
-	$ok_b:=False
-	return
+	$projectPath_t:=$stagingDir_t+"Project"+Folder separator+"nativeObjectTools.4DProject"
+
+	If (Test path name($projectPath_t)#Is a document)
+		TEXT TO DOCUMENT($sentinelPath_t; \
+			$sentinelName_t+" failed"+Char(13)+"Project file not found: "+$projectPath_t; \
+			"UTF-8")
+		$done_b:=True
+	End if
+
 End if
 
 // ---------------------------------------------------------------------------
 // 3. Copy settings file into staging tree's Settings/ folder
 // ---------------------------------------------------------------------------
 
-$stagingDir_t:=$stagingDir_t+"Settings"+Folder separator
-CREATE FOLDER($stagingDir_t; *)
-COPY DOCUMENT($settingsPath_t; $stagingDir_t+"buildApp.4DSettings"; *)
+If (Not($done_b))
+
+	$stagingDir_t:=$stagingDir_t+"Settings"+Folder separator
+	CREATE FOLDER($stagingDir_t; *)
+	COPY DOCUMENT($settingsPath_t; $stagingDir_t+"buildApp.4DSettings"; *)
+
+End if
 
 // ---------------------------------------------------------------------------
 // 4. Compile
 // ---------------------------------------------------------------------------
 
-$compileOptions_o:=New object
-$compileOptions_o["path"]:=$projectPath_t
-$compileOptions_o["targets"]:=New collection("x86_64_rosetta2"; "arm64")
+If (Not($done_b))
 
-$compileResult_o:=Compile project($compileOptions_o)
+	$compileOptions_o:=New object
+	$compileOptions_o["path"]:=$projectPath_t
+	$compileOptions_o["targets"]:=New collection("x86_64_rosetta2"; "arm64")
 
-$errors_c:=$compileResult_o.errors.query("isError == :1"; True)
+	$compileResult_o:=Compile project($compileOptions_o)
 
-If ($errors_c.length>0)
-	$errorDetail_t:=""
-	For each ($error_o; $errors_c)
-		$line_t:=$error_o.message+" ["+$error_o.methodName+":"+String($error_o.lineInMethod)+"]"
-		$errorDetail_t:=$errorDetail_t+$line_t+Char(13)
-	End for each
-	TEXT TO DOCUMENT($sentinelPath_t; \
-		$sentinelName_t+" failed"+Char(13)+$errorDetail_t; \
-		"UTF-8")
-	$ok_b:=False
-	return
+	$errors_c:=$compileResult_o.errors.query("isError == :1"; True)
+
+	If ($errors_c.length>0)
+		$errorDetail_t:=""
+		For each ($error_o; $errors_c)
+			$line_t:=$error_o.message+" ["+$error_o.methodName+":"+String($error_o.lineInMethod)+"]"
+			$errorDetail_t:=$errorDetail_t+$line_t+Char(13)
+		End for each
+		TEXT TO DOCUMENT($sentinelPath_t; \
+			$sentinelName_t+" failed"+Char(13)+$errorDetail_t; \
+			"UTF-8")
+		$done_b:=True
+	End if
+
 End if
 
 // ---------------------------------------------------------------------------
 // 5. Write success sentinel
 // ---------------------------------------------------------------------------
 
-TEXT TO DOCUMENT($sentinelPath_t; $sentinelName_t+" passed"; "UTF-8")
-$ok_b:=True
+If (Not($done_b))
+	TEXT TO DOCUMENT($sentinelPath_t; $sentinelName_t+" passed"; "UTF-8")
+	$ok_b:=True
+End if

@@ -25,13 +25,21 @@ var $version_t : Text
 var $sentinelName_t : Text
 var $settingsPath_t : Text
 var $stagingDir_t : Text
+var $stdout_t : Text
+var $stderr_t : Text
+var $done_b : Boolean
 
-GET ENVIRONMENT VARIABLE("RELEASE_VARIANT"; $variant_t)
-GET ENVIRONMENT VARIABLE("RELEASE_4D_VERSION"; $version_t)
+// Read env vars via shell — GET ENVIRONMENT VARIABLE is not available in this build
+LAUNCH EXTERNAL PROCESS("printenv RELEASE_VARIANT"; $variant_t; $stderr_t)
+$variant_t:=Replace string($variant_t; Char(10); "")  // strip trailing newline
+
+LAUNCH EXTERNAL PROCESS("printenv RELEASE_4D_VERSION"; $version_t; $stderr_t)
+$version_t:=Replace string($version_t; Char(10); "")  // strip trailing newline
 
 $sentinelName_t:="build-"+$version_t+"-"+$variant_t
 $sentinelPath_t:=$sentinelDir_t+$sentinelName_t+".txt"
 $ok_b:=False
+$done_b:=False
 
 // ---------------------------------------------------------------------------
 // 1. Locate settings file in the staging tree (placed there by Release_compile)
@@ -39,47 +47,55 @@ $ok_b:=False
 //    Repo root = two levels up
 // ---------------------------------------------------------------------------
 
-$stagingDir_t:=Get 4D folder(Database folder)
-$stagingDir_t:=Replace string($stagingDir_t; \
-	"Release"+Folder separator+"OTr_Release"+Folder separator; "")
+If (Not($done_b))
 
-If ($variant_t="OTr")
+	$stagingDir_t:=Get 4D folder(Database folder)
 	$stagingDir_t:=Replace string($stagingDir_t; \
-		"nativeObjectTools"+Folder separator; \
-		"staging-koala"+Folder separator)
-Else
-	$stagingDir_t:=Replace string($stagingDir_t; \
-		"nativeObjectTools"+Folder separator; \
-		"staging-platypus"+Folder separator)
-End if
+		"Release"+Folder separator+"OTr_Release"+Folder separator; "")
 
-$settingsPath_t:=$stagingDir_t+"Settings"+Folder separator+"buildApp.4DSettings"
+	If ($variant_t="OTr")
+		$stagingDir_t:=Replace string($stagingDir_t; \
+			"nativeObjectTools"+Folder separator; \
+			"staging-koala"+Folder separator)
+	Else
+		$stagingDir_t:=Replace string($stagingDir_t; \
+			"nativeObjectTools"+Folder separator; \
+			"staging-platypus"+Folder separator)
+	End if
 
-If (Test path name($settingsPath_t)#Is a document)
-	TEXT TO DOCUMENT($sentinelPath_t; \
-		$sentinelName_t+" failed"+Char(13)+"buildApp.4DSettings not found — did Release_compile run first? Path: "+$settingsPath_t; \
-		"UTF-8")
-	$ok_b:=False
-	return
+	$settingsPath_t:=$stagingDir_t+"Settings"+Folder separator+"buildApp.4DSettings"
+
+	If (Test path name($settingsPath_t)#Is a document)
+		TEXT TO DOCUMENT($sentinelPath_t; \
+			$sentinelName_t+" failed"+Char(13)+"buildApp.4DSettings not found"+Char(13)+"Path: "+$settingsPath_t; \
+			"UTF-8")
+		$done_b:=True
+	End if
+
 End if
 
 // ---------------------------------------------------------------------------
 // 2. Build
 // ---------------------------------------------------------------------------
 
-BUILD APPLICATION($settingsPath_t)
+If (Not($done_b))
 
-If (OK#1)
-	TEXT TO DOCUMENT($sentinelPath_t; \
-		$sentinelName_t+" failed"+Char(13)+"BUILD APPLICATION returned OK=0"; \
-		"UTF-8")
-	$ok_b:=False
-	return
+	BUILD APPLICATION($settingsPath_t)
+
+	If (OK#1)
+		TEXT TO DOCUMENT($sentinelPath_t; \
+			$sentinelName_t+" failed"+Char(13)+"BUILD APPLICATION returned OK=0"; \
+			"UTF-8")
+		$done_b:=True
+	End if
+
 End if
 
 // ---------------------------------------------------------------------------
 // 3. Write success sentinel
 // ---------------------------------------------------------------------------
 
-TEXT TO DOCUMENT($sentinelPath_t; $sentinelName_t+" passed"; "UTF-8")
-$ok_b:=True
+If (Not($done_b))
+	TEXT TO DOCUMENT($sentinelPath_t; $sentinelName_t+" passed"; "UTF-8")
+	$ok_b:=True
+End if

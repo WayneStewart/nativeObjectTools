@@ -26,7 +26,8 @@ var $stages_c : Collection
 var $ok_b : Boolean
 
 // Read the stage list from --user-param
-$userParam_t:=Get database parameter(User param value)
+// Get database parameter returns the numeric value; string value is in 2nd param
+Get database parameter(User param value; $userParam_t)
 
 If ($userParam_t="")
 	QUIT 4D

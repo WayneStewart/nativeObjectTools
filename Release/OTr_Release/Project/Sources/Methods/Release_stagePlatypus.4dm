@@ -25,9 +25,11 @@ var $renamerPath_t : Text
 var $renamerCmd_t : Text
 var $stdout_t : Text
 var $stderr_t : Text
+var $done_b : Boolean
 
 $sentinelPath_t:=$sentinelDir_t+"stage-platypus.txt"
 $ok_b:=False
+$done_b:=False
 
 // ---------------------------------------------------------------------------
 // 1. Locate staging directories
@@ -50,16 +52,19 @@ $platypusDir_t:=Replace string($koalaDir_t; \
 // 2. rsync staging-koala/ -> staging-platypus/
 // ---------------------------------------------------------------------------
 
-LAUNCH EXTERNAL PROCESS(\
-	"rsync --archive --delete "+Char(34)+$koalaDir_t+Char(34)+" "+Char(34)+$platypusDir_t+Char(34); \
-	$stdout_t; $stderr_t)
+If (Not($done_b))
 
-If (OK#1)
-	TEXT TO DOCUMENT($sentinelPath_t; \
-		"stagePlatypus failed"+Char(13)+"rsync failed"+Char(13)+$stderr_t; \
-		"UTF-8")
-	$ok_b:=False
-	return
+	LAUNCH EXTERNAL PROCESS(\
+		"rsync --archive --delete "+Char(34)+$koalaDir_t+Char(34)+" "+Char(34)+$platypusDir_t+Char(34); \
+		$stdout_t; $stderr_t)
+
+	If (OK#1)
+		TEXT TO DOCUMENT($sentinelPath_t; \
+			"stagePlatypus failed"+Char(13)+"rsync failed"+Char(13)+$stderr_t; \
+			"UTF-8")
+		$done_b:=True
+	End if
+
 End if
 
 // ---------------------------------------------------------------------------
@@ -72,30 +77,35 @@ End if
 // Placeholder invocation — update when Renamer headless API is confirmed.
 // ---------------------------------------------------------------------------
 
-$renamerPath_t:=Get 4D folder(Database folder)
-$renamerPath_t:=Replace string($renamerPath_t; \
-	"Release"+Folder separator+"OTr_Release"+Folder separator; "")
-$renamerPath_t:=$renamerPath_t+"Renaming"+Folder separator
+If (Not($done_b))
 
-$renamerCmd_t:="open -W /Applications/4D/19/4D.app --args"
-$renamerCmd_t:=$renamerCmd_t+" --project "+Char(34)+$renamerPath_t+Char(34)
-$renamerCmd_t:=$renamerCmd_t+" --create-data /tmp/renamer-data.4DD"
-$renamerCmd_t:=$renamerCmd_t+" --user-param "+Char(34)+"forward:"+$platypusDir_t+Char(34)
-$renamerCmd_t:=$renamerCmd_t+" --headless"
+	$renamerPath_t:=Get 4D folder(Database folder)
+	$renamerPath_t:=Replace string($renamerPath_t; \
+		"Release"+Folder separator+"OTr_Release"+Folder separator; "")
+	$renamerPath_t:=$renamerPath_t+"Renaming"+Folder separator
 
-LAUNCH EXTERNAL PROCESS($renamerCmd_t; $stdout_t; $stderr_t)
+	$renamerCmd_t:="open -W /Applications/4D/19/4D.app --args"
+	$renamerCmd_t:=$renamerCmd_t+" --project "+Char(34)+$renamerPath_t+Char(34)
+	$renamerCmd_t:=$renamerCmd_t+" --create-data /tmp/renamer-data.4DD"
+	$renamerCmd_t:=$renamerCmd_t+" --user-param "+Char(34)+"forward:"+$platypusDir_t+Char(34)
+	$renamerCmd_t:=$renamerCmd_t+" --headless"
 
-If (OK#1)
-	TEXT TO DOCUMENT($sentinelPath_t; \
-		"stagePlatypus failed"+Char(13)+"Renamer invocation failed"+Char(13)+$stderr_t; \
-		"UTF-8")
-	$ok_b:=False
-	return
+	LAUNCH EXTERNAL PROCESS($renamerCmd_t; $stdout_t; $stderr_t)
+
+	If (OK#1)
+		TEXT TO DOCUMENT($sentinelPath_t; \
+			"stagePlatypus failed"+Char(13)+"Renamer invocation failed"+Char(13)+$stderr_t; \
+			"UTF-8")
+		$done_b:=True
+	End if
+
 End if
 
 // ---------------------------------------------------------------------------
 // 4. Write success sentinel
 // ---------------------------------------------------------------------------
 
-TEXT TO DOCUMENT($sentinelPath_t; "stagePlatypus passed"; "UTF-8")
-$ok_b:=True
+If (Not($done_b))
+	TEXT TO DOCUMENT($sentinelPath_t; "stagePlatypus passed"; "UTF-8")
+	$ok_b:=True
+End if
