@@ -35,28 +35,28 @@ $ok_b:=False
 //    Repo root = two levels up
 // ---------------------------------------------------------------------------
 
-$koalaDir_t:=Get 4D folder:C485(Database folder:K5:14)
-$koalaDir_t:=Replace string:C233($koalaDir_t; \
-	"Release"+Folder separator:K24:12+"OTr_Release"+Folder separator:K24:12; "")
-$koalaDir_t:=Replace string:C233($koalaDir_t; \
-	"nativeObjectTools"+Folder separator:K24:12; \
-	"staging-koala"+Folder separator:K24:12)
+$koalaDir_t:=Get 4D folder(Database folder)
+$koalaDir_t:=Replace string($koalaDir_t; \
+	"Release"+Folder separator+"OTr_Release"+Folder separator; "")
+$koalaDir_t:=Replace string($koalaDir_t; \
+	"nativeObjectTools"+Folder separator; \
+	"staging-koala"+Folder separator)
 
-$platypusDir_t:=Replace string:C233($koalaDir_t; \
-	"staging-koala"+Folder separator:K24:12; \
-	"staging-platypus"+Folder separator:K24:12)
+$platypusDir_t:=Replace string($koalaDir_t; \
+	"staging-koala"+Folder separator; \
+	"staging-platypus"+Folder separator)
 
 // ---------------------------------------------------------------------------
 // 2. rsync staging-koala/ -> staging-platypus/
 // ---------------------------------------------------------------------------
 
-LAUNCH EXTERNAL PROCESS:C811(\
-	"rsync --archive --delete "+Char:C90(34)+$koalaDir_t+Char:C90(34)+" "+Char:C90(34)+$platypusDir_t+Char:C90(34); \
+LAUNCH EXTERNAL PROCESS(\
+	"rsync --archive --delete "+Char(34)+$koalaDir_t+Char(34)+" "+Char(34)+$platypusDir_t+Char(34); \
 	$stdout_t; $stderr_t)
 
-If (OK:C265#1)
-	TEXT TO DOCUMENT:C1237($sentinelPath_t; \
-		"stagePlatypus failed"+Char:C90(13)+"rsync failed"+Char:C90(13)+$stderr_t; \
+If (OK#1)
+	TEXT TO DOCUMENT($sentinelPath_t; \
+		"stagePlatypus failed"+Char(13)+"rsync failed"+Char(13)+$stderr_t; \
 		"UTF-8")
 	$ok_b:=False
 	return
@@ -72,22 +72,22 @@ End if
 // Placeholder invocation — update when Renamer headless API is confirmed.
 // ---------------------------------------------------------------------------
 
-$renamerPath_t:=Get 4D folder:C485(Database folder:K5:14)
-$renamerPath_t:=Replace string:C233($renamerPath_t; \
-	"Release"+Folder separator:K24:12+"OTr_Release"+Folder separator:K24:12; "")
-$renamerPath_t:=$renamerPath_t+"Renaming"+Folder separator:K24:12
+$renamerPath_t:=Get 4D folder(Database folder)
+$renamerPath_t:=Replace string($renamerPath_t; \
+	"Release"+Folder separator+"OTr_Release"+Folder separator; "")
+$renamerPath_t:=$renamerPath_t+"Renaming"+Folder separator
 
 $renamerCmd_t:="open -W /Applications/4D/19/4D.app --args"
-$renamerCmd_t:=$renamerCmd_t+" --project "+Char:C90(34)+$renamerPath_t+Char:C90(34)
+$renamerCmd_t:=$renamerCmd_t+" --project "+Char(34)+$renamerPath_t+Char(34)
 $renamerCmd_t:=$renamerCmd_t+" --create-data /tmp/renamer-data.4DD"
-$renamerCmd_t:=$renamerCmd_t+" --user-param "+Char:C90(34)+"forward:"+$platypusDir_t+Char:C90(34)
+$renamerCmd_t:=$renamerCmd_t+" --user-param "+Char(34)+"forward:"+$platypusDir_t+Char(34)
 $renamerCmd_t:=$renamerCmd_t+" --headless"
 
-LAUNCH EXTERNAL PROCESS:C811($renamerCmd_t; $stdout_t; $stderr_t)
+LAUNCH EXTERNAL PROCESS($renamerCmd_t; $stdout_t; $stderr_t)
 
-If (OK:C265#1)
-	TEXT TO DOCUMENT:C1237($sentinelPath_t; \
-		"stagePlatypus failed"+Char:C90(13)+"Renamer invocation failed"+Char:C90(13)+$stderr_t; \
+If (OK#1)
+	TEXT TO DOCUMENT($sentinelPath_t; \
+		"stagePlatypus failed"+Char(13)+"Renamer invocation failed"+Char(13)+$stderr_t; \
 		"UTF-8")
 	$ok_b:=False
 	return
@@ -97,5 +97,5 @@ End if
 // 4. Write success sentinel
 // ---------------------------------------------------------------------------
 
-TEXT TO DOCUMENT:C1237($sentinelPath_t; "stagePlatypus passed"; "UTF-8")
+TEXT TO DOCUMENT($sentinelPath_t; "stagePlatypus passed"; "UTF-8")
 $ok_b:=True

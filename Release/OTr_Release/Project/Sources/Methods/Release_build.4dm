@@ -26,8 +26,8 @@ var $sentinelName_t : Text
 var $settingsPath_t : Text
 var $stagingDir_t : Text
 
-GET ENVIRONMENT VARIABLE:C372("RELEASE_VARIANT"; $variant_t)
-GET ENVIRONMENT VARIABLE:C372("RELEASE_4D_VERSION"; $version_t)
+GET ENVIRONMENT VARIABLE("RELEASE_VARIANT"; $variant_t)
+GET ENVIRONMENT VARIABLE("RELEASE_4D_VERSION"; $version_t)
 
 $sentinelName_t:="build-"+$version_t+"-"+$variant_t
 $sentinelPath_t:=$sentinelDir_t+$sentinelName_t+".txt"
@@ -39,25 +39,25 @@ $ok_b:=False
 //    Repo root = two levels up
 // ---------------------------------------------------------------------------
 
-$stagingDir_t:=Get 4D folder:C485(Database folder:K5:14)
-$stagingDir_t:=Replace string:C233($stagingDir_t; \
-	"Release"+Folder separator:K24:12+"OTr_Release"+Folder separator:K24:12; "")
+$stagingDir_t:=Get 4D folder(Database folder)
+$stagingDir_t:=Replace string($stagingDir_t; \
+	"Release"+Folder separator+"OTr_Release"+Folder separator; "")
 
 If ($variant_t="OTr")
-	$stagingDir_t:=Replace string:C233($stagingDir_t; \
-		"nativeObjectTools"+Folder separator:K24:12; \
-		"staging-koala"+Folder separator:K24:12)
+	$stagingDir_t:=Replace string($stagingDir_t; \
+		"nativeObjectTools"+Folder separator; \
+		"staging-koala"+Folder separator)
 Else
-	$stagingDir_t:=Replace string:C233($stagingDir_t; \
-		"nativeObjectTools"+Folder separator:K24:12; \
-		"staging-platypus"+Folder separator:K24:12)
+	$stagingDir_t:=Replace string($stagingDir_t; \
+		"nativeObjectTools"+Folder separator; \
+		"staging-platypus"+Folder separator)
 End if
 
-$settingsPath_t:=$stagingDir_t+"Settings"+Folder separator:K24:12+"buildApp.4DSettings"
+$settingsPath_t:=$stagingDir_t+"Settings"+Folder separator+"buildApp.4DSettings"
 
-If (Test path name:C476($settingsPath_t)#Is a document:K24:1)
-	TEXT TO DOCUMENT:C1237($sentinelPath_t; \
-		$sentinelName_t+" failed"+Char:C90(13)+"buildApp.4DSettings not found — did Release_compile run first? Path: "+$settingsPath_t; \
+If (Test path name($settingsPath_t)#Is a document)
+	TEXT TO DOCUMENT($sentinelPath_t; \
+		$sentinelName_t+" failed"+Char(13)+"buildApp.4DSettings not found — did Release_compile run first? Path: "+$settingsPath_t; \
 		"UTF-8")
 	$ok_b:=False
 	return
@@ -67,11 +67,11 @@ End if
 // 2. Build
 // ---------------------------------------------------------------------------
 
-BUILD APPLICATION:C859($settingsPath_t)
+BUILD APPLICATION($settingsPath_t)
 
-If (OK:C265#1)
-	TEXT TO DOCUMENT:C1237($sentinelPath_t; \
-		$sentinelName_t+" failed"+Char:C90(13)+"BUILD APPLICATION returned OK=0"; \
+If (OK#1)
+	TEXT TO DOCUMENT($sentinelPath_t; \
+		$sentinelName_t+" failed"+Char(13)+"BUILD APPLICATION returned OK=0"; \
 		"UTF-8")
 	$ok_b:=False
 	return
@@ -81,5 +81,5 @@ End if
 // 3. Write success sentinel
 // ---------------------------------------------------------------------------
 
-TEXT TO DOCUMENT:C1237($sentinelPath_t; $sentinelName_t+" passed"; "UTF-8")
+TEXT TO DOCUMENT($sentinelPath_t; $sentinelName_t+" passed"; "UTF-8")
 $ok_b:=True
