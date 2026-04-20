@@ -201,7 +201,7 @@ If (False:C215)
 	C_BOOLEAN:C305(OTr_z_Error; $0)
 	C_TEXT:C284(OTr_z_Error; $1; $2)
 	
-	C_TEXT:C284(OTr_GetVersion; $0)
+	C_TEXT:C284(OTr_Info; $0)
 	
 	C_LONGINT:C283(OTr_IsObject; $0)
 	C_LONGINT:C283(OTr_IsObject; $1)
