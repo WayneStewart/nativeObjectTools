@@ -22,11 +22,13 @@
 //   $methodsFolder_t : Text : Absolute path to Project/Sources/Methods/
 //   $foldersJSON_t   : Text : Absolute path to Project/Sources/folders.json
 //   $derivedData_t   : Text : Absolute path to Project/DerivedData/
+//   $headless_b      : Boolean : When True, suppress all dialogs and auto-confirm (CI use)
 //
 // Created by Wayne Stewart, 2026-04-09
+// Wayne Stewart, 2026-04-21 - Added $headless_b parameter for CI/headless use.
 // ----------------------------------------------------
 
-#DECLARE($methodsFolder_t : Text; $foldersJSON_t : Text; $derivedData_t : Text)
+#DECLARE($methodsFolder_t : Text; $foldersJSON_t : Text; $derivedData_t : Text; $headless_b : Boolean)
 
 var $fileName_t : Text
 var $oldName_t : Text
@@ -68,7 +70,11 @@ While ($i_i > 0)
 End while
 
 If ($count_i = 0)
-	ALERT("No OTr_ methods found in:" + Char(13) + $methodsFolder_t + Char(13) + Char(13) + "Nothing was changed.")
+	If ($headless_b)
+		OK := 0  // signal failure to caller
+	Else
+		ALERT("No OTr_ methods found in:" + Char(13) + $methodsFolder_t + Char(13) + Char(13) + "Nothing was changed.")
+	End if
 	return
 End if
 
@@ -77,25 +83,34 @@ End if
 APPEND TO ARRAY($inspectReport_at; "FORWARD rename inspection: OTr_  ->  OT")
 $anomalyCount_i := Renamer_zInspect($methodsFolder_t; "OTr_"; "OTr_z"; "OTr_u"; $mapping_o; ->$inspectReport_at)
 
+$reportText_t := ""
 If ($anomalyCount_i > 0)
-	$reportText_t := ""
 	$i_i := 1
 	While ($i_i <= Size of array($inspectReport_at))
 		$reportText_t := $reportText_t + $inspectReport_at{$i_i} + Char(13)
 		$i_i += 1
 	End while
-	ALERT($reportText_t)
+	If (Not($headless_b))
+		ALERT($reportText_t)
+	End if
+	// In headless mode, anomaly report is returned to caller via $reportText_t —
+	// the On Startup method writes it to the sentinel.
 End if
 
 // ── Confirm before proceeding ─────────────────────────────────────────────────
 
-$msg_t := "FORWARD rename: OTr_  ->  OT" + Char(13) + Char(13)
-$msg_t := $msg_t + String($count_i) + " methods will be renamed." + Char(13) + Char(13)
-$msg_t := $msg_t + "The target project must be CLOSED." + Char(13)
-$msg_t := $msg_t + "Proceed?"
-CONFIRM($msg_t)
-If (OK = 1)
+If ($headless_b)
+	// Auto-confirm in CI — proceed unconditionally.
 	Renamer_zDoRename($methodsFolder_t; $foldersJSON_t; $derivedData_t; $mapping_o)
 Else
-	ALERT("Operation cancelled. Nothing was changed.")
+	$msg_t := "FORWARD rename: OTr_  ->  OT" + Char(13) + Char(13)
+	$msg_t := $msg_t + String($count_i) + " methods will be renamed." + Char(13) + Char(13)
+	$msg_t := $msg_t + "The target project must be CLOSED." + Char(13)
+	$msg_t := $msg_t + "Proceed?"
+	CONFIRM($msg_t)
+	If (OK = 1)
+		Renamer_zDoRename($methodsFolder_t; $foldersJSON_t; $derivedData_t; $mapping_o)
+	Else
+		ALERT("Operation cancelled. Nothing was changed.")
+	End if
 End if

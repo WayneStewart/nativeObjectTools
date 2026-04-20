@@ -1,6 +1,6 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: Fnd_FCS_WriteDocumentation {(Method Name or prefix; Write Tooltip; Exclude Private Methods; silent)}
+// Project Method: Fnd_FCS_WriteDocumentation {(Method Name or prefix; Write Tooltip; Exclude Private Methods; silent; inline)}
 
 // This method will create documentation comments
 //   it is based on the assumption that you format your
@@ -12,6 +12,8 @@
 //  The second parameter - True: generate a tooltip
 //  The third parameter - True: Exclude Private methods
 //  The fourth parameter - True: Don't show a final "Finished" alert
+//  The fifth parameter  - True: Run inline in the calling process (no New process spawn)
+//                         Use in headless/CI contexts where process management is undesirable.
 
 // Access: Private
 
@@ -20,15 +22,17 @@
 //   $ToolTip_b : Boolean : Write in the summary section (for the Tooltip)
 //   $excludePrivate_b : Boolean : Exclude Private methods
 //   $silent_b : Boolean : Show or Don't show a Finished alert after task complete
+//   $inline_b : Boolean : Run inline in calling process rather than spawning a new process
 
 // Created by Wayne Stewart
 // Wayne Stewart, 2021-08-11 - Tooltip will now show the parameters
 // Wayne Stewart, 2026-03-29 - Swapped method to #DECLARE and added optional silent flag.
-// Wayne Stewart, 2026-03-30 - Improved markdown output formatting 
+// Wayne Stewart, 2026-03-30 - Improved markdown output formatting
 //       (paragraph spacing, parameter/return tables, and no-parameter display).
+// Wayne Stewart, 2026-04-21 - Added $inline_b parameter for headless/CI use.
 // ----------------------------------------------------
 
-#DECLARE($MethodName_t : Text; $ToolTip_b : Boolean; $excludePrivate_b : Boolean; $silent_b : Boolean)
+#DECLARE($MethodName_t : Text; $ToolTip_b : Boolean; $excludePrivate_b : Boolean; $silent_b : Boolean; $inline_b : Boolean)
 
 var $Attributes_t; $callSyntax_t; $CR; $FirstChars_t; $lastChar_t; $alert_t; $MethodCode_t; \
 $nextline_t; $parameterBlock_t; $parameterline_t; \
@@ -47,7 +51,7 @@ ARRAY TEXT:C222($formattedCommentLines_at; 0)
 $processName_t:="$WriteDocumentation"
 $StackSize_i:=0
 
-If (Current process name:C1392=$processName_t)
+If (Current process name:C1392=$processName_t) | ($inline_b)
 	
 	$CR:=Char:C90(Carriage return:K15:38)
 	$Space:=" "
@@ -677,26 +681,37 @@ Else
 	End if 
 	If (Count parameters:C259<4)
 		$launchSilent_b:=True:C214
-	Else 
+	Else
 		$launchSilent_b:=$silent_b
-	End if 
-	
+	End if
+
+	var $launchInline_b : Boolean
+	If (Count parameters:C259<5)
+		$launchInline_b:=False:C215
+	Else
+		$launchInline_b:=$inline_b
+	End if
+
 	If ($launchExcludePrivate_b)  // Delete the existing documentation folder
 		$documentationPath_t:=Get 4D folder:C485(Database folder:K5:14)+"Documentation"+Folder separator:K24:12+"Methods"+Folder separator:K24:12
 		If (Test path name:C476($documentationPath_t)=Is a folder:K24:2)
 			DELETE FOLDER:C693($documentationPath_t; Delete with contents:K24:24)
-		End if 
+		End if
 		CREATE FOLDER:C475($documentationPath_t)
-	End if 
-	
-	
-	// This version allows for any number of processes
-	// $ProcessID_i:=New Process(Current method name;$StackSize_i;Current method name;0)
-	
-	// On the other hand, this version allows for one unique process
-	$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $processName_t; $launchMethodName_t; $launchToolTip_b; $launchExcludePrivate_b; $launchSilent_b; *)
-	
-	RESUME PROCESS:C320($ProcessID_i)
-	SHOW PROCESS:C325($ProcessID_i)
-	BRING TO FRONT:C326($ProcessID_i)
+	End if
+
+	If ($launchInline_b)
+		// Run inline — re-enter the method in the work branch directly.
+		Fnd_FCS_WriteDocumentation($launchMethodName_t; $launchToolTip_b; $launchExcludePrivate_b; $launchSilent_b; True:C214)
+	Else
+		// This version allows for any number of processes
+		// $ProcessID_i:=New Process(Current method name;$StackSize_i;Current method name;0)
+
+		// On the other hand, this version allows for one unique process
+		$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $processName_t; $launchMethodName_t; $launchToolTip_b; $launchExcludePrivate_b; $launchSilent_b; *)
+
+		RESUME PROCESS:C320($ProcessID_i)
+		SHOW PROCESS:C325($ProcessID_i)
+		BRING TO FRONT:C326($ProcessID_i)
+	End if
 End if 

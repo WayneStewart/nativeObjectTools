@@ -32,6 +32,7 @@ These are removed unconditionally on every release.
 | `Project/Sources/Methods/TimetoDie.4dm` | Dev utility — graceful shutdown helper (Blade Runner easter egg) |
 | `Project/Sources/Methods/___templateAutoStart.4dm` | AI scaffold template, not a shipping method |
 | `Project/Sources/Methods/__BuildComponent.4dm` | Dev utility — component build launcher (superseded by `Fnd_FCS_BuildComponent`) |
+| `Project/Sources/Methods/__BuildComponent_Headless.4dm` | CI-only headless build wrapper — must not ship with the component |
 | `Project/Sources/Methods/__WriteDocumentation.4dm` | Dev utility — documentation generator |
 | `Project/Sources/Methods/util_compileProject.4dm` | Dev utility — headless compile helper |
 | `Project/Sources/Methods/util_restartProject.4dm` | Dev utility — project restart helper |

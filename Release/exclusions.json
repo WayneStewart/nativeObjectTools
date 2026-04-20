@@ -20,6 +20,7 @@
     "Project/Sources/Methods/TimetoDie.4dm",
     "Project/Sources/Methods/___templateAutoStart.4dm",
     "Project/Sources/Methods/__BuildComponent.4dm",
+    "Project/Sources/Methods/__BuildComponent_Headless.4dm",
     "Project/Sources/Methods/__WriteDocumentation.4dm",
     "Project/Sources/Methods/util_compileProject.4dm",
     "Project/Sources/Methods/util_restartProject.4dm",
