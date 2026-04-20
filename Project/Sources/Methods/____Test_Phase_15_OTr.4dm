@@ -786,11 +786,11 @@
 //// ====================================================
 ////MARK:- 29. Version
 //// ====================================================
-//$otrCmd_t:="OTr_GetVersion"
+//$otrCmd_t:="OTr_Info(\"version\")"
 //$otrResult_t:="Fail: not run"
 
 //// Values will differ from OT; both must be non-empty.
-//$otrVer_t:=OTr_GetVersion
+//$otrVer_t:=OTr_Info("version")
 //If (Length($otrVer_t)>0)
 //$otrResult_t:="Pass (v="+$otrVer_t+")"
 //Else 

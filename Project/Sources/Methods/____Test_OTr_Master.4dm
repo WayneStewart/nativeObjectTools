@@ -114,11 +114,11 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	var $findIndex_i : Integer
 	ARRAY LONGINT:C221($handles_ai; 0)
 	
-	// OTr_GetVersion
+	// OTr_Info("version")
 	$rowNum_i:=$rowNum_i+1
-	$testName_t:="OTr_GetVersion returns non-empty"
+	$testName_t:="OTr_Info(\"Version\") returns non-empty"
 	$expected_t:="non-empty text"
-	$actual_t:=OTr_GetVersion
+	$actual_t:=OTr_Info("version")
 	$pass_b:=($actual_t#"")
 	$masterText_t:=$masterText_t+String:C10($rowNum_i)+$TAB+$phase_t+$TAB+$testName_t+$TAB+$expected_t+$TAB+$actual_t+$TAB+Choose:C955($pass_b; "Pass"; "FAIL")+$LF
 	If ($pass_b)
@@ -2603,7 +2603,7 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	$result_o.summary:=$summaryLine_m
 	$result_o.logFile:=$masterFileName_t
 	$result_o.logPath:=$masterFilePath_t
-
+	
 	If ($hideAlert_b)
 	Else 
 		ALERT:C41($summaryLine_m+$CR+"Master results written to: "+$masterFilePath_t)

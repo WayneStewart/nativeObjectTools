@@ -73,7 +73,6 @@
 			"OTr_GetText",
 			"OTr_GetTime",
 			"OTr_GetVariable",
-			"OTr_GetVersion",
 			"OTr_ImportLegacyBlob",
 			"OTr_IncludeShadowKey",
 			"OTr_Info",

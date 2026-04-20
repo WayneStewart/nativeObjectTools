@@ -49,14 +49,14 @@ If (Current process name:C1392=$DesiredProcessName_t)
 	//MARK:- reset baseline
 	OTr_ClearAll
 	
-	//MARK:- OTr_GetVersion
-	$version_t:=OTr_GetVersion
+	//MARK:- OTr_Info("version")
+	$version_t:=OTr_Info("version")
 	$total_i:=$total_i+1
 	If ($version_t#"")
 		$passed_i:=$passed_i+1
 	Else 
 		$failed_i:=$failed_i+1
-		$failures_t:=$failures_t+"OTr_GetVersion returned empty text."+Char:C90(Carriage return:K15:38)
+		$failures_t:=$failures_t+"OTr_Info(\"Version\") returned empty text."+Char:C90(Carriage return:K15:38)
 	End if 
 	
 	//MARK:- OTr_Register

@@ -76,8 +76,8 @@ TEXT TO BLOB:C554("phase10a-blob"; $gotBlob_blob)
 // ====================================================
 // 1. Register / version / compiled / options
 // ====================================================
-$otrCmd_t:="OTr_Register / OTr_GetVersion / OTr_CompiledApplication / OTr_GetOptions"
-$version_t:=OTr_GetVersion
+$otrCmd_t:="OTr_Register / OTr_Info(\"Version\") / OTr_CompiledApplication / OTr_GetOptions"
+$version_t:=OTr_Info("version")
 $compiled_i:=OTr_CompiledApplication
 $opts_i:=OTr_GetOptions
 $otrResult_t:="version="+$version_t+" compiled="+String:C10($compiled_i)+" options="+String:C10($opts_i)
