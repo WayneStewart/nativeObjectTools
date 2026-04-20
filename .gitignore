@@ -42,6 +42,9 @@
 Helpers/
 !Examples/
 
+# Builds - these don't belong in the repo moving forward (2026-04-21)
+Builds/
+
 # 4D Data files 
 *.4dd
 *.4DIndx
@@ -120,6 +123,7 @@ Project/Sources/Methods/_Testing.4dm
 /OBJ_Module-main/
 /Fnd_Dict/
 **/legacyExamples/
+
 
 # Miscellaneous
 Project/Sources/catalog.4DCatalog
