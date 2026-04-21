@@ -1,9 +1,13 @@
 {
-	"Constants": {},
-	"Logging": {
+	"(Constants)": {},
+	"(Logging)": {},
+	"Foundation": {
 		"methods": [
+			"__WriteDocumentation",
 			"Compiler_Log",
 			"Compiler_LogMethods",
+			"Fnd_FCS_ParseParameterLine",
+			"Fnd_FCS_WriteDocumentation",
 			"LOG ADD ENTRY",
 			"LOG CLOSE LOG",
 			"LOG CLOSE LOG2",
@@ -19,16 +23,10 @@
 			"TimetoDie"
 		]
 	},
-	"Miscellaneous": {
-		"methods": [
-			"__WriteDocumentation",
-			"Fnd_FCS_ParseParameterLine",
-			"Fnd_FCS_WriteDocumentation"
-		]
-	},
 	"OT API": {
 		"methods": [
-			"_____Import_OT_Blob",
+			"OTr_LoadAndViewOTBlob",
+			"Compiler_OTr_Methods",
 			"OTr_ArrayType",
 			"OTr_BLOBToObject",
 			"OTr_Clear",
@@ -143,16 +141,89 @@
 			"objectViewer"
 		]
 	},
-	"OT Blob Import": {
+	"OTr_U_Utility": {
 		"methods": [
-			"OTr_x_OTBlobReadUInt32LE"
+			"__BuildComponent",
+			"Compiler_FCS",
+			"Compiler_OTr_u_Methods",
+			"Fnd_FCS_BuildComponent",
+			"Is a method",
+			"OTr_u_AccessArrayElement",
+			"OTr_u_BlobToText",
+			"OTr_u_DateToText",
+			"OTr_u_EqualBLOBs",
+			"OTr_u_EqualObjects",
+			"OTr_u_EqualPictures",
+			"OTr_u_EqualStrings",
+			"OTr_u_MapType",
+			"OTr_u_NativeDateInObject",
+			"OTr_u_NewValueForEmbeddedType",
+			"OTr_u_PointerToText",
+			"OTr_u_TextToBlob",
+			"OTr_u_TextToDate",
+			"OTr_u_TextToPointer",
+			"OTr_u_TextToTime",
+			"OTr_u_TimeToText"
 		]
 	},
-	"OT Private": {
+	"OTr_V_ Testing": {
+		"tables": [
+			"Table_1"
+		],
 		"methods": [
-			"Compiler_ObjectToolsReplacement",
-			"Compiler_OTrSortInterprocess",
-			"Compiler_OTrSortProcess",
+			"________DemoForAi",
+			"____Make_Phase16_OTBlobFixtures",
+			"____Test_OTr_Master",
+			"____Test_Phase_1",
+			"____Test_Phase_1_5",
+			"____Test_Phase_10",
+			"____Test_Phase_10_OT",
+			"____Test_Phase_10_OTr",
+			"____Test_Phase_10a",
+			"____Test_Phase_10a_OT",
+			"____Test_Phase_10a_OTr",
+			"____Test_Phase_10b",
+			"____Test_Phase_10b_OT",
+			"____Test_Phase_10b_OTr",
+			"____Test_Phase_10c",
+			"____Test_Phase_10c_OT",
+			"____Test_Phase_10c_OTr",
+			"____Test_Phase_15",
+			"____Test_Phase_15_OT",
+			"____Test_Phase_15_OTr",
+			"____Test_Phase_16_OTBlob",
+			"____Test_Phase_16_OTBlob_Probe",
+			"____Test_Phase_16a_OTBlobValues",
+			"____Test_Phase_16b_OTBlobDeep",
+			"____Test_Phase_2",
+			"____Test_Phase_3",
+			"____Test_Phase_4_Arrays",
+			"____Test_Phase_5",
+			"____Test_Phase_6",
+			"____Test_Phase_8",
+			"____Test_Phase_All_SideBySide",
+			"___templateAutoStart",
+			"Compiler_OTr_v_Methods"
+		]
+	},
+	"OTr_W_webTesting": {
+		"methods": [
+			"Compiler_OTr_w_Methods",
+			"OTr_w_compileProject",
+			"OTr_w_CompileResultForJSON",
+			"OTr_w_GuyBlobExport",
+			"OTr_w_IsLocalRequest",
+			"OTr_w_Phase16Diag",
+			"OTr_w_restartProject",
+			"OTr_w_RestartProjectWorker",
+			"OTr_w_Run",
+			"OTr_w_RunCompileOnMain",
+			"OTr_w_RunUnitTestWorker"
+		]
+	},
+	"OTr_X_Blob Import": {
+		"methods": [
+			"Compiler_OTr_x_Methods",
 			"OTr_x_OTBlobIsObject",
 			"OTr_x_OTBlobReadArray",
 			"OTr_x_OTBlobReadBlobPayload",
@@ -167,10 +238,26 @@
 			"OTr_x_OTBlobReadUInt16BE",
 			"OTr_x_OTBlobReadUInt16LE",
 			"OTr_x_OTBlobReadUInt32BE",
+			"OTr_x_OTBlobReadUInt32LE",
 			"OTr_x_OTBlobReadUTF16BE",
 			"OTr_x_OTBlobReadUTF16LE",
 			"OTr_x_OTBlobReadWrappedPicture",
-			"OTr_x_OTBlobToObject",
+			"OTr_x_OTBlobToObject"
+		]
+	},
+	"OTr_Y_releaseStaging": {
+		"methods": [
+			"Compiler_OTr_y_Methods",
+			"OTr_y_buildComponent",
+			"OTr_y_testCompilation"
+		]
+	},
+	"OTr_Z_Private": {
+		"methods": [
+			"Compiler_ObjectToolsReplacement",
+			"Compiler_OTr_z_Methods",
+			"Compiler_OTrSortInterprocess",
+			"Compiler_OTrSortProcess",
 			"OTr_z_AddToCallStack",
 			"OTr_z_ArrayFromObject",
 			"OTr_z_ArrayType",
@@ -209,80 +296,10 @@
 			"OTr_z_XMLWriteObjectSAX"
 		]
 	},
-	"OT Testing": {
-		"tables": [
-			"Table_1"
-		],
-		"methods": [
-			"________DemoForAi",
-			"____Make_Phase16_OTBlobFixtures",
-			"____Test_OTr_Master",
-			"____Test_Phase_1",
-			"____Test_Phase_1_5",
-			"____Test_Phase_10",
-			"____Test_Phase_10_OT",
-			"____Test_Phase_10_OTr",
-			"____Test_Phase_10a",
-			"____Test_Phase_10a_OT",
-			"____Test_Phase_10a_OTr",
-			"____Test_Phase_10b",
-			"____Test_Phase_10b_OT",
-			"____Test_Phase_10b_OTr",
-			"____Test_Phase_10c",
-			"____Test_Phase_10c_OT",
-			"____Test_Phase_10c_OTr",
-			"____Test_Phase_15",
-			"____Test_Phase_15_OT",
-			"____Test_Phase_15_OTr",
-			"____Test_Phase_16_OTBlob",
-			"____Test_Phase_16_OTBlob_Probe",
-			"____Test_Phase_16a_OTBlobValues",
-			"____Test_Phase_16b_OTBlobDeep",
-			"____Test_Phase_2",
-			"____Test_Phase_3",
-			"____Test_Phase_4_Arrays",
-			"____Test_Phase_5",
-			"____Test_Phase_6",
-			"____Test_Phase_8",
-			"____Test_Phase_All_SideBySide",
-			"___templateAutoStart"
+	"trash": {
+		"groups": [
+			"(Constants)",
+			"(Logging)"
 		]
-	},
-	"OT Utility": {
-		"methods": [
-			"__BuildComponent",
-			"Compiler_FCS",
-			"Fnd_FCS_BuildComponent",
-			"Is a method",
-			"OTr_u_AccessArrayElement",
-			"OTr_u_BlobToText",
-			"OTr_u_DateToText",
-			"OTr_u_EqualBLOBs",
-			"OTr_u_EqualObjects",
-			"OTr_u_EqualPictures",
-			"OTr_u_EqualStrings",
-			"OTr_u_MapType",
-			"OTr_u_NativeDateInObject",
-			"OTr_u_NewValueForEmbeddedType",
-			"OTr_u_PointerToText",
-			"OTr_u_TextToBlob",
-			"OTr_u_TextToDate",
-			"OTr_u_TextToPointer",
-			"OTr_u_TextToTime",
-			"OTr_u_TimeToText"
-		]
-	},
-	"OTr web Testing": {
-		"methods": [
-			"OTr_w_CompileResultForJSON",
-			"OTr_w_GuyBlobExport",
-			"OTr_w_IsLocalRequest",
-			"OTr_w_Phase16Diag",
-			"OTr_w_RestartProjectWorker",
-			"OTr_w_Run",
-			"OTr_w_RunCompileOnMain",
-			"OTr_w_RunUnitTestWorker"
-		]
-	},
-	"trash": {}
+	}
 }
