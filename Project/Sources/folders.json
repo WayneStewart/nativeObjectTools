@@ -281,9 +281,7 @@
 			"OTr_w_RestartProjectWorker",
 			"OTr_w_Run",
 			"OTr_w_RunCompileOnMain",
-			"OTr_w_RunUnitTestWorker",
-			"util_compileProject",
-			"util_restartProject"
+			"OTr_w_RunUnitTestWorker"
 		]
 	},
 	"trash": {}

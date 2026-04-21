@@ -22,16 +22,16 @@ $response_o.applicationVersion:=Application version:C493
 
 If (Not:C34(OTr_w_IsLocalRequest($clientIP_t)))
 	$response_o.error:="Denied: Codex bridge only accepts loopback requests."
-Else
-	Case of
+Else 
+	Case of 
 		: ($method_t="ping")
 			$result_o:=New object:C1471
 			$result_o.message:="pong"
 			$response_o.ok:=True:C214
 			$response_o.result:=$result_o
-
-		: ($method_t="util_compileProject")
-			$signal_o:=New signal:C1641("Codex util_compileProject")
+			
+		: ($method_t="OTr_w_compileProject")
+			$signal_o:=New signal:C1641("Codex OTr_w_compileProject")
 			CALL WORKER:C1389(1; "OTr_w_RunCompileOnMain"; $signal_o)
 			$signaled_b:=$signal_o.wait(120)
 			If ($signaled_b)
@@ -39,16 +39,16 @@ Else
 				$result_o:=JSON Parse:C1218($resultJSON_t; Is object:K8:27)
 				$response_o.ok:=$result_o.success
 				$response_o.result:=$result_o
-			Else
-				$response_o.error:="Timed out waiting for main process to run util_compileProject."
-			End if
-
+			Else 
+				$response_o.error:="Timed out waiting for main process to run OTr_w_compileProject."
+			End if 
+			
 		: (($method_t="unitTests") | ($method_t="____Test_OTr_Master"))
 			$testMethod_t:="____Test_OTr_Master"
 			$signal_o:=New signal:C1641("Codex unit tests")
 			Use ($signal_o)
 				$signal_o.methodName:=$testMethod_t
-			End use
+			End use 
 			CALL WORKER:C1389($testMethod_t; "OTr_w_RunUnitTestWorker"; $signal_o)
 			$signaled_b:=$signal_o.wait(600)
 			If ($signaled_b)
@@ -56,10 +56,10 @@ Else
 				$result_o:=JSON Parse:C1218($resultJSON_t; Is object:K8:27)
 				$response_o.ok:=$result_o.ok
 				$response_o.result:=$result_o
-			Else
+			Else 
 				$response_o.error:="Timed out waiting for unit tests to complete."
-			End if
-
+			End if 
+			
 		: ($method_t="guyBlobExport")
 			$signal_o:=New signal:C1641("Codex Guy BLOB export")
 			CALL WORKER:C1389(1; "OTr_w_GuyBlobExport"; $signal_o)
@@ -69,25 +69,25 @@ Else
 				$result_o:=JSON Parse:C1218($resultJSON_t; Is object:K8:27)
 				$response_o.ok:=$result_o.ok
 				$response_o.result:=$result_o
-			Else
+			Else 
 				$response_o.error:="Timed out waiting for Guy BLOB export to complete."
-			End if
-
-		: ($method_t="util_restartProject")
+			End if 
+			
+		: ($method_t="OTr_w_restartProject")
 			$result_o:=New object:C1471
 			$result_o.message:="Restart requested."
 			$result_o.delayTicks:=60
 			$response_o.ok:=True:C214
 			$response_o.result:=$result_o
 			CALL WORKER:C1389("Codex Restart"; "OTr_w_RestartProjectWorker")
-
+			
 		: ($method_t="makePhase16Fixtures")
 			$result_o:=New object:C1471
 			$result_o.message:="Phase 16 fixture generation requested."
 			$response_o.ok:=True:C214
 			$response_o.result:=$result_o
 			CALL WORKER:C1389(1; "____Make_Phase16_OTBlobFixtures"; True:C214)
-
+			
 		: ($method_t="phase16Diag")
 			$signal_o:=New signal:C1641("Codex Phase 16 diag")
 			CALL WORKER:C1389(1; "OTr_w_Phase16Diag"; $signal_o)
@@ -97,12 +97,12 @@ Else
 				$result_o:=JSON Parse:C1218($resultJSON_t; Is object:K8:27)
 				$response_o.ok:=$result_o.ok
 				$response_o.result:=$result_o
-			Else
+			Else 
 				$response_o.error:="Timed out waiting for Phase 16 diagnostics."
-			End if
-
-		Else
+			End if 
+			
+		Else 
 			$response_o.error:="Method is not whitelisted for Codex bridge calls."
-			$response_o.allowed:=New collection:C1472("ping"; "util_compileProject"; "unitTests"; "____Test_OTr_Master"; "guyBlobExport"; "util_restartProject"; "makePhase16Fixtures"; "phase16Diag")
-	End case
-End if
+			$response_o.allowed:=New collection:C1472("ping"; "OTr_w_compileProject"; "unitTests"; "____Test_OTr_Master"; "guyBlobExport"; "OTr_w_restartProject"; "makePhase16Fixtures"; "phase16Diag")
+	End case 
+End if 

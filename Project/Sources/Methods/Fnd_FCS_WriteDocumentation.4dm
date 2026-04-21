@@ -37,7 +37,7 @@
 var $Attributes_t; $callSyntax_t; $CR; $FirstChars_t; $lastChar_t; $alert_t; $MethodCode_t; \
 $nextline_t; $parameterBlock_t; $parameterline_t; \
 $processName_t; $Space; $callSyntaxParameters_t; $documentationPath_t; $returnsBlock_t; $displayMethodName_t; $tooltipComment_t; $currentParagraph_t; $line_t; $trimmedLine_t; $digits_t; $paramName_t; $paramType_t; $paramDesc_t; $firstChar_t : Text
-var $isNumbered_b; $isDeclareStyle_b; $inCodeBlock_b : Boolean
+var $isNumbered_b; $isDeclareStyle_b; $inCodeBlock_b; $launchInline_b : Boolean
 var $CurrentMethod_i; $line_i; $lineEnd_i; $nextLine_i; $numberofLines_i; $NumberOfMethods_i; \
 $parameterBlock_i; $Position_i; $ProcessID_i; $returns_i; $StackSize_i; $commentLineCount_i; $commentLine_i; $lastUnderscore_i : Integer
 var $Attributes_o; $lineInfo_o : Object
@@ -51,7 +51,15 @@ ARRAY TEXT:C222($formattedCommentLines_at; 0)
 $processName_t:="$WriteDocumentation"
 $StackSize_i:=0
 
-If (Current process name:C1392=$processName_t) | ($inline_b)
+
+If (Count parameters:C259<5)
+	$launchInline_b:=False:C215
+Else 
+	$launchInline_b:=$inline_b
+End if 
+
+
+If (Current process name:C1392=$processName_t) | ($launchInline_b)
 	
 	$CR:=Char:C90(Carriage return:K15:38)
 	$Space:=" "
@@ -681,37 +689,32 @@ Else
 	End if 
 	If (Count parameters:C259<4)
 		$launchSilent_b:=True:C214
-	Else
+	Else 
 		$launchSilent_b:=$silent_b
-	End if
-
-	var $launchInline_b : Boolean
-	If (Count parameters:C259<5)
-		$launchInline_b:=False:C215
-	Else
-		$launchInline_b:=$inline_b
-	End if
-
+	End if 
+	
+	
+	
 	If ($launchExcludePrivate_b)  // Delete the existing documentation folder
 		$documentationPath_t:=Get 4D folder:C485(Database folder:K5:14)+"Documentation"+Folder separator:K24:12+"Methods"+Folder separator:K24:12
 		If (Test path name:C476($documentationPath_t)=Is a folder:K24:2)
 			DELETE FOLDER:C693($documentationPath_t; Delete with contents:K24:24)
-		End if
+		End if 
 		CREATE FOLDER:C475($documentationPath_t)
-	End if
-
+	End if 
+	
 	If ($launchInline_b)
 		// Run inline — re-enter the method in the work branch directly.
 		Fnd_FCS_WriteDocumentation($launchMethodName_t; $launchToolTip_b; $launchExcludePrivate_b; $launchSilent_b; True:C214)
-	Else
+	Else 
 		// This version allows for any number of processes
 		// $ProcessID_i:=New Process(Current method name;$StackSize_i;Current method name;0)
-
+		
 		// On the other hand, this version allows for one unique process
 		$ProcessID_i:=New process:C317(Current method name:C684; $StackSize_i; $processName_t; $launchMethodName_t; $launchToolTip_b; $launchExcludePrivate_b; $launchSilent_b; *)
-
+		
 		RESUME PROCESS:C320($ProcessID_i)
 		SHOW PROCESS:C325($ProcessID_i)
 		BRING TO FRONT:C326($ProcessID_i)
-	End if
+	End if 
 End if 

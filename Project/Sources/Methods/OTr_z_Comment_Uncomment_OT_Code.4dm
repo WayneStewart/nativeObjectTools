@@ -27,7 +27,7 @@
 //   add or remove / * and * / wrapper lines beside the OT block delimiters.
 // ----------------------------------------------------
 
-#DECLARE($suppressAlert_b : Boolean)
+#DECLARE($suppressAlert_b : Boolean; $force_b : Boolean)
 
 OTr_z_AddToCallStack(Current method name:C684)
 

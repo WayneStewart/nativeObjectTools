@@ -1,1 +1,0 @@
-<!--esult_o : Object Does not require any parameters -->## util\_compileProject#DECLARE()->$result\_o : ObjectC\_OBJECT($options\_o)$options\_o:=New object $options\_o.targets:=New collection  //Empty collection for syntax checking$result\_o:=Compile project($options\_o)| Parameters || --- || Does not require any parameters |

@@ -20,7 +20,8 @@ These are removed unconditionally on every release.
 | `Project/Sources/Methods/____Test_*.4dm` | Test harness — all phase test runners |
 | `Project/Sources/Methods/____Make_*.4dm` | Test fixture builders |
 | `Project/Sources/Methods/________DemoForAi.4dm` | AI demo scaffold, not part of component API |
-| `Project/Sources/Methods/Compiler_Prototyping.4dm` | Dev-only compiler declarations (test arrays, Codex bridge variables). Handled by stageKoala directly per README convention; listed here for completeness. |
+| `Project/Sources/Methods/Compiler_OTr_v_Methods.4dm` | Compiler declarations for ____Test_ and ____Make_ methods — stripped with those methods |
+| `Project/Sources/Methods/Compiler_OTr_w_Methods.4dm` | Compiler declarations for OTr_w_ Codex bridge methods — stripped with those methods |
 | `Project/Sources/Methods/OTr_w_Run.4dm` | Codex HTTP bridge dispatcher |
 | `Project/Sources/Methods/OTr_w_RunCompileOnMain.4dm` | Codex bridge — compile-on-main helper |
 | `Project/Sources/Methods/OTr_w_RunUnitTestWorker.4dm` | Codex bridge — unit test worker |
@@ -32,7 +33,7 @@ These are removed unconditionally on every release.
 | `Project/Sources/Methods/TimetoDie.4dm` | Dev utility — graceful shutdown helper (Blade Runner easter egg) |
 | `Project/Sources/Methods/___templateAutoStart.4dm` | AI scaffold template, not a shipping method |
 | `Project/Sources/Methods/__BuildComponent.4dm` | Dev utility — component build launcher (superseded by `Fnd_FCS_BuildComponent`) |
-| `Project/Sources/Methods/__BuildComponent_Headless.4dm` | CI-only headless build wrapper — must not ship with the component |
+| `Project/Sources/Methods/__BuildComponent_Headless.4dm` | Old name — superseded by `OTr_y_buildComponent.4dm`; strip if still present |
 | `Project/Sources/Methods/__WriteDocumentation.4dm` | Dev utility — documentation generator |
 | `Project/Sources/Methods/util_compileProject.4dm` | Dev utility — headless compile helper |
 | `Project/Sources/Methods/util_restartProject.4dm` | Dev utility — project restart helper |

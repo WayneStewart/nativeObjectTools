@@ -7,4 +7,4 @@
 // ----------------------------------------------------
 
 DELAY PROCESS:C323(Current process:C322; 60)
-CALL WORKER:C1389(1; "util_restartProject")
+CALL WORKER:C1389(1; "OTr_w_restartProject")

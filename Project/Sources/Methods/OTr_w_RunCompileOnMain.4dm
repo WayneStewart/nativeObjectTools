@@ -11,12 +11,12 @@
 var $compile_o; $summary_o : Object
 var $resultJSON_t : Text
 
-$compile_o:=util_compileProject
+$compile_o:=OTr_w_compileProject
 $summary_o:=OTr_w_CompileResultForJSON($compile_o)
 $resultJSON_t:=JSON Stringify:C1217($summary_o)
 
 Use ($signal_o)
 	$signal_o.resultJSON:=$resultJSON_t
-End use
+End use 
 
 $signal_o.trigger()

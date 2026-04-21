@@ -8,23 +8,23 @@ $path_t:=$url_t
 $queryPos_i:=Position:C15("?"; $path_t)
 If ($queryPos_i>0)
 	$path_t:=Substring:C12($path_t; 1; $queryPos_i-1)
-End if
+End if 
 
-Case of
+Case of 
 	: ($path_t="/codex/ping")
 		$response_o:=OTr_w_Run("ping"; $ipBrowser_t)
-
+		
 	: (Substring:C12($path_t; 1; 11)="/codex/run/")
 		$method_t:=Substring:C12($path_t; 12)
 		$response_o:=OTr_w_Run($method_t; $ipBrowser_t)
-
-	Else
+		
+	Else 
 		$response_o:=New object:C1471
 		$response_o.ok:=False:C215
 		$response_o.error:="Not found"
 		$response_o.path:=$path_t
-		$response_o.routes:=New collection:C1472("/codex/ping"; "/codex/run/util_compileProject")
-End case
+		$response_o.routes:=New collection:C1472("/codex/ping"; "/codex/run/OTr_w_compileProject")
+End case 
 
 $response_o.path:=$path_t
 
