@@ -1,47 +1,47 @@
 var $appInfo_o : Object
-var $userParam_t : Text
-var $methodsFolder_t; $foldersJSON_t; $derivedData_t : Text
-var $projectPath_t : Text
-var $sentinelDir_t; $sentinelPath_t; $sentinel_t : Text
-var $stderr_t : Text
+var $userParam_t; $action_t; $sentinelDir_t; $sentinelPath_t; $sentinel_t : Text
+var $params_c : Collection
+var $repoRoot_t; $methodsFolder_t; $foldersJSON_t; $derivedData_t; $reportText_t : Text
+var $value_r : Real
 
-$appInfo_o := Get application info
+$appInfo_o:=Application info
 
 If ($appInfo_o.headless)
-
-	Get database parameter(User param value; $userParam_t)
-
-	If (Position("forward"; $userParam_t) > 0)
-
-		// Derive target project paths — same logic as Renamer_Run.
-		// Database folder is …/Renaming/, so strip "Renaming" and append "Project/".
-		$projectPath_t := Replace string(Get 4D folder(Database folder); "Renaming"; "Project")
-		$methodsFolder_t := $projectPath_t + "Sources" + Folder separator + "Methods" + Folder separator
-		$foldersJSON_t   := $projectPath_t + "Sources" + Folder separator + "folders.json"
-		$derivedData_t   := $projectPath_t + "DerivedData" + Folder separator
-
-		// Sentinel directory is passed via environment variable.
-		LAUNCH EXTERNAL PROCESS("printenv SENTINEL_DIR"; $sentinelDir_t; $stderr_t)
-		$sentinelDir_t := Replace string($sentinelDir_t; Char(10); "")
-		If (Length($sentinelDir_t) = 0)
-			$sentinelDir_t := Get 4D folder(Database folder)  // fallback for manual testing
-		End if
-
-		$sentinelPath_t := $sentinelDir_t + "stage-platypus.txt"
-
-		Renamer_Forward($methodsFolder_t; $foldersJSON_t; $derivedData_t; True)
-
-		If (OK = 1)
-			$sentinel_t := "stage-platypus passed" + Char(10)
-		Else
-			$sentinel_t := "stage-platypus failed" + Char(10)
-		End if
-
-		TEXT TO DOCUMENT($sentinelPath_t; $sentinel_t; "UTF-8"; Document with LF)
-
-	End if
-
+	
+	// Headless CI launch.
+	// --user-param format: "action;/path/to/sentinelDir/"
+	//   forward: "forward;/path/to/sentinelDir/"
+	$value_r:=Get database parameter(User param value; $userParam_t)
+	$params_c:=Split string($userParam_t; ";"; sk ignore empty strings+sk trim spaces)
+	
+	$action_t:=$params_c[0]
+	$sentinelDir_t:=$params_c[1]
+	
+	// Derive target project paths from the repo root.
+	// Renaming project sits at <repoRoot>/Renaming/, so Database folder is <repoRoot>/Renaming/
+	$repoRoot_t:=Get 4D folder(Database folder)  // …/Renaming/
+	$repoRoot_t:=Substring($repoRoot_t; 1; Length($repoRoot_t)-Length("Renaming"+Folder separator))
+	
+	$methodsFolder_t:=$repoRoot_t+"Project"+Folder separator+"Sources"+Folder separator+"Methods"+Folder separator
+	$foldersJSON_t:=$repoRoot_t+"Project"+Folder separator+"Sources"+Folder separator+"folders.json"
+	$derivedData_t:=$repoRoot_t+"Project"+Folder separator+"DerivedData"+Folder separator
+	
+	Case of 
+		: ($action_t="forward")
+			$reportText_t:=Renamer_Forward($methodsFolder_t; $foldersJSON_t; $derivedData_t; True)
+			
+			$sentinelPath_t:=Convert path POSIX to system($sentinelDir_t)+"rename-forward.txt"
+			If (OK=1)
+				$sentinel_t:="rename-forward passed"
+			Else 
+				$sentinel_t:="rename-forward failed"
+				$sentinel_t:=$sentinel_t+Char(13)+$reportText_t
+			End if 
+			TEXT TO DOCUMENT($sentinelPath_t; $sentinel_t; "UTF-8"; Document with LF)
+			
+	End case 
+	
 	QUIT 4D
-
-End if
+	
+End if 
 // Non-headless: no On Startup action — Renamer is a pure tool, not an application.

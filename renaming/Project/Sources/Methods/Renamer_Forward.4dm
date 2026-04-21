@@ -28,7 +28,7 @@
 // Wayne Stewart, 2026-04-21 - Added $headless_b parameter for CI/headless use.
 // ----------------------------------------------------
 
-#DECLARE($methodsFolder_t : Text; $foldersJSON_t : Text; $derivedData_t : Text; $headless_b : Boolean)
+#DECLARE($methodsFolder_t : Text; $foldersJSON_t : Text; $derivedData_t : Text; $headless_b : Boolean)->$reportText_t : Text
 
 var $fileName_t : Text
 var $oldName_t : Text
@@ -38,79 +38,78 @@ var $count_i : Integer
 var $i_i : Integer
 var $msg_t : Text
 var $anomalyCount_i : Integer
-var $reportText_t : Text
 
 // ── Build the mapping by scanning for OTr_*.4dm files ────────────────────────
 // Exclude OTr_z* and OTr_u* — these are private/utility methods
 
-$mapping_o := New object
-$count_i   := 0
+$mapping_o:=New object
+$count_i:=0
 
 ARRAY TEXT($fileList_at; 0)
 ARRAY TEXT($inspectReport_at; 0)
 DOCUMENT LIST($methodsFolder_t; $fileList_at)
 SORT ARRAY($fileList_at; >)
 
-$i_i := Size of array($fileList_at)
-While ($i_i > 0)
-	$fileName_t := $fileList_at{$i_i}
-
-	If ((Position("OTr_"; $fileName_t) = 1) & (Position(".4dm"; $fileName_t) > 1))
-		$oldName_t := Substring($fileName_t; 1; Length($fileName_t) - 4)
-
+$i_i:=Size of array($fileList_at)
+While ($i_i>0)
+	$fileName_t:=$fileList_at{$i_i}
+	
+	If ((Position("OTr_"; $fileName_t)=1) & (Position(".4dm"; $fileName_t)>1))
+		$oldName_t:=Substring($fileName_t; 1; Length($fileName_t)-4)
+		
 		// Skip OTr_z* and OTr_u* — private and utility methods
-		If ((Position("OTr_z"; $oldName_t) # 1) & (Position("OTr_u"; $oldName_t) # 1))
-			$newName_t := "OT " + Substring($oldName_t; 5)
+		If ((Position("OTr_z"; $oldName_t)#1) & (Position("OTr_u"; $oldName_t)#1))
+			$newName_t:="OT "+Substring($oldName_t; 5)
 			OB SET($mapping_o; $oldName_t; $newName_t)
-			$count_i += 1
-		End if
-	End if
+			$count_i+=1
+		End if 
+	End if 
+	
+	$i_i-=1
+End while 
 
-	$i_i -= 1
-End while
-
-If ($count_i = 0)
+If ($count_i=0)
 	If ($headless_b)
-		OK := 0  // signal failure to caller
-	Else
-		ALERT("No OTr_ methods found in:" + Char(13) + $methodsFolder_t + Char(13) + Char(13) + "Nothing was changed.")
-	End if
-	return
-End if
+		OK:=0  // signal failure to caller
+	Else 
+		ALERT("No OTr_ methods found in:"+Char(13)+$methodsFolder_t+Char(13)+Char(13)+"Nothing was changed.")
+	End if 
+	return 
+End if 
 
 // ── Anomaly inspection ────────────────────────────────────────────────────────
 
 APPEND TO ARRAY($inspectReport_at; "FORWARD rename inspection: OTr_  ->  OT")
-$anomalyCount_i := Renamer_zInspect($methodsFolder_t; "OTr_"; "OTr_z"; "OTr_u"; $mapping_o; ->$inspectReport_at)
+$anomalyCount_i:=Renamer_zInspect($methodsFolder_t; "OTr_"; "OTr_z"; "OTr_u"; $mapping_o; ->$inspectReport_at; $headless_b)
 
-$reportText_t := ""
-If ($anomalyCount_i > 0)
-	$i_i := 1
-	While ($i_i <= Size of array($inspectReport_at))
-		$reportText_t := $reportText_t + $inspectReport_at{$i_i} + Char(13)
-		$i_i += 1
-	End while
+$reportText_t:=""
+If ($anomalyCount_i>0)
+	$i_i:=1
+	While ($i_i<=Size of array($inspectReport_at))
+		$reportText_t:=$reportText_t+$inspectReport_at{$i_i}+Char(13)
+		$i_i+=1
+	End while 
 	If (Not($headless_b))
 		ALERT($reportText_t)
-	End if
+	End if 
 	// In headless mode, anomaly report is returned to caller via $reportText_t —
 	// the On Startup method writes it to the sentinel.
-End if
+End if 
 
 // ── Confirm before proceeding ─────────────────────────────────────────────────
 
 If ($headless_b)
 	// Auto-confirm in CI — proceed unconditionally.
-	Renamer_zDoRename($methodsFolder_t; $foldersJSON_t; $derivedData_t; $mapping_o)
-Else
-	$msg_t := "FORWARD rename: OTr_  ->  OT" + Char(13) + Char(13)
-	$msg_t := $msg_t + String($count_i) + " methods will be renamed." + Char(13) + Char(13)
-	$msg_t := $msg_t + "The target project must be CLOSED." + Char(13)
-	$msg_t := $msg_t + "Proceed?"
+	$reportText_t:=Renamer_zDoRename($methodsFolder_t; $foldersJSON_t; $derivedData_t; $mapping_o; $headless_b)
+Else 
+	$msg_t:="FORWARD rename: OTr_  ->  OT"+Char(13)+Char(13)
+	$msg_t:=$msg_t+String($count_i)+" methods will be renamed."+Char(13)+Char(13)
+	$msg_t:=$msg_t+"The target project must be CLOSED."+Char(13)
+	$msg_t:=$msg_t+"Proceed?"
 	CONFIRM($msg_t)
-	If (OK = 1)
-		Renamer_zDoRename($methodsFolder_t; $foldersJSON_t; $derivedData_t; $mapping_o)
-	Else
+	If (OK=1)
+		Renamer_zDoRename($methodsFolder_t; $foldersJSON_t; $derivedData_t; $mapping_o; False)
+	Else 
 		ALERT("Operation cancelled. Nothing was changed.")
-	End if
-End if
+	End if 
+End if 

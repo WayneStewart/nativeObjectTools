@@ -33,14 +33,16 @@
 //   $excludePrefix2_t : Text    : Second excluded sub-prefix e.g. "OTr_u" or "OT u"
 //   $mapping_o        : Object  : Mapping object (keys = old names in rename set)
 //   $report_at        : Pointer : Pointer to a Text array for appending results
+//   $headless_b       : Boolean : When True, suppress all dialogs (CI use)
 //
 // Returns:
 //   $anomalyCount_i   : Integer : Total number of anomalies found
 //
 // Created by Wayne Stewart, 2026-04-09
+// Wayne Stewart, 2026-04-22 - Added $headless_b parameter to suppress interactive fix dialog in CI.
 // ----------------------------------------------------
 
-#DECLARE($methodsFolder_t : Text; $renamePrefix_t : Text; $excludePrefix1_t : Text; $excludePrefix2_t : Text; $mapping_o : Object; $report_at : Pointer)->$anomalyCount_i : Integer
+#DECLARE($methodsFolder_t : Text; $renamePrefix_t : Text; $excludePrefix1_t : Text; $excludePrefix2_t : Text; $mapping_o : Object; $report_at : Pointer; $headless_b : Boolean)->$anomalyCount_i : Integer
 
 var $fileName_t : Text
 var $methodName_t : Text
@@ -142,9 +144,9 @@ Else
 End if 
 
 // ── Interactive fix pass ──────────────────────────────────────────────────────
-// Only offered if anomalies were found
+// Only offered if anomalies were found and not running headless
 
-If ($anomalyCount_i>0)
+If ($anomalyCount_i>0) & (Not($headless_b))
 	CONFIRM("Anomalies were found ("+String($anomalyCount_i)+")."+Char(13)+Char(13)+"Would you like to fix them now, one by one?")
 	If (OK=1)
 		

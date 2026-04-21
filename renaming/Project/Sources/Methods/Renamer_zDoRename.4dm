@@ -44,7 +44,7 @@
 // Created by Wayne Stewart, 2026-04-09
 // ----------------------------------------------------
 
-#DECLARE($methodsFolder_t : Text; $foldersJSON_t : Text; $derivedData_t : Text; $mapping_o : Object)
+#DECLARE($methodsFolder_t : Text; $foldersJSON_t : Text; $derivedData_t : Text; $mapping_o : Object; $headless_b : Boolean)->$logText_t : Text
 
 var $fileName_t : Text
 var $filePath_t : Text
@@ -57,7 +57,6 @@ var $newPath_t : Text
 var $foldersBody_t : Text
 var $originalFolders_t : Text
 var $attrPath_t : Text
-var $logText_t : Text
 var $i_i : Integer
 var $pass1_count_i : Integer
 var $pass2_count_i : Integer
@@ -244,72 +243,72 @@ End if
 APPEND TO ARRAY($log_at; "")
 APPEND TO ARRAY($log_at; "=== PASS 1c: Updating file contents (Forms) ===")
 
-$formsFolder_t := $sourcesFolder_t + "Forms" + $separator_t
+$formsFolder_t:=$sourcesFolder_t+"Forms"+$separator_t
 
-If (Test path name($formsFolder_t) = Is a folder)
-
+If (Test path name($formsFolder_t)=Is a folder)
+	
 	ARRAY TEXT($formFolders_at; 0)
 	FOLDER LIST($formsFolder_t; $formFolders_at)
-
-	$i_i := 1
-	While ($i_i <= Size of array($formFolders_at))
-		$formName_t := $formFolders_at{$i_i}
-
+	
+	$i_i:=1
+	While ($i_i<=Size of array($formFolders_at))
+		$formName_t:=$formFolders_at{$i_i}
+		
 		// Process form-level method.4dm
-		$filePath_t := $formsFolder_t + $formName_t + $separator_t + "method.4dm"
-		If (Test path name($filePath_t) = Is a document)
-			$fileBody_t := Document to text($filePath_t; "UTF-8")
-			$originalBody_t := $fileBody_t
-			$k_i := 0
-			While ($k_i < $keys_ac.length)
-				$oldName_t := $keys_ac[$k_i]
-				$newName_t := String(OB Get($mapping_o; $oldName_t))
-				$fileBody_t := Replace string($fileBody_t; $oldName_t; $newName_t)
-				$k_i += 1
-			End while
-			If ($fileBody_t # $originalBody_t)
+		$filePath_t:=$formsFolder_t+$formName_t+$separator_t+"method.4dm"
+		If (Test path name($filePath_t)=Is a document)
+			$fileBody_t:=Document to text($filePath_t; "UTF-8")
+			$originalBody_t:=$fileBody_t
+			$k_i:=0
+			While ($k_i<$keys_ac.length)
+				$oldName_t:=$keys_ac[$k_i]
+				$newName_t:=String(OB Get($mapping_o; $oldName_t))
+				$fileBody_t:=Replace string($fileBody_t; $oldName_t; $newName_t)
+				$k_i+=1
+			End while 
+			If ($fileBody_t#$originalBody_t)
 				TEXT TO DOCUMENT($filePath_t; $fileBody_t; "UTF-8")
-				$pass1_count_i += 1
-				APPEND TO ARRAY($log_at; "  [PASS 1c] Updated: " + $formName_t + "/method.4dm")
-			End if
-		End if
-
+				$pass1_count_i+=1
+				APPEND TO ARRAY($log_at; "  [PASS 1c] Updated: "+$formName_t+"/method.4dm")
+			End if 
+		End if 
+		
 		// Process ObjectMethods subfolder
-		$objMethodsFolder_t := $formsFolder_t + $formName_t + $separator_t + "ObjectMethods" + $separator_t
-		If (Test path name($objMethodsFolder_t) = Is a folder)
+		$objMethodsFolder_t:=$formsFolder_t+$formName_t+$separator_t+"ObjectMethods"+$separator_t
+		If (Test path name($objMethodsFolder_t)=Is a folder)
 			ARRAY TEXT($objFiles_at; 0)
 			DOCUMENT LIST($objMethodsFolder_t; $objFiles_at)
-			$j_i := 1
-			While ($j_i <= Size of array($objFiles_at))
-				$fileName_t := $objFiles_at{$j_i}
-				If (Position(".4dm"; $fileName_t) > 0)
-					$filePath_t := $objMethodsFolder_t + $fileName_t
-					$fileBody_t := Document to text($filePath_t; "UTF-8")
-					$originalBody_t := $fileBody_t
-					$k_i := 0
-					While ($k_i < $keys_ac.length)
-						$oldName_t := $keys_ac[$k_i]
-						$newName_t := String(OB Get($mapping_o; $oldName_t))
-						$fileBody_t := Replace string($fileBody_t; $oldName_t; $newName_t)
-						$k_i += 1
-					End while
-					If ($fileBody_t # $originalBody_t)
+			$j_i:=1
+			While ($j_i<=Size of array($objFiles_at))
+				$fileName_t:=$objFiles_at{$j_i}
+				If (Position(".4dm"; $fileName_t)>0)
+					$filePath_t:=$objMethodsFolder_t+$fileName_t
+					$fileBody_t:=Document to text($filePath_t; "UTF-8")
+					$originalBody_t:=$fileBody_t
+					$k_i:=0
+					While ($k_i<$keys_ac.length)
+						$oldName_t:=$keys_ac[$k_i]
+						$newName_t:=String(OB Get($mapping_o; $oldName_t))
+						$fileBody_t:=Replace string($fileBody_t; $oldName_t; $newName_t)
+						$k_i+=1
+					End while 
+					If ($fileBody_t#$originalBody_t)
 						TEXT TO DOCUMENT($filePath_t; $fileBody_t; "UTF-8")
-						$pass1_count_i += 1
-						APPEND TO ARRAY($log_at; "  [PASS 1c] Updated: " + $formName_t + "/ObjectMethods/" + $fileName_t)
-					End if
-				End if
-				$j_i += 1
-			End while
-		End if
-
-		$i_i += 1
-	End while
-
-Else
+						$pass1_count_i+=1
+						APPEND TO ARRAY($log_at; "  [PASS 1c] Updated: "+$formName_t+"/ObjectMethods/"+$fileName_t)
+					End if 
+				End if 
+				$j_i+=1
+			End while 
+		End if 
+		
+		$i_i+=1
+	End while 
+	
+Else 
 	APPEND TO ARRAY($log_at; "  [PASS 1c] Forms folder not found -- skipped.")
-	APPEND TO ARRAY($log_at; "  Path checked: " + $formsFolder_t)
-End if
+	APPEND TO ARRAY($log_at; "  Path checked: "+$formsFolder_t)
+End if 
 
 // ═════════════════════════════════════════════════════════════════════════════
 // PASS 2 — Rename FILES
@@ -392,91 +391,91 @@ End if
 APPEND TO ARRAY($log_at; "")
 APPEND TO ARRAY($log_at; "=== PASS 4: OTr BLOCK comment toggle (_OTr files) ===")
 
-$pass4_count_i := 0
+$pass4_count_i:=0
 
 // Determine direction from the first mapping key
-$firstKey_t := String($keys_ac[0])
-$isForward_b := (Substring($firstKey_t; 1; 4) = "OTr_")
+$firstKey_t:=String($keys_ac[0])
+$isForward_b:=(Substring($firstKey_t; 1; 4)="OTr_")
 
 ARRAY TEXT($allFiles4_at; 0)
 DOCUMENT LIST($methodsFolder_t; $allFiles4_at)
 
-$i_i := 1
-While ($i_i <= Size of array($allFiles4_at))
-	$fileName_t := $allFiles4_at{$i_i}
-
+$i_i:=1
+While ($i_i<=Size of array($allFiles4_at))
+	$fileName_t:=$allFiles4_at{$i_i}
+	
 	// Only process files ending in _OTr.4dm
-	If (Position("_OTr.4dm"; $fileName_t) = (Length($fileName_t) - 7))
-		$filePath_t := $methodsFolder_t + $fileName_t
-		$fileBody_t := Document to text($filePath_t; "UTF-8")
-		$originalBody_t := $fileBody_t
-
+	If (Position("_OTr.4dm"; $fileName_t)=(Length($fileName_t)-7))
+		$filePath_t:=$methodsFolder_t+$fileName_t
+		$fileBody_t:=Document to text($filePath_t; "UTF-8")
+		$originalBody_t:=$fileBody_t
+		
 		// Detect line ending
-		If (Position(Char(10); $fileBody_t) > 0)
-			$lineEnd_t := Char(10)
-		Else
-			$lineEnd_t := Char(13)
-		End if
-
-		$lines_ac := Split string($fileBody_t; $lineEnd_t)
-		$cleanedBody_t := ""
-		$inBlock_b := False
-
-		$l_i := 0
-		While ($l_i < $lines_ac.length)
-			$line_t := String($lines_ac[$l_i])
-			$trimmed_t := Trim($line_t)
-
+		If (Position(Char(10); $fileBody_t)>0)
+			$lineEnd_t:=Char(10)
+		Else 
+			$lineEnd_t:=Char(13)
+		End if 
+		
+		$lines_ac:=Split string($fileBody_t; $lineEnd_t)
+		$cleanedBody_t:=""
+		$inBlock_b:=False
+		
+		$l_i:=0
+		While ($l_i<$lines_ac.length)
+			$line_t:=String($lines_ac[$l_i])
+			$trimmed_t:=Trim($line_t)
+			
 			// Detect block boundaries
-			If (Position("BEGIN OTr BLOCK"; $trimmed_t) > 0)
-				$inBlock_b := True
-			End if
-			If (Position("END OTr BLOCK"; $trimmed_t) > 0)
-				$inBlock_b := False
-			End if
-
+			If (Position("BEGIN OTr BLOCK"; $trimmed_t)>0)
+				$inBlock_b:=True
+			End if 
+			If (Position("END OTr BLOCK"; $trimmed_t)>0)
+				$inBlock_b:=False
+			End if 
+			
 			// Transform lines inside the block (excluding the sentinel lines themselves)
 			// Forward pass prefixes non-blank, non-comment lines with "//~" (a marker
 			// that distinguishes machine-added comments from original source comments).
 			// Reverse pass strips only "//~" markers, leaving genuine "//" comments intact.
-			If ($inBlock_b & (Position("BEGIN OTr BLOCK"; $trimmed_t) = 0))
+			If ($inBlock_b & (Position("BEGIN OTr BLOCK"; $trimmed_t)=0))
 				If ($isForward_b)
 					// Forward: comment out non-blank, non-already-commented lines
-					If ((Length($trimmed_t) > 0) & (Substring($trimmed_t; 1; 3) # "//~") & (Substring($trimmed_t; 1; 2) # "//"))
-						$line_t := "//~" + $line_t
-					End if
-				Else
+					If ((Length($trimmed_t)>0) & (Substring($trimmed_t; 1; 3)#"//~") & (Substring($trimmed_t; 1; 2)#"//"))
+						$line_t:="//~"+$line_t
+					End if 
+				Else 
 					// Reverse: strip only "//~" markers added by the forward pass
-					If (Substring($trimmed_t; 1; 3) = "//~")
-						$slashPos_i := Position("//~"; $line_t)
-						$line_t := Substring($line_t; 1; $slashPos_i - 1) + Substring($line_t; $slashPos_i + 3)
-					End if
-				End if
-			End if
-
-			If (Length($cleanedBody_t) > 0)
-				$cleanedBody_t := $cleanedBody_t + $lineEnd_t
-			End if
-			$cleanedBody_t := $cleanedBody_t + $line_t
-
-			$l_i += 1
-		End while
-
-		$fileBody_t := $cleanedBody_t
-
-		If ($fileBody_t # $originalBody_t)
+					If (Substring($trimmed_t; 1; 3)="//~")
+						$slashPos_i:=Position("//~"; $line_t)
+						$line_t:=Substring($line_t; 1; $slashPos_i-1)+Substring($line_t; $slashPos_i+3)
+					End if 
+				End if 
+			End if 
+			
+			If (Length($cleanedBody_t)>0)
+				$cleanedBody_t:=$cleanedBody_t+$lineEnd_t
+			End if 
+			$cleanedBody_t:=$cleanedBody_t+$line_t
+			
+			$l_i+=1
+		End while 
+		
+		$fileBody_t:=$cleanedBody_t
+		
+		If ($fileBody_t#$originalBody_t)
 			TEXT TO DOCUMENT($filePath_t; $fileBody_t; "UTF-8")
-			$pass4_count_i += 1
-			APPEND TO ARRAY($log_at; "  [PASS 4] Toggled OTr BLOCK in: " + $fileName_t)
-		End if
-	End if
+			$pass4_count_i+=1
+			APPEND TO ARRAY($log_at; "  [PASS 4] Toggled OTr BLOCK in: "+$fileName_t)
+		End if 
+	End if 
+	
+	$i_i+=1
+End while 
 
-	$i_i += 1
-End while
-
-If ($pass4_count_i = 0)
+If ($pass4_count_i=0)
 	APPEND TO ARRAY($log_at; "  [PASS 4] No _OTr files with sentinel blocks found.")
-End if
+End if 
 
 // ═════════════════════════════════════════════════════════════════════════════
 // CLEANUP — Delete methodAttributes.json
@@ -524,4 +523,6 @@ While ($i_i<=Size of array($log_at))
 	$i_i+=1
 End while 
 
-ALERT($logText_t)
+If (Not($headless_b))
+	ALERT($logText_t)
+End if 

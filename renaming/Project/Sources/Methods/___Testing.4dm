@@ -12,6 +12,3 @@
 
 //// .github 
 
-BLOB TO DOCUMENT()
-
-ALERT(String(Is date))
