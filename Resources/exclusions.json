@@ -7,14 +7,7 @@
     "Project/Sources/Methods/________DemoForAi.4dm",
     "Project/Sources/Methods/Compiler_OTr_v_Methods.4dm",
     "Project/Sources/Methods/Compiler_OTr_w_Methods.4dm",
-    "Project/Sources/Methods/OTr_w_Run.4dm",
-    "Project/Sources/Methods/OTr_w_RunCompileOnMain.4dm",
-    "Project/Sources/Methods/OTr_w_RunUnitTestWorker.4dm",
-    "Project/Sources/Methods/OTr_w_RestartProjectWorker.4dm",
-    "Project/Sources/Methods/OTr_w_IsLocalRequest.4dm",
-    "Project/Sources/Methods/OTr_w_CompileResultForJSON.4dm",
-    "Project/Sources/Methods/OTr_w_GuyBlobExport.4dm",
-    "Project/Sources/Methods/OTr_w_Phase16Diag.4dm",
+    "Project/Sources/Methods/OTr_w_*.4dm",
     "Project/Sources/Methods/OTr_z_Echidna.4dm",
     "Project/Sources/Methods/OTr_z_Koala.4dm",
     "Project/Sources/Methods/OTr_z_Wombat.4dm",
@@ -22,12 +15,11 @@
     "Project/Sources/Methods/___templateAutoStart.4dm",
     "Project/Sources/Methods/__BuildComponent.4dm",
     "Project/Sources/Methods/__WriteDocumentation.4dm",
-    "Project/Sources/Methods/util_compileProject.4dm",
-    "Project/Sources/Methods/util_restartProject.4dm",
     "Project/Sources/Methods/CLAUDE.md",
     "Project/Sources/Methods/_Testing.4dm",
     "WebFolder/",
-    "Resources/images/",
+    "Resources/images/koala.png",
+    "Resources/images/Echidna.jpg",
     "DevNotes/",
     "Specifications/",
     ".claude/",
@@ -38,7 +30,8 @@
     "OTr-Specification.md",
     "OTr-Types-Reference.md",
     "plan-*.prompt.md",
-    "userPreferences.*"
+    "userPreferences.*",
+    "Resources/1 Corinthians 1.docx"
   ],
 
   "retainOnly": [
@@ -49,7 +42,8 @@
         "InfoPlist.strings",
         "OTr.xlf",
         "templatebuildApp.xml",
-        "OTr_OTBlockMethods.json"
+        "OTr_OTBlockMethods.json",
+        "images/Wombat.png"
       ]
     }
   ]
