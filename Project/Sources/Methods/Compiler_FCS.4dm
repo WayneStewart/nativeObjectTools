@@ -10,5 +10,9 @@ If (False:C215)
 	
 	C_TEXT:C284(Fnd_FCS_BuildComponent; $1)
 	
+	C_TEXT:C284(OTr_y_testCompilation; $1)
+	
+	C_TEXT:C284(OTr_y_buildComponent; $1; $2; $3)
+	
 	
 End if 

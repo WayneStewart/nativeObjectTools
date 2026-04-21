@@ -95,9 +95,9 @@ If (OK=1)  // If any of the previous steps failed OK will be 0
 	
 	$buildFolderPath_t:=Get 4D folder:C485(Database folder:K5:14)+"Builds"+Folder separator:K24:12+"Components"+Folder separator:K24:12
 	
-	Fnd_FCS_WriteDocumentation(""; True:C214; True:C214; True:C214)  // Rewrite the documentation, eliminating the private methods
+	Fnd_FCS_WriteDocumentation(""; True:C214; True:C214; True:C214; True:C214)  // Rewrite the documentation, eliminating the private methods
 	BUILD APPLICATION:C871($buildSettingsPath_t)
-	Fnd_FCS_WriteDocumentation(""; True:C214; False:C215; True:C214)  // Rewrite the documentation, now documenting the private methods
+	Fnd_FCS_WriteDocumentation(""; True:C214; False:C215; True:C214; True:C214)  // Rewrite the documentation, now documenting the private methods
 	
 	If (OK=1)
 		SHOW ON DISK:C922($buildFolderPath_t)

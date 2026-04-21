@@ -49,6 +49,8 @@ End if
 
 If (False:C215)
 	
+	C_TEXT:C284(OTr_y_buildComponent; ${1})
+	
 	C_BOOLEAN:C305(OTr_z_PluginShouldWork; $0)
 	
 	C_BOOLEAN:C305(OTr_z_Comment_Uncomment_OT_Code; $1)
@@ -708,7 +710,7 @@ If (False:C215)
 	
 	C_TEXT:C284(Is a method; $1)
 	C_BOOLEAN:C305(Is a method; $0)
-
+	
 	// Codex live testing bridge
 	C_TEXT:C284(OTr_w_Run; $1; $2)
 	C_OBJECT:C1216(OTr_w_Run; $0)
