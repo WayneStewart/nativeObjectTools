@@ -25,5 +25,5 @@ If (False:C215)  // So we never run this as code.
 	C_TEXT:C284(LOG THIS; $1; $2; $3)
 	C_TEXT:C284(LOG USE LOG; $1)
 	
-	
+	Log_SilentError
 End if 

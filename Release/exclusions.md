@@ -76,6 +76,7 @@ These were considered and explicitly decided to ship on Koala/Platypus.
 | `Examples/` | Ships — provides usage examples to end users |
 | `Documentation/Methods/` | Ships — component method documentation |
 | `Project/Sources/Methods/TimetoDie.4dm` | Ships — graceful shutdown helper; useful to end developers (Blade Runner easter egg) |
+| `Project/Sources/Methods/Log_SilentError.4dm` | Ships — silent error handler used by the logging subsystem |
 | `Resources/exclusions.json` | Ships — preserved in `Resources/` so the release manifest travels with the component |
 
 ---

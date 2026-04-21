@@ -35,9 +35,15 @@ $result_o:=Compile project:C1760  // ($options_o)
 
 If ($result_o.success)
 	$sentinel_t:="Syntax check passed"
+	LOG ADD ENTRY(Current method name:C684; $sentinel_t)
+	
 Else 
 	$sentinel_t:="Syntax check failed"
+	LOG ADD ENTRY(Current method name:C684; $sentinel_t)
+	
 	$errors_c:=$result_o.errors.query("isError == :1"; True:C214)
+	LOG ADD ENTRY(Current method name:C684; String:C10($errors_c.length))
+	
 	For each ($error_o; $errors_c)
 		$sentinel_t:=$sentinel_t+Char:C90(Carriage return:K15:38)+\
 			"------------------------"+Char:C90(Carriage return:K15:38)+\
@@ -49,5 +55,8 @@ End if
 
 //MARK: Write sentinel
 
-$sentinelPath_t:=Convert path POSIX to system($sentinelDir_t)+"compilationResult.txt"
+$sentinelPath_t:=Convert path POSIX to system:C1107($sentinelDir_t)+"compilationResult.txt"
+
+
 TEXT TO DOCUMENT:C1237($sentinelPath_t; $sentinel_t; "UTF-8"; Document with LF:K24:22)
+LOG ADD ENTRY(Current method name:C684; "Path"; $sentinelPath_t; "OK"; String:C10(OK))
