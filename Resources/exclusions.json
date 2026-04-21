@@ -11,12 +11,13 @@
     "Project/Sources/Methods/OTr_z_Echidna.4dm",
     "Project/Sources/Methods/OTr_z_Koala.4dm",
     "Project/Sources/Methods/OTr_z_Wombat.4dm",
-    "Project/Sources/Methods/TimetoDie.4dm",
     "Project/Sources/Methods/___templateAutoStart.4dm",
     "Project/Sources/Methods/__BuildComponent.4dm",
     "Project/Sources/Methods/__WriteDocumentation.4dm",
     "Project/Sources/Methods/CLAUDE.md",
     "Project/Sources/Methods/_Testing.4dm",
+    "Project/Sources/DatabaseMethods/onWebAuthentication.4dm",
+    "Project/Sources/DatabaseMethods/onWebConnection.4dm",
     "WebFolder/",
     "Resources/images/koala.png",
     "Resources/images/Echidna.jpg",
@@ -43,7 +44,8 @@
         "OTr.xlf",
         "templatebuildApp.xml",
         "OTr_OTBlockMethods.json",
-        "images/Wombat.png"
+        "images/Wombat.png",
+        "exclusions.json"
       ]
     }
   ]

@@ -23,12 +23,13 @@ These are removed unconditionally on every release.
 | `Project/Sources/Methods/Compiler_OTr_v_Methods.4dm` | Compiler declarations for ____Test_ and ____Make_ methods — stripped with those methods |
 | `Project/Sources/Methods/Compiler_OTr_w_Methods.4dm` | Compiler declarations for OTr_w_ Codex bridge methods — stripped with those methods |
 | `Project/Sources/Methods/OTr_w_*.4dm` | All Codex HTTP bridge methods — none ship |
-| `Project/Sources/Methods/TimetoDie.4dm` | Dev utility — graceful shutdown helper (Blade Runner easter egg) |
 | `Project/Sources/Methods/___templateAutoStart.4dm` | AI scaffold template, not a shipping method |
 | `Project/Sources/Methods/__BuildComponent.4dm` | Dev utility — component build launcher (superseded by `Fnd_FCS_BuildComponent`) |
 | `Project/Sources/Methods/__WriteDocumentation.4dm` | Dev utility — documentation generator |
 | `Project/Sources/Methods/CLAUDE.md` | AI working memory file (Claude Code artefact) |
 | `Project/Sources/Methods/_Testing.4dm` | Dev utility — gitignored in Echidna; excluded here as a belt-and-suspenders guard |
+| `Project/Sources/DatabaseMethods/onWebAuthentication.4dm` | Web server authentication hook — only used during Codex HTTP bridge development; not part of the component API |
+| `Project/Sources/DatabaseMethods/onWebConnection.4dm` | Web server connection hook — same rationale |
 | `Project/Sources/Methods/OTr_z_Echidna.4dm` | Dev-only — returns image from `Resources/images/Echidna.jpg`; image files are stripped and method serves no purpose without them |
 | `Project/Sources/Methods/OTr_z_Koala.4dm` | Dev-only — returns image from `Resources/images/koala.png`; same rationale |
 | `Project/Sources/Methods/OTr_z_Wombat.4dm` | Dev-only — returns image from `Resources/images/Wombat.png`; same rationale |
@@ -56,7 +57,7 @@ For directories where most content ships but specific items must be excluded.
 
 | Directory | Keep | Strip everything else |
 |---|---|---|
-| `Resources/` | `InfoPlist.json`, `InfoPlist.strings`, `OTr.xlf`, `templatebuildApp.xml`, `OTr_OTBlockMethods.json`, `images/Wombat.png` | All other files and subdirectories |
+| `Resources/` | `InfoPlist.json`, `InfoPlist.strings`, `OTr.xlf`, `templatebuildApp.xml`, `OTr_OTBlockMethods.json`, `images/Wombat.png`, `exclusions.json` | All other files and subdirectories |
 
 ---
 
@@ -74,6 +75,8 @@ These were considered and explicitly decided to ship on Koala/Platypus.
 | `OTr_z_PluginShouldWork.4dm` | Ships — companion to `OTr_z_Comment_Uncomment_OT_Code` |
 | `Examples/` | Ships — provides usage examples to end users |
 | `Documentation/Methods/` | Ships — component method documentation |
+| `Project/Sources/Methods/TimetoDie.4dm` | Ships — graceful shutdown helper; useful to end developers (Blade Runner easter egg) |
+| `Resources/exclusions.json` | Ships — preserved in `Resources/` so the release manifest travels with the component |
 
 ---
 
@@ -97,3 +100,7 @@ None at this time.
   `Compiler_OTr_w_Methods` and `Compiler_OTr_v_Methods` entries confirmed correct following
   reorganisation into per-prefix compiler methods; `OTr_LoadAndViewOTBlob.4dm` confirmed as
   renamed from `_____Import_OT_Blob.4dm`.
+- 2026-04-21 — First live strip test. Corrections: `TimetoDie.4dm` moved to confirmed-not-stripped
+  (ships); `onWebAuthentication.4dm` and `onWebConnection.4dm` added to always-strip (Codex
+  HTTP bridge database methods); `exclusions.json` added to `retainOnly` keep list so the
+  manifest is not stripped by its own rules.
