@@ -58,10 +58,12 @@ jobs:
       VERSION: ${{ needs.strip.outputs.version }}
       SENTINEL_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/build-output/
       PROJECT: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Project/nativeObjectTools.4DProject
+      PROJECT_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Project/
 
     steps:
       - name: Build OTr_ v19
         run: |
+          rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
           open -W /Applications/4D/19/4D.app \
             --args \
             --project "${{ env.PROJECT }}" \
@@ -76,6 +78,7 @@ jobs:
 
       - name: Build OTr_ v20
         run: |
+          rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
           open -W /Applications/4D/20/4D.app \
             --args \
             --project "${{ env.PROJECT }}" \
@@ -90,6 +93,7 @@ jobs:
 
       - name: Build OTr_ v21
         run: |
+          rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
           open -W /Applications/4D/21/4D.app \
             --args \
             --project "${{ env.PROJECT }}" \
@@ -162,10 +166,12 @@ jobs:
       VERSION: ${{ needs.strip.outputs.version }}
       SENTINEL_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/build-output/
       PROJECT: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Project/nativeObjectTools.4DProject
+      PROJECT_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Project/
 
     steps:
       - name: Build OT v19
         run: |
+          rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
           open -W /Applications/4D/19/4D.app \
             --args \
             --project "${{ env.PROJECT }}" \
@@ -180,6 +186,7 @@ jobs:
 
       - name: Build OT v20
         run: |
+          rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
           open -W /Applications/4D/20/4D.app \
             --args \
             --project "${{ env.PROJECT }}" \
@@ -194,6 +201,7 @@ jobs:
 
       - name: Build OT v21
         run: |
+          rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
           open -W /Applications/4D/21/4D.app \
             --args \
             --project "${{ env.PROJECT }}" \
@@ -252,10 +260,14 @@ jobs:
             "${{ env.BUILDS }}/19/Components/Native Object Tools.4dbase" \
             "${{ env.BUILDS }}/19/Components/Object Tools.4dbase"
           do
-            cd "$component/Libraries"
-            codesign --remove-signature lib4d-arm64.dylib
-            codesign --verbose --deep --timestamp --force \
-              --sign "${{ env.DEVELOPER_ID }}" lib4d-arm64.dylib
+            dylib="$component/Libraries/lib4d-arm64.dylib"
+            if [ -f "$dylib" ]; then
+              codesign --remove-signature "$dylib"
+              codesign --verbose --deep --timestamp --force \
+                --sign "${{ env.DEVELOPER_ID }}" "$dylib"
+            else
+              echo "No lib4d-arm64.dylib in $component — skipping"
+            fi
           done
 
       - name: Sign dylibs — v20
@@ -264,10 +276,14 @@ jobs:
             "${{ env.BUILDS }}/20/Components/Native Object Tools.4dbase" \
             "${{ env.BUILDS }}/20/Components/Object Tools.4dbase"
           do
-            cd "$component/Libraries"
-            codesign --remove-signature lib4d-arm64.dylib
-            codesign --verbose --deep --timestamp --force \
-              --sign "${{ env.DEVELOPER_ID }}" lib4d-arm64.dylib
+            dylib="$component/Libraries/lib4d-arm64.dylib"
+            if [ -f "$dylib" ]; then
+              codesign --remove-signature "$dylib"
+              codesign --verbose --deep --timestamp --force \
+                --sign "${{ env.DEVELOPER_ID }}" "$dylib"
+            else
+              echo "No lib4d-arm64.dylib in $component — skipping"
+            fi
           done
 
       - name: Sign dylibs — v21
@@ -276,10 +292,14 @@ jobs:
             "${{ env.BUILDS }}/21/Components/Native Object Tools.4dbase" \
             "${{ env.BUILDS }}/21/Components/Object Tools.4dbase"
           do
-            cd "$component/Libraries"
-            codesign --remove-signature lib4d-arm64.dylib
-            codesign --verbose --deep --timestamp --force \
-              --sign "${{ env.DEVELOPER_ID }}" lib4d-arm64.dylib
+            dylib="$component/Libraries/lib4d-arm64.dylib"
+            if [ -f "$dylib" ]; then
+              codesign --remove-signature "$dylib"
+              codesign --verbose --deep --timestamp --force \
+                --sign "${{ env.DEVELOPER_ID }}" "$dylib"
+            else
+              echo "No lib4d-arm64.dylib in $component — skipping"
+            fi
           done
 
       - name: Build DMG and ZIP — v19
