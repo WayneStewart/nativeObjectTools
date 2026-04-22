@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><preferences stamp="6">
+	<com.4d>
+		<compiler>
+			<options compilation_path="3" error_file="true" symbol_file="true" target="all"/>
+			<typage default_for_button="2"/>
+		</compiler>
+		<web>
+			<standalone_server>
+				<configuration publish_at_startup="false"/>
+			</standalone_server>
+		</web>
+		<interface>
+			<developper display_toolbar="true"/>
+		</interface>
+	</com.4d>
+</preferences>
