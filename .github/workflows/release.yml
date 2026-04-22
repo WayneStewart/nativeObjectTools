@@ -243,6 +243,9 @@ jobs:
       TEMPLATES: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Release/Templates
 
     steps:
+      - name: Unlock keychain
+        run: security unlock-keychain -p "${{ secrets.RUNNER_KEYCHAIN_PASSWORD }}" ~/Library/Keychains/login.keychain-db
+
       - name: Sign dylibs — v19
         run: |
           for component in \
