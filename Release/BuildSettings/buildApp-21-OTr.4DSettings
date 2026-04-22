@@ -4,7 +4,7 @@
 
   <BuildApp>
 
-    <BuildCompiled>False</BuildCompiled>
+    <BuildCompiled>True</BuildCompiled>
     <IncludeAssociatedFolders>True</IncludeAssociatedFolders>
     <BuildComponent>True</BuildComponent>
     <BuildApplicationSerialized>False</BuildApplicationSerialized>

@@ -336,7 +336,8 @@ jobs:
             -notarizationTeamID "H8FSU88B4T"
           hdiutil attach "$DMG" -mountpoint /Volumes/OTr19 -nobrowse -quiet
           cd /Volumes/OTr19
-          zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
+          zip -r "$ZIP" .
+          cd /
           hdiutil detach /Volumes/OTr19 -quiet
 
       - name: Build DMG and ZIP — v20
@@ -351,7 +352,8 @@ jobs:
             -notarizationTeamID "H8FSU88B4T"
           hdiutil attach "$DMG" -mountpoint /Volumes/OTr20 -nobrowse -quiet
           cd /Volumes/OTr20
-          zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
+          zip -r "$ZIP" .
+          cd /
           hdiutil detach /Volumes/OTr20 -quiet
 
       - name: Build DMG and ZIP — v21
@@ -366,7 +368,8 @@ jobs:
             -notarizationTeamID "H8FSU88B4T"
           hdiutil attach "$DMG" -mountpoint /Volumes/OTr21 -nobrowse -quiet
           cd /Volumes/OTr21
-          zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
+          zip -r "$ZIP" .
+          cd /
           hdiutil detach /Volumes/OTr21 -quiet
 
   # ---------------------------------------------------------------------------
