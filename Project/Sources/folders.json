@@ -304,6 +304,7 @@
 			"OTr_z_SortValidatePair",
 			"OTr_z_timestampLocal",
 			"OTr_z_Unlock",
+			"OTr_Z_UpdateVersionStrings",
 			"OTr_z_Wombat",
 			"OTr_z_XMLReadObject",
 			"OTr_z_XMLWriteObject",

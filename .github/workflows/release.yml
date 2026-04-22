@@ -23,6 +23,12 @@ jobs:
           ref: Echidna
           fetch-depth: 0
 
+      - name: Create Builds output directories
+        run: |
+          mkdir -p Builds/19/Components
+          mkdir -p Builds/20/Components
+          mkdir -p Builds/21/Components
+
       - name: Run strip script
         run: bash Release/Scripts/stageKoala.sh
 
