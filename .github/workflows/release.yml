@@ -112,6 +112,7 @@ jobs:
     runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
     env:
       VERSION: ${{ needs.strip.outputs.version }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Configure git identity
@@ -123,7 +124,7 @@ jobs:
         run: |
           git add -A
           git commit -m "Release ${{ env.VERSION }} — stripped"
-          git push origin HEAD:Koala --force
+          git push "https://x-access-token:${{ env.GH_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:Koala --force
 
   # ---------------------------------------------------------------------------
   # 4. Rename — OTr_ → OT (produces Platypus state)
@@ -215,6 +216,7 @@ jobs:
     runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
     env:
       VERSION: ${{ needs.strip.outputs.version }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Configure git identity
@@ -226,7 +228,7 @@ jobs:
         run: |
           git add -A
           git commit -m "Release ${{ env.VERSION }} — renamed"
-          git push origin HEAD:Platypus --force
+          git push "https://x-access-token:${{ env.GH_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:Platypus --force
 
   # ---------------------------------------------------------------------------
   # 7. Sign, package (DMG + ZIP) for all three versions
