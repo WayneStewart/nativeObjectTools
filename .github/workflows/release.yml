@@ -61,9 +61,18 @@ jobs:
       PROJECT_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Project/
 
     steps:
+      - name: Check 4D is not already running
+        run: |
+          if pgrep -f "4D.app/Contents/MacOS/4D" > /dev/null 2>&1; then
+            echo "ERROR: A 4D process is already running. Aborting to avoid conflicts."
+            pgrep -a -f "4D.app/Contents/MacOS/4D"
+            exit 1
+          fi
+
       - name: Build OTr_ v19
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
+          rm -rf "${{ env.PROJECT_DIR }}../Libraries"
           open -W /Applications/4D/19/4D.app \
             --args \
             --project "${{ env.PROJECT }}" \
@@ -79,6 +88,7 @@ jobs:
       - name: Build OTr_ v20
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
+          rm -rf "${{ env.PROJECT_DIR }}../Libraries"
           open -W /Applications/4D/20/4D.app \
             --args \
             --project "${{ env.PROJECT }}" \
@@ -94,6 +104,7 @@ jobs:
       - name: Build OTr_ v21
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
+          rm -rf "${{ env.PROJECT_DIR }}../Libraries"
           open -W /Applications/4D/21/4D.app \
             --args \
             --project "${{ env.PROJECT }}" \
@@ -169,9 +180,18 @@ jobs:
       PROJECT_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Project/
 
     steps:
+      - name: Check 4D is not already running
+        run: |
+          if pgrep -f "4D.app/Contents/MacOS/4D" > /dev/null 2>&1; then
+            echo "ERROR: A 4D process is already running. Aborting to avoid conflicts."
+            pgrep -a -f "4D.app/Contents/MacOS/4D"
+            exit 1
+          fi
+
       - name: Build OT v19
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
+          rm -rf "${{ env.PROJECT_DIR }}../Libraries"
           open -W /Applications/4D/19/4D.app \
             --args \
             --project "${{ env.PROJECT }}" \
@@ -187,6 +207,7 @@ jobs:
       - name: Build OT v20
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
+          rm -rf "${{ env.PROJECT_DIR }}../Libraries"
           open -W /Applications/4D/20/4D.app \
             --args \
             --project "${{ env.PROJECT }}" \
@@ -202,6 +223,7 @@ jobs:
       - name: Build OT v21
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
+          rm -rf "${{ env.PROJECT_DIR }}../Libraries"
           open -W /Applications/4D/21/4D.app \
             --args \
             --project "${{ env.PROJECT }}" \
