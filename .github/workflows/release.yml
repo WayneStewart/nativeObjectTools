@@ -62,7 +62,7 @@ jobs:
             --data "${{ env.SENTINEL_DIR }}data-otr-19.4DD" \
             --create-data \
             --user-param "build;OTr;19;${{ env.SENTINEL_DIR }}" \
-            --headless
+
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
           result=$(head -n 1 "$SENTINEL")
           echo "$result"
@@ -76,7 +76,7 @@ jobs:
             --data "${{ env.SENTINEL_DIR }}data-otr-20.4DD" \
             --create-data \
             --user-param "build;OTr;20;${{ env.SENTINEL_DIR }}" \
-            --headless
+
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
           result=$(head -n 1 "$SENTINEL")
           echo "$result"
@@ -90,7 +90,7 @@ jobs:
             --data "${{ env.SENTINEL_DIR }}data-otr-21.4DD" \
             --create-data \
             --user-param "build;OTr;21;${{ env.SENTINEL_DIR }}" \
-            --headless
+
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
           result=$(head -n 1 "$SENTINEL")
           echo "$result"
@@ -136,7 +136,7 @@ jobs:
             --data "${{ env.SENTINEL_DIR }}renamer-data.4DD" \
             --create-data \
             --user-param "forward;${{ env.SENTINEL_DIR }}" \
-            --headless
+
           result=$(head -n 1 "${{ env.SENTINEL_DIR }}rename-forward.txt")
           echo "$result"
           [ "$result" = "rename-forward passed" ] || exit 1
@@ -163,7 +163,7 @@ jobs:
             --data "${{ env.SENTINEL_DIR }}data-ot-19.4DD" \
             --create-data \
             --user-param "build;OT;19;${{ env.SENTINEL_DIR }}" \
-            --headless
+
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
           result=$(head -n 1 "$SENTINEL")
           echo "$result"
@@ -177,7 +177,7 @@ jobs:
             --data "${{ env.SENTINEL_DIR }}data-ot-20.4DD" \
             --create-data \
             --user-param "build;OT;20;${{ env.SENTINEL_DIR }}" \
-            --headless
+
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
           result=$(head -n 1 "$SENTINEL")
           echo "$result"
@@ -191,7 +191,7 @@ jobs:
             --data "${{ env.SENTINEL_DIR }}data-ot-21.4DD" \
             --create-data \
             --user-param "build;OT;21;${{ env.SENTINEL_DIR }}" \
-            --headless
+
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
           result=$(head -n 1 "$SENTINEL")
           echo "$result"
