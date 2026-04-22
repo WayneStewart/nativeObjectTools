@@ -1,4 +1,4 @@
-//%attributes = {}
+//%attributes = {"invisible":true}
 var $build_t; $buildVersion_t; $version_t; $templatePath_t; $date_t; $json_t; $LF; $strings_t : Text
 var $info_o : Object
 
@@ -17,7 +17,6 @@ If (Test path name:C476($templatePath_t)=Is a document:K24:1)
 	$info_o:=JSON Parse:C1218($json_t)
 	$date_t:=OTr_z_timestampLocal
 	$date_t:=Substring:C12($date_t; 1; 10)
-	
 	
 	// Update the json
 	$info_o.CFBundleShortVersionString:=$build_t
