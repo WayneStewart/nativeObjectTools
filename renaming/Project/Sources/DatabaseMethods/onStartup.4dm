@@ -1,22 +1,22 @@
-var $appInfo_o : Object
 var $userParam_t; $action_t; $sentinelDir_t; $sentinelPath_t; $sentinel_t : Text
 var $params_c : Collection
 var $repoRoot_t; $methodsFolder_t; $foldersJSON_t; $derivedData_t; $reportText_t : Text
 var $value_r : Real
 
-$appInfo_o:=Application info
+$value_r:=Get database parameter(User param value; $userParam_t)
 
-If ($appInfo_o.headless)
-	
-	// Headless CI launch.
+If ($userParam_t#"")
+
+	// CI launch — user param present.
 	// --user-param format: "action;/path/to/sentinelDir/"
 	//   forward: "forward;/path/to/sentinelDir/"
-	$value_r:=Get database parameter(User param value; $userParam_t)
 	$params_c:=Split string($userParam_t; ";"; sk ignore empty strings+sk trim spaces)
-	
-	$action_t:=$params_c[0]
-	$sentinelDir_t:=$params_c[1]
-	
+
+	If ($params_c.length>=2)
+		$action_t:=$params_c[0]
+		$sentinelDir_t:=$params_c[1]
+	End if
+
 	// Derive target project paths from the repo root.
 	// Renaming project sits at <repoRoot>/Renaming/, so Database folder is <repoRoot>/Renaming/
 	$repoRoot_t:=Get 4D folder(Database folder)  // …/Renaming/
