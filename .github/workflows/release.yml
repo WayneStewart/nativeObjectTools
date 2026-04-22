@@ -31,7 +31,7 @@ jobs:
         run: |
           VERSION=$(python3 -c "
           import json
-          with open('Resources/InfoPlist.json') as f:
+          with open('Resources/InfoPlist.json', encoding='utf-8-sig') as f:
               print(json.load(f)['CFBundleShortVersionString'])
           ")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
