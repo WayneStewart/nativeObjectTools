@@ -33,25 +33,36 @@ var $compiledCodePath_t : Text
 // then compile again. This matches the manual "Clear compiled code → Compile"
 // sequence that reliably produces a correct universal build.
 
+$compiledCodePath_t:=Get 4D folder:C485(Database folder:K5:14)+"Project"+Folder separator:K24:12+"DerivedData"+Folder separator:K24:12+"CompiledCode"+Folder separator:K24:12
+If (Test path name:C476($compiledCodePath_t)=Is a folder:K24:2)
+	LOG Build Log(Current method name:C684; "CompiledCode folder exists")
+	DELETE FOLDER:C693($compiledCodePath_t; Delete with contents:K24:24)
+	LOG Build Log(Current method name:C684; "CompiledCode cleared"; "OK = "+String:C10(OK); "Error = "+String:C10(Error))
+End if 
+
+
 $options_o:=New object:C1471
 $options_o.targets:=New collection:C1472("arm64_macOS_lib"; "x86_64_generic")
-LOG Build Log(Current method name:C684; "Compile pass 1 start")
+LOG Build Log(Current method name:C684; "Compile start")
 $result_o:=Compile project:C1760($options_o)
-LOG Build Log(Current method name:C684; "Compile pass 1 done"; "success"; String:C10(Bool to num:C240($result_o.success)))
+LOG Build Log(Current method name:C684; "Compile done"; "success"; String:C10(Num:C11($result_o.success)))
 
 //MARK: Clear compiled code between passes
 
-$compiledCodePath_t:=Get 4D folder:C485(Database folder:K5:14)+"DerivedData"+Folder separator:K24:12+"CompiledCode"+Folder separator:K24:12
-If (Test path name:C476($compiledCodePath_t)=Is a folder:K24:2)
-	DELETE FOLDER:C693($compiledCodePath_t; Delete with contents:K24:24)
-	LOG Build Log(Current method name:C684; "CompiledCode cleared")
-End if
+//var $repoRoot_t : Text
+//$repoRoot_t:=Get 4D folder(Database folder)  // …/Project/
+//$repoRoot_t:=Substring($repoRoot_t; 1; Length($repoRoot_t)-Length("Project"+Folder separator))
+//$compiledCodePath_t:=$repoRoot_t+"DerivedData"+Folder separator+"CompiledCode"+Folder separator
+//If (Test path name($compiledCodePath_t)=Is a folder)
+//DELETE FOLDER($compiledCodePath_t)
+//LOG Build Log(Current method name; "CompiledCode cleared")
+//End if 
 
-//MARK: Compile (pass 2 — clean build; result used)
+////MARK: Compile (pass 2 — clean build; result used)
 
-LOG Build Log(Current method name:C684; "Compile pass 2 start")
-$result_o:=Compile project:C1760($options_o)
-LOG Build Log(Current method name:C684; "Compile pass 2 done"; "success"; String:C10(Bool to num:C240($result_o.success)))
+//LOG Build Log(Current method name; "Compile pass 2 start")
+//$result_o:=Compile project($options_o)
+//LOG Build Log(Current method name; "Compile pass 2 done"; "success"; String(Num($result_o.success)))
 
 //MARK: Build sentinel text
 

@@ -1,30 +1,19 @@
 //%attributes = {"invisible":true}
-var $appInfo_o : Object
-var $userParam_t; $action_t; $sentinelDir_t; $variant_t; $4dVersion_t : Text
-var $params_c : Collection
-var $value_r : Real
-var $log_FileName_t; $logLabel_t; $log_Path_t : Text
-$appInfo_o:=Get application info:C1599
+var $repoRoot_t; $compiledCodePath_t : Text
+var $options_o; $result_o : Object
+
+$compiledCodePath_t:=Get 4D folder:C485(Database folder:K5:14)+"Project"+Folder separator:K24:12+"DerivedData"+Folder separator:K24:12+"CompiledCode"+Folder separator:K24:12
+If (Test path name:C476($compiledCodePath_t)=Is a folder:K24:2)
+	LOG Build Log(Current method name:C684; "CompiledCode folder exists")
+	DELETE FOLDER:C693($compiledCodePath_t; Delete with contents:K24:24)
+	LOG Build Log(Current method name:C684; "CompiledCode cleared"; "OK = "+String:C10(OK); "Error = "+String:C10(Error))
+End if 
 
 
-$log_Path_t:=Get 4D folder:C485(Logs folder:K5:19)
-$log_FileName_t:=OTr_z_timestampLocal
-$log_FileName_t:=Replace string:C233($log_FileName_t; ":"; "-")
-$log_FileName_t:=Replace string:C233($log_FileName_t; "/"; "-")
-$log_FileName_t:=Replace string:C233($log_FileName_t; "."; "-")
-$log_FileName_t:=$log_FileName_t+".txt"
+$options_o:=New object:C1471
+$options_o.targets:=New collection:C1472("arm64_macOS_lib"; "x86_64_generic")
+LOG Build Log(Current method name:C684; "Compile start")
+$result_o:=Compile project:C1760($options_o)
+LOG Build Log(Current method name:C684; "Compile done"; "success"; String:C10(Num:C11($result_o.success)))
 
-$logLabel_t:="Build Logging"
-
-LOG DECLARE LOG($logLabel_t)  //; $log_Path_t; $log_FileName_t)
-LOG USE LOG($logLabel_t)
-LOG ENABLE(True:C214)
-
-LOG ADD ENTRY(Current method name:C684; "Headless Mode")
-
-
-
-LOG ADD ENTRY(Current method name:C684; "Exit Action Section")
-
-LOG CLOSE LOG  // Inline call
-//LOG CLOSE LOG
+//MARK: Clear compiled code between passes
