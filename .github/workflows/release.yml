@@ -12,16 +12,16 @@ jobs:
     runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
 
     steps:
+      - name: Clear build-output directory
+        run: |
+          rm -rf /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/build-output
+          mkdir -p /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/build-output
+
       - name: Check out Echidna
         uses: actions/checkout@v4
         with:
           ref: Echidna
           fetch-depth: 0
-
-      - name: Clear build-output directory
-        run: |
-          rm -rf build-output
-          mkdir build-output
 
       - name: Run strip script
         run: bash Release/Scripts/stageKoala.sh

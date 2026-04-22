@@ -16,7 +16,7 @@
 //   $sentinelDir_t : Text : POSIX path to folder where sentinel file is written
 
 // This method is stripped from Koala/Platypus by the exclusions manifest.
-// It must never ship with the component.
+// It shouldn't ship with the component.
 
 // Created by Wayne Stewart, 2026-04-21
 // ----------------------------------------------------
@@ -37,19 +37,20 @@ $infoPlistPath_t:=Get 4D folder:C485(Current resources folder:K5:16)+"InfoPlist.
 If (Test path name:C476($infoPlistPath_t)=Is a document:K24:1)
 	
 	$LF:=Char:C90(Line feed:K15:40)
-	$year_t:=Substring:C12(Timestamp:C1445; 1; 4)
+	$year_t:=Substring:C12(OTr_z_timestampLocal; 1; 10)
 	
 	$json_t:=Document to text:C1236($infoPlistPath_t)
 	$info_o:=JSON Parse:C1218($json_t)
 	
 	$info_o.CFBundleShortVersionString:=$version_t
-	$info_o.CFBundleGetInfoString:=$info_o.CFBundleName+" "+$version_t+", "+$year_t
+	$info_o.CFBundleGetInfoString:=$info_o.CFBundleName+" "+$version_t+" (4D "+$4dVersion_t+" LTS), "+$year_t
 	
 	$json_t:=JSON Stringify:C1217($info_o; *)
 	DELETE DOCUMENT:C159($infoPlistPath_t)
 	TEXT TO DOCUMENT:C1237($infoPlistPath_t; $json_t; "UTF-8"; Document with LF:K24:22)
 	LOG ADD ENTRY(Current method name:C684; "InfoPlist.json updated"; $version_t)
 	
+	// Update the .strings document (this is the one used by Get Info)
 	$strings_t:="/* Localized versions of Info.plist keys */"+$LF+$LF
 	$strings_t:=$strings_t+"CFBundleName = \""+$info_o.CFBundleName+"\";"+$LF
 	$strings_t:=$strings_t+"CFBundleShortVersionString = \""+$info_o.CFBundleShortVersionString+"\";"+$LF
