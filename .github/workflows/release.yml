@@ -107,6 +107,8 @@ jobs:
   # ---------------------------------------------------------------------------
   push-koala:
     needs: [strip, build-otr]
+    permissions:
+      contents: write
     runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
     env:
       VERSION: ${{ needs.strip.outputs.version }}
@@ -208,6 +210,8 @@ jobs:
   # ---------------------------------------------------------------------------
   push-platypus:
     needs: [strip, build-ot]
+    permissions:
+      contents: write
     runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
     env:
       VERSION: ${{ needs.strip.outputs.version }}
@@ -324,6 +328,8 @@ jobs:
   # ---------------------------------------------------------------------------
   publish:
     needs: [strip, package]
+    permissions:
+      contents: write
     runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
     env:
       VERSION: ${{ needs.strip.outputs.version }}

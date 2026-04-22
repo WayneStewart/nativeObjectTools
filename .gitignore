@@ -45,7 +45,10 @@ Helpers/
 # Builds - these don't belong in the repo moving forward (2026-04-21)
 Builds/
 
-# 4D Data files 
+# CI build output (sentinel files, compilation results) — runner-local only
+build-output/
+
+# 4D Data files
 *.4dd
 *.4DIndx
 *.4DIndy
