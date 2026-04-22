@@ -71,7 +71,7 @@ jobs:
 
       - name: Build OTr_ v19
         run: |
-          rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
+          rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
           open -W /Applications/4D/19/4D.app \
             --args \
@@ -87,7 +87,7 @@ jobs:
 
       - name: Build OTr_ v20
         run: |
-          rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
+          rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
           open -W /Applications/4D/20/4D.app \
             --args \
@@ -103,7 +103,7 @@ jobs:
 
       - name: Build OTr_ v21
         run: |
-          rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
+          rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
           open -W /Applications/4D/21/4D.app \
             --args \
@@ -190,7 +190,7 @@ jobs:
 
       - name: Build OT v19
         run: |
-          rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
+          rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
           open -W /Applications/4D/19/4D.app \
             --args \
@@ -206,7 +206,7 @@ jobs:
 
       - name: Build OT v20
         run: |
-          rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
+          rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
           open -W /Applications/4D/20/4D.app \
             --args \
@@ -222,7 +222,7 @@ jobs:
 
       - name: Build OT v21
         run: |
-          rm -rf "${{ env.PROJECT_DIR }}DerivedData/CompiledCode"
+          rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
           open -W /Applications/4D/21/4D.app \
             --args \
