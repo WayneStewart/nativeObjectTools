@@ -64,7 +64,7 @@ jobs:
             --user-param "build;OTr;19;${{ env.SENTINEL_DIR }}" \
 
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
-          result=$(head -n 1 "$SENTINEL")
+          result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
           [ "$result" = "build-${{ env.VERSION }}-OTr passed" ] || exit 1
 
@@ -78,7 +78,7 @@ jobs:
             --user-param "build;OTr;20;${{ env.SENTINEL_DIR }}" \
 
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
-          result=$(head -n 1 "$SENTINEL")
+          result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
           [ "$result" = "build-${{ env.VERSION }}-OTr passed" ] || exit 1
 
@@ -92,7 +92,7 @@ jobs:
             --user-param "build;OTr;21;${{ env.SENTINEL_DIR }}" \
 
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
-          result=$(head -n 1 "$SENTINEL")
+          result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
           [ "$result" = "build-${{ env.VERSION }}-OTr passed" ] || exit 1
 
@@ -165,7 +165,7 @@ jobs:
             --user-param "build;OT;19;${{ env.SENTINEL_DIR }}" \
 
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
-          result=$(head -n 1 "$SENTINEL")
+          result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
           [ "$result" = "build-${{ env.VERSION }}-OT passed" ] || exit 1
 
@@ -179,7 +179,7 @@ jobs:
             --user-param "build;OT;20;${{ env.SENTINEL_DIR }}" \
 
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
-          result=$(head -n 1 "$SENTINEL")
+          result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
           [ "$result" = "build-${{ env.VERSION }}-OT passed" ] || exit 1
 
@@ -193,7 +193,7 @@ jobs:
             --user-param "build;OT;21;${{ env.SENTINEL_DIR }}" \
 
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
-          result=$(head -n 1 "$SENTINEL")
+          result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
           [ "$result" = "build-${{ env.VERSION }}-OT passed" ] || exit 1
 
