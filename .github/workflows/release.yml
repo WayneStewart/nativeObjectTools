@@ -1,0 +1,339 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  # ---------------------------------------------------------------------------
+  # 1. Strip — remove development-only code from the working tree
+  # ---------------------------------------------------------------------------
+  strip:
+    runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
+
+    steps:
+      - name: Check out Echidna
+        uses: actions/checkout@v4
+        with:
+          ref: Echidna
+          fetch-depth: 0
+
+      - name: Clear build-output directory
+        run: |
+          rm -rf build-output
+          mkdir build-output
+
+      - name: Run strip script
+        run: bash Release/Scripts/stageKoala.sh
+
+      - name: Read version from Resources/InfoPlist.json
+        id: version
+        run: |
+          VERSION=$(python3 -c "
+          import json
+          with open('Resources/InfoPlist.json') as f:
+              print(json.load(f)['CFBundleShortVersionString'])
+          ")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+  # ---------------------------------------------------------------------------
+  # 2. Build OTr_ components (v19, v20, v21)
+  #    Sentinel filename: build-{version}-OTr.txt
+  #    Sentinel line 1:   build-{version}-OTr passed
+  # ---------------------------------------------------------------------------
+  build-otr:
+    needs: strip
+    runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
+    env:
+      VERSION: ${{ needs.strip.outputs.version }}
+      SENTINEL_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/build-output/
+      PROJECT: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Project/nativeObjectTools.4DProject
+
+    steps:
+      - name: Build OTr_ v19
+        run: |
+          open -W /Applications/4D/19/4D.app \
+            --args \
+            --project "${{ env.PROJECT }}" \
+            --data "${{ env.SENTINEL_DIR }}data-otr-19.4DD" \
+            --create-data \
+            --user-param "build;OTr;19;${{ env.SENTINEL_DIR }}" \
+            --headless
+          SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
+          result=$(head -n 1 "$SENTINEL")
+          echo "$result"
+          [ "$result" = "build-${{ env.VERSION }}-OTr passed" ] || exit 1
+
+      - name: Build OTr_ v20
+        run: |
+          open -W /Applications/4D/20/4D.app \
+            --args \
+            --project "${{ env.PROJECT }}" \
+            --data "${{ env.SENTINEL_DIR }}data-otr-20.4DD" \
+            --create-data \
+            --user-param "build;OTr;20;${{ env.SENTINEL_DIR }}" \
+            --headless
+          SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
+          result=$(head -n 1 "$SENTINEL")
+          echo "$result"
+          [ "$result" = "build-${{ env.VERSION }}-OTr passed" ] || exit 1
+
+      - name: Build OTr_ v21
+        run: |
+          open -W /Applications/4D/21/4D.app \
+            --args \
+            --project "${{ env.PROJECT }}" \
+            --data "${{ env.SENTINEL_DIR }}data-otr-21.4DD" \
+            --create-data \
+            --user-param "build;OTr;21;${{ env.SENTINEL_DIR }}" \
+            --headless
+          SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
+          result=$(head -n 1 "$SENTINEL")
+          echo "$result"
+          [ "$result" = "build-${{ env.VERSION }}-OTr passed" ] || exit 1
+
+  # ---------------------------------------------------------------------------
+  # 3. Force-push stripped tree to Koala
+  # ---------------------------------------------------------------------------
+  push-koala:
+    needs: [strip, build-otr]
+    runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
+    env:
+      VERSION: ${{ needs.strip.outputs.version }}
+
+    steps:
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit stripped tree and force-push to Koala
+        run: |
+          git add -A
+          git commit -m "Release ${{ env.VERSION }} — stripped"
+          git push origin HEAD:Koala --force
+
+  # ---------------------------------------------------------------------------
+  # 4. Rename — OTr_ → OT (produces Platypus state)
+  # ---------------------------------------------------------------------------
+  rename:
+    needs: push-koala
+    runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
+    env:
+      SENTINEL_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/build-output/
+      RENAMING_PROJECT: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Renaming/Project/Renaming.4DProject
+
+    steps:
+      - name: Run Renamer (forward)
+        run: |
+          open -W /Applications/4D/21/4D.app \
+            --args \
+            --project "${{ env.RENAMING_PROJECT }}" \
+            --data "${{ env.SENTINEL_DIR }}renamer-data.4DD" \
+            --create-data \
+            --user-param "forward;${{ env.SENTINEL_DIR }}" \
+            --headless
+          result=$(head -n 1 "${{ env.SENTINEL_DIR }}rename-forward.txt")
+          echo "$result"
+          [ "$result" = "rename-forward passed" ] || exit 1
+
+  # ---------------------------------------------------------------------------
+  # 5. Build OT components (v19, v20, v21)
+  #    Sentinel filename: build-{version}-OT.txt
+  #    Sentinel line 1:   build-{version}-OT passed
+  # ---------------------------------------------------------------------------
+  build-ot:
+    needs: [strip, rename]
+    runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
+    env:
+      VERSION: ${{ needs.strip.outputs.version }}
+      SENTINEL_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/build-output/
+      PROJECT: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Project/nativeObjectTools.4DProject
+
+    steps:
+      - name: Build OT v19
+        run: |
+          open -W /Applications/4D/19/4D.app \
+            --args \
+            --project "${{ env.PROJECT }}" \
+            --data "${{ env.SENTINEL_DIR }}data-ot-19.4DD" \
+            --create-data \
+            --user-param "build;OT;19;${{ env.SENTINEL_DIR }}" \
+            --headless
+          SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
+          result=$(head -n 1 "$SENTINEL")
+          echo "$result"
+          [ "$result" = "build-${{ env.VERSION }}-OT passed" ] || exit 1
+
+      - name: Build OT v20
+        run: |
+          open -W /Applications/4D/20/4D.app \
+            --args \
+            --project "${{ env.PROJECT }}" \
+            --data "${{ env.SENTINEL_DIR }}data-ot-20.4DD" \
+            --create-data \
+            --user-param "build;OT;20;${{ env.SENTINEL_DIR }}" \
+            --headless
+          SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
+          result=$(head -n 1 "$SENTINEL")
+          echo "$result"
+          [ "$result" = "build-${{ env.VERSION }}-OT passed" ] || exit 1
+
+      - name: Build OT v21
+        run: |
+          open -W /Applications/4D/21/4D.app \
+            --args \
+            --project "${{ env.PROJECT }}" \
+            --data "${{ env.SENTINEL_DIR }}data-ot-21.4DD" \
+            --create-data \
+            --user-param "build;OT;21;${{ env.SENTINEL_DIR }}" \
+            --headless
+          SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
+          result=$(head -n 1 "$SENTINEL")
+          echo "$result"
+          [ "$result" = "build-${{ env.VERSION }}-OT passed" ] || exit 1
+
+  # ---------------------------------------------------------------------------
+  # 6. Force-push renamed tree to Platypus
+  # ---------------------------------------------------------------------------
+  push-platypus:
+    needs: [strip, build-ot]
+    runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
+    env:
+      VERSION: ${{ needs.strip.outputs.version }}
+
+    steps:
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit renamed tree and force-push to Platypus
+        run: |
+          git add -A
+          git commit -m "Release ${{ env.VERSION }} — renamed"
+          git push origin HEAD:Platypus --force
+
+  # ---------------------------------------------------------------------------
+  # 7. Sign, package (DMG + ZIP) for all three versions
+  # ---------------------------------------------------------------------------
+  package:
+    needs: [strip, build-otr, build-ot, push-platypus]
+    runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
+    env:
+      VERSION: ${{ needs.strip.outputs.version }}
+      DEVELOPER_ID: "Developer ID Application: Mac to Basics P/L (H8FSU88B4T)"
+      BUILDS: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Builds
+      TEMPLATES: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Release/Templates
+
+    steps:
+      - name: Sign dylibs — v19
+        run: |
+          for component in \
+            "${{ env.BUILDS }}/19/Components/Native Object Tools.4dbase" \
+            "${{ env.BUILDS }}/19/Components/Object Tools.4dbase"
+          do
+            cd "$component/Libraries"
+            codesign --remove-signature lib4d-arm64.dylib
+            codesign --verbose --deep --timestamp --force \
+              --sign "${{ env.DEVELOPER_ID }}" lib4d-arm64.dylib
+          done
+
+      - name: Sign dylibs — v20
+        run: |
+          for component in \
+            "${{ env.BUILDS }}/20/Components/Native Object Tools.4dbase" \
+            "${{ env.BUILDS }}/20/Components/Object Tools.4dbase"
+          do
+            cd "$component/Libraries"
+            codesign --remove-signature lib4d-arm64.dylib
+            codesign --verbose --deep --timestamp --force \
+              --sign "${{ env.DEVELOPER_ID }}" lib4d-arm64.dylib
+          done
+
+      - name: Sign dylibs — v21
+        run: |
+          for component in \
+            "${{ env.BUILDS }}/21/Components/Native Object Tools.4dbase" \
+            "${{ env.BUILDS }}/21/Components/Object Tools.4dbase"
+          do
+            cd "$component/Libraries"
+            codesign --remove-signature lib4d-arm64.dylib
+            codesign --verbose --deep --timestamp --force \
+              --sign "${{ env.DEVELOPER_ID }}" lib4d-arm64.dylib
+          done
+
+      - name: Build DMG and ZIP — v19
+        run: |
+          DMG="${{ env.BUILDS }}/19/Object Tools 19 LTS ${{ env.VERSION }}.dmg"
+          ZIP="${{ env.BUILDS }}/19/Object Tools 19 LTS ${{ env.VERSION }}.zip"
+          dmgcanvas \
+            "${{ env.TEMPLATES }}/Object Tools Replacement 19.dmgcanvas" \
+            "$DMG" \
+            -notarizationAppleID "waynestewart@mac.com" \
+            -notarizationPassword "${{ secrets.NOTARIZATION_PASSWORD }}" \
+            -notarizationTeamID "H8FSU88B4T"
+          hdiutil attach "$DMG" -mountpoint /Volumes/OTr19 -nobrowse -quiet
+          cd /Volumes/OTr19
+          zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
+          hdiutil detach /Volumes/OTr19 -quiet
+
+      - name: Build DMG and ZIP — v20
+        run: |
+          DMG="${{ env.BUILDS }}/20/Object Tools 20 LTS ${{ env.VERSION }}.dmg"
+          ZIP="${{ env.BUILDS }}/20/Object Tools 20 LTS ${{ env.VERSION }}.zip"
+          dmgcanvas \
+            "${{ env.TEMPLATES }}/Object Tools Replacement 20.dmgcanvas" \
+            "$DMG" \
+            -notarizationAppleID "waynestewart@mac.com" \
+            -notarizationPassword "${{ secrets.NOTARIZATION_PASSWORD }}" \
+            -notarizationTeamID "H8FSU88B4T"
+          hdiutil attach "$DMG" -mountpoint /Volumes/OTr20 -nobrowse -quiet
+          cd /Volumes/OTr20
+          zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
+          hdiutil detach /Volumes/OTr20 -quiet
+
+      - name: Build DMG and ZIP — v21
+        run: |
+          DMG="${{ env.BUILDS }}/21/Object Tools 21 LTS ${{ env.VERSION }}.dmg"
+          ZIP="${{ env.BUILDS }}/21/Object Tools 21 LTS ${{ env.VERSION }}.zip"
+          dmgcanvas \
+            "${{ env.TEMPLATES }}/Object Tools Replacement 21.dmgcanvas" \
+            "$DMG" \
+            -notarizationAppleID "waynestewart@mac.com" \
+            -notarizationPassword "${{ secrets.NOTARIZATION_PASSWORD }}" \
+            -notarizationTeamID "H8FSU88B4T"
+          hdiutil attach "$DMG" -mountpoint /Volumes/OTr21 -nobrowse -quiet
+          cd /Volumes/OTr21
+          zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
+          hdiutil detach /Volumes/OTr21 -quiet
+
+  # ---------------------------------------------------------------------------
+  # 8. Publish — create GitHub Release and upload all artefacts
+  #    Uses the built-in GITHUB_TOKEN — no additional secret needed.
+  # ---------------------------------------------------------------------------
+  publish:
+    needs: [strip, package]
+    runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
+    env:
+      VERSION: ${{ needs.strip.outputs.version }}
+      BUILDS: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Builds
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Create GitHub Release and upload artefacts
+        run: |
+          gh release create "v${{ env.VERSION }}" \
+            --repo "${{ github.repository }}" \
+            --title "Object Tools Replacement ${{ env.VERSION }}" \
+            --notes "Release ${{ env.VERSION }}" \
+            "${{ env.BUILDS }}/19/Object Tools 19 LTS ${{ env.VERSION }}.dmg" \
+            "${{ env.BUILDS }}/19/Object Tools 19 LTS ${{ env.VERSION }}.zip" \
+            "${{ env.BUILDS }}/20/Object Tools 20 LTS ${{ env.VERSION }}.dmg" \
+            "${{ env.BUILDS }}/20/Object Tools 20 LTS ${{ env.VERSION }}.zip" \
+            "${{ env.BUILDS }}/21/Object Tools 21 LTS ${{ env.VERSION }}.dmg" \
+            "${{ env.BUILDS }}/21/Object Tools 21 LTS ${{ env.VERSION }}.zip"
