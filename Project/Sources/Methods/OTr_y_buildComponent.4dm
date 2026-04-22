@@ -68,6 +68,12 @@ Else
 	
 End if 
 
+//MARK: Compile (universal — arm64 + x86_64)
+
+LOG ADD ENTRY(Current method name:C684; "Compile start")
+OTr_y_testCompilation($sentinelDir_t)
+LOG ADD ENTRY(Current method name:C684; "Compile done")
+
 //MARK: Write documentation (public methods only — as shipped)
 
 LOG ADD ENTRY(Current method name:C684; "WriteDocumentation start")

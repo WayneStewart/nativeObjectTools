@@ -1,8 +1,8 @@
 //%attributes = {"invisible":true}
 // ----------------------------------------------------
-// Project Method: __Compile_Headless
+// Project Method: OTr_y_testCompilation
 
-// Headless CI compile check.
+// Automated CI compile check.
 // Called from On Startup when 4D is launched with --headless --user-param "compile".
 // Runs Compile project, writes a sentinel file with pass/fail on line 1
 // and compiler error detail on subsequent lines.
@@ -28,8 +28,9 @@ var $sentinel_t; $sentinelPath_t : Text
 
 //MARK: Compile
 
-// $options_o:=New object("targets"; New collection)
-$result_o:=Compile project:C1760  // ($options_o)
+$options_o:=New object:C1471
+$options_o.targets:=New collection:C1472("arm64_macOS_lib"; "x86_64_generic")
+$result_o:=Compile project:C1760($options_o)
 
 //MARK: Build sentinel text
 

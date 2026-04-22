@@ -66,7 +66,7 @@ jobs:
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
-          [ "$result" = "build-${{ env.VERSION }}-OTr passed" ] || exit 1
+          echo "$result" | grep -qF "OTr passed" || exit 1
 
       - name: Build OTr_ v20
         run: |
@@ -80,7 +80,7 @@ jobs:
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
-          [ "$result" = "build-${{ env.VERSION }}-OTr passed" ] || exit 1
+          echo "$result" | grep -qF "OTr passed" || exit 1
 
       - name: Build OTr_ v21
         run: |
@@ -94,7 +94,7 @@ jobs:
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
-          [ "$result" = "build-${{ env.VERSION }}-OTr passed" ] || exit 1
+          echo "$result" | grep -qF "OTr passed" || exit 1
 
   # ---------------------------------------------------------------------------
   # 3. Force-push stripped tree to Koala
@@ -137,9 +137,9 @@ jobs:
             --create-data \
             --user-param "forward;${{ env.SENTINEL_DIR }}" \
 
-          result=$(head -n 1 "${{ env.SENTINEL_DIR }}rename-forward.txt")
+          result=$(head -n 1 "${{ env.SENTINEL_DIR }}rename-forward.txt" | tr -d '\r\n' | xargs)
           echo "$result"
-          [ "$result" = "rename-forward passed" ] || exit 1
+          echo "$result" | grep -qF "rename-forward passed" || exit 1
 
   # ---------------------------------------------------------------------------
   # 5. Build OT components (v19, v20, v21)
@@ -167,7 +167,7 @@ jobs:
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
-          [ "$result" = "build-${{ env.VERSION }}-OT passed" ] || exit 1
+          echo "$result" | grep -qF "OT passed" || exit 1
 
       - name: Build OT v20
         run: |
@@ -181,7 +181,7 @@ jobs:
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
-          [ "$result" = "build-${{ env.VERSION }}-OT passed" ] || exit 1
+          echo "$result" | grep -qF "OT passed" || exit 1
 
       - name: Build OT v21
         run: |
@@ -195,7 +195,7 @@ jobs:
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
-          [ "$result" = "build-${{ env.VERSION }}-OT passed" ] || exit 1
+          echo "$result" | grep -qF "OT passed" || exit 1
 
   # ---------------------------------------------------------------------------
   # 6. Force-push renamed tree to Platypus
