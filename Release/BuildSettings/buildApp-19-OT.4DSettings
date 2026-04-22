@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<Preferences4D>
+
+  <BuildApp>
+
+    <BuildCompiled>False</BuildCompiled>
+    <IncludeAssociatedFolders>True</IncludeAssociatedFolders>
+    <BuildComponent>True</BuildComponent>
+    <BuildApplicationSerialized>False</BuildApplicationSerialized>
+
+    <BuildApplicationName>Object Tools</BuildApplicationName>
+    <BuildMacDestFolder>:Builds:19:</BuildMacDestFolder>
+
+    <!-- ============================================================
+         Signing
+         v19: unsigned here — codesign applied post-build by notarise.sh
+         ============================================================ -->
+    <SignApplication>
+      <MacSignature>False</MacSignature>
+      <MacCertificate></MacCertificate>
+      <AdHocSign>False</AdHocSign>
+    </SignApplication>
+
+    <!-- ============================================================
+         Runtime / Client-Server — not used for component builds
+         ============================================================ -->
+    <RuntimeVL>
+      <LastDataPathLookup>ByAppName</LastDataPathLookup>
+    </RuntimeVL>
+
+    <SourcesFiles>
+      <RuntimeVL>
+        <RuntimeVLIncludeIt>True</RuntimeVLIncludeIt>
+      </RuntimeVL>
+      <CS>
+        <ServerIncludeIt>False</ServerIncludeIt>
+        <ClientMacIncludeIt>False</ClientMacIncludeIt>
+        <ClientWinIncludeIt>False</ClientWinIncludeIt>
+      </CS>
+    </SourcesFiles>
+
+    <CS>
+      <BuildServerApplication>False</BuildServerApplication>
+      <LastDataPathLookup>ByAppName</LastDataPathLookup>
+      <MacCompiledDatabaseToWinIncludeIt>False</MacCompiledDatabaseToWinIncludeIt>
+      <MacCompiledDatabaseToWin/>
+      <ServerEmbedsProjectDirectoryFile>False</ServerEmbedsProjectDirectoryFile>
+      <BuildCSUpgradeable>False</BuildCSUpgradeable>
+      <CurrentVers>1</CurrentVers>
+      <HardLink></HardLink>
+    </CS>
+
+    <!-- ============================================================
+         Excluded plugins (none)
+         ============================================================ -->
+    <ArrayExcludedPluginName>
+      <ItemsCount>0</ItemsCount>
+    </ArrayExcludedPluginName>
+
+    <ArrayExcludedPluginID>
+      <ItemsCount>0</ItemsCount>
+    </ArrayExcludedPluginID>
+
+    <!-- ============================================================
+         Excluded components
+         ============================================================ -->
+    <ArrayExcludedComponentName>
+      <ItemsCount>10</ItemsCount>
+      <Item1>4D Macros</Item1>
+      <Item2>Methods_Statistics</Item2>
+      <Item3>4D AIKit</Item3>
+      <Item4>4D NetKit</Item4>
+      <Item5>4D Progress</Item5>
+      <Item6>4D SVG</Item6>
+      <Item7>4D ViewPro</Item7>
+      <Item8>4D Widgets</Item8>
+      <Item9>4D WritePro Interface</Item9>
+      <Item10>4D Mobile App Server</Item10>
+    </ArrayExcludedComponentName>
+
+    <!-- ============================================================
+         Excluded modules
+         ============================================================ -->
+    <ArrayExcludedModuleName>
+      <ItemsCount>3</ItemsCount>
+      <Item1>CEF</Item1>
+      <Item2>SpellChecker</Item2>
+      <Item3>4D Updater</Item3>
+    </ArrayExcludedModuleName>
+
+  </BuildApp>
+
+</Preferences4D>

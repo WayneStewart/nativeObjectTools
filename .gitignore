@@ -109,6 +109,7 @@ Thumbs.db
 
 # Settings files
 *.4DSettings
+!Release/BuildSettings/*.4DSettings
 
 # ARM Libraries
 Libraries/*
