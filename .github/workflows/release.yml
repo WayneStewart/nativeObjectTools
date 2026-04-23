@@ -465,13 +465,25 @@ jobs:
     steps:
       - name: Create GitHub Release and upload artefacts
         run: |
-          ASSETS=()
+          # Create the release
+          RELEASE_RESPONSE=$(curl -s -X POST \
+            -H "Authorization: token ${{ env.GH_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/releases" \
+            -d "{\"tag_name\":\"v${{ env.VERSION }}\",\"name\":\"Object Tools Replacement ${{ env.VERSION }}\",\"body\":\"Release ${{ env.VERSION }}\",\"draft\":false,\"prerelease\":false}")
+          UPLOAD_URL=$(echo "$RELEASE_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['upload_url'])" | sed 's/{?name,label}//')
+          echo "Upload URL: $UPLOAD_URL"
+
+          # Upload each DMG that exists
           for ver in 19 20 21; do
             f="${{ env.BUILDS }}/$ver/Object Tools ${ver} LTS ${{ env.VERSION }}.dmg"
-            [ -f "$f" ] && ASSETS+=("$f")
+            if [ -f "$f" ]; then
+              NAME=$(basename "$f")
+              echo "Uploading: $NAME"
+              curl -s -X POST \
+                -H "Authorization: token ${{ env.GH_TOKEN }}" \
+                -H "Content-Type: application/octet-stream" \
+                --data-binary @"$f" \
+                "${UPLOAD_URL}?name=${NAME// /%20}"
+            fi
           done
-          gh release create "v${{ env.VERSION }}" \
-            --repo "${{ github.repository }}" \
-            --title "Object Tools Replacement ${{ env.VERSION }}" \
-            --notes "Release ${{ env.VERSION }}" \
-            "${ASSETS[@]}"
