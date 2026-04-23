@@ -80,6 +80,7 @@ jobs:
             --create-data \
             --user-param "build;OTr;19;${{ env.SENTINEL_DIR }}" \
 
+          sleep 5
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
@@ -96,6 +97,7 @@ jobs:
             --create-data \
             --user-param "build;OTr;20;${{ env.SENTINEL_DIR }}" \
 
+          sleep 5
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
@@ -112,6 +114,7 @@ jobs:
             --create-data \
             --user-param "build;OTr;21;${{ env.SENTINEL_DIR }}" \
 
+          sleep 5
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
@@ -192,13 +195,16 @@ jobs:
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
+          mv "${{ env.PROJECT }}" "${{ env.PROJECT_DIR }}ObjectTools.4DProject"
           open -W /Applications/4D/19/4D.app \
             --args \
-            --project "${{ env.PROJECT }}" \
+            --project "${{ env.PROJECT_DIR }}ObjectTools.4DProject" \
             --data "${{ env.SENTINEL_DIR }}data-ot-19.4DD" \
             --create-data \
             --user-param "build;OT;19;${{ env.SENTINEL_DIR }}" \
 
+          sleep 5
+          mv "${{ env.PROJECT_DIR }}ObjectTools.4DProject" "${{ env.PROJECT }}"
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
@@ -208,13 +214,16 @@ jobs:
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
+          mv "${{ env.PROJECT }}" "${{ env.PROJECT_DIR }}ObjectTools.4DProject"
           open -W /Applications/4D/20/4D.app \
             --args \
-            --project "${{ env.PROJECT }}" \
+            --project "${{ env.PROJECT_DIR }}ObjectTools.4DProject" \
             --data "${{ env.SENTINEL_DIR }}data-ot-20.4DD" \
             --create-data \
             --user-param "build;OT;20;${{ env.SENTINEL_DIR }}" \
 
+          sleep 5
+          mv "${{ env.PROJECT_DIR }}ObjectTools.4DProject" "${{ env.PROJECT }}"
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
@@ -224,13 +233,16 @@ jobs:
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
+          mv "${{ env.PROJECT }}" "${{ env.PROJECT_DIR }}ObjectTools.4DProject"
           open -W /Applications/4D/21/4D.app \
             --args \
-            --project "${{ env.PROJECT }}" \
+            --project "${{ env.PROJECT_DIR }}ObjectTools.4DProject" \
             --data "${{ env.SENTINEL_DIR }}data-ot-21.4DD" \
             --create-data \
             --user-param "build;OT;21;${{ env.SENTINEL_DIR }}" \
 
+          sleep 5
+          mv "${{ env.PROJECT_DIR }}ObjectTools.4DProject" "${{ env.PROJECT }}"
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
