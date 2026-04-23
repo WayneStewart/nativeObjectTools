@@ -336,12 +336,28 @@ jobs:
     env:
       VERSION: ${{ needs.strip.outputs.version }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SENTINEL_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/build-output/
 
     steps:
       - name: Configure git identity
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Write OT documentation on main tree
+        run: |
+          REPO=/Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools
+          PROJECT="$REPO/Project/nativeObjectTools.4DProject"
+          open -W /Applications/4D/21/4D.app \
+            --args \
+            --project "$PROJECT" \
+            --data "${{ env.SENTINEL_DIR }}data-writedocs.4DD" \
+            --create-data \
+            --user-param "writedocs;${{ env.SENTINEL_DIR }}"
+
+          result=$(head -n 1 "${{ env.SENTINEL_DIR }}writedocs.txt" | tr -d '\r\n' | xargs)
+          echo "$result"
+          echo "$result" | grep -qF "writedocs passed" || exit 1
 
       - name: Commit renamed tree and force-push to Platypus
         run: |
