@@ -382,39 +382,6 @@ jobs:
             fi
           done
 
-      - name: Sign dylibs — v20
-        if: ${{ inputs.compile20 }}
-        run: |
-          for component in \
-            "${{ env.BUILDS }}/20/Components/Native Object Tools.4dbase" \
-            "${{ env.BUILDS }}/20/Components/Object Tools.4dbase"
-          do
-            dylib="$component/Libraries/lib4d-arm64.dylib"
-            if [ -f "$dylib" ]; then
-              codesign --remove-signature "$dylib"
-              codesign --verbose --deep --timestamp --force \
-                --sign "${{ env.DEVELOPER_ID }}" "$dylib"
-            else
-              echo "No lib4d-arm64.dylib in $component — skipping"
-            fi
-          done
-
-      - name: Sign dylibs — v21
-        if: ${{ inputs.compile21 }}
-        run: |
-          for component in \
-            "${{ env.BUILDS }}/21/Components/Native Object Tools.4dbase" \
-            "${{ env.BUILDS }}/21/Components/Object Tools.4dbase"
-          do
-            dylib="$component/Libraries/lib4d-arm64.dylib"
-            if [ -f "$dylib" ]; then
-              codesign --remove-signature "$dylib"
-              codesign --verbose --deep --timestamp --force \
-                --sign "${{ env.DEVELOPER_ID }}" "$dylib"
-            else
-              echo "No lib4d-arm64.dylib in $component — skipping"
-            fi
-          done
 
       - name: Build DMG — v19
         if: ${{ inputs.compile19 }}
