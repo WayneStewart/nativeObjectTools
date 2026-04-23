@@ -51,6 +51,32 @@ ARRAY TEXT:C222($formattedCommentLines_at; 0)
 $processName_t:="$WriteDocumentation"
 $StackSize_i:=0
 
+var $launchMethodName_t : Text
+var $launchToolTip_b; $launchExcludePrivate_b; $launchSilent_b : Boolean
+
+If (Count parameters:C259<1)
+	$launchMethodName_t:=""
+Else 
+	$launchMethodName_t:=$MethodName_t
+End if 
+
+If (Count parameters:C259<2)
+	$launchToolTip_b:=True:C214
+Else 
+	$launchToolTip_b:=$ToolTip_b
+End if 
+
+If (Count parameters:C259<3)
+	$launchExcludePrivate_b:=True:C214
+Else 
+	$launchExcludePrivate_b:=$excludePrivate_b
+End if 
+
+If (Count parameters:C259<4)
+	$launchSilent_b:=True:C214
+Else 
+	$launchSilent_b:=$silent_b
+End if 
 
 If (Count parameters:C259<5)
 	$launchInline_b:=False:C215
@@ -668,32 +694,6 @@ If (Current process name:C1392=$processName_t) | ($launchInline_b)
 	End if 
 	
 Else 
-	
-	var $launchMethodName_t : Text
-	var $launchToolTip_b; $launchExcludePrivate_b; $launchSilent_b : Boolean
-	
-	If (Count parameters:C259<1)
-		$launchMethodName_t:=""
-	Else 
-		$launchMethodName_t:=$MethodName_t
-	End if 
-	If (Count parameters:C259<2)
-		$launchToolTip_b:=True:C214
-	Else 
-		$launchToolTip_b:=$ToolTip_b
-	End if 
-	If (Count parameters:C259<3)
-		$launchExcludePrivate_b:=True:C214
-	Else 
-		$launchExcludePrivate_b:=$excludePrivate_b
-	End if 
-	If (Count parameters:C259<4)
-		$launchSilent_b:=True:C214
-	Else 
-		$launchSilent_b:=$silent_b
-	End if 
-	
-	
 	
 	If ($launchExcludePrivate_b)  // Delete the existing documentation folder
 		$documentationPath_t:=Get 4D folder:C485(Database folder:K5:14)+"Documentation"+Folder separator:K24:12+"Methods"+Folder separator:K24:12
