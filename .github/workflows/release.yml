@@ -19,7 +19,7 @@ on:
 jobs:
 
   # ---------------------------------------------------------------------------
-  # 1. Strip — remove development-only code from the working tree
+  # 1. Strip — remove development-only code, populate clones
   # ---------------------------------------------------------------------------
   strip:
     runs-on: [self-hosted, macOS, X64, iMac-Pro, native-object-tools-release]
@@ -45,6 +45,18 @@ jobs:
       - name: Run strip script
         run: bash Release/Scripts/stageKoala.sh
 
+      - name: Populate version clones
+        run: |
+          REPO=/Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools
+          for ver in 19 20 21; do
+            rm -rf "$REPO/Clones/$ver"
+            mkdir -p "$REPO/Clones/$ver"
+            # Copy only what 4D needs to compile and build: Project + Resources + Release + Renaming
+            rsync -a --exclude='Clones/' --exclude='Builds/' --exclude='build-output/' \
+              --exclude='.git/' --exclude='DerivedData/' --exclude='Libraries/' \
+              "$REPO/" "$REPO/Clones/$ver/"
+          done
+
       - name: Read version from Resources/InfoPlist.json
         id: version
         run: |
@@ -60,9 +72,7 @@ jobs:
       version: ${{ steps.version.outputs.version }}
 
   # ---------------------------------------------------------------------------
-  # 2. Build OTr_ components (v19, v20, v21)
-  #    Sentinel filename: build-{version}-OTr.txt
-  #    Sentinel line 1:   build-{version}-OTr passed
+  # 2. Build OTr_ components — one per clone, sequentially to avoid Clang interference
   # ---------------------------------------------------------------------------
   build-otr:
     needs: strip
@@ -70,8 +80,7 @@ jobs:
     env:
       VERSION: ${{ needs.strip.outputs.version }}
       SENTINEL_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/build-output/
-      PROJECT: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Project/nativeObjectTools.4DProject
-      PROJECT_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Project/
+      CLONES: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Clones
 
     steps:
       - name: Check 4D is not already running
@@ -85,14 +94,16 @@ jobs:
       - name: Build OTr_ v19
         if: ${{ inputs.compile19 }}
         run: |
-          rm -rf "${{ env.PROJECT_DIR }}DerivedData"
-          rm -rf "${{ env.PROJECT_DIR }}../Libraries"
+          PROJECT="${{ env.CLONES }}/19/Project/nativeObjectTools.4DProject"
+          PROJECT_DIR="${{ env.CLONES }}/19/Project/"
+          rm -rf "${PROJECT_DIR}DerivedData"
+          rm -rf "${{ env.CLONES }}/19/Libraries"
           open -W /Applications/4D/19/4D.app \
             --args \
-            --project "${{ env.PROJECT }}" \
+            --project "$PROJECT" \
             --data "${{ env.SENTINEL_DIR }}data-otr-19.4DD" \
             --create-data \
-            --user-param "build;OTr;19;${{ env.SENTINEL_DIR }}" \
+            --user-param "build;OTr;19;${{ env.SENTINEL_DIR }}"
 
           sleep 5
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
@@ -103,14 +114,16 @@ jobs:
       - name: Build OTr_ v20
         if: ${{ inputs.compile20 }}
         run: |
-          rm -rf "${{ env.PROJECT_DIR }}DerivedData"
-          rm -rf "${{ env.PROJECT_DIR }}../Libraries"
+          PROJECT="${{ env.CLONES }}/20/Project/nativeObjectTools.4DProject"
+          PROJECT_DIR="${{ env.CLONES }}/20/Project/"
+          rm -rf "${PROJECT_DIR}DerivedData"
+          rm -rf "${{ env.CLONES }}/20/Libraries"
           open -W /Applications/4D/20/4D.app \
             --args \
-            --project "${{ env.PROJECT }}" \
+            --project "$PROJECT" \
             --data "${{ env.SENTINEL_DIR }}data-otr-20.4DD" \
             --create-data \
-            --user-param "build;OTr;20;${{ env.SENTINEL_DIR }}" \
+            --user-param "build;OTr;20;${{ env.SENTINEL_DIR }}"
 
           sleep 5
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
@@ -121,14 +134,16 @@ jobs:
       - name: Build OTr_ v21
         if: ${{ inputs.compile21 }}
         run: |
-          rm -rf "${{ env.PROJECT_DIR }}DerivedData"
-          rm -rf "${{ env.PROJECT_DIR }}../Libraries"
+          PROJECT="${{ env.CLONES }}/21/Project/nativeObjectTools.4DProject"
+          PROJECT_DIR="${{ env.CLONES }}/21/Project/"
+          rm -rf "${PROJECT_DIR}DerivedData"
+          rm -rf "${{ env.CLONES }}/21/Libraries"
           open -W /Applications/4D/21/4D.app \
             --args \
-            --project "${{ env.PROJECT }}" \
+            --project "$PROJECT" \
             --data "${{ env.SENTINEL_DIR }}data-otr-21.4DD" \
             --create-data \
-            --user-param "build;OTr;21;${{ env.SENTINEL_DIR }}" \
+            --user-param "build;OTr;21;${{ env.SENTINEL_DIR }}"
 
           sleep 5
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OTr.txt"
@@ -161,7 +176,7 @@ jobs:
           git push "https://x-access-token:${{ env.GH_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:Koala --force
 
   # ---------------------------------------------------------------------------
-  # 4. Rename — OTr_ → OT (produces Platypus state)
+  # 4. Rename — OTr_ → OT on main tree and all three clones
   # ---------------------------------------------------------------------------
   rename:
     needs: push-koala
@@ -169,25 +184,69 @@ jobs:
     env:
       SENTINEL_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/build-output/
       RENAMING_PROJECT: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Renaming/Project/Renaming.4DProject
+      CLONES: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Clones
 
     steps:
-      - name: Run Renamer (forward)
+      - name: Run Renamer on main tree
         run: |
           open -W /Applications/4D/21/4D.app \
             --args \
             --project "${{ env.RENAMING_PROJECT }}" \
             --data "${{ env.SENTINEL_DIR }}renamer-data.4DD" \
             --create-data \
-            --user-param "forward;${{ env.SENTINEL_DIR }}" \
+            --user-param "forward;${{ env.SENTINEL_DIR }}"
 
           result=$(head -n 1 "${{ env.SENTINEL_DIR }}rename-forward.txt" | tr -d '\r\n' | xargs)
           echo "$result"
           echo "$result" | grep -qF "rename-forward passed" || exit 1
 
+      - name: Run Renamer on clone 19
+        if: ${{ inputs.compile19 }}
+        run: |
+          CLONE_RENAMING="${{ env.CLONES }}/19/Renaming/Project/Renaming.4DProject"
+          open -W /Applications/4D/21/4D.app \
+            --args \
+            --project "$CLONE_RENAMING" \
+            --data "${{ env.SENTINEL_DIR }}renamer-data-19.4DD" \
+            --create-data \
+            --user-param "forward;${{ env.SENTINEL_DIR }}"
+
+          result=$(head -n 1 "${{ env.SENTINEL_DIR }}rename-forward.txt" | tr -d '\r\n' | xargs)
+          echo "Clone 19: $result"
+          echo "$result" | grep -qF "rename-forward passed" || exit 1
+
+      - name: Run Renamer on clone 20
+        if: ${{ inputs.compile20 }}
+        run: |
+          CLONE_RENAMING="${{ env.CLONES }}/20/Renaming/Project/Renaming.4DProject"
+          open -W /Applications/4D/21/4D.app \
+            --args \
+            --project "$CLONE_RENAMING" \
+            --data "${{ env.SENTINEL_DIR }}renamer-data-20.4DD" \
+            --create-data \
+            --user-param "forward;${{ env.SENTINEL_DIR }}"
+
+          result=$(head -n 1 "${{ env.SENTINEL_DIR }}rename-forward.txt" | tr -d '\r\n' | xargs)
+          echo "Clone 20: $result"
+          echo "$result" | grep -qF "rename-forward passed" || exit 1
+
+      - name: Run Renamer on clone 21
+        if: ${{ inputs.compile21 }}
+        run: |
+          CLONE_RENAMING="${{ env.CLONES }}/21/Renaming/Project/Renaming.4DProject"
+          open -W /Applications/4D/21/4D.app \
+            --args \
+            --project "$CLONE_RENAMING" \
+            --data "${{ env.SENTINEL_DIR }}renamer-data-21.4DD" \
+            --create-data \
+            --user-param "forward;${{ env.SENTINEL_DIR }}"
+
+          result=$(head -n 1 "${{ env.SENTINEL_DIR }}rename-forward.txt" | tr -d '\r\n' | xargs)
+          echo "Clone 21: $result"
+          echo "$result" | grep -qF "rename-forward passed" || exit 1
+
   # ---------------------------------------------------------------------------
-  # 5. Build OT components (v19, v20, v21)
-  #    Sentinel filename: build-{version}-OT.txt
-  #    Sentinel line 1:   build-{version}-OT passed
+  # 5. Build OT components — one per clone, sequentially
   # ---------------------------------------------------------------------------
   build-ot:
     needs: [strip, rename]
@@ -195,8 +254,7 @@ jobs:
     env:
       VERSION: ${{ needs.strip.outputs.version }}
       SENTINEL_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/build-output/
-      PROJECT: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Project/nativeObjectTools.4DProject
-      PROJECT_DIR: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Project/
+      CLONES: /Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Clones
 
     steps:
       - name: Check 4D is not already running
@@ -210,18 +268,18 @@ jobs:
       - name: Build OT v19
         if: ${{ inputs.compile19 }}
         run: |
-          rm -rf "${{ env.PROJECT_DIR }}DerivedData"
-          rm -rf "${{ env.PROJECT_DIR }}../Libraries"
-          mv "${{ env.PROJECT }}" "${{ env.PROJECT_DIR }}ObjectTools.4DProject"
+          PROJECT="${{ env.CLONES }}/19/Project/nativeObjectTools.4DProject"
+          PROJECT_DIR="${{ env.CLONES }}/19/Project/"
+          rm -rf "${PROJECT_DIR}DerivedData"
+          rm -rf "${{ env.CLONES }}/19/Libraries"
           open -W /Applications/4D/19/4D.app \
             --args \
-            --project "${{ env.PROJECT_DIR }}ObjectTools.4DProject" \
+            --project "$PROJECT" \
             --data "${{ env.SENTINEL_DIR }}data-ot-19.4DD" \
             --create-data \
-            --user-param "build;OT;19;${{ env.SENTINEL_DIR }}" \
+            --user-param "build;OT;19;${{ env.SENTINEL_DIR }}"
 
           sleep 5
-          mv "${{ env.PROJECT_DIR }}ObjectTools.4DProject" "${{ env.PROJECT }}"
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
@@ -230,18 +288,18 @@ jobs:
       - name: Build OT v20
         if: ${{ inputs.compile20 }}
         run: |
-          rm -rf "${{ env.PROJECT_DIR }}DerivedData"
-          rm -rf "${{ env.PROJECT_DIR }}../Libraries"
-          mv "${{ env.PROJECT }}" "${{ env.PROJECT_DIR }}ObjectTools.4DProject"
+          PROJECT="${{ env.CLONES }}/20/Project/nativeObjectTools.4DProject"
+          PROJECT_DIR="${{ env.CLONES }}/20/Project/"
+          rm -rf "${PROJECT_DIR}DerivedData"
+          rm -rf "${{ env.CLONES }}/20/Libraries"
           open -W /Applications/4D/20/4D.app \
             --args \
-            --project "${{ env.PROJECT_DIR }}ObjectTools.4DProject" \
+            --project "$PROJECT" \
             --data "${{ env.SENTINEL_DIR }}data-ot-20.4DD" \
             --create-data \
-            --user-param "build;OT;20;${{ env.SENTINEL_DIR }}" \
+            --user-param "build;OT;20;${{ env.SENTINEL_DIR }}"
 
           sleep 5
-          mv "${{ env.PROJECT_DIR }}ObjectTools.4DProject" "${{ env.PROJECT }}"
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
@@ -250,18 +308,18 @@ jobs:
       - name: Build OT v21
         if: ${{ inputs.compile21 }}
         run: |
-          rm -rf "${{ env.PROJECT_DIR }}DerivedData"
-          rm -rf "${{ env.PROJECT_DIR }}../Libraries"
-          mv "${{ env.PROJECT }}" "${{ env.PROJECT_DIR }}ObjectTools.4DProject"
+          PROJECT="${{ env.CLONES }}/21/Project/nativeObjectTools.4DProject"
+          PROJECT_DIR="${{ env.CLONES }}/21/Project/"
+          rm -rf "${PROJECT_DIR}DerivedData"
+          rm -rf "${{ env.CLONES }}/21/Libraries"
           open -W /Applications/4D/21/4D.app \
             --args \
-            --project "${{ env.PROJECT_DIR }}ObjectTools.4DProject" \
+            --project "$PROJECT" \
             --data "${{ env.SENTINEL_DIR }}data-ot-21.4DD" \
             --create-data \
-            --user-param "build;OT;21;${{ env.SENTINEL_DIR }}" \
+            --user-param "build;OT;21;${{ env.SENTINEL_DIR }}"
 
           sleep 5
-          mv "${{ env.PROJECT_DIR }}ObjectTools.4DProject" "${{ env.PROJECT }}"
           SENTINEL="${{ env.SENTINEL_DIR }}build-${{ env.VERSION }}-OT.txt"
           result=$(head -n 1 "$SENTINEL" | tr -d '\r\n' | xargs)
           echo "$result"
@@ -308,6 +366,7 @@ jobs:
         run: security unlock-keychain -p "${{ secrets.RUNNER_KEYCHAIN_PASSWORD }}" ~/Library/Keychains/login.keychain-db
 
       - name: Sign dylibs — v19
+        if: ${{ inputs.compile19 }}
         run: |
           for component in \
             "${{ env.BUILDS }}/19/Components/Native Object Tools.4dbase" \
@@ -324,6 +383,7 @@ jobs:
           done
 
       - name: Sign dylibs — v20
+        if: ${{ inputs.compile20 }}
         run: |
           for component in \
             "${{ env.BUILDS }}/20/Components/Native Object Tools.4dbase" \
@@ -340,6 +400,7 @@ jobs:
           done
 
       - name: Sign dylibs — v21
+        if: ${{ inputs.compile21 }}
         run: |
           for component in \
             "${{ env.BUILDS }}/21/Components/Native Object Tools.4dbase" \
@@ -356,6 +417,7 @@ jobs:
           done
 
       - name: Build DMG and ZIP — v19
+        if: ${{ inputs.compile19 }}
         run: |
           DMG="${{ env.BUILDS }}/19/Object Tools 19 LTS ${{ env.VERSION }}.dmg"
           ZIP="${{ env.BUILDS }}/19/Object Tools 19 LTS ${{ env.VERSION }}.zip"
@@ -367,11 +429,12 @@ jobs:
             -notarizationTeamID "H8FSU88B4T"
           hdiutil attach "$DMG" -mountpoint /Volumes/OTr19 -nobrowse -quiet
           cd /Volumes/OTr19
-          zip -r "$ZIP" .
+          zip -r "$ZIP" . -x ".*" -x ".*/\*"
           cd /
           hdiutil detach /Volumes/OTr19 -quiet
 
       - name: Build DMG and ZIP — v20
+        if: ${{ inputs.compile20 }}
         run: |
           DMG="${{ env.BUILDS }}/20/Object Tools 20 LTS ${{ env.VERSION }}.dmg"
           ZIP="${{ env.BUILDS }}/20/Object Tools 20 LTS ${{ env.VERSION }}.zip"
@@ -383,11 +446,12 @@ jobs:
             -notarizationTeamID "H8FSU88B4T"
           hdiutil attach "$DMG" -mountpoint /Volumes/OTr20 -nobrowse -quiet
           cd /Volumes/OTr20
-          zip -r "$ZIP" .
+          zip -r "$ZIP" . -x ".*" -x ".*/\*"
           cd /
           hdiutil detach /Volumes/OTr20 -quiet
 
       - name: Build DMG and ZIP — v21
+        if: ${{ inputs.compile21 }}
         run: |
           DMG="${{ env.BUILDS }}/21/Object Tools 21 LTS ${{ env.VERSION }}.dmg"
           ZIP="${{ env.BUILDS }}/21/Object Tools 21 LTS ${{ env.VERSION }}.zip"
@@ -399,13 +463,12 @@ jobs:
             -notarizationTeamID "H8FSU88B4T"
           hdiutil attach "$DMG" -mountpoint /Volumes/OTr21 -nobrowse -quiet
           cd /Volumes/OTr21
-          zip -r "$ZIP" .
+          zip -r "$ZIP" . -x ".*" -x ".*/\*"
           cd /
           hdiutil detach /Volumes/OTr21 -quiet
 
   # ---------------------------------------------------------------------------
   # 8. Publish — create GitHub Release and upload all artefacts
-  #    Uses the built-in GITHUB_TOKEN — no additional secret needed.
   # ---------------------------------------------------------------------------
   publish:
     needs: [strip, package]
@@ -420,13 +483,15 @@ jobs:
     steps:
       - name: Create GitHub Release and upload artefacts
         run: |
+          ASSETS=()
+          for ver in 19 20 21; do
+            for ext in dmg zip; do
+              f="${{ env.BUILDS }}/$ver/Object Tools ${ver} LTS ${{ env.VERSION }}.$ext"
+              [ -f "$f" ] && ASSETS+=("$f")
+            done
+          done
           gh release create "v${{ env.VERSION }}" \
             --repo "${{ github.repository }}" \
             --title "Object Tools Replacement ${{ env.VERSION }}" \
             --notes "Release ${{ env.VERSION }}" \
-            "${{ env.BUILDS }}/19/Object Tools 19 LTS ${{ env.VERSION }}.dmg" \
-            "${{ env.BUILDS }}/19/Object Tools 19 LTS ${{ env.VERSION }}.zip" \
-            "${{ env.BUILDS }}/20/Object Tools 20 LTS ${{ env.VERSION }}.dmg" \
-            "${{ env.BUILDS }}/20/Object Tools 20 LTS ${{ env.VERSION }}.zip" \
-            "${{ env.BUILDS }}/21/Object Tools 21 LTS ${{ env.VERSION }}.dmg" \
-            "${{ env.BUILDS }}/21/Object Tools 21 LTS ${{ env.VERSION }}.zip"
+            "${ASSETS[@]}"

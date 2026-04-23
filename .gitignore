@@ -48,6 +48,9 @@ Builds/
 # CI build output (sentinel files, compilation results) — runner-local only
 build-output/
 
+# Per-version clones for CI builds — runner-local only
+Clones/
+
 # 4D Data files
 *.4dd
 *.4DIndx
