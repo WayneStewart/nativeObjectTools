@@ -430,8 +430,8 @@ jobs:
             -notarizationTeamID "H8FSU88B4T"
           hdiutil attach "$DMG" -mountpoint /Volumes/OTr19 -nobrowse -quiet
           rm -rf "$STAGE" && mkdir -p "$STAGE"
-          cp -r "/Volumes/OTr19/Native Object Tools.4dbase" "$STAGE/"
-          cp -r "/Volumes/OTr19/Object Tools.4dbase" "$STAGE/"
+          ditto "/Volumes/OTr19/Native Object Tools.4dbase" "$STAGE/Native Object Tools.4dbase"
+          ditto "/Volumes/OTr19/Object Tools.4dbase" "$STAGE/Object Tools.4dbase"
           hdiutil detach /Volumes/OTr19 -quiet
           cd "$STAGE"
           zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
@@ -452,8 +452,8 @@ jobs:
             -notarizationTeamID "H8FSU88B4T"
           hdiutil attach "$DMG" -mountpoint /Volumes/OTr20 -nobrowse -quiet
           rm -rf "$STAGE" && mkdir -p "$STAGE"
-          cp -r "/Volumes/OTr20/Native Object Tools.4dbase" "$STAGE/"
-          cp -r "/Volumes/OTr20/Object Tools.4dbase" "$STAGE/"
+          ditto "/Volumes/OTr20/Native Object Tools.4dbase" "$STAGE/Native Object Tools.4dbase"
+          ditto "/Volumes/OTr20/Object Tools.4dbase" "$STAGE/Object Tools.4dbase"
           hdiutil detach /Volumes/OTr20 -quiet
           cd "$STAGE"
           zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
@@ -474,8 +474,8 @@ jobs:
             -notarizationTeamID "H8FSU88B4T"
           hdiutil attach "$DMG" -mountpoint /Volumes/OTr21 -nobrowse -quiet
           rm -rf "$STAGE" && mkdir -p "$STAGE"
-          cp -r "/Volumes/OTr21/Native Object Tools.4dbase" "$STAGE/"
-          cp -r "/Volumes/OTr21/Object Tools.4dbase" "$STAGE/"
+          ditto "/Volumes/OTr21/Native Object Tools.4dbase" "$STAGE/Native Object Tools.4dbase"
+          ditto "/Volumes/OTr21/Object Tools.4dbase" "$STAGE/Object Tools.4dbase"
           hdiutil detach /Volumes/OTr21 -quiet
           cd "$STAGE"
           zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
