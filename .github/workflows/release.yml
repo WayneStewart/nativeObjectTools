@@ -416,71 +416,38 @@ jobs:
             fi
           done
 
-      - name: Build DMG and ZIP — v19
+      - name: Build DMG — v19
         if: ${{ inputs.compile19 }}
         run: |
           DMG="${{ env.BUILDS }}/19/Object Tools 19 LTS ${{ env.VERSION }}.dmg"
-          ZIP="${{ env.BUILDS }}/19/Object Tools 19 LTS ${{ env.VERSION }}.zip"
-          STAGE="${{ env.BUILDS }}/19/Staging"
           dmgcanvas \
             "${{ env.TEMPLATES }}/Object Tools Replacement 19.dmgcanvas" \
             "$DMG" \
             -notarizationAppleID "waynestewart@mac.com" \
             -notarizationPassword "${{ secrets.NOTARIZATION_PASSWORD }}" \
             -notarizationTeamID "H8FSU88B4T"
-          hdiutil attach "$DMG" -mountpoint /Volumes/OTr19 -nobrowse -quiet
-          rm -rf "$STAGE" && mkdir -p "$STAGE"
-          ditto "/Volumes/OTr19/Native Object Tools.4dbase" "$STAGE/Native Object Tools.4dbase"
-          ditto "/Volumes/OTr19/Object Tools.4dbase" "$STAGE/Object Tools.4dbase"
-          hdiutil detach /Volumes/OTr19 -quiet
-          cd "$STAGE"
-          zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
-          cd /
-          rm -rf "$STAGE"
 
-      - name: Build DMG and ZIP — v20
+      - name: Build DMG — v20
         if: ${{ inputs.compile20 }}
         run: |
           DMG="${{ env.BUILDS }}/20/Object Tools 20 LTS ${{ env.VERSION }}.dmg"
-          ZIP="${{ env.BUILDS }}/20/Object Tools 20 LTS ${{ env.VERSION }}.zip"
-          STAGE="${{ env.BUILDS }}/20/Staging"
           dmgcanvas \
             "${{ env.TEMPLATES }}/Object Tools Replacement 20.dmgcanvas" \
             "$DMG" \
             -notarizationAppleID "waynestewart@mac.com" \
             -notarizationPassword "${{ secrets.NOTARIZATION_PASSWORD }}" \
             -notarizationTeamID "H8FSU88B4T"
-          hdiutil attach "$DMG" -mountpoint /Volumes/OTr20 -nobrowse -quiet
-          rm -rf "$STAGE" && mkdir -p "$STAGE"
-          ditto "/Volumes/OTr20/Native Object Tools.4dbase" "$STAGE/Native Object Tools.4dbase"
-          ditto "/Volumes/OTr20/Object Tools.4dbase" "$STAGE/Object Tools.4dbase"
-          hdiutil detach /Volumes/OTr20 -quiet
-          cd "$STAGE"
-          zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
-          cd /
-          rm -rf "$STAGE"
 
-      - name: Build DMG and ZIP — v21
+      - name: Build DMG — v21
         if: ${{ inputs.compile21 }}
         run: |
           DMG="${{ env.BUILDS }}/21/Object Tools 21 LTS ${{ env.VERSION }}.dmg"
-          ZIP="${{ env.BUILDS }}/21/Object Tools 21 LTS ${{ env.VERSION }}.zip"
-          STAGE="${{ env.BUILDS }}/21/Staging"
           dmgcanvas \
             "${{ env.TEMPLATES }}/Object Tools Replacement 21.dmgcanvas" \
             "$DMG" \
             -notarizationAppleID "waynestewart@mac.com" \
             -notarizationPassword "${{ secrets.NOTARIZATION_PASSWORD }}" \
             -notarizationTeamID "H8FSU88B4T"
-          hdiutil attach "$DMG" -mountpoint /Volumes/OTr21 -nobrowse -quiet
-          rm -rf "$STAGE" && mkdir -p "$STAGE"
-          ditto "/Volumes/OTr21/Native Object Tools.4dbase" "$STAGE/Native Object Tools.4dbase"
-          ditto "/Volumes/OTr21/Object Tools.4dbase" "$STAGE/Object Tools.4dbase"
-          hdiutil detach /Volumes/OTr21 -quiet
-          cd "$STAGE"
-          zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
-          cd /
-          rm -rf "$STAGE"
 
   # ---------------------------------------------------------------------------
   # 8. Publish — create GitHub Release and upload all artefacts
@@ -500,10 +467,8 @@ jobs:
         run: |
           ASSETS=()
           for ver in 19 20 21; do
-            for ext in dmg zip; do
-              f="${{ env.BUILDS }}/$ver/Object Tools ${ver} LTS ${{ env.VERSION }}.$ext"
-              [ -f "$f" ] && ASSETS+=("$f")
-            done
+            f="${{ env.BUILDS }}/$ver/Object Tools ${ver} LTS ${{ env.VERSION }}.dmg"
+            [ -f "$f" ] && ASSETS+=("$f")
           done
           gh release create "v${{ env.VERSION }}" \
             --repo "${{ github.repository }}" \
