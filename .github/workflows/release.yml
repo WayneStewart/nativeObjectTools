@@ -2,6 +2,19 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      compile19:
+        description: 'Build v19'
+        type: boolean
+        default: true
+      compile20:
+        description: 'Build v20'
+        type: boolean
+        default: true
+      compile21:
+        description: 'Build v21'
+        type: boolean
+        default: true
 
 jobs:
 
@@ -70,6 +83,7 @@ jobs:
           fi
 
       - name: Build OTr_ v19
+        if: ${{ inputs.compile19 }}
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
@@ -87,6 +101,7 @@ jobs:
           echo "$result" | grep -qF "OTr passed" || exit 1
 
       - name: Build OTr_ v20
+        if: ${{ inputs.compile20 }}
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
@@ -104,6 +119,7 @@ jobs:
           echo "$result" | grep -qF "OTr passed" || exit 1
 
       - name: Build OTr_ v21
+        if: ${{ inputs.compile21 }}
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
@@ -192,6 +208,7 @@ jobs:
           fi
 
       - name: Build OT v19
+        if: ${{ inputs.compile19 }}
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
@@ -211,6 +228,7 @@ jobs:
           echo "$result" | grep -qF "OT passed" || exit 1
 
       - name: Build OT v20
+        if: ${{ inputs.compile20 }}
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
@@ -230,6 +248,7 @@ jobs:
           echo "$result" | grep -qF "OT passed" || exit 1
 
       - name: Build OT v21
+        if: ${{ inputs.compile21 }}
         run: |
           rm -rf "${{ env.PROJECT_DIR }}DerivedData"
           rm -rf "${{ env.PROJECT_DIR }}../Libraries"
