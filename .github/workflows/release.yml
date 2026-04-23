@@ -421,6 +421,7 @@ jobs:
         run: |
           DMG="${{ env.BUILDS }}/19/Object Tools 19 LTS ${{ env.VERSION }}.dmg"
           ZIP="${{ env.BUILDS }}/19/Object Tools 19 LTS ${{ env.VERSION }}.zip"
+          STAGE="${{ env.BUILDS }}/19/Staging"
           dmgcanvas \
             "${{ env.TEMPLATES }}/Object Tools Replacement 19.dmgcanvas" \
             "$DMG" \
@@ -428,16 +429,21 @@ jobs:
             -notarizationPassword "${{ secrets.NOTARIZATION_PASSWORD }}" \
             -notarizationTeamID "H8FSU88B4T"
           hdiutil attach "$DMG" -mountpoint /Volumes/OTr19 -nobrowse -quiet
-          cd /Volumes/OTr19
-          zip -r "$ZIP" . -x ".*" -x ".*/\*"
-          cd /
+          rm -rf "$STAGE" && mkdir -p "$STAGE"
+          cp -r "/Volumes/OTr19/Native Object Tools.4dbase" "$STAGE/"
+          cp -r "/Volumes/OTr19/Object Tools.4dbase" "$STAGE/"
           hdiutil detach /Volumes/OTr19 -quiet
+          cd "$STAGE"
+          zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
+          cd /
+          rm -rf "$STAGE"
 
       - name: Build DMG and ZIP — v20
         if: ${{ inputs.compile20 }}
         run: |
           DMG="${{ env.BUILDS }}/20/Object Tools 20 LTS ${{ env.VERSION }}.dmg"
           ZIP="${{ env.BUILDS }}/20/Object Tools 20 LTS ${{ env.VERSION }}.zip"
+          STAGE="${{ env.BUILDS }}/20/Staging"
           dmgcanvas \
             "${{ env.TEMPLATES }}/Object Tools Replacement 20.dmgcanvas" \
             "$DMG" \
@@ -445,16 +451,21 @@ jobs:
             -notarizationPassword "${{ secrets.NOTARIZATION_PASSWORD }}" \
             -notarizationTeamID "H8FSU88B4T"
           hdiutil attach "$DMG" -mountpoint /Volumes/OTr20 -nobrowse -quiet
-          cd /Volumes/OTr20
-          zip -r "$ZIP" . -x ".*" -x ".*/\*"
-          cd /
+          rm -rf "$STAGE" && mkdir -p "$STAGE"
+          cp -r "/Volumes/OTr20/Native Object Tools.4dbase" "$STAGE/"
+          cp -r "/Volumes/OTr20/Object Tools.4dbase" "$STAGE/"
           hdiutil detach /Volumes/OTr20 -quiet
+          cd "$STAGE"
+          zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
+          cd /
+          rm -rf "$STAGE"
 
       - name: Build DMG and ZIP — v21
         if: ${{ inputs.compile21 }}
         run: |
           DMG="${{ env.BUILDS }}/21/Object Tools 21 LTS ${{ env.VERSION }}.dmg"
           ZIP="${{ env.BUILDS }}/21/Object Tools 21 LTS ${{ env.VERSION }}.zip"
+          STAGE="${{ env.BUILDS }}/21/Staging"
           dmgcanvas \
             "${{ env.TEMPLATES }}/Object Tools Replacement 21.dmgcanvas" \
             "$DMG" \
@@ -462,10 +473,14 @@ jobs:
             -notarizationPassword "${{ secrets.NOTARIZATION_PASSWORD }}" \
             -notarizationTeamID "H8FSU88B4T"
           hdiutil attach "$DMG" -mountpoint /Volumes/OTr21 -nobrowse -quiet
-          cd /Volumes/OTr21
-          zip -r "$ZIP" . -x ".*" -x ".*/\*"
-          cd /
+          rm -rf "$STAGE" && mkdir -p "$STAGE"
+          cp -r "/Volumes/OTr21/Native Object Tools.4dbase" "$STAGE/"
+          cp -r "/Volumes/OTr21/Object Tools.4dbase" "$STAGE/"
           hdiutil detach /Volumes/OTr21 -quiet
+          cd "$STAGE"
+          zip -r "$ZIP" "Native Object Tools.4dbase" "Object Tools.4dbase"
+          cd /
+          rm -rf "$STAGE"
 
   # ---------------------------------------------------------------------------
   # 8. Publish — create GitHub Release and upload all artefacts
