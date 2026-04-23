@@ -466,6 +466,7 @@ jobs:
       - name: Create GitHub Release and upload artefacts
         run: |
           TAG="v${{ env.VERSION }}"
+          TAG="${TAG// /-}"
           REPO="${{ github.repository }}"
           TOKEN="${{ env.GH_TOKEN }}"
 
