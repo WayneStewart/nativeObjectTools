@@ -10,7 +10,7 @@
     <BuildApplicationSerialized>False</BuildApplicationSerialized>
 
     <BuildApplicationName>Native Object Tools</BuildApplicationName>
-    <BuildMacDestFolder>:Builds:19:</BuildMacDestFolder>
+    <BuildMacDestFolder>/Users/runner/actions-runner/_work/nativeObjectTools/nativeObjectTools/Builds/19/</BuildMacDestFolder>
 
     <!-- ============================================================
          Signing
