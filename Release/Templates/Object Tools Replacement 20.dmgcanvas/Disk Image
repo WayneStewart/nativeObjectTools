@@ -45,7 +45,7 @@
     "windowContentHeight" : 360,
     "windowContents" : [
       {
-        "filePath" : "\/Users\/waynestewart\/4D\/Projects\/OT Replacement\/nativeObjectTools\/Builds\/20\/Components\/Object Tools.4dbase",
+        "filePath" : "\/Users\/runner\/actions-runner\/_work\/nativeObjectTools\/nativeObjectTools\/Builds\/20\/Components\/Object Tools.4dbase",
         "iconSize" : 100,
         "invisible" : false,
         "isAnAlias" : false,
@@ -53,7 +53,7 @@
         "relativeFilePath" : "..\/..\/Builds\/20\/Components\/Object Tools.4dbase"
       },
       {
-        "filePath" : "\/Users\/waynestewart\/4D\/Projects\/OT Replacement\/nativeObjectTools\/Builds\/20\/Components\/Native Object Tools.4dbase",
+        "filePath" : "\/Users\/runner\/actions-runner\/_work\/nativeObjectTools\/nativeObjectTools\/Builds\/20\/Components\/Native Object Tools.4dbase",
         "iconSize" : 100,
         "invisible" : false,
         "isAnAlias" : false,
