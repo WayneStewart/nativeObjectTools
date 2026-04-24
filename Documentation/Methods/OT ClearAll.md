@@ -1,0 +1,1 @@
+<!--OT ClearAll Does not require any parameters -->## OT ClearAllOT ClearAllClears all OTr handles.Attributes: Shared, Invisible, Preemptive indifferent| Parameters || --- || Does not require any parameters |

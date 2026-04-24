@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true}
+﻿//%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project Method: OTr_z_Init
 
@@ -12,7 +12,7 @@
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-05 - Added OTr_z_CheckHostMethods call for host propagation setup.
 // Wayne Stewart, 2026-04-11 - Added includeShadowKeys flag (default True) to
-//   Storage.OTr so OTr_IncludeShadowKey and the XML/JSON export methods can
+//   Storage.OTr so OT IncludeShadowKey and the XML/JSON export methods can
 //   read it from any process or preemptive worker.
 // Wayne Stewart, 2026-04-11 - NOTE: An earlier revision added a global nativeDateInObject
 //   probe to Storage.OTr. This has been removed. The "Dates inside objects" setting

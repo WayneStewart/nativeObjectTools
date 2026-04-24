@@ -1,8 +1,8 @@
-//%attributes = {"invisible":true}
+﻿//%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project Method: OTr_z_XMLWriteObject ($domParent_t : Text; $obj_o : Object; $includeShadow_b : Boolean)
 
-// Private recursive helper for OTr_SaveToXML and OTr_SaveToXMLFile.
+// Private recursive helper for OT SaveToXML and OT SaveToXMLFile.
 // Walks $obj_o and appends one <item> child element per property to
 // the DOM element referenced by $domParent_t.  Descends recursively
 // into embedded objects and OTr array containers.

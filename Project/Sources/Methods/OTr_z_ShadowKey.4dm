@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true}
+﻿//%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project Method: OTr_z_ShadowKey ($leafKey_t : Text) --> Text
 
@@ -15,7 +15,7 @@
 // Paired with OTr_z_IsShadowKey for the enumerator skip-filter.
 //
 // The shadow's stored value is the *OT* type constant, not the
-// 4D native constant — this keeps it aligned with OTr_ItemType's
+// 4D native constant — this keeps it aligned with OT ItemType's
 // public contract and avoids a conversion step on every read.
 //
 // Example: OTr_z_ShadowKey("today") --> "today$type"

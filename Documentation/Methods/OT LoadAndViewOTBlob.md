@@ -1,0 +1,1 @@
+<!--OT LoadAndViewOTBlob Does not require any parameters -->## OT LoadAndViewOTBlobOT LoadAndViewOTBlobOpens a system document picker so you can select a legacy blob saved to disk.It then opens (or brings to the front) the Object JSON viewerAttributes: Shared, Preemptive indifferent| Parameters || --- || Does not require any parameters |

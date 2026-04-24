@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true}
+﻿//%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project Method: OTr_z_IsShadowKey ($key_t : Text) --> Boolean
 
@@ -6,8 +6,8 @@
 // ending in the reserved "$type" suffix used to carry the
 // original OT type constant for text-collapsed scalars).
 //
-// Used by the property enumerators (OTr_GetNamedProperties,
-// OTr_GetAllNamedProperties, OTr_GetItemProperties) to hide
+// Used by the property enumerators (OT GetNamedProperties,
+// OT GetAllNamedProperties, OT GetItemProperties) to hide
 // shadow keys from callers, and by OTr_z_MapType to avoid
 // recursively mapping a shadow as if it were a user property.
 //

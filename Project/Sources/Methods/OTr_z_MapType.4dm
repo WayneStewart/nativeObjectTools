@@ -1,10 +1,10 @@
-//%attributes = {"invisible":true,"shared":false}
+﻿//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: OTr_z_MapType ($parent_o : Object; $key_t : Text) \
 //   --> $otType_i : Integer
 
 // Returns the OT type constant for a given property on an object.
-// Used by OTr_ItemType and property-enumeration routines.
+// Used by OT ItemType and property-enumeration routines.
 
 // Access: Private
 
@@ -18,7 +18,7 @@
 // Created by Wayne Stewart, 2026-04-01
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
 // Wayne Stewart, 2026-04-10 - Revised for native-storage architecture.
-//   Under the new storage model (see OTr_PutVariable, OTr_GetVariable),
+//   Under the new storage model (see OT PutVariable, OT GetVariable),
 //   every scalar type that 4D's object model represents natively
 //   (LongInt, Integer, Real, Text, Boolean, Picture, Date, Time, and
 //   BLOB under Storage.OTr.nativeBlobInObject) is stored via a direct
@@ -29,11 +29,11 @@
 //   "var:" sentinel prefix scheme has been retired.
 //
 //   Array sub-objects carry their element type as a first-class
-//   "arrayType" property (see OTr_PutArray) and are detected by
+//   "arrayType" property (see OT PutArray) and are detected by
 //   descending into Is object properties via OTr_z_ArrayType.
 // Wayne Stewart, 2026-04-12 - Is object case extended to check shadow key first.
 //   OB Get type reports Is object (38) for Picture and BLOB properties in 4D
-//   v19-v21; the shadow key written by OTr_PutPicture / OTr_PutBLOB is consulted
+//   v19-v21; the shadow key written by OT PutPicture / OT PutBLOB is consulted
 //   before descending into array/object detection.
 // Wayne Stewart, 2026-04-12 - Full shadow-key-primary architecture. All Put methods
 //   now write a shadow key (leafKey$type) for every type. OTr_z_MapType therefore

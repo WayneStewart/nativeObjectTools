@@ -1,4 +1,4 @@
-var $userParam_t; $action_t; $sentinelDir_t; $variant_t; $4dVersion_t : Text
+﻿var $userParam_t; $action_t; $sentinelDir_t; $variant_t; $4dVersion_t : Text
 var $params_c : Collection
 var $value_r : Real
 var $DTS_t; $logLabel_t; $logPath_t : Text
@@ -38,13 +38,13 @@ Case of
 		Case of
 			: ($action_t="compile")
 				$sentinelDir_t:=$params_c[1]
-				OTr_y_testCompilation($sentinelDir_t)
+				OT y_testCompilation($sentinelDir_t)
 
 			: ($action_t="build")
 				$variant_t:=$params_c[1]
 				$4dVersion_t:=$params_c[2]
 				$sentinelDir_t:=$params_c[3]
-				OTr_y_buildComponent($variant_t; $4dVersion_t; $sentinelDir_t)
+				OT y_buildComponent($variant_t; $4dVersion_t; $sentinelDir_t)
 
 			: ($action_t="writedocs")
 				$sentinelDir_t:=$params_c[1]
@@ -66,6 +66,6 @@ Case of
 	Else 
 		
 		// Normal interactive launch — no recognised user-param.
-		OTr_onStartup
+		OT onStartup
 		
 End case 

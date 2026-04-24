@@ -1,0 +1,1 @@
+<!--OT New () -> LongintResult : Integer : ⬅️ : New OTr object handle-->## OT NewOT New () --> LongintAllocates and returns a new OTr object handle.Attributes: Shared, Invisible, Preemptive indifferent| Parameter | Type |  | Description || --- | --- | --- | --- ||Result|Integer|⬅️|New OTr object handle|

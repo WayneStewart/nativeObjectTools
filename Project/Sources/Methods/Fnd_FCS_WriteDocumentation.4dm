@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true}
+﻿//%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project Method: Fnd_FCS_WriteDocumentation {(Method Name or prefix; Write Tooltip; Exclude Private Methods; silent; inline)}
 
@@ -141,7 +141,7 @@ If (Current process name:C1392=$processName_t) | ($launchInline_b)
 		// Delete the actual code.
 		// Search for "// Created by" anchored to a line start (preceded by CR) to
 		// avoid false matches on prose containing "created by" mid-sentence
-		// (e.g. "previously created by OTr_ObjectToBLOB").
+		// (e.g. "previously created by OT ObjectToBLOB").
 		$Position_i:=Position:C15($CR+"// Created by"; $MethodCode_t)
 		If ($Position_i>0)
 			// Match includes the leading CR; keep everything before that CR.

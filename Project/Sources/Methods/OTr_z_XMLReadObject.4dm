@@ -1,8 +1,8 @@
-//%attributes = {"invisible":true,"shared":false}
+﻿//%attributes = {"invisible":true,"shared":false}
 // ----------------------------------------------------
 // Project Method: OTr_z_XMLReadObject ($elemRef_t : Text) --> Object
 
-// Private recursive helper for OTr_LoadFromXML and OTr_LoadFromXMLFile.
+// Private recursive helper for OT LoadFromXML and OT LoadFromXMLFile.
 // Walks the child <item> elements of $elemRef_t (which points to an
 // <OTrObject> or <object> DOM node) and reconstructs the 4D object
 // that was written by OTr_z_XMLWriteObject.

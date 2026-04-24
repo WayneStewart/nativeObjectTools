@@ -1,4 +1,4 @@
-// ----------------------------------------------------
+﻿// ----------------------------------------------------
 // Project Method: On Host Database Event ($event_i : Integer)
 
 // Handles host database lifecycle events for the OTr component.
@@ -19,9 +19,9 @@
 
 Case of 
 	: ($event_i=On before host database startup)
-		OTr_onStartup
+		OT onStartup
 		
 	: ($event_i=On before host database exit)
-		OTr_onExit
+		OT onExit
 		
 End case 

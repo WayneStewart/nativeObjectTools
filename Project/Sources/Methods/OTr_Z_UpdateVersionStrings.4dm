@@ -1,4 +1,4 @@
-//%attributes = {"invisible":true}
+﻿//%attributes = {"invisible":true}
 var $build_t; $buildVersion_t; $version_t; $templatePath_t; $date_t; $json_t; $LF; $strings_t : Text
 var $info_o : Object
 
@@ -6,7 +6,7 @@ $version_t:=Application version:C493
 $buildVersion_t:=$version_t[[1]]+$version_t[[2]]+" LTS"  //version number, e.g. 20
 
 
-$build_t:=OTr_Info("version")
+$build_t:=OT Info("version")
 $build_t:=$build_t+" ("+$buildVersion_t+")"
 
 

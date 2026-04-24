@@ -1,9 +1,9 @@
-//%attributes = {"invisible":true}
+﻿//%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project Method: Compiler_OTrSortProcess
 
 // Declares interprocess-scope scratch arrays used by
-// OTr_SortArrays (MULTI SORT ARRAY approach).
+// OT SortArrays (MULTI SORT ARRAY approach).
 // One shared copy across all processes.
 // Disabled currently
 

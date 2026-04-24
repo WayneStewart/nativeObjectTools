@@ -1,0 +1,1 @@
+<!--OT SetOptions (inOptions)inOptions : Integer : ➡️ : New OTr options bit field (inOptions)-->## OT SetOptionsOT SetOptions (inOptions)Sets the current OTr options bit field.Attributes: Shared, Invisible, Preemptive indifferent| Parameter | Type |  | Description || --- | --- | --- | --- ||inOptions|Integer|➡️|New OTr options bit field (inOptions)|

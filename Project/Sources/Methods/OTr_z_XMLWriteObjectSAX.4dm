@@ -1,15 +1,15 @@
-//%attributes = {"invisible":true}
+﻿//%attributes = {"invisible":true}
 // ----------------------------------------------------
 // Project Method: OTr_z_XMLWriteObjectSAX ($docRef_t : Time; $obj_o : Object; $includeShadow_b : Boolean)
 
-// Private recursive helper for OTr_SaveToXMLSAX and OTr_SaveToXMLFileSAX.
+// Private recursive helper for OT SaveToXMLSAX and OT SaveToXMLFileSAX.
 // Walks $obj_o and writes one <item> element per property to the open
 // SAX document referenced by $docRef_t.  Descends recursively into
 // embedded objects and OTr array containers.
 //
 // The XML schema produced is identical to that of OTr_z_XMLWriteObject
 // (the DOM equivalent), so files written by either approach are fully
-// interchangeable and can be read by OTr_LoadFromXML / OTr_LoadFromXMLFile.
+// interchangeable and can be read by OT LoadFromXML / OT LoadFromXMLFile.
 //
 // Each <item> carries:
 //   key="<leafKey>"   — property name
