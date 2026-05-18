@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_SetErrorHandler — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_SetErrorHandler</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Configuration &amp; info</p>
+      <h1>OTr_SetErrorHandler</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT SetErrorHandler</code></span>
+      <p class="signature">OTr_SetErrorHandler (inNewHandler) --&gt; Text</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Sets the current OTr error handler and returns the previous value.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p><em>OT SetErrorHandler</em> sets the action to perform when ObjectTools encounters an error.</p>
+<p>The previous error handler is returned.</p>
+<p>If you pass the name of an existing 4D method in <em>inHandler</em>, that method will be called when an error occurs. The handler method must accept four parameters:</p>
+<ul><li><em>message</em> (Text): a description of the error</li><li><em>method</em> (Text): the name of the ObjectTools method that was called</li><li><em>object</em> (LongInt): the object handle involved, or zero if none</li><li><em>tag</em> (Text): the tag being referenced, or empty if none</li></ul>
+<p>Whether or not an error handler is set, <em>OK</em> is set to zero whenever an error occurs.</p>
+<p><em>OT SetErrorHandler</em> returns the old handler so that you may dynamically change error handling within your code.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inNewHandler</code></td><td>Text</td><td>➡️</td><td>Method name to use as error handler (inNewHandler)</td></tr><tr><td><code>Result</code></td><td>Text</td><td>⬅️</td><td>Previously registered handler method name</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

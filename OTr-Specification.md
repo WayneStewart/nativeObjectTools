@@ -620,6 +620,10 @@ This master document is accompanied by detailed specifications for each implemen
 - **[OTr-Phase-020-Spec.md](Documentation/Specifications/OTr-Phase-020-Spec.md)** — Phase 020: Release checklist (v0.5 release)
 - **[OTr-Phase-100-Spec.md](Documentation/Specifications/OTr-Phase-100-Spec.md)** — Phase 100: Version 2.0 roadmap and future enhancements
 
+### Tooling Specifications
+
+- **[OTr-About-Site-Spec.md](Documentation/Specifications/OTr-About-Site-Spec.md)** — About site: embedded HTML reference documentation (`OTr ABOUT`, `Resources/about/`)
+
 ### Retired Specifications
 
 Historical specifications are archived in `Documentation/Specifications/Retired/` for reference.

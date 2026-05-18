@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOG ADD ENTRY - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">LOG ADD ENTRY</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Public API</p>
+      <h1>LOG ADD ENTRY</h1>
+      <p class="signature">LOG ADD ENTRY(Variant1{; Variant2; ...VariantN})</p>
+      <p class="lead">Adds one tab-delimited entry to the resolved log file.</p>
+      <p class="attributes">Shared, Invisible, Preemptive capable</p>
+
+      <p>Use this command for normal application logging. Each physical row starts with an automatic timestamp and level column, followed by the text parameters as data columns. Tabs and line endings inside text values are escaped so one logical entry remains one physical line.</p>
+<p>The command accepts metadata parameters in any position. Text is written to the log; numbers set the requested log level; objects provide options; booleans set the flush override. If more than one level is supplied, the later level wins. This lets wrapper methods set a default level while still allowing callers to override it.</p>
+<p>The level column is written as -, info, warn, or error. Log Level Default, unlevelled entries, and unknown numeric levels write -.</p>
+<p>If includeMachineName is enabled through LOG CONFIG or LOG DECLARE LOG, rendered text rows start with timestamp, machine name, level, then caller columns. This applies to LocalFile and ServerFile because ServerFile writes the client-rendered line.</p>
+<p>Each dispatched entry also carries structured metadata for destination handlers, including the local timestamp, UTC timestamp, process name, machine name, level, original columns, rendered line, flush policy, report-batch flag, and destination mask.</p>
+<p>If the logLabel option is supplied, only this entry is routed to that named log. The process log selection is restored immediately afterwards.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>text 1</td><td>Text</td><td>Text to add to the log.</td></tr><tr><td>text 2...text N</td><td>Text</td><td>Additional text columns to add to the same log entry. Each text value is separated by a tab in the physical file.</td></tr><tr><td>logOptions</td><td>Object</td><td>Optional metadata that changes routing, level, or flushing for this entry. Supported keys are logLabel, logLevel, and flushNow.</td></tr><tr><td>logLevel</td><td>Integer</td><td>Priority level for filtering. Use Log Level Default, Log Level Info, Log Level Warn, or Log Level Error.</td></tr><tr><td>flushNow</td><td>Boolean</td><td>True flushes the target log immediately after this entry is queued. False clears an earlier flush override in the same call.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      <section><h2>Entry options</h2><div class="table-wrap"><table>
+    <thead><tr><th>Option</th><th>Type</th><th>Effect</th></tr></thead>
+    <tbody><tr><td>logLabel</td><td>Text</td><td>Routes this single entry to a declared log label.</td></tr><tr><td>logLevel</td><td>Integer</td><td>Sets the level used for filtering and for the physical level column. A later numeric level parameter overrides this value.</td></tr><tr><td>flushNow</td><td>Boolean</td><td>Flushes the resolved target log immediately after queueing the entry.</td></tr></tbody>
+  </table></div></section>
+<section><h2>Compatibility note</h2><p>Older calls that pass only text continue to work. If you need to write a number or boolean as log text, convert it first with <code>String</code>; otherwise the value is treated as metadata.</p></section>
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Basic entry</h3><pre class="code"><code><a class="tok-command code-command-link" href="log-enable.html">LOG ENABLE</a>(<span class="tok-constant">True</span>)
+<span class="tok-command">LOG ADD ENTRY</span>(<span class="tok-string">&quot;Database launched.&quot;</span>)
+<span class="tok-command">LOG ADD ENTRY</span>(<span class="tok-command">Current method name</span>; <span class="tok-string">&quot;Display record called.&quot;</span>)</code></pre></div><div class="example"><h3>Additional columns</h3><pre class="code"><code><span class="tok-command">LOG ADD ENTRY</span>(<span class="tok-command">Current method name</span>; <span class="tok-string">&quot;Import finished&quot;</span>; <span class="tok-string">&quot;Rows&quot;</span>; <span class="tok-command">String</span>(<span class="tok-local">$rowCount_i</span>))</code></pre></div><div class="example"><h3>Options object</h3><pre class="code"><code><span class="tok-local">$options_o</span>:=<span class="tok-command">New object</span>(<span class="tok-string">&quot;logLabel&quot;</span>; <span class="tok-string">&quot;Audit&quot;</span>; <span class="tok-string">&quot;logLevel&quot;</span>; <span class="tok-constant">Log Level Warn</span>)
+<span class="tok-command">LOG ADD ENTRY</span>(<span class="tok-local">$options_o</span>; <span class="tok-string">&quot;Customer changed&quot;</span>; <span class="tok-string">&quot;Customer&quot;</span>; <span class="tok-local">$customerID_t</span>)</code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

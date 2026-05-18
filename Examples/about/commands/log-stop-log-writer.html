@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOG STOP LOG WRITER - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">LOG STOP LOG WRITER</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Public API</p>
+      <h1>LOG STOP LOG WRITER</h1>
+      <p class="signature">LOG STOP LOG WRITER</p>
+      <p class="lead">Flushes outstanding work and stops the writer worker.</p>
+      <p class="attributes">Shared, Invisible, Preemptive capable</p>
+
+      <p>The writer is restarted automatically when needed. Use this at controlled shutdown points or tests where the next step needs all queued data written and no writer state left open.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <p class="muted">This command does not require parameters.</p>
+      </section>
+
+      
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Shutdown sequence</h3><pre class="code"><code><a class="tok-command code-command-link" href="log-flush.html">LOG FLUSH</a>
+<span class="tok-command">LOG STOP LOG WRITER</span></code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Original Documentation - Logging Component</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="legacy-section">
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><span aria-current="page">Original Documentation</span></nav>
+    <div class="masthead">
+      <a class="brand" href="index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="index.html">Overview</a>
+        <a href="commands.html">Commands</a>
+        <a href="original.html">Original Docs</a>
+        <a href="permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page wide">
+      <p class="eyebrow">Project history</p>
+      <h1>Original Foundation Logging documentation</h1>
+      <p class="lead">This page keeps Dave Batton's original documentation beside the current reference, so developers can see the component's source design and what it has become.</p>
+
+      <section>
+        <h2>Original files</h2>
+        <p>The PDF files are copied into this About site when it is generated, so they remain available from a built component without requiring the repository's <code>Documentation</code> folder.</p>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Document</th><th>Purpose</th></tr></thead>
+    <tbody><tr><td><a href="original/Original%20Logging%20Component.pdf">Foundation 4 Logging Component Developer Reference Manual</a></td><td>Dave Batton's original developer reference for the Foundation Logging component.</td></tr><tr><td><a href="original/%5BANN%5D%20Free%20Foundation%204%20Logging%20Component%20Released.pdf">Free Foundation 4 Logging Component Released</a></td><td>The 2005 public release announcement, including the free source-code notice.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      <section>
+        <h2>How the design evolved</h2>
+        <p>The current component keeps the original small logging surface, but changes the implementation shape for modern 4D projects, named logs, level filtering, batching, test coverage, and destination routing.</p>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Original idea</th><th>Current form</th><th>Evolution</th></tr></thead>
+    <tbody><tr><td>Fnd_Log_AddEntry</td><td>LOG ADD ENTRY</td><td>The core idea remains: append one tab-delimited diagnostic row. The modern command adds levels, options objects, escaping, named-log routing, and destination metadata.</td></tr><tr><td>Fnd_Log_Enable</td><td>LOG ENABLE</td><td>Still process-local, but disabled logging now works with level thresholds so warnings and errors can continue to pass through.</td></tr><tr><td>Fnd_Log_Info</td><td>Focused helper methods</td><td>State that was previously returned as a broad information object is now exposed through focused methods such as Log Current Log, Log Current Label, Log File Name, Log Folder Path, Log Maximum Size, and LOG Level.</td></tr><tr><td>External tab-delimited file</td><td>Destination bitmask</td><td>The file remains the default destination. The current design adds ServerFile, 4D Record, and planned SQLite/offsite destinations.</td></tr><tr><td>Immediate file writes</td><td>Batched writer worker</td><td>Modern logs buffer by default and flush by interval, entry count, character threshold, explicit request, close, or writer shutdown.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      <section>
+        <h2>Original reference</h2>
+        <p>The original manual is reproduced as readable HTML pages in this section, with a different visual treatment from the current command reference. Use the PDF above when exact pagination or typography matters.</p>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Page</th><th>Original signature</th><th>Description</th></tr></thead>
+    <tbody><tr><td><a href="original-reference/foundation-logging-component.html">Foundation Logging Component (Fnd_Log)</a></td><td><code>Foundation Logging Component Developer Reference Manual, First Edition</code></td><td>Original overview of the Foundation 4 logging component.</td></tr><tr><td><a href="original-reference/fnd-log-addentry.html">Fnd_Log_AddEntry</a></td><td><code>Fnd_Log_AddEntry (text 1{; text 2..text N})</code></td><td>Adds text to the original external tab-delimited log file.</td></tr><tr><td><a href="original-reference/fnd-log-enable.html">Fnd_Log_Enable</a></td><td><code>Fnd_Log_Enable ({enable?}) -&gt; Boolean</code></td><td>Turns original logging on or off and returns whether logging is enabled.</td></tr><tr><td><a href="original-reference/fnd-log-info.html">Fnd_Log_Info</a></td><td><code>Fnd_Log_Info (info requested) -&gt; Text</code></td><td>Returns requested information about the original component.</td></tr></tbody>
+  </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

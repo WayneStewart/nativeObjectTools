@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log Current Label - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">Log Current Label</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Public API</p>
+      <h1>Log Current Label</h1>
+      <p class="signature">Log Current Label -&gt; Text</p>
+      <p class="lead">Returns the active process log label.</p>
+      <p class="attributes">Shared, Invisible, Preemptive capable</p>
+
+      <p>Use this when you need to report or restore the selected label. It returns a label, not a file name.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>Result</td><td>Text</td><td>The current label, or empty text when the process is using the default log or a direct file/folder selection.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Log the current label</h3><pre class="code"><code><span class="tok-local">$label_t</span>:=<span class="tok-command">Log Current Label</span>
+<a class="tok-command code-command-link" href="log-add-entry.html">LOG ADD ENTRY</a>(<span class="tok-string">&quot;Current label&quot;</span>; <span class="tok-local">$label_t</span>)</code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

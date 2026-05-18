@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_ObjectToNewBLOB — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_ObjectToNewBLOB</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Serialisation</p>
+      <h1>OTr_ObjectToNewBLOB</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT ObjectToNewBLOB</code></span>
+      <p class="signature">OTr_ObjectToNewBLOB (inObject) --&gt; Blob</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      <div class="notice warning"><strong>Changed behaviour</strong><p>The output format of this method differs from the ObjectTools plugin equivalent. Text or BLOBs produced by one are not compatible with the other. See the description below for details.</p></div>
+      <div class="description">
+        <p>Serialises an OTr object into a new BLOB and returns it as the function result. This is the recommended serialisation method because it avoids the by-reference BLOB parameter issues associated with OTr_ObjectToBLOB.</p>
+<p class="notice warning-heading">WARNING: Changed Behaviour</p>
+<p>The returned BLOB uses OTr's native serialisation format. It can be loaded by OTr_BLOBToObject, but it is not readable by the legacy ObjectTools plugin.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p><em>OT ObjectToNewBLOB</em> stores an object into a new <em>BLOB</em>.</p>
+<p>Once stored within a <em>BLOB</em>, you must retrieve an object from it with <em>OT BLOBToObject</em>, not with BLOB TO VARIABLE.</p>
+<p>If <em>inObject</em> is not a valid object handle or if memory cannot be allocated to copy the object, an error is generated, <em>OK</em> is set to zero, and an empty <em>BLOB</em> is returned.</p>
+<p>Warning: Do not attempt to open an object saved in ObjectTools 4 with a version earlier than v3.</p>
+<p>The object passed to <em>OT ObjectToNewBLOB</em> is copied into the <em>BLOB</em> and remains in memory. You must be sure to clear it with <em>OT Clear</em> when you no longer need it.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject (handle)</td></tr><tr><td><code>Result</code></td><td>Blob</td><td>⬅️</td><td>New BLOB containing the serialised object, or an empty BLOB on error</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

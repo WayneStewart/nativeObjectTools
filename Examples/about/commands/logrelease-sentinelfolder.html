@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>logRelease_SentinelFolder - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">logRelease_SentinelFolder</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Private method</p>
+      <h1>logRelease_SentinelFolder</h1>
+      <p class="signature">logRelease_SentinelFolder</p>
+      <p class="lead">Converts a POSIX sentinel folder path to a system path and creates it.</p>
+      
+
+      <p>Converts a POSIX sentinel folder path to a system path and creates it.</p><p>This method is an implementation detail used by the public API, documentation tooling, build process, or test harness. Application code should prefer the public API unless this project is being maintained directly.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>$1</td><td>Text</td><td>POSIX path to the sentinel folder</td></tr><tr><td>$0</td><td>Text</td><td>system path to the sentinel folder ---------------------------------------------------- #DECLARE($sentinelDir_t : Text)-&gt;$sentinelFolder_t : Text var $posixPath_t; $systemPath_t : Text $posixPath_t:=$sentinelDir_t If (Substring($posixPath_t; 1; 2)=&quot;./&quot;) 	$posixPath_t:=Substring($posixPath_t; 3) End if If (Substring($posixPath_t; Length($posixPath_t); 1)#&quot;/&quot;) 	$posixPath_t:=$posixPath_t+&quot;/&quot; End if $systemPath_t:=Convert path POSIX to system($posixPath_t) If (Substring($posixPath_t; 1; 1)=&quot;/&quot;) 	$sentinelFolder_t:=$systemPath_t Else 	$sentinelFolder_t:=Get 4D folder(Database folder)+$systemPath_t End if CREATE FOLDER($sentinelFolder_t; *)</td></tr></tbody>
+  </table></div>
+      </section>
+
+      
+
+      
+    </article>
+  </main>
+</body>
+</html>

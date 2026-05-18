@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_PutVariable — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_PutVariable</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Put scalars</p>
+      <h1>OTr_PutVariable</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT PutVariable</code></span>
+      <p class="signature">OTr_PutVariable (inObject; inTag; inVarPointer)</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Stores the contents of the variable pointed to by $inVarPointer_ptr at the tag path.</p>
+<p>Every 4D variable type except 2D arrays can be stored, including arrays and Booleans.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p><em>OT PutVariable</em> puts the contents of the variable pointed to by <em>inVarPointer</em> into <em>inObject</em>. Every 4D variable type but 2D arrays can be stored with this command, including <em>Boolean</em> variables and arrays. Once stored, the data can be retrieved with <em>OT GetVariable</em> or with the <em>OT Get&lt;type&gt;</em> command appropriate to the variable's type.</p>
+<p>If <em>inObject</em> is not a valid object handle, an error is generated and <em>OK</em> is set to zero.</p>
+<p>If no item in the object has the given tag, a new item is created.</p>
+<p>If an item with the given tag exists and has the type <em>Type(variablePointer-&gt;)</em>, its value is replaced.</p>
+<p>If an item with the given tag exists and has any other type, an error is generated and <em>OK</em> is set to zero if the <em>OT VariantItems</em> option is not set, otherwise the existing item is deleted and a new item is created.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject</td></tr><tr><td><code>inTag</code></td><td>Text</td><td>➡️</td><td>Tag path (inTag)</td></tr><tr><td><code>inVarPointer</code></td><td>Pointer</td><td>➡️</td><td>Pointer to variable to store</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

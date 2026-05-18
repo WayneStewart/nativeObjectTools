@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_SetDateMode — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_SetDateMode</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Configuration &amp; info</p>
+      <h1>OTr_SetDateMode</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT SetDateMode</code></span>
+      <p class="signature">OTr_SetDateMode ({inMode}) --&gt; Text</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Gets or sets the current process's Date/Time storage mode for OTr objects.</p>
+<p>The setting is per-process. Omit the parameter to use as a getter only.</p>
+<p>The three mode tokens correspond to 4D's &quot;Dates inside objects&quot; parameter:</p>
+<ul><li>&quot;native&quot;  — store Date/Time as native 4D types (default since v17)</li><li>&quot;iso&quot;     — store as ISO text without timezone (&quot;YYYY-MM-DD&quot;)</li><li>&quot;iso-tz&quot;  — store as ISO text with timezone suffix</li></ul>
+<p>All OTr Date/Time put methods detect the current mode via OTr_u_NativeDateInObject at the time of each call. See also: OTr_u_NativeDateInObject.</p>
+<p>Reference: 4D KB 78256 — https://kb.4d.com/assetid=78256</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inMode</code></td><td>Text</td><td>➡️</td><td>Mode token — &quot;native&quot;, &quot;iso&quot;, or &quot;iso-tz&quot; (optional)</td></tr><tr><td><code>Result</code></td><td>Text</td><td>⬅️</td><td>Current mode token after any change</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_LoadFromText — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_LoadFromText</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Serialisation</p>
+      <h1>OTr_LoadFromText</h1>
+      <span class="ot-badge ot-badge--new">No ObjectTools&nbsp;5.0 equivalent</span>
+      <p class="signature">OTr_LoadFromText (inJSON) --&gt; Longint</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Parses a JSON string and stores the resulting object in a new OTr handle.</p>
+<p>If the top-level JSON value is an array, it is automatically wrapped in an object keyed &quot;OBJ&quot; to preserve OTr's object-at-root convention.</p>
+<p>JSON parse errors are caught silently; check the return value to know whether parsing succeeded.</p>
+<p>Returns 0 if inJSON is empty or cannot be parsed.</p>
+<p><strong>NOTE:</strong> there is no equivalent Object Tools command</p>
+<p>Input must be OTr JSON text, such as text produced by OTr_SaveToText.</p>
+<p>Legacy ObjectTools text serialisation is not compatible with this loader.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inJSON</code></td><td>Text</td><td>➡️</td><td>JSON string to parse</td></tr><tr><td><code>Result</code></td><td>Integer</td><td>⬅️</td><td>New OTr handle, or 0 if parsing failed</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

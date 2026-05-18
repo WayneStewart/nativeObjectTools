@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_LoadFromGZIP — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_LoadFromGZIP</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Serialisation</p>
+      <h1>OTr_LoadFromGZIP</h1>
+      <span class="ot-badge ot-badge--new">No ObjectTools&nbsp;5.0 equivalent</span>
+      <p class="signature">OTr_LoadFromGZIP (inBlob) --&gt; Longint</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Loads an object from a GZIPed JSON blob (written by OTr_SaveToGZIP) into a new OTr handle. The blob is expanded and decoded as UTF-8 text before being parsed as JSON.</p>
+<p>Returns 0 if the blob is empty or cannot be decoded.</p>
+<p><strong>NOTE:</strong> there is no equivalent Object Tools command</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inBlob</code></td><td>Blob</td><td>➡️</td><td>GZIPed JSON blob \</td></tr><tr><td><code>Result</code></td><td>Integer</td><td>⬅️</td><td>New OTr handle,                         or 0 if loading failed</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

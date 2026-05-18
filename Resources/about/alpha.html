@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A–Z — OTr Reference</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><span aria-current="page">A–Z</span></nav>
+    <div class="masthead">
+      <a class="brand" href="index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="index.html">Overview</a>
+        <a href="commands.html">Commands</a>
+        <a href="alpha.html">A–Z</a>
+        <a href="naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page wide">
+      <h1>Alphabetical index</h1>
+      <p class="lead">All 111 public methods, sorted by name with the <code>OTr_</code> prefix omitted.</p>
+      <div class="alpha-bar"><a href="#alpha-A" class="alpha-lnk">A</a><a href="#alpha-B" class="alpha-lnk">B</a><a href="#alpha-C" class="alpha-lnk">C</a><a href="#alpha-D" class="alpha-lnk">D</a><a href="#alpha-F" class="alpha-lnk">F</a><a href="#alpha-G" class="alpha-lnk">G</a><a href="#alpha-I" class="alpha-lnk">I</a><a href="#alpha-L" class="alpha-lnk">L</a><a href="#alpha-N" class="alpha-lnk">N</a><a href="#alpha-O" class="alpha-lnk">O</a><a href="#alpha-P" class="alpha-lnk">P</a><a href="#alpha-R" class="alpha-lnk">R</a><a href="#alpha-S" class="alpha-lnk">S</a></div>
+      <section id="alpha-A" class="alpha-section">
+      <h2 class="alpha-heading">A</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-arraytype.html" class="alpha-method"><code>OTr_ArrayType</code></a> <span class="alpha-ot">OT ArrayType</span>
+          <span class="alpha-brief">Returns the stored arrayType value from an OTr array object. Used to verify type compatibility before performing array operations.</span>
+        </div>
+    </section>
+    <section id="alpha-B" class="alpha-section">
+      <h2 class="alpha-heading">B</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-blobtoobject.html" class="alpha-method"><code>OTr_BLOBToObject</code></a> <span class="alpha-ot">OT BLOBToObject</span>
+          <span class="alpha-brief">Deserialises an OTr object from a BLOB previously made by OTr_ObjectToBLOB or OTr_ObjectToNewBLOB. A new handle is returned.</span>
+        </div>
+    </section>
+    <section id="alpha-C" class="alpha-section">
+      <h2 class="alpha-heading">C</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-clear.html" class="alpha-method"><code>OTr_Clear</code></a> <span class="alpha-ot">OT Clear</span>
+          <span class="alpha-brief">Releases an OTr handle and clears its stored object.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-clearall.html" class="alpha-method"><code>OTr_ClearAll</code></a> <span class="alpha-ot">OT ClearAll</span>
+          <span class="alpha-brief">Clears all OTr handles.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-compareitems.html" class="alpha-method"><code>OTr_CompareItems</code></a> <span class="alpha-ot">OT CompareItems</span>
+          <span class="alpha-brief">Compares two items for equality. Both handles may be the same object.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-compiledapplication.html" class="alpha-method"><code>OTr_CompiledApplication</code></a>
+          <span class="alpha-brief">Returns 1 when running in compiled mode; otherwise 0.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-copy.html" class="alpha-method"><code>OTr_Copy</code></a> <span class="alpha-ot">OT Copy</span>
+          <span class="alpha-brief">Deep-copies a stored object into a new handle.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-copyitem.html" class="alpha-method"><code>OTr_CopyItem</code></a> <span class="alpha-ot">OT CopyItem</span>
+          <span class="alpha-brief">Copies the item at $inSourceTag_t to $inDestTag_t. The destination need not exist; it will be created. Source and destination handles may be the same. Embedded objects are deep-copied via OB Copy.</span>
+        </div>
+    </section>
+    <section id="alpha-D" class="alpha-section">
+      <h2 class="alpha-heading">D</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-deleteelement.html" class="alpha-method"><code>OTr_DeleteElement</code></a> <span class="alpha-ot">OT DeleteElement</span>
+          <span class="alpha-brief">Deletes one or more elements from an OTr array starting at position $inWhere_i (1-based). $inHowMany_i defaults to 1 if omitted. Element 0 is never affected.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-deleteitem.html" class="alpha-method"><code>OTr_DeleteItem</code></a> <span class="alpha-ot">OT DeleteItem</span>
+          <span class="alpha-brief">Deletes the item referenced by $inTag_t. Embedded objects are deleted recursively. BLOB and Picture parallel array slots referenced by the deleted item (or any sub-items) are released.</span>
+        </div>
+    </section>
+    <section id="alpha-F" class="alpha-section">
+      <h2 class="alpha-heading">F</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-findinarray.html" class="alpha-method"><code>OTr_FindInArray</code></a> <span class="alpha-ot">OT FindInArray</span>
+          <span class="alpha-brief">Searches an array stored in an OTr object for a value matching inValue. The value is passed as text and converted to the stored array type before searching.</span>
+        </div>
+    </section>
+    <section id="alpha-G" class="alpha-section">
+      <h2 class="alpha-heading">G</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-getactivehandlecount.html" class="alpha-method"><code>OTr_GetActiveHandleCount</code></a>
+          <span class="alpha-brief">Returns the number of currently active OTr handles.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getallnamedproperties.html" class="alpha-method"><code>OTr_GetAllNamedProperties</code></a> <span class="alpha-ot">OT GetAllNamedProperties</span>
+          <span class="alpha-brief">Returns information about all items in the object (or embedded object).</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getallproperties.html" class="alpha-method"><code>OTr_GetAllProperties</code></a> <span class="alpha-ot">OT GetAllProperties</span>
+          <span class="alpha-brief">Returns information about all top-level items in $inObject_i. Delegates to OTr_GetAllNamedProperties with an empty tag. Item names are returned in indeterminate order.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getarray.html" class="alpha-method"><code>OTr_GetArray</code></a> <span class="alpha-ot">OT GetArray</span>
+          <span class="alpha-brief">Retrieves an array from an OTr object and populates the 4D array pointed to by $outArray_ptr. The target array must already be declared with an appropriate type. Elements are converted from stored text/values via the OTr_u_ utility meth…</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getarrayblob.html" class="alpha-method"><code>OTr_GetArrayBLOB</code></a> <span class="alpha-ot">OT GetArrayBLOB</span>
+          <span class="alpha-brief">Retrieves a single element from a Blob array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getarrayboolean.html" class="alpha-method"><code>OTr_GetArrayBoolean</code></a> <span class="alpha-ot">OT GetArrayBoolean</span>
+          <span class="alpha-brief">Retrieves a single element from a Boolean array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getarraydate.html" class="alpha-method"><code>OTr_GetArrayDate</code></a> <span class="alpha-ot">OT GetArrayDate</span>
+          <span class="alpha-brief">Retrieves a single element from a Date array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getarraylong.html" class="alpha-method"><code>OTr_GetArrayLong</code></a> <span class="alpha-ot">OT GetArrayLong</span>
+          <span class="alpha-brief">Retrieves a single Integer element from a LongInt or Integer array item at the specified 1-based index.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getarraypicture.html" class="alpha-method"><code>OTr_GetArrayPicture</code></a> <span class="alpha-ot">OT GetArrayPicture</span>
+          <span class="alpha-brief">Retrieves a single element from a Picture array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getarraypointer.html" class="alpha-method"><code>OTr_GetArrayPointer</code></a> <span class="alpha-ot">OT GetArrayPointer</span>
+          <span class="alpha-brief">Retrieves a single element from a Pointer array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getarrayreal.html" class="alpha-method"><code>OTr_GetArrayReal</code></a> <span class="alpha-ot">OT GetArrayReal</span>
+          <span class="alpha-brief">Retrieves a single element from a Real array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getarraystring.html" class="alpha-method"><code>OTr_GetArrayString</code></a> <span class="alpha-ot">OT GetArrayString</span>
+          <span class="alpha-brief">Retrieves a single element from a Text or String array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getarraytext.html" class="alpha-method"><code>OTr_GetArrayText</code></a> <span class="alpha-ot">OT GetArrayText</span>
+          <span class="alpha-brief">Retrieves a single element from a Text or String array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getarraytime.html" class="alpha-method"><code>OTr_GetArrayTime</code></a> <span class="alpha-ot">OT GetArrayTime</span>
+          <span class="alpha-brief">Retrieves a single element from a Time array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getblob.html" class="alpha-method"><code>OTr_GetBLOB</code></a> <span class="alpha-ot">OT GetBLOB</span>
+          <span class="alpha-brief">Retrieves a BLOB value from the specified tag path and writes it back to the caller's variable via the outBLOB pointer parameter. When Storage.OTr.nativeBlobInObject is True (4D v19 R2 and later), the property is read as a native BLOB via…</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getboolean.html" class="alpha-method"><code>OTr_GetBoolean</code></a> <span class="alpha-ot">OT GetBoolean</span>
+          <span class="alpha-brief">Retrieves a Boolean value from the specified tag path as 1/0 for legacy ObjectTools compatibility.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getdate.html" class="alpha-method"><code>OTr_GetDate</code></a> <span class="alpha-ot">OT GetDate</span>
+          <span class="alpha-brief">Retrieves a Date value from the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-gethandlelist.html" class="alpha-method"><code>OTr_GetHandleList</code></a>
+          <span class="alpha-brief">Fills a Longint array with currently allocated OTr handles.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getitemproperties.html" class="alpha-method"><code>OTr_GetItemProperties</code></a> <span class="alpha-ot">OT GetItemProperties</span>
+          <span class="alpha-brief">Returns properties of the item at 1-based index $inIndex_i. Items are enumerated from OB Keys; internal __otr_ properties are excluded.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getlong.html" class="alpha-method"><code>OTr_GetLong</code></a> <span class="alpha-ot">OT GetLong</span>
+          <span class="alpha-brief">Retrieves an Integer value from the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getnamedproperties.html" class="alpha-method"><code>OTr_GetNamedProperties</code></a> <span class="alpha-ot">OT GetNamedProperties</span>
+          <span class="alpha-brief">Returns properties of the item identified by $inTag_t: its type constant, approximate item size, approximate data size, and index (always 0; reserved for compatibility).</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getnewblob.html" class="alpha-method"><code>OTr_GetNewBLOB</code></a> <span class="alpha-ot">OT GetNewBLOB</span>
+          <span class="alpha-brief">Retrieves a BLOB value from the specified tag path as a function result.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getobject.html" class="alpha-method"><code>OTr_GetObject</code></a> <span class="alpha-ot">OT GetObject</span>
+          <span class="alpha-brief">Retrieves an embedded object by tag path, copies it to a new OTr handle, and returns that handle.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getoptions.html" class="alpha-method"><code>OTr_GetOptions</code></a> <span class="alpha-ot">OT GetOptions</span>
+          <span class="alpha-brief">Returns the current OTr options bit field.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getpicture.html" class="alpha-method"><code>OTr_GetPicture</code></a> <span class="alpha-ot">OT GetPicture</span>
+          <span class="alpha-brief">Retrieves a Picture value from the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getpointer.html" class="alpha-method"><code>OTr_GetPointer</code></a> <span class="alpha-ot">OT GetPointer</span>
+          <span class="alpha-brief">Retrieves a Pointer value from the specified tag path into the outPointer parameter. The stored text is deserialised via OTr_u_TextToPointer. Returns a Null pointer on any error or missing tag.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getreal.html" class="alpha-method"><code>OTr_GetReal</code></a> <span class="alpha-ot">OT GetReal</span>
+          <span class="alpha-brief">Retrieves a Real value from the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getrecord.html" class="alpha-method"><code>OTr_GetRecord</code></a> <span class="alpha-ot">OT GetRecord</span>
+          <span class="alpha-brief">Writes field values from the record snapshot sub-object at the tag path into the current record of the specified table. Field matching is by name; unrecognised properties are silently ignored and unmatched fields are untouched.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getrecordtable.html" class="alpha-method"><code>OTr_GetRecordTable</code></a> <span class="alpha-ot">OT GetRecordTable</span>
+          <span class="alpha-brief">Returns the table number recorded in the __tableNum property of the record snapshot sub-object at the tag path. Use this to verify which table a snapshot belongs to before calling OTr_GetRecord.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getstring.html" class="alpha-method"><code>OTr_GetString</code></a> <span class="alpha-ot">OT GetString</span>
+          <span class="alpha-brief">Retrieves a String/Text value from the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-gettext.html" class="alpha-method"><code>OTr_GetText</code></a> <span class="alpha-ot">OT GetText</span>
+          <span class="alpha-brief">Retrieves a Text value from the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-gettime.html" class="alpha-method"><code>OTr_GetTime</code></a> <span class="alpha-ot">OT GetTime</span>
+          <span class="alpha-brief">Retrieves a Time value from the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getvariable.html" class="alpha-method"><code>OTr_GetVariable</code></a> <span class="alpha-ot">OT GetVariable</span>
+          <span class="alpha-brief">Retrieves a value stored at the tag path and writes it into the variable pointed to by $outVarPointer_ptr. The caller's declared variable type determines how the stored value is rendered. Every 4D variable type except 2D arrays can be ret…</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-getversion.html" class="alpha-method"><code>OTr_GetVersion</code></a>
+          <span class="alpha-brief">Returns the OTr implementation version string.</span>
+        </div>
+    </section>
+    <section id="alpha-I" class="alpha-section">
+      <h2 class="alpha-heading">I</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-importlegacyblob.html" class="alpha-method"><code>OTr_ImportLegacyBlob</code></a>
+          <span class="alpha-brief">Imports a legacy ObjectTools object BLOB into a new OTr handle.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-includeshadowkey.html" class="alpha-method"><code>OTr_IncludeShadowKey</code></a>
+          <span class="alpha-brief">Gets or sets the global flag that controls whether shadow-type keys (leafKey$type) are included in XML, JSON, and file exports.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-info.html" class="alpha-method"><code>OTr_Info</code></a> <span class="alpha-ot">OT Info</span>
+          <span class="alpha-brief">Returns requested information to the host.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-insertelement.html" class="alpha-method"><code>OTr_InsertElement</code></a> <span class="alpha-ot">OT InsertElement</span>
+          <span class="alpha-brief">Inserts one or more empty elements into an OTr array at position $inWhere_i (1-based). Existing elements at and above $inWhere_i are shifted up by $inHowMany_i.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-isembedded.html" class="alpha-method"><code>OTr_IsEmbedded</code></a> <span class="alpha-ot">OT IsEmbedded</span>
+          <span class="alpha-brief">Tests whether the item referenced by $inTag_t is an embedded object.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-isobject.html" class="alpha-method"><code>OTr_IsObject</code></a> <span class="alpha-ot">OT IsObject</span>
+          <span class="alpha-brief">Returns 1 when a handle is valid and in use, otherwise 0.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-itemcount.html" class="alpha-method"><code>OTr_ItemCount</code></a> <span class="alpha-ot">OT ItemCount</span>
+          <span class="alpha-brief">Returns the number of top-level items in the referenced object.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-itemexists.html" class="alpha-method"><code>OTr_ItemExists</code></a> <span class="alpha-ot">OT ItemExists</span>
+          <span class="alpha-brief">Tests for the existence of an item. $inTag_t may refer to a top-level item, an embedded object, or an embedded item. Returns 1 if found, 0 if not. An invalid handle generates an error; a missing path does not (this is a query, not a mutat…</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-itemtype.html" class="alpha-method"><code>OTr_ItemType</code></a> <span class="alpha-ot">OT ItemType</span>
+          <span class="alpha-brief">Returns the OTr-normalised type constant for the item referenced by $inTag_t.</span>
+        </div>
+    </section>
+    <section id="alpha-L" class="alpha-section">
+      <h2 class="alpha-heading">L</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-loadandviewotblob.html" class="alpha-method"><code>OTr_LoadAndViewOTBlob</code></a>
+          <span class="alpha-brief">ARRAY TEXT($paths_at; 0)</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-loadfromblob.html" class="alpha-method"><code>OTr_LoadFromBlob</code></a> <span class="alpha-ot">OT LoadFromBlob</span>
+          <span class="alpha-brief">Loads an object from a 4D-native blob (written by OTr_SaveToBlob) into a new OTr handle. The blob is expanded automatically if it is compressed before reading via BLOB TO VARIABLE.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-loadfromclipboard.html" class="alpha-method"><code>OTr_LoadFromClipboard</code></a> <span class="alpha-ot">OT LoadFromClipboard</span>
+          <span class="alpha-brief">Reads a JSON string from the system clipboard and loads it into a new OTr handle.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-loadfromfile.html" class="alpha-method"><code>OTr_LoadFromFile</code></a> <span class="alpha-ot">OT LoadFromFile</span>
+          <span class="alpha-brief">Reads a UTF-8 JSON file from disk and loads it into a new OTr handle. The file must have been written as a plain UTF-8 JSON text file (e.g. by OTr_SaveToFile).</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-loadfromgzip.html" class="alpha-method"><code>OTr_LoadFromGZIP</code></a>
+          <span class="alpha-brief">Loads an object from a GZIPed JSON blob (written by OTr_SaveToGZIP) into a new OTr handle. The blob is expanded and decoded as UTF-8 text before being parsed as JSON.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-loadfromtext.html" class="alpha-method"><code>OTr_LoadFromText</code></a>
+          <span class="alpha-brief">Parses a JSON string and stores the resulting object in a new OTr handle.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-loadfromxml.html" class="alpha-method"><code>OTr_LoadFromXML</code></a> <span class="alpha-ot">OT LoadFromXML</span>
+          <span class="alpha-brief">Parses an XML string (written by OTr_SaveToXML) using DOM and loads the reconstructed object into a new OTr handle.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-loadfromxmlfile.html" class="alpha-method"><code>OTr_LoadFromXMLFile</code></a>
+          <span class="alpha-brief">Reads a UTF-8 XML file from disk (written by OTr_SaveToXMLFile) and loads it into a new OTr handle using DOM parsing.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-loglevel.html" class="alpha-method"><code>OTr_LogLevel</code></a> <span class="alpha-ot">OT LogLevel</span>
+          <span class="alpha-brief">Gets or sets the active OTr logging control level.</span>
+        </div>
+    </section>
+    <section id="alpha-N" class="alpha-section">
+      <h2 class="alpha-heading">N</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-new.html" class="alpha-method"><code>OTr_New</code></a> <span class="alpha-ot">OT New</span>
+          <span class="alpha-brief">Allocates and returns a new OTr object handle.</span>
+        </div>
+    </section>
+    <section id="alpha-O" class="alpha-section">
+      <h2 class="alpha-heading">O</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-objectsize.html" class="alpha-method"><code>OTr_ObjectSize</code></a> <span class="alpha-ot">OT ObjectSize</span>
+          <span class="alpha-brief">Returns an approximation of the memory size of an OTr object. Note: byte counts will not match the legacy plugin exactly.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-objecttoblob.html" class="alpha-method"><code>OTr_ObjectToBLOB</code></a> <span class="alpha-ot">OT ObjectToBLOB</span>
+          <span class="alpha-brief">Serialises an OTr object into a BLOB using VARIABLE TO BLOB with GZIP compression. The object's contents (including natively stored BLOBs and Pictures) are fully self-contained.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-objecttonewblob.html" class="alpha-method"><code>OTr_ObjectToNewBLOB</code></a> <span class="alpha-ot">OT ObjectToNewBLOB</span>
+          <span class="alpha-brief">Serialises an OTr object into a new BLOB and returns it as the function result. This is the recommended serialisation method because it avoids the by-reference BLOB parameter issues associated with OTr_ObjectToBLOB.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-objectviewer.html" class="alpha-method"><code>OTr_ObjectViewer</code></a>
+          <span class="alpha-brief"></span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-onexit.html" class="alpha-method"><code>OTr_onExit</code></a>
+          <span class="alpha-brief">Shuts down the OTr logging subsystem cleanly.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-onstartup.html" class="alpha-method"><code>OTr_onStartup</code></a>
+          <span class="alpha-brief">Initialises the OTr system and writes the opening log entry this is not strictly necessary at startup except we are trying to emulate as closely as possible Object Tools behaviour.</span>
+        </div>
+    </section>
+    <section id="alpha-P" class="alpha-section">
+      <h2 class="alpha-heading">P</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-putarray.html" class="alpha-method"><code>OTr_PutArray</code></a> <span class="alpha-ot">OT PutArray</span>
+          <span class="alpha-brief">Stores a 4D array into an OTr object at the given tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putarrayblob.html" class="alpha-method"><code>OTr_PutArrayBLOB</code></a> <span class="alpha-ot">OT PutArrayBLOB</span>
+          <span class="alpha-brief">Sets a single element of a Blob array item at the given index.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putarrayboolean.html" class="alpha-method"><code>OTr_PutArrayBoolean</code></a> <span class="alpha-ot">OT PutArrayBoolean</span>
+          <span class="alpha-brief">Sets a single element of a Boolean array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putarraydate.html" class="alpha-method"><code>OTr_PutArrayDate</code></a> <span class="alpha-ot">OT PutArrayDate</span>
+          <span class="alpha-brief">Sets a single element of a Date array item at the given index. See OTr_SetDateMode.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putarraylong.html" class="alpha-method"><code>OTr_PutArrayLong</code></a> <span class="alpha-ot">OT PutArrayLong</span>
+          <span class="alpha-brief">Sets a single element of a LongInt or Integer array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putarraypicture.html" class="alpha-method"><code>OTr_PutArrayPicture</code></a> <span class="alpha-ot">OT PutArrayPicture</span>
+          <span class="alpha-brief">Sets a single element of a Picture array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putarraypointer.html" class="alpha-method"><code>OTr_PutArrayPointer</code></a> <span class="alpha-ot">OT PutArrayPointer</span>
+          <span class="alpha-brief">Sets a single element of a Pointer array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putarrayreal.html" class="alpha-method"><code>OTr_PutArrayReal</code></a> <span class="alpha-ot">OT PutArrayReal</span>
+          <span class="alpha-brief">Sets a single element of a Real array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putarraystring.html" class="alpha-method"><code>OTr_PutArrayString</code></a> <span class="alpha-ot">OT PutArrayString</span>
+          <span class="alpha-brief">Sets a single element of a Text or String array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putarraytext.html" class="alpha-method"><code>OTr_PutArrayText</code></a> <span class="alpha-ot">OT PutArrayText</span>
+          <span class="alpha-brief">Sets a single element of a Text or String array item.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putarraytime.html" class="alpha-method"><code>OTr_PutArrayTime</code></a> <span class="alpha-ot">OT PutArrayTime</span>
+          <span class="alpha-brief">Sets a single element of a Time array item at the given index.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putblob.html" class="alpha-method"><code>OTr_PutBLOB</code></a> <span class="alpha-ot">OT PutBLOB</span>
+          <span class="alpha-brief">Stores a BLOB value at the specified tag path. On 4D v19 R2 and later (where Storage.OTr.nativeBlobInObject is True) the BLOB is stored natively via OB SET. On earlier versions the BLOB is encoded as plain base64 text via OTr_u_BlobToTex…</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putboolean.html" class="alpha-method"><code>OTr_PutBoolean</code></a> <span class="alpha-ot">OT PutBoolean</span>
+          <span class="alpha-brief">Stores a Boolean value at the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putdate.html" class="alpha-method"><code>OTr_PutDate</code></a> <span class="alpha-ot">OT PutDate</span>
+          <span class="alpha-brief">Stores a Date value at the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putlong.html" class="alpha-method"><code>OTr_PutLong</code></a> <span class="alpha-ot">OT PutLong</span>
+          <span class="alpha-brief">Stores an Integer value at the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putobject.html" class="alpha-method"><code>OTr_PutObject</code></a> <span class="alpha-ot">OT PutObject</span>
+          <span class="alpha-brief">Stores a deep copy of another handle's object at the given tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putpicture.html" class="alpha-method"><code>OTr_PutPicture</code></a> <span class="alpha-ot">OT PutPicture</span>
+          <span class="alpha-brief">Stores a Picture value at the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putpointer.html" class="alpha-method"><code>OTr_PutPointer</code></a> <span class="alpha-ot">OT PutPointer</span>
+          <span class="alpha-brief">Stores a Pointer value at the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putreal.html" class="alpha-method"><code>OTr_PutReal</code></a> <span class="alpha-ot">OT PutReal</span>
+          <span class="alpha-brief">Stores a Real value at the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putrecord.html" class="alpha-method"><code>OTr_PutRecord</code></a> <span class="alpha-ot">OT PutRecord</span>
+          <span class="alpha-brief">Serialises all fields of the current record of the specified table into a sub-object snapshot stored at the tag path. The snapshot includes the table number, all scalar fields, dates and times as text, and Pictures and BLOBs as base64-enco…</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putstring.html" class="alpha-method"><code>OTr_PutString</code></a> <span class="alpha-ot">OT PutString</span>
+          <span class="alpha-brief">Stores a String/Text inValue at the specified inTag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-puttext.html" class="alpha-method"><code>OTr_PutText</code></a> <span class="alpha-ot">OT PutText</span>
+          <span class="alpha-brief">Stores a Text value at the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-puttime.html" class="alpha-method"><code>OTr_PutTime</code></a> <span class="alpha-ot">OT PutTime</span>
+          <span class="alpha-brief">Stores a Time value at the specified tag path.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-putvariable.html" class="alpha-method"><code>OTr_PutVariable</code></a> <span class="alpha-ot">OT PutVariable</span>
+          <span class="alpha-brief">Stores the contents of the variable pointed to by $inVarPointer_ptr at the tag path.</span>
+        </div>
+    </section>
+    <section id="alpha-R" class="alpha-section">
+      <h2 class="alpha-heading">R</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-register.html" class="alpha-method"><code>OTr_Register</code></a>
+          <span class="alpha-brief">Compatibility no-op for OTr_Register; always succeeds.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-renameitem.html" class="alpha-method"><code>OTr_RenameItem</code></a> <span class="alpha-ot">OT RenameItem</span>
+          <span class="alpha-brief">Renames the item referenced by $inTag_t. $inTag_t must be the full dotted path; $inNewTag_t is the new leaf name only. For example, renaming &quot;foo.bar.old_name&quot; to &quot;new_name&quot; gives access via &quot;foo.bar.new_name&quot;.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-resizearray.html" class="alpha-method"><code>OTr_ResizeArray</code></a> <span class="alpha-ot">OT ResizeArray</span>
+          <span class="alpha-brief">Resizes an array item to the specified number of elements (not counting element 0). If growing, new elements are appended with the array type's default value. If shrinking, excess elements are removed from the end.</span>
+        </div>
+    </section>
+    <section id="alpha-S" class="alpha-section">
+      <h2 class="alpha-heading">S</h2>
+      <div class="alpha-entry">
+          <a href="commands/otr-savetoblob.html" class="alpha-method"><code>OTr_SaveToBlob</code></a> <span class="alpha-ot">OT SaveToBlob</span>
+          <span class="alpha-brief">Serialises the stored object to a compressed 4D-native blob using VARIABLE TO BLOB and GZIP compression. The format is 4D-internal and is not portable outside 4D. Use OTr_SaveToGZIP when portability across systems is required.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-savetoclipboard.html" class="alpha-method"><code>OTr_SaveToClipboard</code></a> <span class="alpha-ot">OT SaveToClipboard</span>
+          <span class="alpha-brief">Places the stored object as a JSON string on the system clipboard. Useful for quick inspection in a text editor.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-savetofile.html" class="alpha-method"><code>OTr_SaveToFile</code></a> <span class="alpha-ot">OT SaveToFile</span>
+          <span class="alpha-brief">Serialises the stored object to a UTF-8 JSON file on disk.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-savetogzip.html" class="alpha-method"><code>OTr_SaveToGZIP</code></a>
+          <span class="alpha-brief">Serialises the stored object to a UTF-8 JSON string and compresses it with GZIP, returning the result in a blob.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-savetotext.html" class="alpha-method"><code>OTr_SaveToText</code></a> <span class="alpha-ot">OT SaveToText</span>
+          <span class="alpha-brief">Returns the stored object as a JSON string. Useful for inspection and testing.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-savetoxml.html" class="alpha-method"><code>OTr_SaveToXML</code></a> <span class="alpha-ot">OT SaveToXML</span>
+          <span class="alpha-brief">Serialises the stored object as an XML string using DOM output.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-savetoxmlfile.html" class="alpha-method"><code>OTr_SaveToXMLFile</code></a>
+          <span class="alpha-brief">Serialises the stored object to a UTF-8 XML file on disk using DOM output. Existing files are overwritten without warning.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-savetoxmlfilesax.html" class="alpha-method"><code>OTr_SaveToXMLFileSAX</code></a>
+          <span class="alpha-brief">Serialises the OTr object to a UTF-8 XML file on disk using SAX output.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-savetoxmlsax.html" class="alpha-method"><code>OTr_SaveToXMLSAX</code></a>
+          <span class="alpha-brief">Serialises the stored object as an XML string using SAX output.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-setdatemode.html" class="alpha-method"><code>OTr_SetDateMode</code></a> <span class="alpha-ot">OT SetDateMode</span>
+          <span class="alpha-brief">Gets or sets the current process's Date/Time storage mode for OTr objects.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-seterrorhandler.html" class="alpha-method"><code>OTr_SetErrorHandler</code></a> <span class="alpha-ot">OT SetErrorHandler</span>
+          <span class="alpha-brief">Sets the current OTr error handler and returns the previous value.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-setoptions.html" class="alpha-method"><code>OTr_SetOptions</code></a> <span class="alpha-ot">OT SetOptions</span>
+          <span class="alpha-brief">Sets the current OTr options bit field.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-sizeofarray.html" class="alpha-method"><code>OTr_SizeOfArray</code></a> <span class="alpha-ot">OT SizeOfArray</span>
+          <span class="alpha-brief">Returns the number of elements in an array item. Does not count element 0.</span>
+        </div>
+<div class="alpha-entry">
+          <a href="commands/otr-sortarrays.html" class="alpha-method"><code>OTr_SortArrays</code></a> <span class="alpha-ot">OT SortArrays</span>
+          <span class="alpha-brief">Sorts one or more OTr arrays within the same OTr object via MULTI SORT ARRAY.</span>
+        </div>
+    </section>
+    </article>
+  </main>
+</body>
+</html>

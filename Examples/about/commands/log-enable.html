@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOG ENABLE - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">LOG ENABLE</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Public API</p>
+      <h1>LOG ENABLE</h1>
+      <p class="signature">LOG ENABLE({enable}) -&gt; Boolean</p>
+      <p class="lead">Sets or returns the current process logging state.</p>
+      <p class="attributes">Shared, Invisible, Preemptive capable</p>
+
+      <p>The enabled state is process local. Calling LOG ENABLE in one process does not directly enable every other process.</p>
+<p>In the modern component, disabled logging is a filtering mode rather than a hard stop. When logging is disabled, LOG ADD ENTRY still writes entries whose requested level is at or above the effective log level. Set LOG Level to Warn or Error when you want disabled logging to suppress ordinary entries while still allowing important entries through.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>enable</td><td>Boolean</td><td>True enables routine logging for the current process. False disables routine logging for the current process.</td></tr><tr><td>Result</td><td>Boolean</td><td>The current process logging state after any requested change.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Turn logging on</h3><pre class="code"><code><span class="tok-local">$wasEnabled_b</span>:=<span class="tok-command">LOG ENABLE</span>(<span class="tok-constant">True</span>)
+<a class="tok-command code-command-link" href="log-add-entry.html">LOG ADD ENTRY</a>(<span class="tok-string">&quot;Database launched.&quot;</span>)</code></pre></div><div class="example"><h3>Use disabled mode for warnings and errors only</h3><pre class="code"><code><span class="tok-command">LOG ENABLE</span>(<span class="tok-constant">False</span>)
+<span class="tok-local">$currentLevel_i</span>:=<a class="tok-command code-command-link" href="log-level.html">LOG Level</a>(<span class="tok-constant">Log Level Warn</span>)
+<a class="tok-command code-command-link" href="log-add-entry.html">LOG ADD ENTRY</a>(<span class="tok-constant">Log Level Info</span>; <span class="tok-string">&quot;Not written&quot;</span>)
+<a class="tok-command code-command-link" href="log-add-entry.html">LOG ADD ENTRY</a>(<span class="tok-constant">Log Level Error</span>; <span class="tok-string">&quot;Written&quot;</span>)</code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

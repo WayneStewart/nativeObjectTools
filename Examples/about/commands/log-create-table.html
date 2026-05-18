@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOG CREATE TABLE - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">LOG CREATE TABLE</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Public API</p>
+      <h1>LOG CREATE TABLE</h1>
+      <p class="signature">LOG CREATE TABLE -&gt; Object</p>
+      <p class="lead">Creates the Logging table and indexes if they are missing.</p>
+      <p class="attributes">Shared, Invisible, Preemptive incapable</p>
+
+      <p>Use this helper when an application wants to enable the Log to 4D Record destination. It creates the Logging table and indexes idempotently when they are missing.</p>
+<p>When the table is newly created, the method alerts the developer to restart or reopen the database before sending entries to the 4D Record destination. This restart is required before ORDA writes can see the newly-created structure.</p>
+<p>If the table cannot be created, the returned object carries the details and an alert asks the developer to inspect that result.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>Result</td><td>Object</td><td>Structure creation result from the table/index setup routine.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Create or verify the table</h3><pre class="code"><code><span class="tok-local">$result_o</span>:=<span class="tok-command">LOG CREATE TABLE</span>
+<span class="tok-keyword">If</span> (<span class="tok-local">$result_o</span>.<span class="tok-attribute">success</span>)
+	<a class="tok-command code-command-link" href="log-config.html">LOG CONFIG</a>(<span class="tok-command">New object</span>(<span class="tok-constant">Logging Destinations</span>; <span class="tok-constant">Log to LocalFile</span>+<span class="tok-constant">Log to 4D Record</span>))
+<span class="tok-keyword">End if</span></code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

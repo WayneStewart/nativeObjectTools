@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_GetBLOB — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_GetBLOB</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Get scalars</p>
+      <h1>OTr_GetBLOB</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT GetBLOB</code></span>
+      <p class="signature">OTr_GetBLOB (inObject; inTag; outBLOB)</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Retrieves a BLOB value from the specified tag path and writes it back to the caller's variable via the outBLOB pointer parameter. When Storage.OTr.nativeBlobInObject is True (4D v19 R2 and later), the property is read as a native BLOB via OB Get; otherwise it is read as plain base64 text and decoded via OTr_u_TextToBlob. Writes an empty BLOB on any error or missing tag.</p>
+<p class="notice warning-heading">WARNING: Changed Behaviour</p>
+<p>In native 4D, BLOB parameters are passed by value, so a plain Blob parameter cannot be written back to the caller.</p>
+<p>The outBLOB parameter is therefore a Pointer, and callers must pass -&gt;myBlobVar (pointer-to-BLOB syntax).</p>
+<p>The method writes the result back via $outBLOB_ptr-&gt; // This matches the idiom used by OTr_GetPointer.</p>
+<p>The legacy plugin command accepted a plain BLOB variable because it operated at C level; native 4D callers must use the -&gt; syntax instead.</p>
+<p>Correct usage:</p>
+<p>``<code> var myBlob : Blob var myPointer_ptr : Pointer myPointer_ptr :=-&gt; myBlob OTr_GetBLOB(handle; &quot;tag&quot;; myPointer_ptr) </code>``  Alternatively, use OTr_GetNewBLOB which returns the BLOB as a function result and requires no pointer syntax.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p>OT GetBLOB gets a value in <em>inObject</em> from the item referenced by <em>inTag</em>.</p>
+<p>If the object is not a valid object handle, an error is generated, <em>OK</em> is set to zero, and an empty BLOB is returned.</p>
+<p>If no item in the object has the given tag, an empty BLOB is returned. If the <em>FailOnNoItem</em></p>
+<p>option is set, an error is generated and <em>OK</em> is set to zero.</p>
+<p>If an item with the given tag exists and has the type <em>Is BLOB</em>, out <em>BLOB</em> ’s contents are replaced.</p>
+<p>If an item with the given tag exists and has any other type, <em>OK</em> is set to zero, and an empty BLOB is returned.</p>
+<p>Warning: Do not attempt to pass a BLOB field or a dereferenced pointer to a BLOB field in the blob paremeter, as this will result in a crash. If you want to retrieve a BLOB item into a field, either use an intermediate local variable or assign the result of <em> </em>OT GetNewBLOB to the field. The same applies to passing a dereferenced pointer to a BLOB variable. This command is being kept for backward compatibility. Because of the problems related to this command, it is recommended that you use OT GetNewBLOB<em> </em> instead, as this command may be removed in future versions.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject</td></tr><tr><td><code>inTag</code></td><td>Text</td><td>➡️</td><td>Tag path (inTag)</td></tr><tr><td><code>outBLOB</code></td><td>Pointer</td><td>⬅️</td><td>Pointer to caller's Blob variable (-&gt;outBLOB)</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

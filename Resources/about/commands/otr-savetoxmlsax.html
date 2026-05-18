@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_SaveToXMLSAX — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_SaveToXMLSAX</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Serialisation</p>
+      <h1>OTr_SaveToXMLSAX</h1>
+      <span class="ot-badge ot-badge--new">No ObjectTools&nbsp;5.0 equivalent</span>
+      <p class="signature">OTr_SaveToXMLSAX (inObject {; inPrettyPrint}) --&gt; Text</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Serialises the stored object as an XML string using SAX output.</p>
+<p>Returns empty text if the handle is invalid.</p>
+<p>Because SAX writes directly to a file (there is no in-memory SAX equivalent to DOM EXPORT TO VAR), this method:</p>
+<p>1. Writes the XML to a temporary file via OTr_SaveToXMLFileSAX. 2. Reads the file back as UTF-8 text. 3. Deletes the temporary file.  The XML schema produced is identical to that of OTr_SaveToXML (the DOM equivalent), so the output of both methods is fully interchangeable and can be parsed by OTr_LoadFromXML / OTr_LoadFromXMLFile without distinction.</p>
+<p>NOTE: SAX always produces compact (non-indented) output — 4D's SAX engine provides no built-in indentation facility.  The inPrettyPrint parameter is accepted for API symmetry with OTr_SaveToXML but has no effect on the text returned.</p>
+<p>Shadow-type keys (leafKey$type) are included or excluded according to OTr_IncludeShadowKey (default: True).</p>
+<p>Use OTr_SaveToXMLFileSAX to write directly to a named file without the temporary-file round-trip.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr handle</td></tr><tr><td><code>inPrettyPrint</code></td><td>Boolean</td><td>➡️</td><td>True for indented output; default True (optional)</td></tr><tr><td><code>Result</code></td><td>Text</td><td>⬅️</td><td>XML string, or empty text if handle is invalid</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

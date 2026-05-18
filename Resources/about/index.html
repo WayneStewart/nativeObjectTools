@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overview — OTr Reference</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><span aria-current="page">Home</span></nav>
+    <div class="masthead">
+      <a class="brand" href="index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="index.html">Overview</a>
+        <a href="commands.html">Commands</a>
+        <a href="alpha.html">A–Z</a>
+        <a href="naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <section class="hero">
+      <p class="eyebrow">Component reference</p>
+      <h1>Native Object Tools</h1>
+      <p class="hero-tagline">A native 4D replacement for the ObjectTools&nbsp;5.0 plugin</p>
+      <div class="hero-actions">
+        <a class="button" href="commands.html">Browse commands</a>
+        <a class="button secondary" href="naming.html">OT&thinsp;→&thinsp;OTr naming</a>
+      </div>
+    </section>
+
+    <section class="two-col">
+      <div>
+        <h2>What is OTr?</h2>
+        <p>OTr stores typed 4D values—scalars, arrays, nested objects, pictures, BLOBs, records—in native 4D Objects indexed by dotted string tag paths. Objects are referenced by integer handles, exactly as in the original ObjectTools plugin.</p>
+        <p>Because OTr is a compiled 4D component rather than a binary plugin, it works identically on Apple Silicon and Intel Macs, on Windows, and under all 4D execution modes including compiled and preemptive-capable processes.</p>
+        <p>The public method names use the <code>OTr_</code> prefix. For drop-in compatibility with existing code that calls <code>OT xxx</code>, the host project can install thin wrapper methods that forward to the component.</p>
+      </div>
+      <div><pre class="code"><code><span class="tok-comment">// Create a new object and store some values</span>
+<span class="tok-kw">var</span> <span class="tok-local">$h_i</span> : Integer
+<span class="tok-local">$h_i</span> := <a class="tok-cmd code-cmd-link" href="commands/otr-new.html">OTr_New</a>
+
+<a class="tok-cmd code-cmd-link" href="commands/otr-putlong.html">OTr_PutLong</a>(<span class="tok-local">$h_i</span>; <span class="tok-string">&quot;customerID&quot;</span>; <span class="tok-number">1042</span>)
+<a class="tok-cmd code-cmd-link" href="commands/otr-puttext.html">OTr_PutText</a>(<span class="tok-local">$h_i</span>; <span class="tok-string">&quot;name&quot;</span>; <span class="tok-string">&quot;Acme Corp&quot;</span>)
+<a class="tok-cmd code-cmd-link" href="commands/otr-putboolean.html">OTr_PutBoolean</a>(<span class="tok-local">$h_i</span>; <span class="tok-string">&quot;active&quot;</span>; <span class="tok-const">True</span>)
+
+<span class="tok-comment">// Read values back by tag path</span>
+<span class="tok-kw">var</span> <span class="tok-local">$name_t</span> : Text
+<span class="tok-local">$name_t</span> := <a class="tok-cmd code-cmd-link" href="commands/otr-gettext.html">OTr_GetText</a>(<span class="tok-local">$h_i</span>; <span class="tok-string">&quot;name&quot;</span>)  <span class="tok-comment">// → &quot;Acme Corp&quot;</span>
+
+<span class="tok-comment">// Nested paths work with dot notation</span>
+<a class="tok-cmd code-cmd-link" href="commands/otr-putlong.html">OTr_PutLong</a>(<span class="tok-local">$h_i</span>; <span class="tok-string">&quot;address.postcode&quot;</span>; <span class="tok-number">2000</span>)
+
+<span class="tok-comment">// Serialise to JSON</span>
+<span class="tok-kw">var</span> <span class="tok-local">$json_t</span> : Text
+<span class="tok-local">$json_t</span> := <a class="tok-cmd code-cmd-link" href="commands/otr-savetotext.html">OTr_SaveToText</a>(<span class="tok-local">$h_i</span>; <span class="tok-const">True</span>)
+
+<span class="tok-comment">// Release when done</span>
+<a class="tok-cmd code-cmd-link" href="commands/otr-clear.html">OTr_Clear</a>(<span class="tok-local">$h_i</span>)</code></pre></div>
+    </section>
+
+    <section class="two-col">
+      <div>
+        <h2>OT vs OTr</h2>
+        <p>ObjectTools plugin methods were named with a space: <code>OT GetText</code>, <code>OT PutLong</code>. The OTr equivalent replaces <code>OT&nbsp;</code> with <code>OTr_</code>: <code>OTr_GetText</code>, <code>OTr_PutLong</code>.</p>
+        <p>For the handful of OTr methods that have no ObjectTools equivalent—such as <code>OTr_LoadFromText</code> and <code>OTr_GetVersion</code>—the naming convention still applies but there is no legacy call to migrate from.</p>
+        <p>A small number of serialisation methods produce output that is <em>not</em> compatible with the plugin's own format. Those methods carry a warning in their reference page.</p>
+        <a class="button secondary" href="naming.html">Full OT&thinsp;→&thinsp;OTr name map</a>
+      </div>
+      <div><pre class="code"><code><span class="tok-comment">// ObjectTools 5.0 plugin</span>
+OT PutLong (<span class="tok-local">$handle</span>; <span class="tok-string">&quot;id&quot;</span>; <span class="tok-number">1042</span>)
+<span class="tok-local">$name</span> := OT GetText (<span class="tok-local">$handle</span>; <span class="tok-string">&quot;name&quot;</span>)
+
+<span class="tok-comment">// OTr component — same semantics, new name</span>
+<a class="tok-cmd code-cmd-link" href="commands/otr-putlong.html">OTr_PutLong</a>(<span class="tok-local">$handle_i</span>; <span class="tok-string">&quot;id&quot;</span>; <span class="tok-number">1042</span>)
+<span class="tok-local">$name_t</span> := <a class="tok-cmd code-cmd-link" href="commands/otr-gettext.html">OTr_GetText</a>(<span class="tok-local">$handle_i</span>; <span class="tok-string">&quot;name&quot;</span>)</code></pre></div>
+    </section>
+
+    <section>
+      <h2>Method groups</h2>
+      <div class="group-grid">
+      <div class="group-card">
+        <h3><a href="commands.html#handle">Handle management</a></h3>
+        <p>Create, copy, and release OTr object handles.</p>
+        <p class="group-count">9 methods</p>
+      </div>
+      <div class="group-card">
+        <h3><a href="commands.html#get-scalar">Get scalars</a></h3>
+        <p>Retrieve a single typed value from an object by tag path.</p>
+        <p class="group-count">15 methods</p>
+      </div>
+      <div class="group-card">
+        <h3><a href="commands.html#put-scalar">Put scalars</a></h3>
+        <p>Store a single typed value in an object at a tag path.</p>
+        <p class="group-count">13 methods</p>
+      </div>
+      <div class="group-card">
+        <h3><a href="commands.html#get-array">Get arrays</a></h3>
+        <p>Copy an OTr-stored array into a 4D process array.</p>
+        <p class="group-count">11 methods</p>
+      </div>
+      <div class="group-card">
+        <h3><a href="commands.html#put-array">Put arrays</a></h3>
+        <p>Store a 4D process array into an OTr object.</p>
+        <p class="group-count">11 methods</p>
+      </div>
+      <div class="group-card">
+        <h3><a href="commands.html#items">Item operations</a></h3>
+        <p>Inspect, enumerate, copy, rename, and delete named items.</p>
+        <p class="group-count">12 methods</p>
+      </div>
+      <div class="group-card">
+        <h3><a href="commands.html#array-ops">Array operations</a></h3>
+        <p>Sort, search, resize, and compare OTr arrays.</p>
+        <p class="group-count">8 methods</p>
+      </div>
+      <div class="group-card">
+        <h3><a href="commands.html#serial">Serialisation</a></h3>
+        <p>Load and save objects as JSON text, BLOB, file, XML, GZIP, or clipboard.</p>
+        <p class="group-count">20 methods</p>
+      </div>
+      <div class="group-card">
+        <h3><a href="commands.html#config">Configuration &amp; info</a></h3>
+        <p>Query version, configure behaviour, and inspect object metadata.</p>
+        <p class="group-count">10 methods</p>
+      </div>
+      <div class="group-card">
+        <h3><a href="commands.html#lifecycle">Lifecycle</a></h3>
+        <p>Database startup and shutdown integration.</p>
+        <p class="group-count">2 methods</p>
+      </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

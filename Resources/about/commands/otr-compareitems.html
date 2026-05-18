@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_CompareItems — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_CompareItems</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Array operations</p>
+      <h1>OTr_CompareItems</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT CompareItems</code></span>
+      <p class="signature">OTr_CompareItems (inSourceObject; inSourceTag; inCompareObject; inCompareTag) --&gt; Longint</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Compares two items for equality. Both handles may be the same object.</p>
+<p>Returns 1 if identical, 0 if not, -1 on error.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p><em>OT CompareItems</em> compares two items for equality. <em>inSourceObject</em> and <em>inCompareObject</em> may be the same object.</p>
+<p>If either object handle is not valid, if either item does not exist, or if the two items do not have the same type, an error is generated, <em>OK</em> is set to zero, and -1 is returned.</p>
+<p>Otherwise items are compared according to the rules of equality for equivalent variable types in 4D. Arrays are considered identical if they are the same size and corresponding elements are equal. <em>BLOB</em> and <em>Picture</em> items are considered identical if they contain the same bytes. Embedded objects are considered identical if each of their items are identical.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inSourceObject</code></td><td>Integer</td><td>➡️</td><td>OTr inSourceObject</td></tr><tr><td><code>inSourceTag</code></td><td>Text</td><td>➡️</td><td>Source item tag (inSourceTag)</td></tr><tr><td><code>inCompareObject</code></td><td>Integer</td><td>➡️</td><td>OTr inCompareObject</td></tr><tr><td><code>inCompareTag</code></td><td>Text</td><td>➡️</td><td>Comparison item tag (inCompareTag)</td></tr><tr><td><code>Result</code></td><td>Integer</td><td>⬅️</td><td>1 if identical, 0 if not, -1 on error Wayne Stewart, 2026-04-01 - Uses helper equality methods for text, object,   BLOB, and Picture comparisons. Wayne Stewart, 2026-04-01 - Reworked boolean comparison for 4D compiler.</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

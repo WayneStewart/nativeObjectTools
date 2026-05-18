@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home - Logging Component</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><span aria-current="page">Home</span></nav>
+    <div class="masthead">
+      <a class="brand" href="index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="index.html">Overview</a>
+        <a href="commands.html">Commands</a>
+        <a href="original.html">Original Docs</a>
+        <a href="permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <section class="hero">
+      <h1>Logging component reference</h1>
+      <div class="hero-actions">
+        <a class="button" href="commands.html">Commands</a>
+        <a class="button secondary" href="original.html">Original docs</a>
+        <a class="button secondary" href="permission.html">Original release permission</a>
+      </div>
+    </section>
+
+    <section class="two-col">
+      <div>
+        <h2>Introduction</h2>
+        <p>This component appends text entries to external log files. That makes it useful when diagnosing intermittent database problems, especially faults that happen shortly before an application crash or forced shutdown.</p>
+        <p>A single call to <code>LOG ADD ENTRY</code> adds one row. Text parameters are written as tab-delimited columns after the automatic timestamp and level columns. Passing <code>Current method name</code> as the first text value is a practical way to record where an entry came from.</p>
+      </div>
+      <div><pre class="code"><code><span class="tok-number">2026</span>-<span class="tok-number">05</span>-<span class="tok-number">12</span>  <span class="tok-number">09</span>:<span class="tok-number">02</span>:<span class="tok-number">11</span>  -      Startup        Database launched.
+<span class="tok-number">2026</span>-<span class="tok-number">05</span>-<span class="tok-number">12</span>  <span class="tok-number">09</span>:<span class="tok-number">02</span>:<span class="tok-number">18</span>  info   Import         Customers imported  <span class="tok-number">248</span>
+<span class="tok-number">2026</span>-<span class="tok-number">05</span>-<span class="tok-number">12</span>  <span class="tok-number">09</span>:<span class="tok-number">02</span>:<span class="tok-number">22</span>  warn   Audit          Customer changed    C1024</code></pre></div>
+    </section>
+
+    <section class="two-col">
+      <div>
+        <h2>Default Behaviour</h2>
+        <p>Without configuration, the component initialises on first use. The default log file is named after the structure file, followed by <code> log.txt</code>, and is placed in 4D's Logs folder.</p>
+        <p>Batching is enabled by default. The writer flushes when asked explicitly, when a real-time log is used, when the buffer reaches about 64,000 characters, when it reaches 1,000 entries, when the nine-second interval elapses, or when the log is closed or the writer is stopped.</p>
+        <p>When batch reporting is enabled, each batch write adds a labelled diagnostic row showing the cause, entry count, character count, and elapsed milliseconds since the previous batch write.</p>
+        <p>Rollover is disabled by default. If rollover is later enabled, archived files are compressed after the writer moves the old log file aside.</p>
+        <p>The enabled state starts as <code>False</code> for each process. In the modern component, disabled logging still allows entries at or above the effective log level. With untouched defaults, the threshold is <code>Log Level Default</code>. To suppress routine entries while still allowing warnings or errors, set a higher threshold with <code>LOG Level</code>.</p>
+      </div>
+      <div><pre class="code"><code><span class="tok-comment">// No configuration required for the default log.</span>
+<a class="tok-command code-command-link" href="commands/log-enable.html">LOG ENABLE</a>(<span class="tok-constant">True</span>)
+<a class="tok-command code-command-link" href="commands/log-add-entry.html">LOG ADD ENTRY</a>(<span class="tok-command">Current method name</span>; <span class="tok-string">&quot;Database launched.&quot;</span>)
+
+<span class="tok-comment">// Important entries can still be written while routine logging is disabled.</span>
+<a class="tok-command code-command-link" href="commands/log-enable.html">LOG ENABLE</a>(<span class="tok-constant">False</span>)
+<span class="tok-local">$currentLevel_i</span>:=<a class="tok-command code-command-link" href="commands/log-level.html">LOG Level</a>(<span class="tok-constant">Log Level Warn</span>)
+<a class="tok-command code-command-link" href="commands/log-add-entry.html">LOG ADD ENTRY</a>(<span class="tok-constant">Log Level Error</span>; <span class="tok-string">&quot;Required data file missing&quot;</span>)</code></pre></div>
+    </section>
+
+    <section>
+      <h2>Configuration</h2>
+      <p><code>LOG CONFIG</code> changes application-wide defaults for future log declarations. It is normally called during startup, before named logs are declared.</p>
+      <div class="table-wrap"><table>
+    <thead><tr><th>Option</th><th>Default</th><th>Purpose</th></tr></thead>
+    <tbody><tr><td>Logging Folder Path</td><td>4D Logs folder</td><td>Default folder for future log declarations and for the default process log. Pass a resolved path string, not a 4D folder constant.</td></tr><tr><td>Logging File Suffix</td><td>.txt</td><td>Suffix used when a log is declared with only a label. Use Log File Suffix Text for .txt or Log File Suffix Log for .log. Empty text resets to .txt.</td></tr><tr><td>Logging End Of Line</td><td>LF</td><td>Line ending written to future logs. Use Log End Of Line LF, Log End Of Line CR, or Log End Of Line CRLF.</td></tr><tr><td>Logging Use Batch</td><td>True</td><td>Default write policy for future declared logs. True buffers entries in the Log Writer worker; False makes future logs write in real time.</td></tr><tr><td>Logging Report Batch</td><td>False</td><td>Diagnostic preference stored with future declarations. When enabled, batch writes append a diagnostic row with - in the level column plus cause, entry count, character count, and elapsed milliseconds.</td></tr><tr><td>Logging Flush Interval</td><td>9</td><td>Batch interval in seconds. Fractional seconds are accepted. A value of 0 creates real-time behaviour for the affected log.</td></tr><tr><td>Logging Flush Char Limit</td><td>About 64,000</td><td>Buffered character threshold. The writer flushes before appending an entry that would push the buffer beyond this size.</td></tr><tr><td>Logging Flush Entry Limit</td><td>1,000</td><td>Buffered entry-count threshold. The writer flushes when the buffer reaches this many queued entries.</td></tr><tr><td>Logging Rollover Bytes</td><td>0</td><td>Maximum physical log-file size in bytes. 0 disables rollover. When enabled, the writer archives the existing file and starts a new one after a physical write exceeds the limit.</td></tr><tr><td>Logging Archive Compressed</td><td>True</td><td>Archive compression preference for rollover files. The current writer compresses rollover archives after moving the old file.</td></tr><tr><td>Logging Include Machine Name</td><td>False</td><td>When enabled, rendered text rows include Current machine after the timestamp. ServerFile writes the client-rendered line, so this captures the client machine in client/server mode.</td></tr><tr><td>Logging Destinations</td><td>Log to LocalFile</td><td>Default destination bitmask for future declarations. Log to Default resolves to Log to LocalFile.</td></tr><tr><td>sqliteEndpoint</td><td>http://127.0.0.1:8787</td><td>SQLite helper service base URL used by the incomplete SQLite destination.</td></tr><tr><td>sqliteAPIKey</td><td>Empty</td><td>Optional SQLiteLogger X-Log-API-Key value.</td></tr><tr><td>sqliteTimeout</td><td>5</td><td>SQLite helper service HTTP timeout in seconds. Values below 1 are normalised to 1.</td></tr></tbody>
+  </table></div>
+      <p><a class="button secondary" href="commands/log-config.html">Read the LOG CONFIG reference</a></p>
+    </section>
+
+    <section>
+      <h2>Destinations</h2>
+      <div class="danger-banner" role="note">
+        <strong>SQLite and Offsite are not ready for production use</strong>
+        <p>The constants are present, but these destinations are not complete runtime features yet. SQLite still needs the packaged helper service and developer/admin install-start-test workflow. Offsite delivery is reserved for later work.</p>
+      </div>
+      <p>Declared logs can write to one or more destinations by combining destination constants. LocalFile is the default. ServerFile writes the client-rendered line on the server in client/server deployments. 4D Record writes structured records when the <code>Logging</code> table exists.</p>
+      <div class="table-wrap"><table>
+    <thead><tr><th>Destination</th><th>Value</th><th>Behaviour</th></tr></thead>
+    <tbody><tr><td>Log to Default</td><td>0</td><td>Configuration placeholder. It resolves to the configured default destination, and the configured default resolves to Log to LocalFile.</td></tr><tr><td>Log to LocalFile</td><td>1</td><td>Writes the rendered text row through the local Log Writer worker.</td></tr><tr><td>Log to ServerFile</td><td>2</td><td>Writes the client-rendered text row through the server-side Log Writer worker. Combined LocalFile+ServerFile collapses to one file write outside 4D Remote mode.</td></tr><tr><td>Log to 4D Record</td><td>4</td><td>Writes structured records when the Logging table exists. If the table is missing, the record destination is skipped silently.</td></tr><tr><td>Log to SQLite</td><td>8</td><td>Incomplete. The 4D-side dispatcher and batch sender exist, but the packaged SQLite helper service and install/start/test helpers are not implemented yet.</td></tr><tr><td>Log to Offsite</td><td>16</td><td>Not implemented. The constant is reserved and recognised so it does not fall back to LocalFile by mistake.</td></tr></tbody>
+  </table></div>
+      <p><code>Log to SQLite</code> currently has partial 4D-side dispatch and batch-posting code, but the external helper service has not been built, packaged, or installed by the component yet. <code>Log to Offsite</code> is a reserved destination only.</p>
+      <p>The current SQLite design is server-mediated in client/server deployments: client calls enter 4D Server, and 4D Server posts batches to a local helper service. Direct client-to-helper delivery remains future design work.</p>
+    </section>
+
+    <section class="two-col">
+      <div>
+        <h2>Record Setup</h2>
+        <p><code>LOG CREATE TABLE</code> creates the <code>Logging</code> table and indexes if they are missing. When it creates the table, restart or reopen the database before sending entries to <code>Log to 4D Record</code>.</p>
+        <p>When <code>Logging Include Machine Name</code> is enabled, LocalFile and ServerFile rows include the client machine name immediately after the timestamp. Structured entries also carry UTC timestamp and process name metadata for destination handlers.</p>
+      </div>
+      <div><pre class="code"><code><span class="tok-comment">// Prepare the structured record destination once.</span>
+<span class="tok-local">$result_o</span>:=<a class="tok-command code-command-link" href="commands/log-create-table.html">LOG CREATE TABLE</a>
+
+<span class="tok-comment">// After restart, declare logs with destination masks.</span>
+<span class="tok-local">$options_o</span>:=<span class="tok-command">New object</span>( \
+	<span class="tok-constant">Logging Destinations</span>; <span class="tok-constant">Log to LocalFile</span>+<span class="tok-constant">Log to ServerFile</span>+<span class="tok-constant">Log to 4D Record</span>; \
+	<span class="tok-constant">Logging Flush Interval</span>; <span class="tok-constant">Log Flush Default</span>; \
+	<span class="tok-constant">Logging Include Machine Name</span>; <span class="tok-constant">True</span>)
+
+<a class="tok-command code-command-link" href="commands/log-declare-log.html">LOG DECLARE LOG</a>(<span class="tok-string">&quot;Audit&quot;</span>; <span class="tok-string">&quot;Audit.txt&quot;</span>; <span class="tok-local">$logsFolder_t</span>; <span class="tok-local">$options_o</span>)
+<a class="tok-command code-command-link" href="commands/log-add-entry.html">LOG ADD ENTRY</a>(<span class="tok-command">New object</span>(<span class="tok-string">&quot;logLabel&quot;</span>; <span class="tok-string">&quot;Audit&quot;</span>; <span class="tok-string">&quot;logLevel&quot;</span>; <span class="tok-constant">Log Level Warn</span>); \
+	<span class="tok-string">&quot;Customer changed&quot;</span>; <span class="tok-string">&quot;Customer&quot;</span>; <span class="tok-local">$customerID_t</span>)</code></pre></div>
+    </section>
+
+    <section class="permission-callout">
+      <div>
+        <p class="eyebrow">Original documentation</p>
+        <h2>From Foundation Logging to the current component</h2>
+        <p>Dave Batton's original developer reference and 2005 release announcement are included so maintainers can see the source design and how the current API evolved from it.</p>
+      </div>
+      <a class="button secondary" href="original.html">Open original docs</a>
+    </section>
+  </main>
+</body>
+</html>

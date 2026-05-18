@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOG CONFIG - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">LOG CONFIG</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Public API</p>
+      <h1>LOG CONFIG</h1>
+      <p class="signature">LOG CONFIG({Options}) -&gt; Object</p>
+      <p class="lead">Sets or returns defaults used by future log declarations.</p>
+      <p class="attributes">Shared, Invisible, Preemptive capable</p>
+
+      <p>Call this during startup before LOG DECLARE LOG when you want to change the component defaults. Existing declared logs are not rewritten. Explicit values passed to LOG DECLARE LOG still win over the configured defaults.</p>
+<p>LOG CONFIG also refreshes the default process log if the current process is still using the undeclared default log.</p>
+<p>Destination defaults are a bitmask. Use Log to LocalFile for normal file logging, add Log to ServerFile for server-side file writes in client/server deployments, and add Log to 4D Record when the Logging table should receive structured records.</p>
+<p>SQLite and offsite destination values are present for forward compatibility. SQLite configuration keys can be stored now, but the SQLite helper service is not packaged yet. Offsite delivery remains reserved for future implementation.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>Options</td><td>Object</td><td>Optional configuration object. Only recognised properties with the expected value type are applied.</td></tr><tr><td>Result</td><td>Object</td><td>The effective application-wide configuration after any update.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      <section><h2>Implementation warning</h2><div class="danger-banner" role="note">
+        <strong>SQLite and Offsite are not ready for production use</strong>
+        <p>The constants are present, but these destinations are not complete runtime features yet. SQLite still needs the packaged helper service and developer/admin install-start-test workflow. Offsite delivery is reserved for later work.</p>
+      </div></section>
+<section><h2>Configuration options</h2><div class="table-wrap"><table>
+    <thead><tr><th>Constant</th><th>Object key</th><th>Type</th><th>Default</th><th>Explanation</th></tr></thead>
+    <tbody><tr><td>Logging Folder Path</td><td>folderPath</td><td>Text</td><td>4D Logs folder</td><td>Default folder for future log declarations and for the default process log. Pass a resolved path string, not a 4D folder constant.</td></tr><tr><td>Logging File Suffix</td><td>fileSuffix</td><td>Text</td><td>.txt</td><td>Suffix used when a log is declared with only a label. Use Log File Suffix Text for .txt or Log File Suffix Log for .log. Empty text resets to .txt.</td></tr><tr><td>Logging End Of Line</td><td>eol</td><td>Text</td><td>LF</td><td>Line ending written to future logs. Use Log End Of Line LF, Log End Of Line CR, or Log End Of Line CRLF.</td></tr><tr><td>Logging Use Batch</td><td>useBatch</td><td>Boolean</td><td>True</td><td>Default write policy for future declared logs. True buffers entries in the Log Writer worker; False makes future logs write in real time.</td></tr><tr><td>Logging Report Batch</td><td>reportBatch</td><td>Boolean</td><td>False</td><td>Diagnostic preference stored with future declarations. When enabled, batch writes append a diagnostic row with - in the level column plus cause, entry count, character count, and elapsed milliseconds.</td></tr><tr><td>Logging Flush Interval</td><td>flushInterval</td><td>Number</td><td>9</td><td>Batch interval in seconds. Fractional seconds are accepted. A value of 0 creates real-time behaviour for the affected log.</td></tr><tr><td>Logging Flush Char Limit</td><td>flushCharLimit</td><td>Number</td><td>About 64,000</td><td>Buffered character threshold. The writer flushes before appending an entry that would push the buffer beyond this size.</td></tr><tr><td>Logging Flush Entry Limit</td><td>flushEntryLimit</td><td>Number</td><td>1,000</td><td>Buffered entry-count threshold. The writer flushes when the buffer reaches this many queued entries.</td></tr><tr><td>Logging Rollover Bytes</td><td>rolloverBytes</td><td>Number</td><td>0</td><td>Maximum physical log-file size in bytes. 0 disables rollover. When enabled, the writer archives the existing file and starts a new one after a physical write exceeds the limit.</td></tr><tr><td>Logging Archive Compressed</td><td>archiveCompressed</td><td>Boolean</td><td>True</td><td>Archive compression preference for rollover files. The current writer compresses rollover archives after moving the old file.</td></tr><tr><td>Logging Include Machine Name</td><td>includeMachineName</td><td>Boolean</td><td>False</td><td>When enabled, rendered text rows include Current machine after the timestamp. ServerFile writes the client-rendered line, so this captures the client machine in client/server mode.</td></tr><tr><td>Logging Destinations</td><td>destinations</td><td>Number</td><td>Log to LocalFile</td><td>Default destination bitmask for future declarations. Log to Default resolves to Log to LocalFile.</td></tr><tr><td>sqliteEndpoint</td><td>sqliteEndpoint</td><td>Text</td><td>http://127.0.0.1:8787</td><td>SQLite helper service base URL used by the incomplete SQLite destination.</td></tr><tr><td>sqliteAPIKey</td><td>sqliteAPIKey</td><td>Text</td><td>Empty</td><td>Optional SQLiteLogger X-Log-API-Key value.</td></tr><tr><td>sqliteTimeout</td><td>sqliteTimeout</td><td>Number</td><td>5</td><td>SQLite helper service HTTP timeout in seconds. Values below 1 are normalised to 1.</td></tr></tbody>
+  </table></div></section>
+<section><h2>Destination values</h2><div class="table-wrap"><table>
+    <thead><tr><th>Constant</th><th>Value</th><th>Effect</th></tr></thead>
+    <tbody><tr><td>Log to Default</td><td>0</td><td>Configuration placeholder. It resolves to the configured default destination, and the configured default resolves to Log to LocalFile.</td></tr><tr><td>Log to LocalFile</td><td>1</td><td>Writes the rendered text row through the local Log Writer worker.</td></tr><tr><td>Log to ServerFile</td><td>2</td><td>Writes the client-rendered text row through the server-side Log Writer worker. Combined LocalFile+ServerFile collapses to one file write outside 4D Remote mode.</td></tr><tr><td>Log to 4D Record</td><td>4</td><td>Writes structured records when the Logging table exists. If the table is missing, the record destination is skipped silently.</td></tr><tr><td>Log to SQLite</td><td>8</td><td>Incomplete. The 4D-side dispatcher and batch sender exist, but the packaged SQLite helper service and install/start/test helpers are not implemented yet.</td></tr><tr><td>Log to Offsite</td><td>16</td><td>Not implemented. The constant is reserved and recognised so it does not fall back to LocalFile by mistake.</td></tr></tbody>
+  </table></div></section>
+<section><h2>Configuration example</h2><pre class="code"><code><span class="tok-local">$config_o</span>:=<span class="tok-command">LOG CONFIG</span>(<span class="tok-command">New object</span>( \
+	<span class="tok-constant">Logging Folder Path</span>; <span class="tok-local">$logsFolder_t</span>; \
+	<span class="tok-constant">Logging File Suffix</span>; <span class="tok-constant">Log File Suffix Log</span>; \
+	<span class="tok-constant">Logging End Of Line</span>; <span class="tok-constant">Log End Of Line CRLF</span>; \
+	Logging <span class="tok-keyword">Use</span> Batch; <span class="tok-constant">True</span>; \
+	<span class="tok-constant">Logging Flush Interval</span>; <span class="tok-number">0</span>.<span class="tok-number">5</span>; \
+	<span class="tok-constant">Logging Flush Entry Limit</span>; <span class="tok-number">250</span>; \
+	<span class="tok-constant">Logging Rollover Bytes</span>; <span class="tok-number">10485760</span>; \
+	<span class="tok-constant">Logging Include Machine Name</span>; <span class="tok-constant">True</span>; \
+	<span class="tok-constant">Logging Destinations</span>; <span class="tok-constant">Log to LocalFile</span>+<span class="tok-constant">Log to 4D Record</span>; \
+	<span class="tok-string">&quot;sqliteEndpoint&quot;</span>; <span class="tok-string">&quot;http://127.0.0.1:8787&quot;</span>; \
+	<span class="tok-string">&quot;sqliteTimeout&quot;</span>; <span class="tok-number">5</span>))</code></pre></section>
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Read current defaults</h3><pre class="code"><code><span class="tok-local">$config_o</span>:=<span class="tok-command">LOG CONFIG</span>
+<a class="tok-command code-command-link" href="log-add-entry.html">LOG ADD ENTRY</a>(<span class="tok-string">&quot;Configured folder&quot;</span>; <span class="tok-local">$config_o</span>[<span class="tok-constant">Logging Folder Path</span>])</code></pre></div><div class="example"><h3>Change defaults for future declarations</h3><pre class="code"><code><span class="tok-local">$config_o</span>:=<span class="tok-command">LOG CONFIG</span>(<span class="tok-command">New object</span>(<span class="tok-constant">Logging File Suffix</span>; <span class="tok-constant">Log File Suffix Log</span>))
+<a class="tok-command code-command-link" href="log-declare-log.html">LOG DECLARE LOG</a>(<span class="tok-string">&quot;Audit&quot;</span>)  <span class="tok-comment">// Uses Audit.log</span></code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

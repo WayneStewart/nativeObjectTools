@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_Clear — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_Clear</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Handle management</p>
+      <h1>OTr_Clear</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT Clear</code></span>
+      <p class="signature">OTr_Clear (ioObject)</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Releases an OTr handle and clears its stored object.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p>When you are finished with an object, you should always call <em>OT Clear</em> to release the memory occupied by the object. If you create an object and then lose track of its handle, you will no longer be able to release its memory. This is known as a <em>leak</em>, and it is considered a Bad Thing.</p>
+<p>ObjectTools maintains an internal list of all objects that have been created but not cleared. When an object is disposed of with <em>OT Clear</em>, it is removed from the list.</p>
+<p>The current list of created objects is available with the <em>OT GetHandleList</em> method.</p>
+<p>You can actually release the memory used by leaked objects with <em>OT GetHandleList</em> or <em>OT ClearAll</em>. However, using these as a means of object memory management is not recommended.</p>
+<p>If you pass a variable directly to <em>OT Clear</em> (as opposed to an extremely lucky guess at a number constant), the variable will be set to zero.</p>
+<p>Note: It is legal to pass a null handle (0) to <em>OT Clear</em>.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>ioObject</code></td><td>Integer</td><td>↔️</td><td>OTr handle to clear (ioObject)</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

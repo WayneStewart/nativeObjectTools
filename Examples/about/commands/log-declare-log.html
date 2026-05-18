@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOG DECLARE LOG - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">LOG DECLARE LOG</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Public API</p>
+      <h1>LOG DECLARE LOG</h1>
+      <p class="signature">LOG DECLARE LOG(Label{; File Name{; Folder Path{; Policy/Options}}})</p>
+      <p class="lead">Registers a log label with a physical file name, folder, write policy, and destination policy.</p>
+      <p class="attributes">Shared, Invisible, Preemptive capable</p>
+
+      <p>A label is not the same thing as a file name. The label is the stable name used by code; the file name and folder describe where the log is written.</p>
+<p>A one-parameter declaration preserves an existing declaration. Passing file name, folder, flush policy, or an options object updates the stored declaration for that label.</p>
+<p>Use an options object when a log needs a destination mask or a per-log machine-name setting. Log to Default resolves through LOG CONFIG; if the configured default is also Log to Default, the component falls back to Log to LocalFile.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>Label</td><td>Text</td><td>The name used by application code to select or route to this log.</td></tr><tr><td>File Name</td><td>Text</td><td>Optional physical file name. If omitted, the label plus the configured file suffix is used.</td></tr><tr><td>Folder Path</td><td>Text</td><td>Optional folder path. If omitted, the configured folder path is used.</td></tr><tr><td>Policy/Options</td><td>Variant</td><td>Optional write policy. Pass Log Flush Real Time or 0 for real-time writes, Log Flush Default for configured batching, a number of seconds for a batching interval, or an object with Logging Flush Interval, Logging Destinations, and Logging Include Machine Name.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      <section><h2>Implementation warning</h2><div class="danger-banner" role="note">
+        <strong>SQLite and Offsite are not ready for production use</strong>
+        <p>The constants are present, but these destinations are not complete runtime features yet. SQLite still needs the packaged helper service and developer/admin install-start-test workflow. Offsite delivery is reserved for later work.</p>
+      </div></section>
+<section><h2>Destination values</h2><div class="table-wrap"><table>
+    <thead><tr><th>Constant</th><th>Value</th><th>Effect</th></tr></thead>
+    <tbody><tr><td>Log to Default</td><td>0</td><td>Configuration placeholder. It resolves to the configured default destination, and the configured default resolves to Log to LocalFile.</td></tr><tr><td>Log to LocalFile</td><td>1</td><td>Writes the rendered text row through the local Log Writer worker.</td></tr><tr><td>Log to ServerFile</td><td>2</td><td>Writes the client-rendered text row through the server-side Log Writer worker. Combined LocalFile+ServerFile collapses to one file write outside 4D Remote mode.</td></tr><tr><td>Log to 4D Record</td><td>4</td><td>Writes structured records when the Logging table exists. If the table is missing, the record destination is skipped silently.</td></tr><tr><td>Log to SQLite</td><td>8</td><td>Incomplete. The 4D-side dispatcher and batch sender exist, but the packaged SQLite helper service and install/start/test helpers are not implemented yet.</td></tr><tr><td>Log to Offsite</td><td>16</td><td>Not implemented. The constant is reserved and recognised so it does not fall back to LocalFile by mistake.</td></tr></tbody>
+  </table></div></section>
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Default file and folder</h3><pre class="code"><code><span class="tok-command">LOG DECLARE LOG</span>(<span class="tok-string">&quot;Audit&quot;</span>)  <span class="tok-comment">// Audit.txt in the configured log folder</span></code></pre></div><div class="example"><h3>Explicit location</h3><pre class="code"><code><span class="tok-command">LOG DECLARE LOG</span>(<span class="tok-string">&quot;Audit&quot;</span>; <span class="tok-string">&quot;Audit Log.txt&quot;</span>; <span class="tok-local">$folderPath_t</span>)</code></pre></div><div class="example"><h3>Real-time and batched logs</h3><pre class="code"><code><span class="tok-command">LOG DECLARE LOG</span>(<span class="tok-string">&quot;Errors&quot;</span>; <span class="tok-string">&quot;Errors.txt&quot;</span>; <span class="tok-local">$folderPath_t</span>; <span class="tok-constant">Log Flush Real Time</span>)
+<span class="tok-command">LOG DECLARE LOG</span>(<span class="tok-string">&quot;Import&quot;</span>; <span class="tok-string">&quot;Import.txt&quot;</span>; <span class="tok-local">$folderPath_t</span>; <span class="tok-number">10</span>)</code></pre></div><div class="example"><h3>Structured record destination</h3><pre class="code"><code><span class="tok-local">$options_o</span>:=<span class="tok-command">New object</span>( \
+	<span class="tok-constant">Logging Destinations</span>; <span class="tok-constant">Log to LocalFile</span>+<span class="tok-constant">Log to 4D Record</span>; \
+	<span class="tok-constant">Logging Flush Interval</span>; <span class="tok-constant">Log Flush Default</span>; \
+	<span class="tok-constant">Logging Include Machine Name</span>; <span class="tok-constant">True</span>)
+<span class="tok-command">LOG DECLARE LOG</span>(<span class="tok-string">&quot;Audit&quot;</span>; <span class="tok-string">&quot;Audit.txt&quot;</span>; <span class="tok-local">$folderPath_t</span>; <span class="tok-local">$options_o</span>)</code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

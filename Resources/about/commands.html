@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commands — OTr Reference</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><span aria-current="page">Commands</span></nav>
+    <div class="masthead">
+      <a class="brand" href="index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="index.html">Overview</a>
+        <a href="commands.html">Commands</a>
+        <a href="alpha.html">A–Z</a>
+        <a href="naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page wide">
+      <h1>Commands</h1>
+      <p class="lead">The public API covers handle management, typed scalar and array access, item inspection, serialisation, and configuration. About 111 methods in total.</p>
+    <section id="handle">
+      <h2>Handle management</h2>
+      <p>Create, copy, and release OTr object handles.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>OTr name</th><th>OT equivalent</th><th>Description</th></tr></thead>
+          <tbody><tr>
+          <td><a href="commands/otr-new.html"><code>OTr_New</code></a></td>
+          <td><code class="ot-name">OT New</code></td>
+          <td>Allocates and returns a new OTr object handle.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-clear.html"><code>OTr_Clear</code></a></td>
+          <td><code class="ot-name">OT Clear</code></td>
+          <td>Releases an OTr handle and clears its stored object.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-clearall.html"><code>OTr_ClearAll</code></a></td>
+          <td><code class="ot-name">OT ClearAll</code></td>
+          <td>Clears all OTr handles.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-copy.html"><code>OTr_Copy</code></a></td>
+          <td><code class="ot-name">OT Copy</code></td>
+          <td>Deep-copies a stored object into a new handle.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-isobject.html"><code>OTr_IsObject</code></a></td>
+          <td><code class="ot-name">OT IsObject</code></td>
+          <td>Returns 1 when a handle is valid and in use, otherwise 0.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getactivehandlecount.html"><code>OTr_GetActiveHandleCount</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Returns the number of currently active OTr handles.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-gethandlelist.html"><code>OTr_GetHandleList</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Fills a Longint array with currently allocated OTr handles.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-register.html"><code>OTr_Register</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Compatibility no-op for OTr_Register; always succeeds.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-compiledapplication.html"><code>OTr_CompiledApplication</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Returns 1 when running in compiled mode; otherwise 0.</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section>
+    <section id="get-scalar">
+      <h2>Get scalars</h2>
+      <p>Retrieve a single typed value from an object by tag path.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>OTr name</th><th>OT equivalent</th><th>Description</th></tr></thead>
+          <tbody><tr>
+          <td><a href="commands/otr-gettext.html"><code>OTr_GetText</code></a></td>
+          <td><code class="ot-name">OT GetText</code></td>
+          <td>Retrieves a Text value from the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getstring.html"><code>OTr_GetString</code></a></td>
+          <td><code class="ot-name">OT GetString</code></td>
+          <td>Retrieves a String/Text value from the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getlong.html"><code>OTr_GetLong</code></a></td>
+          <td><code class="ot-name">OT GetLong</code></td>
+          <td>Retrieves an Integer value from the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getreal.html"><code>OTr_GetReal</code></a></td>
+          <td><code class="ot-name">OT GetReal</code></td>
+          <td>Retrieves a Real value from the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getboolean.html"><code>OTr_GetBoolean</code></a></td>
+          <td><code class="ot-name">OT GetBoolean</code></td>
+          <td>Retrieves a Boolean value from the specified tag path as 1/0 for legacy ObjectTools compatibility.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getdate.html"><code>OTr_GetDate</code></a></td>
+          <td><code class="ot-name">OT GetDate</code></td>
+          <td>Retrieves a Date value from the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-gettime.html"><code>OTr_GetTime</code></a></td>
+          <td><code class="ot-name">OT GetTime</code></td>
+          <td>Retrieves a Time value from the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getblob.html"><code>OTr_GetBLOB</code></a></td>
+          <td><code class="ot-name">OT GetBLOB</code></td>
+          <td>Retrieves a BLOB value from the specified tag path and writes it back to the caller's variable via the outBLOB pointer parameter. When Storage.OTr.nativeBlobInObject is True (4D v19 R2 and later), the property is read as a native BLOB via…</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getnewblob.html"><code>OTr_GetNewBLOB</code></a></td>
+          <td><code class="ot-name">OT GetNewBLOB</code></td>
+          <td>Retrieves a BLOB value from the specified tag path as a function result.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getpicture.html"><code>OTr_GetPicture</code></a></td>
+          <td><code class="ot-name">OT GetPicture</code></td>
+          <td>Retrieves a Picture value from the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getpointer.html"><code>OTr_GetPointer</code></a></td>
+          <td><code class="ot-name">OT GetPointer</code></td>
+          <td>Retrieves a Pointer value from the specified tag path into the outPointer parameter. The stored text is deserialised via OTr_u_TextToPointer. Returns a Null pointer on any error or missing tag.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getvariable.html"><code>OTr_GetVariable</code></a></td>
+          <td><code class="ot-name">OT GetVariable</code></td>
+          <td>Retrieves a value stored at the tag path and writes it into the variable pointed to by $outVarPointer_ptr. The caller's declared variable type determines how the stored value is rendered. Every 4D variable type except 2D arrays can be ret…</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getobject.html"><code>OTr_GetObject</code></a></td>
+          <td><code class="ot-name">OT GetObject</code></td>
+          <td>Retrieves an embedded object by tag path, copies it to a new OTr handle, and returns that handle.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getrecord.html"><code>OTr_GetRecord</code></a></td>
+          <td><code class="ot-name">OT GetRecord</code></td>
+          <td>Writes field values from the record snapshot sub-object at the tag path into the current record of the specified table. Field matching is by name; unrecognised properties are silently ignored and unmatched fields are untouched.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getrecordtable.html"><code>OTr_GetRecordTable</code></a></td>
+          <td><code class="ot-name">OT GetRecordTable</code></td>
+          <td>Returns the table number recorded in the __tableNum property of the record snapshot sub-object at the tag path. Use this to verify which table a snapshot belongs to before calling OTr_GetRecord.</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section>
+    <section id="put-scalar">
+      <h2>Put scalars</h2>
+      <p>Store a single typed value in an object at a tag path.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>OTr name</th><th>OT equivalent</th><th>Description</th></tr></thead>
+          <tbody><tr>
+          <td><a href="commands/otr-puttext.html"><code>OTr_PutText</code></a></td>
+          <td><code class="ot-name">OT PutText</code></td>
+          <td>Stores a Text value at the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putstring.html"><code>OTr_PutString</code></a></td>
+          <td><code class="ot-name">OT PutString</code></td>
+          <td>Stores a String/Text inValue at the specified inTag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putlong.html"><code>OTr_PutLong</code></a></td>
+          <td><code class="ot-name">OT PutLong</code></td>
+          <td>Stores an Integer value at the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putreal.html"><code>OTr_PutReal</code></a></td>
+          <td><code class="ot-name">OT PutReal</code></td>
+          <td>Stores a Real value at the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putboolean.html"><code>OTr_PutBoolean</code></a></td>
+          <td><code class="ot-name">OT PutBoolean</code></td>
+          <td>Stores a Boolean value at the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putdate.html"><code>OTr_PutDate</code></a></td>
+          <td><code class="ot-name">OT PutDate</code></td>
+          <td>Stores a Date value at the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-puttime.html"><code>OTr_PutTime</code></a></td>
+          <td><code class="ot-name">OT PutTime</code></td>
+          <td>Stores a Time value at the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putblob.html"><code>OTr_PutBLOB</code></a></td>
+          <td><code class="ot-name">OT PutBLOB</code></td>
+          <td>Stores a BLOB value at the specified tag path. On 4D v19 R2 and later (where Storage.OTr.nativeBlobInObject is True) the BLOB is stored natively via OB SET. On earlier versions the BLOB is encoded as plain base64 text via OTr_u_BlobToTex…</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putpicture.html"><code>OTr_PutPicture</code></a></td>
+          <td><code class="ot-name">OT PutPicture</code></td>
+          <td>Stores a Picture value at the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putpointer.html"><code>OTr_PutPointer</code></a></td>
+          <td><code class="ot-name">OT PutPointer</code></td>
+          <td>Stores a Pointer value at the specified tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putvariable.html"><code>OTr_PutVariable</code></a></td>
+          <td><code class="ot-name">OT PutVariable</code></td>
+          <td>Stores the contents of the variable pointed to by $inVarPointer_ptr at the tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putobject.html"><code>OTr_PutObject</code></a></td>
+          <td><code class="ot-name">OT PutObject</code></td>
+          <td>Stores a deep copy of another handle's object at the given tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putrecord.html"><code>OTr_PutRecord</code></a></td>
+          <td><code class="ot-name">OT PutRecord</code></td>
+          <td>Serialises all fields of the current record of the specified table into a sub-object snapshot stored at the tag path. The snapshot includes the table number, all scalar fields, dates and times as text, and Pictures and BLOBs as base64-enco…</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section>
+    <section id="get-array">
+      <h2>Get arrays</h2>
+      <p>Copy an OTr-stored array into a 4D process array.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>OTr name</th><th>OT equivalent</th><th>Description</th></tr></thead>
+          <tbody><tr>
+          <td><a href="commands/otr-getarray.html"><code>OTr_GetArray</code></a></td>
+          <td><code class="ot-name">OT GetArray</code></td>
+          <td>Retrieves an array from an OTr object and populates the 4D array pointed to by $outArray_ptr. The target array must already be declared with an appropriate type. Elements are converted from stored text/values via the OTr_u_ utility meth…</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getarraytext.html"><code>OTr_GetArrayText</code></a></td>
+          <td><code class="ot-name">OT GetArrayText</code></td>
+          <td>Retrieves a single element from a Text or String array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getarraystring.html"><code>OTr_GetArrayString</code></a></td>
+          <td><code class="ot-name">OT GetArrayString</code></td>
+          <td>Retrieves a single element from a Text or String array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getarraylong.html"><code>OTr_GetArrayLong</code></a></td>
+          <td><code class="ot-name">OT GetArrayLong</code></td>
+          <td>Retrieves a single Integer element from a LongInt or Integer array item at the specified 1-based index.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getarrayreal.html"><code>OTr_GetArrayReal</code></a></td>
+          <td><code class="ot-name">OT GetArrayReal</code></td>
+          <td>Retrieves a single element from a Real array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getarrayboolean.html"><code>OTr_GetArrayBoolean</code></a></td>
+          <td><code class="ot-name">OT GetArrayBoolean</code></td>
+          <td>Retrieves a single element from a Boolean array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getarraydate.html"><code>OTr_GetArrayDate</code></a></td>
+          <td><code class="ot-name">OT GetArrayDate</code></td>
+          <td>Retrieves a single element from a Date array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getarraytime.html"><code>OTr_GetArrayTime</code></a></td>
+          <td><code class="ot-name">OT GetArrayTime</code></td>
+          <td>Retrieves a single element from a Time array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getarrayblob.html"><code>OTr_GetArrayBLOB</code></a></td>
+          <td><code class="ot-name">OT GetArrayBLOB</code></td>
+          <td>Retrieves a single element from a Blob array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getarraypicture.html"><code>OTr_GetArrayPicture</code></a></td>
+          <td><code class="ot-name">OT GetArrayPicture</code></td>
+          <td>Retrieves a single element from a Picture array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getarraypointer.html"><code>OTr_GetArrayPointer</code></a></td>
+          <td><code class="ot-name">OT GetArrayPointer</code></td>
+          <td>Retrieves a single element from a Pointer array item.</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section>
+    <section id="put-array">
+      <h2>Put arrays</h2>
+      <p>Store a 4D process array into an OTr object.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>OTr name</th><th>OT equivalent</th><th>Description</th></tr></thead>
+          <tbody><tr>
+          <td><a href="commands/otr-putarray.html"><code>OTr_PutArray</code></a></td>
+          <td><code class="ot-name">OT PutArray</code></td>
+          <td>Stores a 4D array into an OTr object at the given tag path.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putarraytext.html"><code>OTr_PutArrayText</code></a></td>
+          <td><code class="ot-name">OT PutArrayText</code></td>
+          <td>Sets a single element of a Text or String array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putarraystring.html"><code>OTr_PutArrayString</code></a></td>
+          <td><code class="ot-name">OT PutArrayString</code></td>
+          <td>Sets a single element of a Text or String array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putarraylong.html"><code>OTr_PutArrayLong</code></a></td>
+          <td><code class="ot-name">OT PutArrayLong</code></td>
+          <td>Sets a single element of a LongInt or Integer array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putarrayreal.html"><code>OTr_PutArrayReal</code></a></td>
+          <td><code class="ot-name">OT PutArrayReal</code></td>
+          <td>Sets a single element of a Real array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putarrayboolean.html"><code>OTr_PutArrayBoolean</code></a></td>
+          <td><code class="ot-name">OT PutArrayBoolean</code></td>
+          <td>Sets a single element of a Boolean array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putarraydate.html"><code>OTr_PutArrayDate</code></a></td>
+          <td><code class="ot-name">OT PutArrayDate</code></td>
+          <td>Sets a single element of a Date array item at the given index. See OTr_SetDateMode.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putarraytime.html"><code>OTr_PutArrayTime</code></a></td>
+          <td><code class="ot-name">OT PutArrayTime</code></td>
+          <td>Sets a single element of a Time array item at the given index.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putarrayblob.html"><code>OTr_PutArrayBLOB</code></a></td>
+          <td><code class="ot-name">OT PutArrayBLOB</code></td>
+          <td>Sets a single element of a Blob array item at the given index.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putarraypicture.html"><code>OTr_PutArrayPicture</code></a></td>
+          <td><code class="ot-name">OT PutArrayPicture</code></td>
+          <td>Sets a single element of a Picture array item.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-putarraypointer.html"><code>OTr_PutArrayPointer</code></a></td>
+          <td><code class="ot-name">OT PutArrayPointer</code></td>
+          <td>Sets a single element of a Pointer array item.</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section>
+    <section id="items">
+      <h2>Item operations</h2>
+      <p>Inspect, enumerate, copy, rename, and delete named items.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>OTr name</th><th>OT equivalent</th><th>Description</th></tr></thead>
+          <tbody><tr>
+          <td><a href="commands/otr-itemexists.html"><code>OTr_ItemExists</code></a></td>
+          <td><code class="ot-name">OT ItemExists</code></td>
+          <td>Tests for the existence of an item. $inTag_t may refer to a top-level item, an embedded object, or an embedded item. Returns 1 if found, 0 if not. An invalid handle generates an error; a missing path does not (this is a query, not a mutat…</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-itemtype.html"><code>OTr_ItemType</code></a></td>
+          <td><code class="ot-name">OT ItemType</code></td>
+          <td>Returns the OTr-normalised type constant for the item referenced by $inTag_t.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-itemcount.html"><code>OTr_ItemCount</code></a></td>
+          <td><code class="ot-name">OT ItemCount</code></td>
+          <td>Returns the number of top-level items in the referenced object.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-isembedded.html"><code>OTr_IsEmbedded</code></a></td>
+          <td><code class="ot-name">OT IsEmbedded</code></td>
+          <td>Tests whether the item referenced by $inTag_t is an embedded object.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-deleteitem.html"><code>OTr_DeleteItem</code></a></td>
+          <td><code class="ot-name">OT DeleteItem</code></td>
+          <td>Deletes the item referenced by $inTag_t. Embedded objects are deleted recursively. BLOB and Picture parallel array slots referenced by the deleted item (or any sub-items) are released.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-copyitem.html"><code>OTr_CopyItem</code></a></td>
+          <td><code class="ot-name">OT CopyItem</code></td>
+          <td>Copies the item at $inSourceTag_t to $inDestTag_t. The destination need not exist; it will be created. Source and destination handles may be the same. Embedded objects are deep-copied via OB Copy.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-renameitem.html"><code>OTr_RenameItem</code></a></td>
+          <td><code class="ot-name">OT RenameItem</code></td>
+          <td>Renames the item referenced by $inTag_t. $inTag_t must be the full dotted path; $inNewTag_t is the new leaf name only. For example, renaming &quot;foo.bar.old_name&quot; to &quot;new_name&quot; gives access via &quot;foo.bar.new_name&quot;.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getallproperties.html"><code>OTr_GetAllProperties</code></a></td>
+          <td><code class="ot-name">OT GetAllProperties</code></td>
+          <td>Returns information about all top-level items in $inObject_i. Delegates to OTr_GetAllNamedProperties with an empty tag. Item names are returned in indeterminate order.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getallnamedproperties.html"><code>OTr_GetAllNamedProperties</code></a></td>
+          <td><code class="ot-name">OT GetAllNamedProperties</code></td>
+          <td>Returns information about all items in the object (or embedded object).</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getnamedproperties.html"><code>OTr_GetNamedProperties</code></a></td>
+          <td><code class="ot-name">OT GetNamedProperties</code></td>
+          <td>Returns properties of the item identified by $inTag_t: its type constant, approximate item size, approximate data size, and index (always 0; reserved for compatibility).</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getitemproperties.html"><code>OTr_GetItemProperties</code></a></td>
+          <td><code class="ot-name">OT GetItemProperties</code></td>
+          <td>Returns properties of the item at 1-based index $inIndex_i. Items are enumerated from OB Keys; internal __otr_ properties are excluded.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-includeshadowkey.html"><code>OTr_IncludeShadowKey</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Gets or sets the global flag that controls whether shadow-type keys (leafKey$type) are included in XML, JSON, and file exports.</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section>
+    <section id="array-ops">
+      <h2>Array operations</h2>
+      <p>Sort, search, resize, and compare OTr arrays.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>OTr name</th><th>OT equivalent</th><th>Description</th></tr></thead>
+          <tbody><tr>
+          <td><a href="commands/otr-findinarray.html"><code>OTr_FindInArray</code></a></td>
+          <td><code class="ot-name">OT FindInArray</code></td>
+          <td>Searches an array stored in an OTr object for a value matching inValue. The value is passed as text and converted to the stored array type before searching.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-sortarrays.html"><code>OTr_SortArrays</code></a></td>
+          <td><code class="ot-name">OT SortArrays</code></td>
+          <td>Sorts one or more OTr arrays within the same OTr object via MULTI SORT ARRAY.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-arraytype.html"><code>OTr_ArrayType</code></a></td>
+          <td><code class="ot-name">OT ArrayType</code></td>
+          <td>Returns the stored arrayType value from an OTr array object. Used to verify type compatibility before performing array operations.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-resizearray.html"><code>OTr_ResizeArray</code></a></td>
+          <td><code class="ot-name">OT ResizeArray</code></td>
+          <td>Resizes an array item to the specified number of elements (not counting element 0). If growing, new elements are appended with the array type's default value. If shrinking, excess elements are removed from the end.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-sizeofarray.html"><code>OTr_SizeOfArray</code></a></td>
+          <td><code class="ot-name">OT SizeOfArray</code></td>
+          <td>Returns the number of elements in an array item. Does not count element 0.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-insertelement.html"><code>OTr_InsertElement</code></a></td>
+          <td><code class="ot-name">OT InsertElement</code></td>
+          <td>Inserts one or more empty elements into an OTr array at position $inWhere_i (1-based). Existing elements at and above $inWhere_i are shifted up by $inHowMany_i.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-deleteelement.html"><code>OTr_DeleteElement</code></a></td>
+          <td><code class="ot-name">OT DeleteElement</code></td>
+          <td>Deletes one or more elements from an OTr array starting at position $inWhere_i (1-based). $inHowMany_i defaults to 1 if omitted. Element 0 is never affected.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-compareitems.html"><code>OTr_CompareItems</code></a></td>
+          <td><code class="ot-name">OT CompareItems</code></td>
+          <td>Compares two items for equality. Both handles may be the same object.</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section>
+    <section id="serial">
+      <h2>Serialisation</h2>
+      <p>Load and save objects as JSON text, BLOB, file, XML, GZIP, or clipboard.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>OTr name</th><th>OT equivalent</th><th>Description</th></tr></thead>
+          <tbody><tr>
+          <td><a href="commands/otr-loadfromtext.html"><code>OTr_LoadFromText</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Parses a JSON string and stores the resulting object in a new OTr handle.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-savetotext.html"><code>OTr_SaveToText</code></a></td>
+          <td><code class="ot-name">OT SaveToText</code></td>
+          <td>Returns the stored object as a JSON string. Useful for inspection and testing.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-loadfromblob.html"><code>OTr_LoadFromBlob</code></a></td>
+          <td><code class="ot-name">OT LoadFromBlob</code></td>
+          <td>Loads an object from a 4D-native blob (written by OTr_SaveToBlob) into a new OTr handle. The blob is expanded automatically if it is compressed before reading via BLOB TO VARIABLE.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-savetoblob.html"><code>OTr_SaveToBlob</code></a></td>
+          <td><code class="ot-name">OT SaveToBlob</code></td>
+          <td>Serialises the stored object to a compressed 4D-native blob using VARIABLE TO BLOB and GZIP compression. The format is 4D-internal and is not portable outside 4D. Use OTr_SaveToGZIP when portability across systems is required.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-blobtoobject.html"><code>OTr_BLOBToObject</code></a></td>
+          <td><code class="ot-name">OT BLOBToObject</code></td>
+          <td>Deserialises an OTr object from a BLOB previously made by OTr_ObjectToBLOB or OTr_ObjectToNewBLOB. A new handle is returned.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-objecttoblob.html"><code>OTr_ObjectToBLOB</code></a></td>
+          <td><code class="ot-name">OT ObjectToBLOB</code></td>
+          <td>Serialises an OTr object into a BLOB using VARIABLE TO BLOB with GZIP compression. The object's contents (including natively stored BLOBs and Pictures) are fully self-contained.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-objecttonewblob.html"><code>OTr_ObjectToNewBLOB</code></a></td>
+          <td><code class="ot-name">OT ObjectToNewBLOB</code></td>
+          <td>Serialises an OTr object into a new BLOB and returns it as the function result. This is the recommended serialisation method because it avoids the by-reference BLOB parameter issues associated with OTr_ObjectToBLOB.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-loadfromfile.html"><code>OTr_LoadFromFile</code></a></td>
+          <td><code class="ot-name">OT LoadFromFile</code></td>
+          <td>Reads a UTF-8 JSON file from disk and loads it into a new OTr handle. The file must have been written as a plain UTF-8 JSON text file (e.g. by OTr_SaveToFile).</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-savetofile.html"><code>OTr_SaveToFile</code></a></td>
+          <td><code class="ot-name">OT SaveToFile</code></td>
+          <td>Serialises the stored object to a UTF-8 JSON file on disk.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-loadfromgzip.html"><code>OTr_LoadFromGZIP</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Loads an object from a GZIPed JSON blob (written by OTr_SaveToGZIP) into a new OTr handle. The blob is expanded and decoded as UTF-8 text before being parsed as JSON.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-savetogzip.html"><code>OTr_SaveToGZIP</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Serialises the stored object to a UTF-8 JSON string and compresses it with GZIP, returning the result in a blob.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-loadfromxml.html"><code>OTr_LoadFromXML</code></a></td>
+          <td><code class="ot-name">OT LoadFromXML</code></td>
+          <td>Parses an XML string (written by OTr_SaveToXML) using DOM and loads the reconstructed object into a new OTr handle.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-savetoxml.html"><code>OTr_SaveToXML</code></a></td>
+          <td><code class="ot-name">OT SaveToXML</code></td>
+          <td>Serialises the stored object as an XML string using DOM output.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-loadfromxmlfile.html"><code>OTr_LoadFromXMLFile</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Reads a UTF-8 XML file from disk (written by OTr_SaveToXMLFile) and loads it into a new OTr handle using DOM parsing.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-savetoxmlfile.html"><code>OTr_SaveToXMLFile</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Serialises the stored object to a UTF-8 XML file on disk using DOM output. Existing files are overwritten without warning.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-savetoxmlsax.html"><code>OTr_SaveToXMLSAX</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Serialises the stored object as an XML string using SAX output.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-savetoxmlfilesax.html"><code>OTr_SaveToXMLFileSAX</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Serialises the OTr object to a UTF-8 XML file on disk using SAX output.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-loadfromclipboard.html"><code>OTr_LoadFromClipboard</code></a></td>
+          <td><code class="ot-name">OT LoadFromClipboard</code></td>
+          <td>Reads a JSON string from the system clipboard and loads it into a new OTr handle.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-savetoclipboard.html"><code>OTr_SaveToClipboard</code></a></td>
+          <td><code class="ot-name">OT SaveToClipboard</code></td>
+          <td>Places the stored object as a JSON string on the system clipboard. Useful for quick inspection in a text editor.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-importlegacyblob.html"><code>OTr_ImportLegacyBlob</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Imports a legacy ObjectTools object BLOB into a new OTr handle.</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section>
+    <section id="config">
+      <h2>Configuration &amp; info</h2>
+      <p>Query version, configure behaviour, and inspect object metadata.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>OTr name</th><th>OT equivalent</th><th>Description</th></tr></thead>
+          <tbody><tr>
+          <td><a href="commands/otr-getversion.html"><code>OTr_GetVersion</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Returns the OTr implementation version string.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-info.html"><code>OTr_Info</code></a></td>
+          <td><code class="ot-name">OT Info</code></td>
+          <td>Returns requested information to the host.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-objectsize.html"><code>OTr_ObjectSize</code></a></td>
+          <td><code class="ot-name">OT ObjectSize</code></td>
+          <td>Returns an approximation of the memory size of an OTr object. Note: byte counts will not match the legacy plugin exactly.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-getoptions.html"><code>OTr_GetOptions</code></a></td>
+          <td><code class="ot-name">OT GetOptions</code></td>
+          <td>Returns the current OTr options bit field.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-setoptions.html"><code>OTr_SetOptions</code></a></td>
+          <td><code class="ot-name">OT SetOptions</code></td>
+          <td>Sets the current OTr options bit field.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-setdatemode.html"><code>OTr_SetDateMode</code></a></td>
+          <td><code class="ot-name">OT SetDateMode</code></td>
+          <td>Gets or sets the current process's Date/Time storage mode for OTr objects.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-seterrorhandler.html"><code>OTr_SetErrorHandler</code></a></td>
+          <td><code class="ot-name">OT SetErrorHandler</code></td>
+          <td>Sets the current OTr error handler and returns the previous value.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-loglevel.html"><code>OTr_LogLevel</code></a></td>
+          <td><code class="ot-name">OT LogLevel</code></td>
+          <td>Gets or sets the active OTr logging control level.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-objectviewer.html"><code>OTr_ObjectViewer</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td></td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-loadandviewotblob.html"><code>OTr_LoadAndViewOTBlob</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>ARRAY TEXT($paths_at; 0)</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section>
+    <section id="lifecycle">
+      <h2>Lifecycle</h2>
+      <p>Database startup and shutdown integration.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>OTr name</th><th>OT equivalent</th><th>Description</th></tr></thead>
+          <tbody><tr>
+          <td><a href="commands/otr-onstartup.html"><code>OTr_onStartup</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Initialises the OTr system and writes the opening log entry this is not strictly necessary at startup except we are trying to emulate as closely as possible Object Tools behaviour.</td>
+        </tr>
+<tr>
+          <td><a href="commands/otr-onexit.html"><code>OTr_onExit</code></a></td>
+          <td><span class="muted">OTr only</span></td>
+          <td>Shuts down the OTr logging subsystem cleanly.</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section>
+    </article>
+  </main>
+</body>
+</html>

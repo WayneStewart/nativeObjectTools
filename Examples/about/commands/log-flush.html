@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOG FLUSH - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">LOG FLUSH</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Public API</p>
+      <h1>LOG FLUSH</h1>
+      <p class="signature">LOG FLUSH({Log Label})</p>
+      <p class="lead">Forces buffered log entries to be physically written.</p>
+      <p class="attributes">Shared, Invisible, Preemptive capable</p>
+
+      <p>Normal batched writes are durable only after a flush occurs. Use LOG FLUSH before a risky operation, before reading a generated log file, or before handing control back to code that expects the physical file to be current.</p>
+<p>Flushing a label affects the physical log file behind that label. Calling without a label flushes every buffered log known to the writer.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>Log Label</td><td>Text</td><td>Optional log label. If omitted, all buffered logs are flushed.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Manual durability point</h3><pre class="code"><code><a class="tok-command code-command-link" href="log-add-entry.html">LOG ADD ENTRY</a>(<span class="tok-command">New object</span>(<span class="tok-string">&quot;logLabel&quot;</span>; <span class="tok-string">&quot;Audit&quot;</span>); <span class="tok-string">&quot;Before export&quot;</span>)
+<span class="tok-command">LOG FLUSH</span>(<span class="tok-string">&quot;Audit&quot;</span>)</code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

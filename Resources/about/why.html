@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why OTr? — OTr Reference</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><span aria-current="page">Why OTr?</span></nav>
+    <div class="masthead">
+      <a class="brand" href="index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="index.html">Overview</a>
+        <a href="commands.html">Commands</a>
+        <a href="alpha.html">A–Z</a>
+        <a href="naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <h1>Why OTr?</h1>
+      <p class="lead">The story of how a macOS update, a retirement announcement, and a community's response led to OTr.</p>
+
+      <section>
+        <h2>ObjectTools and Aparajita Fishman</h2>
+        <p>ObjectTools was written by Aparajita Fishman around 1990–1991 and brought object-oriented data structures to 4D when the language offered no native equivalent, targeting 4D version 3.5. It was released publicly around 2000 and remained widely used for the next 25 years.</p>
+        <p>Despite Aparajita recommending since 2013 that developers avoid ObjectTools in new projects, many codebases continued to depend on it. As Kirk Brooks summarised on the 4D Forum on 15 April 2026:</p>
+        <div class="pull-quote"><p>In the best examples of 'it's still working and would be too hard to replace', folks kept using it and Aparajita kept patching it, which kept it working until it's not.</p><cite>Kirk Brooks · 4D Forum · 15 April 2026</cite></div>
+      </section>
+
+      <section>
+        <h2>Aparajita's retirement announcement — 19 September 2025</h2>
+        <p>After 43 years of software development and 25 years maintaining his plugins, Aparajita posted his retirement announcement to the 4D Forum on 19 September 2025. Both ObjectTools and Active4D had become financially unsustainable with essentially no new sales and a handful of upgrades per year. His assessment of ObjectTools was clear:</p>
+        <div class="pull-quote"><p>ObjectTools is obviously redundant because 4D has had native object support for years now.</p><cite>Aparajita Fishman · 4D Forum · 19 September 2025</cite></div>
+        <p>He presented the community with three options for the code's future — open source with community maintenance, open source with paid hourly support, or closed source with paid hourly support — noting he would likely only offer paid support through 2026 or 2027. He also observed that AI could assist significantly with migration for project-mode databases.</p>
+      </section>
+
+      <section>
+        <h2>The macOS Tahoe 26.4 trigger — 30 March 2026</h2>
+        <p>In March 2026, the macOS Tahoe 26.4 update caused 4D applications using the ObjectTools plugin to crash on launch. Apple had tightened memory management in Tahoe 26.4, exposing latent incompatibilities in the plugin's underlying C++ code. On 30 March 2026, Doug Hall posted:</p>
+        <div class="pull-quote"><p>We're using 4D v20.8 LTS (using Foundation shell). 4D crashes on login after updating to Tahoe 26.4. Verified on three machines — one of them an Intel Mac. Works perfectly on 26.3.1.</p><cite>Doug Hall · 4D Forum · 30 March 2026</cite></div>
+        <p>Wayne identified ObjectTools as the cause the same evening. Aparajita confirmed on 31 March 2026:</p>
+        <div class="pull-quote"><p>Sorry @Hall.Doug but converting to native objects is really the way forward. The conversion from OT to native objects is fairly mechanical. With a well written plan AI should be able to handle the majority of it.</p><cite>Aparajita Fishman · 4D Forum · 31 March 2026</cite></div>
+        <p>Doug's situation illustrated the severity of the problem for many developers. On 2 April 2026 he wrote:</p>
+        <div class="pull-quote"><p>I have 522 methods in my project which use ObjectTools. Granted, most of them are Get/Set wrapper methods, so some of that can be quickly changed to use objects. But the official current policy of the department where I work disallows me from using AI.</p><cite>Doug Hall · 4D Forum · 2 April 2026</cite></div>
+        <p>Guy Algot also encountered the crash and contributed debugging work alongside Wayne in the days that followed.</p>
+      </section>
+
+      <section>
+        <h2>Wayne's response — April 2026</h2>
+        <p>Wayne works part time for 4D. This project was undertaken entirely in his own time. OTr is a community contribution — it is not an official 4D product and carries no 4D support obligation.</p>
+        <p>Within hours of Doug's crash report on 30 March 2026, Wayne posted to the same thread: <em>"I'm working on this now, will share progress shortly."</em> On 4 April 2026, following the first demonstration at the 4D Happy Hour, he announced a near-complete replacement:</p>
+        <div class="pull-quote"><p>I've been working on an OT replacement since the manure hit the circulating air-movement device. Today at the Happy Hour, I was able to demo an almost complete 4D native replacement. Thanks to Guy Algot for helping me debug a few issues. Thanks to Rob Laveaux, Cannon Smith, Dave Batton, and Steve Willis for assistance along the way. This will be provided free to the developer community.</p><cite>Wayne Stewart · 4D Forum · 4 April 2026</cite></div>
+        <p>Wayne was candid about the architectural limits of the first release. The initial implementation used inter-process arrays — a pair of arrays (objects and booleans) — and was not designed for preemptive processes or modern multi-threaded architectures. At the Happy Hour he described it informally as a "cludge", noting that converting to idiomatic native object syntax was the correct next step. His forum post on 14 April 2026 was explicit:</p>
+        <div class="pull-quote"><p>This approach is intended as a short-term bridge to help systems remain operational in light of the recent macOS-related issues affecting ObjectTools. It should be considered a temporary measure rather than a forward-looking replacement.</p><cite>Wayne Stewart · 4D Forum · 14 April 2026</cite></div>
+        <p>Guy Algot demonstrated his own application of the component at the Happy Hour on 17 April 2026, showing how he had replaced OT in a customer application using Wayne's repository.</p>
+      </section>
+
+      <section>
+        <h2>Aparajita's generosity — 14–18 April 2026</h2>
+        <p>Despite having announced his retirement, Aparajita made two significant contributions. On 14 April 2026 he announced he would open source the ObjectTools C++ code so that AI could be used to write blob-conversion tooling:</p>
+        <div class="pull-quote"><p>I will open source the OT code, then you can use AI to write 4D code to convert a serialized OT object to a 4D object.</p><cite>Aparajita Fishman · 4D Forum · 14 April 2026</cite></div>
+        <p>Wayne had been attempting to reverse-engineer the OT blob format without access to the source, and responded the same morning:</p>
+        <div class="pull-quote"><p>That's great news, I'm burning through tokens trying to reverse engineer your blob format.</p><cite>Wayne Stewart · 4D Forum · 14 April 2026</cite></div>
+        <p>On 18 April 2026, Aparajita also released ObjectTools v5.1r2 — a bug-fix addressing the Tahoe 26.4 crash. The fix involved updating the underlying ICU framework from version 71 to version 77 and tightening memory management. Both were clear this was a bridge, not a destination. Wayne posted to the forum the same day:</p>
+        <div class="pull-quote"><p>Thanks for that! A lot of people will be very happy. However, I'd still encourage everyone using the plugin to start migration away as soon as possible. Who knows what the next macOS update will break?</p><cite>Wayne Stewart · 4D Forum · 18 April 2026</cite></div>
+        <p>Aparajita agreed:</p>
+        <div class="pull-quote"><p>So would I — this is just to tide folks over until they can migrate to native objects.</p><cite>Aparajita Fishman · 4D Forum · 18 April 2026</cite></div>
+        <p>Aparajita also provided Wayne with access to the ObjectTools source code on 18 April 2026, enabling the development of <code>OTr_ImportLegacyBlob</code> — the method that reads and converts data originally stored in the OT binary format.</p>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

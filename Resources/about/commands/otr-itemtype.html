@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_ItemType — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_ItemType</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Item operations</p>
+      <h1>OTr_ItemType</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT ItemType</code></span>
+      <p class="signature">OTr_ItemType (inObject; inTag {; Actual}) --&gt; Longint</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Returns the OTr-normalised type constant for the item referenced by $inTag_t.</p>
+<p>When the optional $Actual_b parameter is True, returns the raw shadow key value instead, bypassing normalisation. Use True for diagnostics and debugging only.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p><em>OT ItemType</em> returns the type of the item referenced by <em>inTag</em>.</p>
+<p>If <em>inObject</em> is not a valid object handle or if no item in the object has the given tag, an error is generated, <em>OK</em> is set to zero, and zero is returned.</p>
+<p>If an item with the given tag exists, its type is returned.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject</td></tr><tr><td><code>inTag</code></td><td>Text</td><td>➡️</td><td>Tag of the item to query (inTag)</td></tr><tr><td><code>actual</code></td><td>Boolean</td><td>➡️</td><td>True = return raw shadow key value (optional)</td></tr><tr><td><code>Result</code></td><td>Integer</td><td>⬅️</td><td>Type constant (see above), or 0 on error</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

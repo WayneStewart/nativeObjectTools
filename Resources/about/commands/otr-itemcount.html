@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_ItemCount — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_ItemCount</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Item operations</p>
+      <h1>OTr_ItemCount</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT ItemCount</code></span>
+      <p class="signature">OTr_ItemCount (inObject {; inTag}) --&gt; Longint</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Returns the number of top-level items in the referenced object.</p>
+<p>When the optional $inTag_t is provided, counts items in that embedded object instead. Internal __otr_ properties and shadow keys (keys ending in the $type suffix) are excluded from the count.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p><em>OT ItemCount</em> returns the number of top level items in the referenced object. Items in embedded objects are not included in the count.</p>
+<p>If <em>inObject</em> is not a valid object handle, an error is generated, <em>OK</em> is set to zero, and zero is returned.</p>
+<p>If the tag is not passed or is empty, the count of top level items in the object is returned.</p>
+<p>If the tag is passed, is not empty, and is a valid item reference for an embedded object, the count of top level items in the embedded object is returned.</p>
+<p>Otherwise an error is generated, <em>OK</em> is set to zero, and zero is returned.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject</td></tr><tr><td><code>inTag</code></td><td>Text</td><td>➡️</td><td>Tag of an embedded object (optional) (inTag)</td></tr><tr><td><code>Result</code></td><td>Integer</td><td>⬅️</td><td>Item count (excluding internal __otr_ properties and shadow keys), or 0 Wayne Stewart, 2026-04-01 - Updated OB Keys usage for collection return.</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

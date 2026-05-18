@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_FindInArray — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_FindInArray</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Array operations</p>
+      <h1>OTr_FindInArray</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT FindInArray</code></span>
+      <p class="signature">OTr_FindInArray (inObject; inTag; inValue {; inStart}) --&gt; Longint</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Searches an array stored in an OTr object for a value matching inValue. The value is passed as text and converted to the stored array type before searching.</p>
+<p>For Boolean arrays, &quot;true&quot; or &quot;1&quot; are treated as True; any other value is treated as False.</p>
+<p>Not supported for Pointer, BLOB, or Picture arrays.</p>
+<p>If inObject is not a valid object handle, if no item in the object has the given tag, or if the item's type is not an array type, an error is generated, OK is set to zero, and -1 is returned.</p>
+<p>The result matches the native Find in array command:</p>
+<p>the 1-based index of the first matching element, or -1 if the value is not found in the array.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p>OT FindInArray searches an array in inObject for the value <em>inValue</em>.</p>
+<p>If <em>inObject</em> is not a valid object handle, if no item in the object has the given tag, or if the item’s type is not an array type, an error is generated, <em>OK</em> is set to zero, and -1 is returned.</p>
+<p>If <em>inStart</em> is not specified or is zero, it defaults to 1. The text inValue is converted to the type appropriate for the array being searched. For example, for a <em>Longint </em>array or <em>Real </em>array, inValue is converted as if it where passed to the 4D <em>Num</em> command. The formats used to convert values are as follows:</p>
+<p>Array type Example inValue</p>
+<p>Boolean array &quot;true&quot; or &quot;1&quot; = true, &quot;false&quot; or &quot;0&quot; = false Date array String(!08/27/31!)</p>
+<p>Longint array String(7)</p>
+<p>Real array String(13.27)</p>
+<p>The result of the command is the index of the first matching element, or -1 if no match is found.</p>
+<p>Note: Wildcards may be used when searching string/text arrays just as in 4D.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr handle</td></tr><tr><td><code>inTag</code></td><td>Text</td><td>➡️</td><td>Tag path to the array item</td></tr><tr><td><code>inValue</code></td><td>Text</td><td>➡️</td><td>Value to search for (as text)</td></tr><tr><td><code>inStart</code></td><td>Integer</td><td>➡️</td><td>Starting index, 1-based; default 1 (inStart)</td></tr><tr><td><code>Result</code></td><td>Integer</td><td>⬅️</td><td>1-based index of match, or -1</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

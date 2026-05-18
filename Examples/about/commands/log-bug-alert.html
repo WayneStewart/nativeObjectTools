@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOG BUG ALERT - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">LOG BUG ALERT</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Public API</p>
+      <h1>LOG BUG ALERT</h1>
+      <p class="signature">LOG BUG ALERT(Bug Details{; More Details{; Line number{; Display Alert}}})</p>
+      <p class="lead">Reports an unexpected internal condition to the 4D logs and, optionally, displays an alert.</p>
+      <p class="attributes">Shared, Invisible, Preemptive capable</p>
+
+      <p>This is a developer diagnostic helper, not the normal application logging entry point. It writes to the 4D command and debug logs, can raise an alert in the application process, and currently drops into TRACE.</p>
+<p>Use LOG ADD ENTRY for operational log records. Use LOG BUG ALERT when a missing parameter or unexpected path indicates a programming error.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>Bug Details</td><td>Variant</td><td>Either the method name as text or an object containing methodName, errorDetails, lineNumber, and displayAlert.</td></tr><tr><td>More Details</td><td>Text</td><td>Optional error description when using positional parameters.</td></tr><tr><td>Line number</td><td>Longint</td><td>Optional line number.</td></tr><tr><td>Display Alert</td><td>Boolean</td><td>Optional alert flag. Defaults to True in common calling forms.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Object form</h3><pre class="code"><code><span class="tok-local">$error_o</span>:=<span class="tok-command">New object</span>(<span class="tok-string">&quot;methodName&quot;</span>; <span class="tok-command">Current method name</span>; \
+	<span class="tok-string">&quot;errorDetails&quot;</span>; <span class="tok-string">&quot;Missing required parameter&quot;</span>; \
+	<span class="tok-string">&quot;lineNumber&quot;</span>; <span class="tok-number">42</span>; \
+	<span class="tok-string">&quot;displayAlert&quot;</span>; <span class="tok-constant">True</span>)
+<span class="tok-command">LOG BUG ALERT</span>(<span class="tok-local">$error_o</span>)</code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

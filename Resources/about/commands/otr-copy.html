@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_Copy — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_Copy</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Handle management</p>
+      <h1>OTr_Copy</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT Copy</code></span>
+      <p class="signature">OTr_Copy (inObject) --&gt; Longint</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Deep-copies a stored object into a new handle.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p><em>OT Copy</em> makes a complete copy of object and returns the copy. The copy is added to the ObjectTools handle list, and must be cleared with OT <em>IsObject</em> when it is no longer needed.</p>
+<p>If memory cannot be allocated for the copy, an error is generated and <em>OK</em> is set to zero.</p>
+<p>Put Value Routines</p>
+<p>The following routines are used to store data in any ObjectTools object. After you have successfully created an object (see “Creation and Destruction Routines”), you can begin storing data into the object.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject</td></tr><tr><td><code>Result</code></td><td>Integer</td><td>⬅️</td><td>New handle containing copied object, or 0 on failure</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

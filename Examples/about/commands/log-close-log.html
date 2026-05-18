@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOG CLOSE LOG - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">LOG CLOSE LOG</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Public API</p>
+      <h1>LOG CLOSE LOG</h1>
+      <p class="signature">LOG CLOSE LOG({Log Label})</p>
+      <p class="lead">Flushes and closes one named log, or all open logs.</p>
+      <p class="attributes">Shared, Invisible, Preemptive capable</p>
+
+      <p>Use this when a log file must be complete and closed before another process reads, moves, or archives it. Closing all logs clears the writer's open document references and buffers.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>Log Label</td><td>Text</td><td>Optional log label. If omitted, all logs are flushed and closed.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Close all logs</h3><pre class="code"><code><a class="tok-command code-command-link" href="log-flush.html">LOG FLUSH</a>
+<span class="tok-command">LOG CLOSE LOG</span></code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

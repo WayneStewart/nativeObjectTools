@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>logRelease_TestCompilation - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">logRelease_TestCompilation</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Private method</p>
+      <h1>logRelease_TestCompilation</h1>
+      <p class="signature">logRelease_TestCompilation</p>
+      <p class="lead">Automated release compile check.</p>
+      
+
+      <p>Automated release compile check.</p><p>This method is an implementation detail used by the public API, documentation tooling, build process, or test harness. Application code should prefer the public API unless this project is being maintained directly.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>$1</td><td>Text</td><td>4D major version, e.g. &quot;19&quot;, &quot;20&quot;, &quot;21&quot;</td></tr><tr><td>$2</td><td>Text</td><td>POSIX path to the sentinel directory</td></tr><tr><td>$0</td><td>Boolean</td><td>True when compilation succeeds ---------------------------------------------------- #DECLARE($4dVersion_t : Text; $sentinelDir_t : Text)-&gt;$success_b : Boolean var $options_o; $result_o : Object var $errors_c : Collection var $error_o : Object var $sentinel_t; $sentinelPath_t; $sentinelFolder_t : Text var $compiledCodePath_t : Text $compiledCodePath_t:=Get 4D folder(Database folder)+&quot;Project&quot;+Folder separator+&quot;DerivedData&quot;+Folder separator+&quot;CompiledCode&quot;+Folder separator If (Test path name($compiledCodePath_t)=Is a folder) 	LOG ADD ENTRY(&quot;CompiledCode folder exists&quot;; $compiledCodePath_t; True) 	DELETE FOLDER($compiledCodePath_t; Delete with contents) 	LOG ADD ENTRY(&quot;CompiledCode cleared&quot;; &quot;OK&quot;; String(OK); &quot;Error&quot;; String(Error); True) End if $options_o:=New object $options_o.targets:=New collection(&quot;arm64_macOS_lib&quot;; &quot;x86_64_generic&quot;) LOG ADD ENTRY(&quot;Compile start&quot;; &quot;4D&quot;; $4dVersion_t; True) $result_o:=Compile project($options_o) LOG ADD ENTRY(&quot;Compile done&quot;; &quot;success&quot;; String(Num($result_o.success)); True) If ($result_o.success) 	$success_b:=True 	$sentinel_t:=&quot;compile-&quot;+$4dVersion_t+&quot; passed&quot; Else 	$success_b:=False 	$sentinel_t:=&quot;compile-&quot;+$4dVersion_t+&quot; failed&quot; 	$errors_c:=$result_o.errors.query(&quot;isError == :1&quot;; True) 	LOG ADD ENTRY(&quot;Compile errors&quot;; String($errors_c.length); True) 	For each ($error_o; $errors_c) 		$sentinel_t:=$sentinel_t+Char(Line feed)+\ 			&quot;------------------------&quot;+Char(Line feed)+\ 			&quot;Method: &quot;+$error_o.code.path+Char(Line feed)+\ 			&quot;Line: &quot;+String($error_o.line)+Char(Line feed)+\ 			&quot;Message: &quot;+$error_o.message 	End for each End if $sentinelFolder_t:=logRelease_SentinelFolder($sentinelDir_t) $sentinelPath_t:=$sentinelFolder_t+&quot;compile-&quot;+$4dVersion_t+&quot;.txt&quot; TEXT TO DOCUMENT($sentinelPath_t; $sentinel_t; &quot;UTF-8&quot;; Document with LF) LOG ADD ENTRY(&quot;Compile sentinel written&quot;; $sentinelPath_t; True)</td></tr></tbody>
+  </table></div>
+      </section>
+
+      
+
+      
+    </article>
+  </main>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fnd_Log_AddEntry - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="legacy-section">
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../original.html">Original Documentation</a><span class="sep">/</span><span aria-current="page">Fnd_Log_AddEntry</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page legacy-doc">
+      <p class="eyebrow">Original reference</p>
+      <h1>Fnd_Log_AddEntry</h1>
+      <p class="signature">Fnd_Log_AddEntry (text 1{; text 2..text N})</p>
+      <p class="lead">Adds text to the original external tab-delimited log file.</p>
+      <p class="attributes">Transcribed from Original Logging Component.pdf</p>
+
+      <p>Call this method to add a new entry to the log file. It is safe to call this routine even if logging is not currently enabled.</p>
+<p>A single method call is used to add text to the log file. The text is added in a tab-delimited format, along with the current date and time.</p>
+<p>If multiple parameters are passed, they are appended to the log entry separated by tabs.</p>
+<p>Because this command can accept multiple values, a useful technique is to first pass Current method name, followed by an event description.</p>
+<p>No data is actually written to the log file until logging is enabled using Fnd_Log_Enable.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>text 1</td><td>Text</td><td>Text to add to the log.</td></tr><tr><td>text 2..text N</td><td>Text</td><td>Additional text to add to the log, optional.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Basic entry</h3><pre class="code"><code>Fnd_Log_AddEntry (<span class="tok-string">&quot;Database launched.&quot;</span>)</code></pre></div><div class="example"><h3>Include caller</h3><pre class="code"><code>Fnd_Log_AddEntry (<span class="tok-command">Current method name</span>;<span class="tok-string">&quot;Database launched.&quot;</span>)</code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

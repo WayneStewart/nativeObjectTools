@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fnd_Log_Enable - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="legacy-section">
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../original.html">Original Documentation</a><span class="sep">/</span><span aria-current="page">Fnd_Log_Enable</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page legacy-doc">
+      <p class="eyebrow">Original reference</p>
+      <h1>Fnd_Log_Enable</h1>
+      <p class="signature">Fnd_Log_Enable ({enable?}) -&gt; Boolean</p>
+      <p class="lead">Turns original logging on or off and returns whether logging is enabled.</p>
+      <p class="attributes">Transcribed from Original Logging Component.pdf</p>
+
+      <p>By default, logging is turned off, so calling Fnd_Log_AddEntry has no effect.</p>
+<p>This command allows the developer to turn the logger on or off. Pass True to turn on logging, or False to turn it off.</p>
+<p>When logging is enabled, text passed to Fnd_Log_AddEntry is written to the log file.</p>
+<p>The log file is closed after each entry, so there is no need to turn off logging except to prevent Fnd_Log_AddEntry from writing to the log file.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>enable</td><td>Boolean</td><td>True to enable logging, optional.</td></tr><tr><td>Function result</td><td>Boolean</td><td>True if logging is enabled.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Turn logging on</h3><pre class="code"><code>Fnd_Log_Enable (<span class="tok-constant">True</span>)  ` Turn on logging.
+Fnd_Log_AddEntry (<span class="tok-string">&quot;Database launched.&quot;</span>)</code></pre></div><div class="example"><h3>Read state</h3><pre class="code"><code><span class="tok-local">$loggingEnabled_b</span>:=Fnd_Log_Enable</code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

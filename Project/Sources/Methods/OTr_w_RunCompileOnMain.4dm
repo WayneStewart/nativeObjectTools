@@ -13,7 +13,7 @@ var $resultJSON_t : Text
 
 $compile_o:=OTr_w_compileProject
 $summary_o:=OTr_w_CompileResultForJSON($compile_o)
-$resultJSON_t:=JSON Stringify:C1217($summary_o)
+$resultJSON_t:=JSON Stringify:C1217($summary_o; *)
 
 Use ($signal_o)
 	$signal_o.resultJSON:=$resultJSON_t

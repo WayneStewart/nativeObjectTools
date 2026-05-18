@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_GetVariable — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_GetVariable</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Get scalars</p>
+      <h1>OTr_GetVariable</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT GetVariable</code></span>
+      <p class="signature">OTr_GetVariable (inObject; inTag; outVarPointer)</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Retrieves a value stored at the tag path and writes it into the variable pointed to by $outVarPointer_ptr. The caller's declared variable type determines how the stored value is rendered. Every 4D variable type except 2D arrays can be retrieved.</p>
+<p><strong>Divergence from OT — type coercion on mismatch</strong> OTr coerces the stored value when 4D can do so (e.g. LongInt into Text), writing the coerced value and setting OK=0. OT leaves the destination unchanged and sets OK=0.</p>
+<p>Code that relies on an empty result as a type-mismatch sentinel will behave differently.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p><em>OTr_GetVariable</em> retrieves a value from <em>inObject</em> at <em>inTag</em> into the variable pointed to by <em>varPtr</em>.</p>
+<p>Every 4D variable type except 2D arrays can be retrieved with this command.</p>
+<p>If <em>inObject</em> is not a valid object handle, an error is generated and OK is set to zero.</p>
+<p>If no item in the object has the given tag, nothing happens (the destination variable is left unchanged).</p>
+<p>If an item with the given tag exists and the stored type matches (or can be coerced to) the type of the destination variable, the variable's data is replaced.</p>
+<p>If the stored type cannot be rendered into the destination type, an error is generated and OK is set to zero.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject</td></tr><tr><td><code>inTag</code></td><td>Text</td><td>➡️</td><td>Tag path (inTag)</td></tr><tr><td><code>outVarPointer</code></td><td>Pointer</td><td>⬅️</td><td>Pointer to variable to receive the value</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

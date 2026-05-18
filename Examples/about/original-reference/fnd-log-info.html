@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fnd_Log_Info - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="legacy-section">
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../original.html">Original Documentation</a><span class="sep">/</span><span aria-current="page">Fnd_Log_Info</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page legacy-doc">
+      <p class="eyebrow">Original reference</p>
+      <h1>Fnd_Log_Info</h1>
+      <p class="signature">Fnd_Log_Info (info requested) -&gt; Text</p>
+      <p class="lead">Returns requested information about the original component.</p>
+      <p class="attributes">Transcribed from Original Logging Component.pdf</p>
+
+      <p>Returns the requested information about the component.</p>
+<p>The original component can also be called using the Fnd_Gen_ComponentInfo method without first testing to see if the component is installed.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>info requested</td><td>Text</td><td>Information desired.</td></tr><tr><td>Function result</td><td>Text</td><td>Response.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      <section><h2>Info requests</h2><div class="table-wrap"><table>
+    <thead><tr><th>Request</th><th>Response</th><th>Example</th></tr></thead>
+    <tbody><tr><td>name</td><td>The component's full name.</td><td>Foundation Logging</td></tr><tr><td>version</td><td>The component's version number.</td><td>4.0.5 beta 2</td></tr><tr><td>logging</td><td>Either &quot;enabled&quot; or &quot;disabled&quot;.</td><td>enabled</td></tr></tbody>
+  </table></div></section>
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Read version</h3><pre class="code"><code><span class="tok-local">$version_t</span>:=Fnd_Log_Info (<span class="tok-string">&quot;version&quot;</span>)</code></pre></div><div class="example"><h3>Use Fnd_Gen_ComponentInfo</h3><pre class="code"><code><span class="tok-local">$version_t</span>:=Fnd_Gen_ComponentInfo (<span class="tok-string">&quot;Fnd_Log&quot;</span>;<span class="tok-string">&quot;version&quot;</span>)</code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

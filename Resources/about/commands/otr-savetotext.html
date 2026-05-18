@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_SaveToText — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_SaveToText</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Serialisation</p>
+      <h1>OTr_SaveToText</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT SaveToText</code></span>
+      <p class="signature">OTr_SaveToText (inObject {; inPrettyPrint}) --&gt; Text</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      <div class="notice warning"><strong>Changed behaviour</strong><p>The output format of this method differs from the ObjectTools plugin equivalent. Text or BLOBs produced by one are not compatible with the other. See the description below for details.</p></div>
+      <div class="description">
+        <p>Returns the stored object as a JSON string. Useful for inspection and testing.</p>
+<p class="notice warning-heading">WARNING: Changed Behaviour</p>
+<p>The text format is OTr JSON, not the legacy ObjectTools text serialisation. Text produced by ObjectTools is not compatible with OTr_LoadFromText, and text produced here is not compatible with legacy ObjectTools.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject</td></tr><tr><td><code>inPrettyPrint</code></td><td>Boolean</td><td>➡️</td><td>True for indented output; default False (optional)</td></tr><tr><td><code>Result</code></td><td>Text</td><td>⬅️</td><td>JSON representation of the object,  or empty text if the handle is invalid</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

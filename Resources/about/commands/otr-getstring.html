@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_GetString — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_GetString</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Get scalars</p>
+      <h1>OTr_GetString</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT GetString</code></span>
+      <p class="signature">OTr_GetString (inObject; inTag) --&gt; Text</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Retrieves a String/Text value from the specified tag path.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p>OT GetString gets a value in <em>inObject</em> from the item referenced by <em>inTag</em>.</p>
+<p>If the object is not a valid object handle, an error is generated, <em>OK</em> is set to zero, and an empty string is returned.</p>
+<p>If no item in the object has the given tag, an empty string is returned. If the <em>FailOnNoItem</em></p>
+<p>option is set, an error is generated and <em>OK</em> is set to zero.</p>
+<p>If an item with the given tag exists and has the type <em>OT Is Character (112)</em>, the value of the requested element is returned.</p>
+<p>If an item with the given tag exists and has any other type, <em>OK</em> is set to zero, and an empty string is returned.</p>
+<p>See “The Character Item Type” on page 13 for more information on storing and retrieving strings.</p>
+<p>Warning: If your database is running in compatibility mode and the result of this method is assigned to a fixed width string variable, the item’s contents will be truncated to the width of the variable. To retrieve more than 255 characters from a character item, use <em>OT GetText</em> and assign to a text variable or field.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject</td></tr><tr><td><code>inTag</code></td><td>Text</td><td>➡️</td><td>Tag path (inTag)</td></tr><tr><td><code>Result</code></td><td>Text</td><td>⬅️</td><td>Stored value, or empty text on missing/invalid</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

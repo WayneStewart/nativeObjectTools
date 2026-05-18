@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_SaveToXMLFile — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_SaveToXMLFile</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Serialisation</p>
+      <h1>OTr_SaveToXMLFile</h1>
+      <span class="ot-badge ot-badge--new">No ObjectTools&nbsp;5.0 equivalent</span>
+      <p class="signature">OTr_SaveToXMLFile (inObject; inFilePath {; inPrettyPrint})</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Serialises the stored object to a UTF-8 XML file on disk using DOM output.  Existing files are overwritten without warning.</p>
+<p>Delegates all serialisation to OTr_z_XMLWriteObject.</p>
+<p>See OTr_SaveToXML for a description of the XML schema.</p>
+<p>Shadow-type keys (leafKey$type) are included or excluded according to OTr_IncludeShadowKey (default: True).</p>
+<p>Use OTr_SaveToXML to obtain the XML as a Text value instead.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject</td></tr><tr><td><code>inFilePath</code></td><td>Text</td><td>➡️</td><td>Full path of the target file</td></tr><tr><td><code>inPrettyPrint</code></td><td>Boolean</td><td>➡️</td><td>True for indented output; default True (optional)</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

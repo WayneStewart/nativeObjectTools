@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Foundation Logging Component (Fnd_Log) - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="legacy-section">
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../original.html">Original Documentation</a><span class="sep">/</span><span aria-current="page">Foundation Logging Component (Fnd_Log)</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page legacy-doc">
+      <p class="eyebrow">Original reference</p>
+      <h1>Foundation Logging Component (Fnd_Log)</h1>
+      <p class="signature">Foundation Logging Component Developer Reference Manual, First Edition</p>
+      <p class="lead">Original overview of the Foundation 4 logging component.</p>
+      <p class="attributes">Transcribed from Original Logging Component.pdf</p>
+
+      <p>The Foundation Logging component is an optional Foundation component that provides a simple method for logging events to an external text file.</p>
+<p>The Fnd_Log component was provided at no cost to both Foundation 4 developers and 4D developers that did not use Foundation. The source code was included in the Foundation Construction Set and in a separate database for non-Foundation developers.</p>
+<p>This component simply appends text to an external text file. This can be handy when trying to diagnose database problems, especially those that result in the 4D application crashing.</p>
+<p>The current version of this component does not use or interfere with 4D's LOG EVENT command. It does not require any other components, including Fnd_Gen.</p>
+
+      
+
+      <section><h2>Default file locations</h2><div class="table-wrap"><table>
+    <thead><tr><th>Platform</th><th>Original location</th></tr></thead>
+    <tbody><tr><td>Windows</td><td>User Preferences folder. The file has the same name as the structure file followed by &quot; Log.txt&quot;.</td></tr><tr><td>Mac OS X</td><td>User Logs folder inside Preferences. The file has the same name as the structure file with the .log extension.</td></tr><tr><td>Mac OS 9</td><td>User Preferences folder. The file has the same name as the structure file followed by &quot; Log&quot; and file type TEXT.</td></tr></tbody>
+  </table></div></section>
+<section><h2>Sample output</h2><pre class="code"><code><span class="tok-number">12</span>/<span class="tok-number">27</span>/<span class="tok-number">2004</span>  <span class="tok-number">19</span>:<span class="tok-number">37</span>:<span class="tok-number">13</span>  On Startup                 Database launched.
+<span class="tok-number">12</span>/<span class="tok-number">27</span>/<span class="tok-number">2004</span>  <span class="tok-number">19</span>:<span class="tok-number">37</span>:<span class="tok-number">21</span>  Fnd_aa_IO_DisplayTable     Display table called.
+<span class="tok-number">12</span>/<span class="tok-number">27</span>/<span class="tok-number">2004</span>  <span class="tok-number">19</span>:<span class="tok-number">37</span>:<span class="tok-number">26</span>  Fnd_aa_IO_DisplayRecord    Display record called.
+<span class="tok-number">12</span>/<span class="tok-number">27</span>/<span class="tok-number">2004</span>  <span class="tok-number">19</span>:<span class="tok-number">37</span>:<span class="tok-number">33</span>  On Exit                    Database quit.</code></pre></section>
+
+      
+    </article>
+  </main>
+</body>
+</html>

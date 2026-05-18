@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log Maximum Size - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">Log Maximum Size</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Public API</p>
+      <h1>Log Maximum Size</h1>
+      <p class="signature">Log Maximum Size({Maximum size}) -&gt; Longint</p>
+      <p class="lead">Sets or returns the maximum physical log size before rollover.</p>
+      <p class="attributes">Shared, Invisible, Preemptive capable</p>
+
+      <p>When rollover is enabled and a physical write pushes a file beyond the limit, the writer closes and moves the existing file to a timestamped archive name, creates a fresh log file, and compresses the archive.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>Maximum size</td><td>Longint</td><td>Optional maximum size in bytes. Pass 0 to disable rollover.</td></tr><tr><td>Result</td><td>Longint</td><td>The active maximum size in bytes.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Set 10 MB rollover</h3><pre class="code"><code><span class="tok-local">$maxBytes_i</span>:=<span class="tok-command">Log Maximum Size</span>(<span class="tok-number">10485760</span>)</code></pre></div><div class="example"><h3>Disable rollover</h3><pre class="code"><code><span class="tok-local">$maxBytes_i</span>:=<span class="tok-command">Log Maximum Size</span>(<span class="tok-number">0</span>)</code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

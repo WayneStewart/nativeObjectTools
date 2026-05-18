@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_RenameItem — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_RenameItem</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Item operations</p>
+      <h1>OTr_RenameItem</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT RenameItem</code></span>
+      <p class="signature">OTr_RenameItem (inObject; inTag; inNewTag)</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Renames the item referenced by $inTag_t. $inTag_t must be the full dotted path; $inNewTag_t is the new leaf name only. For example, renaming &quot;foo.bar.old_name&quot; to &quot;new_name&quot; gives access via &quot;foo.bar.new_name&quot;.</p>
+<p>BLOB and Picture references are moved, not copied (no new slot).</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p><em>OT RenameItem</em> renames the item referenced by <em>inTag</em> to the item referenced by <em>inNewTag</em>. Note that <em>inTag</em> must be a full tag if the target item is in an embedded object, whereas <em>inNewTag</em> is the new item name only. For example:</p>
+<p>OT RenameItem ($obj;&quot;foo.bar.old_name&quot;;&quot;new_name&quot;) // The above example will rename the item <em>old_name</em> to <em>new_name</em> within the embedded object <em>foo.bar</em>. To access the renamed item you would use the tag &quot;<em>foo.bar.new_name</em>&quot;.</p>
+<p>If the object handle is invalid, or if the item does not exist, or if an existing item has the same name as <em>inNewTag</em>, an error is generated, <em>OK</em> is set to zero, and no rename is performed.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject</td></tr><tr><td><code>inTag</code></td><td>Text</td><td>➡️</td><td>Full tag path of the item to rename (inTag)</td></tr><tr><td><code>inNewTag</code></td><td>Text</td><td>➡️</td><td>New leaf name (inNewTag)</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

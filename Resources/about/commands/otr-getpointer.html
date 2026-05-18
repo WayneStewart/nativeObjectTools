@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_GetPointer — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_GetPointer</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Get scalars</p>
+      <h1>OTr_GetPointer</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT GetPointer</code></span>
+      <p class="signature">OTr_GetPointer (inObject; inTag; outPointer)</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Retrieves a Pointer value from the specified tag path into the outPointer parameter. The stored text is deserialised via OTr_u_TextToPointer. Returns a Null pointer on any error or missing tag.</p>
+<p class="notice warning-heading">WARNING: Changed Behaviour</p>
+<p>This command must <em>NOT</em> be used with pointers to local variables.</p>
+<p>Because 4D methods receive all parameters by value, the output parameter ($outPointer_ptr) must be passed using the pointer-to- pointer syntax — i.e. -&gt;myVar — so that the method can write the result back to the caller's variable via dereference ($outPointer_ptr-&gt;:=).</p>
+<p>Passing a plain Pointer variable without -&gt; gives the method only a local copy; the caller's variable is never updated.</p>
+<p>This differs from OT GetPointer, which as a compiled plugin command can write directly to its output parameter via C-level memory access and therefore accepts a plain variable without -&gt;.</p>
+<p>Correct usage:</p>
+<p>``<code> var myPtr : Pointer OTr_GetPointer(handle; &quot;tag&quot;; -&gt;myPtr) use -&gt;myPtr, not myPtr If (OK=1) &amp; (myPtr#Null) use myPtr-&gt; End if </code>``</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p><em>OTr_GetPointer</em> retrieves a Pointer value from <em>inObject</em>.</p>
+<p>If <em>inObject</em> is not a valid object handle, an error is generated, OK is set to zero, and a Null pointer is returned.</p>
+<p>If no item in the object has the given inTag, a Null pointer is returned. If the FailOnItemNotFound option is set, an error is generated and OK is set to zero.</p>
+<p>If an item with the given inTag exists and has the type <em>Is Pointer</em>, the value of the requested element is returned.</p>
+<p>If an item with the given inTag exists and has any other type, an error is generated, OK is set to zero, and a Null pointer is returned.</p>
+<p>Warning: Under no circumstances should you attempt to store a pointer to a local or process variable in a compiled database and then try to retrieve that pointer in another process.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject</td></tr><tr><td><code>inTag</code></td><td>Text</td><td>➡️</td><td>Tag path (inTag)</td></tr><tr><td><code>outPointer</code></td><td>Pointer</td><td>⬅️</td><td>Receives the retrieved pointer (outPointer)</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

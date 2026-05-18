@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_IncludeShadowKey — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_IncludeShadowKey</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Item operations</p>
+      <h1>OTr_IncludeShadowKey</h1>
+      <span class="ot-badge ot-badge--new">No ObjectTools&nbsp;5.0 equivalent</span>
+      <p class="signature">OTr_IncludeShadowKey ({inValue}) --&gt; Boolean</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Gets or sets the global flag that controls whether shadow-type keys (leafKey$type) are included in XML, JSON, and file exports.</p>
+<p>Shadow keys are the sibling properties that record the original OT type constant for scalars whose 4D representation is ambiguous (Pointer and, on pre-v19 R2, BLOB — both stored as plain text). Including them in exports preserves full type fidelity on round-trip; excluding them produces cleaner output for consumption by non-OTr systems.</p>
+<p><strong>NOTE:</strong> there is no equivalent Object Tools command</p>
+<p>Default: True (include shadow keys).</p>
+<p>Call with no argument to read the current setting.</p>
+<p>Call with True or False to change it and return the previous value.</p>
+<p>The flag is stored in Storage.OTr.includeShadowKeys so it is visible to all processes and preemptive workers.</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inValue</code></td><td>Boolean</td><td>➡️</td><td>New setting (optional)</td></tr><tr><td><code>Result</code></td><td>Boolean</td><td>⬅️</td><td>Setting before this call                           (current setting if called with no argument)</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

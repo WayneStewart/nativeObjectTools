@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTr_SortArrays — OTr Reference</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">OTr_SortArrays</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Native Object Tools</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../alpha.html">A–Z</a>
+        <a href="../naming.html">OT&thinsp;→&thinsp;OTr</a>
+        <a href="../why.html">Why OTr?</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Array operations</p>
+      <h1>OTr_SortArrays</h1>
+      <span class="ot-badge">ObjectTools equivalent: <code>OT SortArrays</code></span>
+      <p class="signature">OTr_SortArrays (inObject; inTag1; inDirection1 … inTag7; inDirection7)</p>
+      <p class="attributes">Shared, Invisible, Preemptive indifferent</p>
+      
+      <div class="description">
+        <p>Sorts one or more OTr arrays within the same OTr object via MULTI SORT ARRAY.</p>
+<p>Up to seven tag/direction pairs may be supplied. Direction codes:</p>
+<ul><li>&quot;&gt;&quot; ascending</li><li>&quot;&lt;&quot; descending</li><li>&quot;*&quot; slave (moves with the preceding key array)</li></ul>
+<p>At least one pair must be &quot;&gt;&quot; or &quot;&lt;&quot;. All active arrays must have the same number of elements. BLOB, Picture, and Pointer arrays cannot be sorted in any position, including slave.</p>
+<p class="notice original-heading">ORIGINAL DOCUMENTATION</p>
+<p><em>OT SortArrays</em> performs a multilevel sort on one or more arrays in <em>inObject</em>.</p>
+<p>You may sort up to seven arrays at once with this command.</p>
+<p>If <em>inObject</em> is not a valid object handle, if no item in the object has the given tag, if the item's type is not a sortable array type, if all of the arrays do not have the same number of elements, or if a direction is not valid, an error is generated and <em>OK</em> is set to zero.</p>
+<p>The direction parameter for each array should be one of:</p>
+<ul><li>&quot;&gt;&quot; — ascending key</li><li>&quot;&lt;&quot; — descending key</li><li>&quot;*&quot; — move with previous array (slave)</li></ul>
+<p>For example, to sort parallel arrays of names and associated ids:</p>
+<p>OT SortArrays($object;&quot;names&quot;;&quot;&gt;&quot;;&quot;ids&quot;;&quot;*&quot;)</p>
+<p>To sort addresses by state and then by city within each state:</p>
+<p>OT SortArrays($object;&quot;states&quot;;&quot;&gt;&quot;;&quot;cities&quot;;&quot;&gt;&quot;)</p>
+      </div>
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Type</th><th>Direction</th><th>Description</th></tr></thead>
+      <tbody><tr><td><code>inObject</code></td><td>Integer</td><td>➡️</td><td>OTr inObject</td></tr><tr><td><code>inTag1_t .. $inTag7</code></td><td>Text</td><td>➡️</td><td>Array tag name (inTag1..inTag7)</td></tr><tr><td><code>inDirection1_t .. $inDirection7</code></td><td>Text</td><td>➡️</td><td>Sort direction (inDirection1..inDirection7)</td></tr></tbody>
+    </table></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

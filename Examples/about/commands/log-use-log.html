@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOG USE LOG - Logging Component</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="../commands.html">Commands</a><span class="sep">/</span><span aria-current="page">LOG USE LOG</span></nav>
+    <div class="masthead">
+      <a class="brand" href="../index.html">Logging Component</a>
+      <div class="top-links">
+        <a href="../index.html">Overview</a>
+        <a href="../commands.html">Commands</a>
+        <a href="../original.html">Original Docs</a>
+        <a href="../permission.html">Permission</a>
+      </div>
+    </div>
+  </header>
+  <main class="page-shell">
+    <article class="doc-page">
+      <p class="eyebrow">Public API</p>
+      <h1>LOG USE LOG</h1>
+      <p class="signature">LOG USE LOG({Log Label})</p>
+      <p class="lead">Switches the current process to a named log, or back to the default log.</p>
+      <p class="attributes">Shared, Invisible, Preemptive capable</p>
+
+      <p>Use this when a process should write a series of entries to a named log. For a single routed entry, prefer the logLabel option on LOG ADD ENTRY so the process selection does not change.</p>
+<p>If the label has not already been declared, the method declares it using the current defaults.</p>
+
+      <section>
+        <h2>Parameters</h2>
+        <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody><tr><td>Log Label</td><td>Text</td><td>Optional log label. Omit it, or pass empty text, to return to the default log.</td></tr></tbody>
+  </table></div>
+      </section>
+
+      
+
+      <section>
+        <h2>Code examples</h2>
+        <div class="example"><h3>Switch and restore</h3><pre class="code"><code><a class="tok-command code-command-link" href="log-declare-log.html">LOG DECLARE LOG</a>(<span class="tok-string">&quot;Audit&quot;</span>; <span class="tok-string">&quot;Audit.txt&quot;</span>)
+<span class="tok-command">LOG USE LOG</span>(<span class="tok-string">&quot;Audit&quot;</span>)
+<a class="tok-command code-command-link" href="log-add-entry.html">LOG ADD ENTRY</a>(<span class="tok-string">&quot;Written to Audit&quot;</span>)
+<span class="tok-command">LOG USE LOG</span>
+<a class="tok-command code-command-link" href="log-add-entry.html">LOG ADD ENTRY</a>(<span class="tok-string">&quot;Written to the default log&quot;</span>)</code></pre></div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
