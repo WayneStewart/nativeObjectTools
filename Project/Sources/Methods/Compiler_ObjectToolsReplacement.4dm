@@ -12,8 +12,8 @@
 
 // Created by Wayne Stewart (2026-03-31)
 //     waynestewart@mac.com
-// Wayne Stewart, 2026-05-19 - W5 (Phase 100): declare OTr_LockDepth_ci and
-//   OTr_ControllerLockDepth_i process variables.
+// Wayne Stewart, 2026-05-19 - W5 (Phase 100): declare OTr_LockDepth_ci,
+//   OTr_ControllerLockDepth_i, and OTr_StorageInitialised_b process variables.
 // ----------------------------------------------------
 
 C_BOOLEAN:C305(<>OTR_Initialised_b; OTR_Initialised_b)
@@ -38,6 +38,7 @@ If (Not:C34(OTR_Initialised_b))
 	var OTR_LockCount_i : Integer
 	var OTr_LockDepth_ci : Collection
 	var OTr_ControllerLockDepth_i : Integer
+	var OTr_StorageInitialised_b : Boolean
 	var OTr_DummyVariableForTests_t : Text
 	
 	ARRAY LONGINT:C221(OTr_LongArrayForTests_ai; 0)
