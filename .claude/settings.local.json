@@ -18,7 +18,9 @@
       "WebFetch(domain:www.bgap.church)",
       "Bash(grep -iE \"^OTr_\\(New|Clear\\)\\\\.4dm$\")",
       "Skill(4d-development)",
-      "Skill(4d-development:*)"
+      "Skill(4d-development:*)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }

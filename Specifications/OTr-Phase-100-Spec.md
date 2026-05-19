@@ -1,6 +1,6 @@
 # OTr Phase 100 — Dual Storage Mechanism and Three-Layer Architecture: Detailed Specification
 
-**Version:** 0.2
+**Version:** 0.3
 **Date:** 2026-05-19
 **Status:** Future (v2.0 Roadmap) — planning thread opened 2026-05-19
 **Author:** Wayne Stewart / Claude
@@ -15,6 +15,8 @@
 ### Version: 0.1  Date: 2026-04-04 | Initial draft. 
 ### Version: 0.2  Date: 2026-05-19 
 Reconciled with v0.5 codebase: Phase 8 confirmed shipped; mode-constant scope reduced to Middle→Inner boundary (§3.2); hybrid scalar/array lock counter per mechanism (§4); per-group lock-counter and semaphore-name collections moved to zero-based indexing aligned with trailing digit (§5.4); controller depth separated from group depth array (§4); original §10 marked **STALE** and superseded by §10A (BLOB/Picture storage in IP mode is via nested objects, not parallel arrays); dependency graph appendix added (§13). |
+### Version: 0.3  Date: 2026-05-19 
+W5 implemented on branch Echidna. Corrected guard-name error in §4.4 and §8 — `OTr_LockDepth_ci` and `OTr_ControllerLockDepth_i` must be initialised in the per-process `If (Not(OTR_Initialised_b))` guard, not the interprocess `If (Not(<>OTR_Initialised_b))` guard. Added §8A documenting `OTr_z_InitStorage`: `OTr_z_Init` contains non-thread-safe commands (interprocess variable writes, classic array declarations) and cannot be called from preemptive processes; a separate preemptive-capable method is required. Updated §13.1 W5 Touches. Added reconciliation rows to Appendix. |
 
 ---
 
@@ -298,7 +300,7 @@ End if
 
 The counter must never fall below zero. An unlock without a matching lock indicates a programming error; `OK` is set to `0` and an error is raised via `OTr_z_Error`.
 
-`OTr_LockDepth_ci` is initialised in `OTr_z_Init` as a 10-element Integer collection of zeros, under the existing `If (Not(<>OTR_Initialised_b))` guard that protects process-variable initialisation. `OTr_ControllerLockDepth_i` is initialised to zero in the same block.
+`OTr_LockDepth_ci` is initialised in `OTr_z_Init` as a 10-element Integer collection of zeros, under the per-process `If (Not(OTR_Initialised_b))` guard (the guard that uses the process-local `OTR_Initialised_b` flag, not the interprocess `<>OTR_Initialised_b` flag). `OTr_ControllerLockDepth_i` is initialised to zero in the same block.
 
 ### 4.5 Applicability to Storage `Use…End use`
 
@@ -385,20 +387,54 @@ The existing codebase already uses the separator-underscore convention (`OTr_z_I
 
 The following additions are made to `OTr_z_Init` within the existing `If (Storage.OTr = Null)` guard:
 
-1. Add `semaphoreNames` as a shared collection of ten strings on `Storage.OTr`, populated in trailing-digit order (slot 0 = `$OTr_n0_series`, slot 1 = `$OTr_n1_series`, …, slot 9 = `$OTr_n9_series`).
+1. Add `semaphoreNames` as a shared collection of ten strings on `Storage.OTr`, populated in trailing-digit order (slot 0 = `$OTr_n0_series`, slot 1 = `$OTr_n1_series`, …, slot 9 = `$OTr_n9_series`). The collection is created inline within the `Use(Storage)` block so it joins Storage's share group automatically.
 2. Add `controllerSemaphore` as a scalar string property on `Storage.OTr`, set to `"$OTr_controller"`.
 3. Add `options`, `errorHandler`, and `legacySemaphore` properties — see §9.
 
-Within the `If (Not(<>OTR_Initialised_b))` guard, initialise:
+**Ordering note.** The `options`, `errorHandler`, and `legacySemaphore` values are copied from the interprocess variables `<>OTR_Options_i`, `<>OTR_ErrorHandler_t`, and `<>OTR_Semaphore_t` respectively. Those variables are normally set in the `If (Not(<>OTR_Initialised_b))` guard which runs after the `If (Storage.OTr = Null)` guard. To ensure correct values are available when `Storage.OTr` is created, the three IP variables are assigned their defaults at the top of the `If (Storage.OTr = Null)` block (before `Use(Storage)`). The `If (Not(<>OTR_Initialised_b))` guard then sets them again to the same values — no observable change.
+
+Within the per-process `If (Not(OTR_Initialised_b))` guard, initialise:
 
 - `OTr_LockDepth_ci` as a 10-element Integer collection of zeros.
 - `OTr_ControllerLockDepth_i` as Integer zero.
+
+**Note:** the guard that protects these per-process initialisations is `If (Not(OTR_Initialised_b))` — the one using the process-local Boolean — not `If (Not(<>OTR_Initialised_b))` (the interprocess Boolean). The interprocess guard fires only once across all processes; the per-process guard fires once per process, which is the correct scope for process-variable initialisation.
 
 The existing scalar `OTR_LockCount_i` is **retained unchanged** for the IP Arrays mechanism.
 
 The existing `<>OTR_Semaphore_t` interprocess variable is retained for backwards compatibility during the transition. New code should read `Storage.OTr.legacySemaphore` (for the IP Arrays mechanism) or `Storage.OTr.semaphoreNames` / `Storage.OTr.controllerSemaphore` (for the Storage mechanism).
 
 Under `mechanism = OTR Storage`, `OTr_z_Init` also creates the ten `Storage.OTr_Group_N` shared objects (empty) and the `Storage.OTrController` shared object (`{ nextHandle: 1, inUse: {} }`).
+
+---
+
+## 8A. `OTr_z_InitStorage` — Thread-Safe Per-Process Initialisation
+
+`OTr_z_Init` contains non-thread-safe commands: it writes to interprocess variables (`<>OTR_Options_i`, `<>OTR_Semaphore_t`, etc.), calls `Compiler_ObjectToolsReplacement` which declares interprocess arrays, and uses classic array commands. In 4D, a method marked `"preemptive":"capable"` cannot call any method that contains such commands. Therefore `OTr_z_Init` can never be called from a preemptive process.
+
+`OTr_z_InitStorage` is a separate method, marked `"preemptive":"capable"`, that provides an equivalent per-process initialisation for preemptive callers using the Storage mechanism. It contains only thread-safe commands:
+
+```4d
+If (Not(OTr_StorageInitialised_b))
+    OTr_LockDepth_ci := New collection(0; 0; 0; 0; 0; 0; 0; 0; 0; 0)
+    OTr_ControllerLockDepth_i := 0
+    OTr_StorageInitialised_b := True
+End if
+```
+
+`OTr_StorageInitialised_b` is a Boolean process variable declared in `Compiler_ObjectToolsReplacement`. Its guard ensures the assignments run exactly once per process, matching the pattern of `OTR_Initialised_b` for the cooperative path.
+
+**Calling convention:**
+
+| Process type | Mechanism | Lazy init called |
+|---|---|---|
+| Cooperative | IP Arrays | `OTr_z_Init` |
+| Cooperative | Storage | `OTr_z_Init` |
+| Preemptive | Storage | `OTr_z_InitStorage` |
+
+`OTr_z_Init` must be called once from a cooperative startup context (e.g., the host's `On Startup` event method) before any preemptive workers that use OTr are spawned. It sets up all shared state — `Storage.OTr`, `Storage.OTr_Group_*`, `Storage.OTrController` — that `OTr_z_InitStorage` relies on being present.
+
+**Note on `OTr_LockDepth_ci` in both methods.** The per-process lock-depth collection is initialised by `OTr_z_Init` (for cooperative processes) and by `OTr_z_InitStorage` (for preemptive processes). Both use separate per-process boolean guards so there is no double-initialisation risk in any single process.
 
 ---
 
@@ -489,7 +525,7 @@ The work decomposes into twelve workstreams (W1–W12), grouped into five sequen
 | W2 | Per-group lock-depth collection (`OTr_LockDepth_ci`) + controller depth scalar (`OTr_ControllerLockDepth_i`); mechanism-aware `OTr_z_Lock` / `OTr_z_Unlock` | `OTr_z_Lock`, `OTr_z_Unlock`, `OTr_z_Init` |
 | W3 | Per-group semaphores and `controllerSemaphore` populated on `Storage.OTr` | `OTr_z_Init` |
 | W4 | Group-index derivation (`handle % 10`) used at the Inner layer | New utility or inline at Inner-layer entry |
-| W5 | `OTr_z_Init` property additions (`options`, `errorHandler`, `legacySemaphore`, `semaphoreNames`, `controllerSemaphore`); collection and scalar lock-depth initialisation; creation of `Storage.OTr_Group_*` and `Storage.OTrController` under Storage mechanism | `OTr_z_Init` |
+| W5 | `OTr_z_Init` property additions (`options`, `errorHandler`, `legacySemaphore`, `semaphoreNames`, `controllerSemaphore`); collection and scalar lock-depth initialisation; creation of `Storage.OTr_Group_*` and `Storage.OTrController` under Storage mechanism; new `OTr_z_InitStorage` for preemptive per-process init | `OTr_z_Init`, `OTr_z_InitStorage` (new), `Compiler_ObjectToolsReplacement` |
 | W6 | Move lock acquisition from Outer to Inner layer | All 22 Outer-layer Get/Put methods; both Inner methods |
 | W7 | Three-layer split: extract current IP-array logic from `OTr_u_AccessArrayElement` into `OTr_u_IPArrayAccess`; reshape `OTr_u_AccessArrayElement` as pure dispatcher | `OTr_u_AccessArrayElement` (+ new `OTr_u_IPArrayAccess`) |
 | W8 | `OTs_u_StorageAccess` — Storage-mode Inner implementation | New file |
@@ -538,3 +574,5 @@ Each workstream lands with side-by-side tests using the existing `____Test_Phase
 | `OTr_zInit` → `OTr_z_Init` rename required | `OTr_z_Init` already in use | No rename needed; §7 reflects this. |
 | Group-index mapping has off-by-one (digit 0 → slot 10, controller at slot 0) | n/a | Switched to direct trailing-digit indexing (0–9); controller depth and name are separate variables. (§5.4) |
 | `Storage.OTr.mechanism` already initialised | Already set to `OTR IP Arrays` in `OTr_z_Init` | Confirmed; no work needed. |
+| §4.4 / §8 stated `OTr_LockDepth_ci` init belongs in `If (Not(<>OTR_Initialised_b))` guard | That guard uses the interprocess flag — fires once across all processes; per-process variables placed there are never initialised for any process other than the first | Corrected to `If (Not(OTR_Initialised_b))` (per-process guard). Spec updated in §4.4, §8, and §8A. |
+| No spec mention of thread-safety constraint on `OTr_z_Init` | `OTr_z_Init` contains non-thread-safe commands and cannot be called from preemptive processes | `OTr_z_InitStorage` created as a preemptive-capable parallel init method. Documented in §8A; W5 Touches updated in §13.1. |

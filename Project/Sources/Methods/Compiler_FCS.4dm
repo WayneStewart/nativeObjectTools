@@ -9,6 +9,6 @@ If (False:C215)
 	C_BOOLEAN:C305(Fnd_FCS_WriteDocumentation; ${2})
 	
 	C_TEXT:C284(Fnd_FCS_BuildComponent; $1)
-
-
-End if
+	
+	C_TEXT:C284(_v4_CompileAnnounce; $1; $2)
+End if 
