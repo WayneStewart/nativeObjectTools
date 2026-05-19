@@ -83,4 +83,7 @@ If (False:C215)
 	C_PICTURE:C286(OTr_z_Koala; $0)
 	C_PICTURE:C286(OTr_z_Echidna; $0)
 
+	C_LONGINT:C283(OTr_z_Lock; $1)
+	C_LONGINT:C283(OTr_z_Unlock; $1)
+
 End if
