@@ -34,6 +34,9 @@
 
 // Created by Wayne Stewart, 2026-04-05
 // Based on work by himself, Rob Laveaux, and Cannon Smith.
+// Wayne Stewart, 2026-05-19 - W1 (Phase 100): synthesise $mode_i (OTR Get Element /
+//       OTR Put Element) at entry from Count parameters; replace arity-based
+//       branch with constant-based branch; add mode-validation guard.
 // ----------------------------------------------------
 
 #DECLARE($inObject_i : Integer; $inTag_t : Text; $inIndex_i : Integer; $inArrayType_i : Integer; $inValue_v : Variant)->$result_v : Variant
@@ -44,54 +47,68 @@ var $leafKey_t : Text
 var $storedType_i : Integer
 var $typeOK_b : Boolean
 var $key_t : Text
+var $mode_i : Integer
 
-If (OTr_z_IsValidHandle($inObject_i))
-	If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
-		If (OB Is defined:C1231($parent_o; $leafKey_t))
-			If (OB Get type:C1230($parent_o; $leafKey_t)=Is object:K8:27)
-				$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
-				$storedType_i:=OTr_z_ArrayType($arrayObj_o)
-				
-				$typeOK_b:=($storedType_i=$inArrayType_i)
-				If (Not:C34($typeOK_b))
-					Case of 
-						: (($inArrayType_i=LongInt array:K8:19) | ($inArrayType_i=Integer array:K8:18))
-							$typeOK_b:=($storedType_i=LongInt array:K8:19) | ($storedType_i=Integer array:K8:18)
-						: (($inArrayType_i=Text array:K8:16) | ($inArrayType_i=String array:K8:15))
-							$typeOK_b:=($storedType_i=Text array:K8:16) | ($storedType_i=String array:K8:15)
-					End case 
-				End if 
-				
-				If ($typeOK_b)
-					If (($inIndex_i>=0) & ($inIndex_i<=$arrayObj_o.numElements))
-						$key_t:=String:C10($inIndex_i)
-						If (Count parameters:C259=5)
-							$arrayObj_o[$key_t]:=$inValue_v
-						End if 
-						If (OB Is defined:C1231($arrayObj_o; $key_t))
-							$result_v:=$arrayObj_o[$key_t]
-						Else 
+// mode synthesis
+If (Count parameters:C259=5)
+	$mode_i:=OTR Put Element
+Else
+	$mode_i:=OTR Get Element
+End if
+
+// mode validation (unreachable given synthesis above; guards Middle→Inner contract)
+If (($mode_i#OTR Get Element) & ($mode_i#OTR Put Element))
+	OTr_z_Error("Unrecognised access mode"; Current method name:C684)
+	OTr_z_SetOK(0)
+Else
+	If (OTr_z_IsValidHandle($inObject_i))
+		If (OTr_z_ResolvePath(<>OTR_Objects_ao{$inObject_i}; $inTag_t; False:C215; ->$parent_o; ->$leafKey_t))
+			If (OB Is defined:C1231($parent_o; $leafKey_t))
+				If (OB Get type:C1230($parent_o; $leafKey_t)=Is object:K8:27)
+					$arrayObj_o:=OB Get:C1224($parent_o; $leafKey_t)
+					$storedType_i:=OTr_z_ArrayType($arrayObj_o)
+
+					$typeOK_b:=($storedType_i=$inArrayType_i)
+					If (Not:C34($typeOK_b))
+						Case of
+							: (($inArrayType_i=LongInt array:K8:19) | ($inArrayType_i=Integer array:K8:18))
+								$typeOK_b:=($storedType_i=LongInt array:K8:19) | ($storedType_i=Integer array:K8:18)
+							: (($inArrayType_i=Text array:K8:16) | ($inArrayType_i=String array:K8:15))
+								$typeOK_b:=($storedType_i=Text array:K8:16) | ($storedType_i=String array:K8:15)
+						End case
+					End if
+
+					If ($typeOK_b)
+						If (($inIndex_i>=0) & ($inIndex_i<=$arrayObj_o.numElements))
+							$key_t:=String:C10($inIndex_i)
+							If ($mode_i=OTR Put Element)
+								$arrayObj_o[$key_t]:=$inValue_v
+							End if
+							If (OB Is defined:C1231($arrayObj_o; $key_t))
+								$result_v:=$arrayObj_o[$key_t]
+							Else
+								OTr_z_SetOK(0)
+							End if
+						Else
+							OTr_z_Error("Index out of range"; Current method name:C684)
 							OTr_z_SetOK(0)
-						End if 
-					Else 
-						OTr_z_Error("Index out of range"; Current method name:C684)
+						End if
+					Else
+						OTr_z_Error("Array type mismatch"; Current method name:C684)
 						OTr_z_SetOK(0)
-					End if 
-				Else 
+					End if
+				Else
+					// The tag exists but holds a scalar, not an array object.
 					OTr_z_Error("Array type mismatch"; Current method name:C684)
 					OTr_z_SetOK(0)
-				End if 
-			Else 
-				// The tag exists but holds a scalar, not an array object.
-				OTr_z_Error("Array type mismatch"; Current method name:C684)
+				End if
+			Else
+				OTr_z_Error("Tag not found"; Current method name:C684)
 				OTr_z_SetOK(0)
-			End if 
-		Else 
-			OTr_z_Error("Tag not found"; Current method name:C684)
-			OTr_z_SetOK(0)
-		End if 
-	End if 
-Else 
-	OTr_z_Error("Invalid handle"; Current method name:C684)
-	OTr_z_SetOK(0)
-End if 
+			End if
+		End if
+	Else
+		OTr_z_Error("Invalid handle"; Current method name:C684)
+		OTr_z_SetOK(0)
+	End if
+End if
