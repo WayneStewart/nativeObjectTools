@@ -17,8 +17,6 @@
 // Created by Wayne Stewart, 2026-05-19
 // ----------------------------------------------------
 
-#DECLARE
-
 If (Not:C34(OTr_StorageInitialised_b))
 	OTr_LockDepth_ci:=New collection:C1472(0; 0; 0; 0; 0; 0; 0; 0; 0; 0)
 	OTr_ControllerLockDepth_i:=0
