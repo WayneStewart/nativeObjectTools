@@ -15,7 +15,10 @@
       "Read(//Applications/**)",
       "Bash(\"/Applications/Codex.app/Contents/Resources/node\" --version)",
       "Bash(\"/Applications/Codex.app/Contents/Resources/node\" build-otr-docs.mjs)",
-      "WebFetch(domain:www.bgap.church)"
+      "WebFetch(domain:www.bgap.church)",
+      "Bash(grep -iE \"^OTr_\\(New|Clear\\)\\\\.4dm$\")",
+      "Skill(4d-development)",
+      "Skill(4d-development:*)"
     ]
   }
 }

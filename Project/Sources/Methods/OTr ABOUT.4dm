@@ -17,7 +17,7 @@ $StackSize_i:=0
 $Form_t:=Current method name:C684
 $DesiredProcessName_t:="$"+($Form_t)
 
-Log_Init
+OTr_z_Init
 
 If (Current process name:C1392=$DesiredProcessName_t)
 	
