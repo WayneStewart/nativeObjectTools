@@ -31,6 +31,8 @@
 // Wayne Stewart, 2026-04-07 - Refactored from monolithic
 //   method into controller + OTr/OT sub-methods following
 //   the same pattern as ____Test_Phase_15.
+// Wayne Stewart, 2026-05-20 - Run inline when $hideAlert_b=True to prevent
+//   concurrent OTr_ClearAll races when called from ____Test_Phase_All_SideBySide.
 // ----------------------------------------------------
 #DECLARE($suppressAlert_b : Boolean)
 
@@ -43,11 +45,11 @@ $DesiredProcessName_t:=Current method name:C684
 
 If (Count parameters:C259<1)
 	$hideAlert_b:=False:C215
-Else 
+Else
 	$hideAlert_b:=$suppressAlert_b
-End if 
+End if
 
-If (Current process name:C1392=$DesiredProcessName_t)
+If ($hideAlert_b | (Current process name:C1392=$DesiredProcessName_t))
 	
 	// ====================================================
 	// INIT ACCUMULATOR

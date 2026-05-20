@@ -26,6 +26,10 @@
 // Created by Wayne Stewart / Claude, 2026-04-07
 // Refactored from monolithic ____Test_Phase_15 by Wayne Stewart.
 // Based on work by himself, Rob Laveaux, Guy Algot, and Cannon Smith.
+// Wayne Stewart, 2026-05-20 - Run inline when $hideAlert_b=True so that all
+//       test controllers called from ____Test_Phase_All_SideBySide execute
+//       sequentially in the same process, preventing concurrent OTr_ClearAll
+//       calls from racing against each other's handles.
 // ----------------------------------------------------
 #DECLARE($suppressAlert_b : Boolean)
 
@@ -38,11 +42,11 @@ $DesiredProcessName_t:=Current method name:C684
 
 If (Count parameters:C259<1)
 	$hideAlert_b:=False:C215
-Else 
+Else
 	$hideAlert_b:=$suppressAlert_b
-End if 
+End if
 
-If (Current process name:C1392=$DesiredProcessName_t)
+If ($hideAlert_b | (Current process name:C1392=$DesiredProcessName_t))
 	
 	// ====================================================
 	// INIT ACCUMULATOR
