@@ -51,7 +51,6 @@ If ($hideAlert_b | (Current process name:C1392=$DesiredProcessName_t))
 	// ====================================================
 	// INIT ACCUMULATOR
 	// ====================================================
-	OTr_ClearAll
 	var $accum_i : Integer
 	$accum_i:=OTr_New
 	

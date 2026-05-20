@@ -41,7 +41,6 @@ Else
 End if
 
 If ($hideAlert_b | (Current process name:C1392=$DesiredProcessName_t))
-	OTr_ClearAll
 	var $accum_i : Integer
 	$accum_i:=OTr_New
 	
