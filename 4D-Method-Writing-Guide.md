@@ -206,24 +206,30 @@ OTr-specific methods with no OT counterpart (`OTr_SaveToText`, `OTr_LoadFromText
 
 Immediately after the closing separator, write the `#DECLARE` line. Then declare local variables, followed by the method body. Separate logical sections with `//MARK:` comments.
 
+Input parameters are named with an `$in` prefix and are **read-only**: never assign to them. Where a parameter needs a default or any transformation, copy it into a working local and use that throughout the body. See §7 and `4D-Parameter-Handling-Rationale.md` for the reasoning.
+
 ```4d
   // ----------------------------------------------------
   // ... header ...
   // ----------------------------------------------------
 
-#DECLARE($input_t : Text; $silent_b : Boolean)->$result_o : Object
+#DECLARE($inInput_t : Text; $inSilent_b : Boolean)->$result_o : Object
 
 var $temp_t : Text
 var $count_i : Integer
+var $silent_b : Boolean
 
 //MARK:- initialisation
 If (Count parameters < 2)
     $silent_b := False
 
+Else
+    $silent_b := $inSilent_b
+
 End if
 
 //MARK:- processing
-// ... method body ...
+// ... method body; uses $silent_b, never $inSilent_b
 ```
 
 ### 4.1 Style Rules Within the Body
@@ -301,18 +307,31 @@ Examples: `Test_Coords`, `Test_FormBuilder`.
 
 ## 7. Optional Parameters
 
-In the header signature, wrap optional parameters in curly braces. In the `#DECLARE`, list all parameters (4D does not use curly braces in `#DECLARE`). Handle optionality via `Count parameters`:
+In the header signature, wrap optional parameters in curly braces. In the `#DECLARE`, list all parameters (4D does not use curly braces in `#DECLARE`). Handle optionality via `Count parameters`, and assign the result to a **working local** — never back into the parameter:
 
 ```4d
-  // Project Method: Fnd_Example ($name_t : Text {; $options_o : Object}) --> $result_o : Object
+  // Project Method: Fnd_Example ($inName_t : Text {; $inOptions_o : Object}) --> $result_o : Object
 
-#DECLARE($name_t : Text; $options_o : Object)->$result_o : Object
+#DECLARE($inName_t : Text; $inOptions_o : Object)->$result_o : Object
 
-If (Count parameters < 2) | ($options_o = Null)
-    $options_o := {}
+var $options_o : Object
+
+If ((Count parameters < 2) || ($inOptions_o = Null))
+    $options_o := New object
+
+Else
+    $options_o := $inOptions_o
 
 End if
 ```
+
+Three points to note:
+
+- **Never default into the parameter.** For an Object parameter this is not merely untidy: `$inOptions_o := New object` rebinds a local alias, whereas `$inOptions_o.key := …` mutates the caller's object. Defaulting in place makes the method's mutation contract depend on whether the caller supplied the argument. Copying to `$options_o` states the intent explicitly — and if the caller's object must not be mutated, use `$options_o := OB Copy($inOptions_o)`.
+- **`New object`, not `{}`.** Object and collection literals (`{}`, `[]`) are 4D v20 and later; they are unavailable in v19 (see §9).
+- **`||`, not `|`.** The single pipe is a bitwise integer operator and will silently coerce types.
+
+`Count parameters` is the only reliable presence test: a parameter that was not passed is initialised to its type default and is therefore indistinguishable, by value, from one the caller passed explicitly. `Undefined()` is not an alternative — it always returns `False` for variables in compiled mode. Full reasoning and the v19-specific differences are in `4D-Parameter-Handling-Rationale.md`.
 
 ---
 
@@ -376,6 +395,7 @@ Before committing a new or refactored method, verify:
 - [ ] Semaphore name read from `<>OTR_Semaphore_t`, not a local variable
 - [ ] Created-by block uses two-line format with contributor acknowledgement
 - [ ] `#DECLARE` used (no numbered parameters)
+- [ ] No assignment to any input parameter; defaults and transformations go into working locals (see §7)
 - [ ] Lines kept within 80 characters where practical
 - [ ] *(OTr public methods)* `Project Method:` line uses OT-style parameter names (see §3.5)
 - [ ] *(OTr public methods with OT counterpart)* `**ORIGINAL DOCUMENTATION**` block present (see §3.5)
