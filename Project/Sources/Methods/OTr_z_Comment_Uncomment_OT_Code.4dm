@@ -25,6 +25,10 @@
 //   guarded by compiled mode, plugin availability, and user confirmation.
 // Wayne Stewart / Codex, 2026-04-17 - Simplified block conversion to only
 //   add or remove / * and * / wrapper lines beside the OT block delimiters.
+// Wayne Stewart / Claude, 2026-08-09 - Corrected $LF_t and $TAB_t, which
+//   held Char(Tab) and Char(Period) respectively. Line splitting now
+//   treats only CR and LF as terminators, and the trim loops strip real
+//   tabs.
 // ----------------------------------------------------
 
 #DECLARE($suppressAlert_b : Boolean; $force_b : Boolean)
@@ -58,8 +62,8 @@ End if
 $begin_t:="// ==== BEGIN OT BLOCK — comment out on Tahoe 26.4+ ===="
 $end_t:="// ==== END OT BLOCK ===="
 $CR_t:=Char:C90(Carriage return:K15:38)
-$LF_t:=Char:C90(Tab:K15:37)
-$TAB_t:=Char:C90(Period:K15:45)
+$LF_t:=Char:C90(Line feed:K15:40)
+$TAB_t:=Char:C90(Tab:K15:37)
 $configPath_t:=Get 4D folder:C485(Current resources folder:K5:16)+"OTr_OTBlockMethods.json"
 
 $canChange_b:=True:C214
