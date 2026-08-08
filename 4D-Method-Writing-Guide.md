@@ -243,6 +243,27 @@ These rules apply to all code after the header:
 - Prefer ORDA over classic commands for all data access.
 - Prefer collection methods (`.map()`, `.filter()`, `.query()`, `.orderBy()`) over manual loops.
 
+### 4.2 Whitespace and the IDE Rewrite
+
+4D derives indentation from block structure. The compiler ignores leading whitespace entirely, and the IDE re-indents a method the first time it is opened and saved after an external edit. **Do not spend effort correcting indentation in existing files** — the correction is discarded.
+
+The cost is not correctness but diff churn. The rewrite happens on first IDE contact, not at write time, so non-canonical whitespace surfaces later as a whitespace-only commit attributed to whoever next opened the method. This is the same trade already accepted for command tokenisation (write commands in plain English, let the IDE add `:Cnnn` on save) — a larger diff, deemed not worth fighting.
+
+The practical rule is therefore not *fix the indentation* but **emit what 4D itself would emit**, so there is nothing left to rewrite:
+
+- **Tabs, not spaces**, for indentation. All 214 method files in `Project/Sources/Methods` use tabs; none use spaces.
+- **A trailing space after block terminators** — `End if `, `Else `, `End for `, `End case `, `End while `. This is 4D's own output format. The current ratio in the codebase is 1349 `End if ` to 150 `End if`, and 827 `Else ` to 51 `Else`; the minority cases are all externally-authored files awaiting their first IDE save.
+
+#### Where whitespace is *not* cosmetic
+
+Three cases where 4D will not normalise it and the layout is load-bearing:
+
+1. **Inside string literals.** 4D never reformats string contents. `OTr_z_Comment_Uncomment_OT_Code` writes its `"/*"` and `"*/"` markers at column 0, and its idempotency test (`$testLine_t = "/*"`) depends on their being unindented. Never "tidy" whitespace inside a generated string.
+2. **Code that parses code.** `Fnd_FCS_WriteDocumentation` parses header comment blocks; `OTr_z_Comment_Uncomment_OT_Code` walks method source looking for the OT block delimiters. Both are sensitive to the whitespace of the text they read — which lives in `.4dm` files the IDE *does* reformat. Consider this coupling before any bulk reformat of test methods.
+3. **The header comment block.** The 52-dash rules and the blank lines between sections are parsed by the documentation generator (§2, §3). 4D leaves them alone because the header sits at top level; our own tooling does not.
+
+Finally, the `//%attributes = {…}` line on line 1 is 4D-managed — never edit or reorder it.
+
 ---
 
 ## 5. Modification Notes
@@ -396,6 +417,7 @@ Before committing a new or refactored method, verify:
 - [ ] Created-by block uses two-line format with contributor acknowledgement
 - [ ] `#DECLARE` used (no numbered parameters)
 - [ ] No assignment to any input parameter; defaults and transformations go into working locals (see §7)
+- [ ] Tab indentation, and trailing space after `End if`/`Else`/`End for`, so the IDE has nothing to rewrite (see §4.2)
 - [ ] Lines kept within 80 characters where practical
 - [ ] *(OTr public methods)* `Project Method:` line uses OT-style parameter names (see §3.5)
 - [ ] *(OTr public methods with OT counterpart)* `**ORIGINAL DOCUMENTATION**` block present (see §3.5)
