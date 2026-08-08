@@ -133,6 +133,12 @@ Project/Sources/Methods/_Testing.4dm
 **/legacyExamples/
 
 
+# Syntax-check flag files (Util_SchedStart / _____________v4_CompilerCheck)
+# Request is written to trigger a check; results are written in reply.
+# Both are transient and machine-local.
+Resources/compilerCheck.json
+Resources/compilerResults.json
+
 # Miscellaneous
 Project/Sources/catalog.4DCatalog
 Secret Key.txt
